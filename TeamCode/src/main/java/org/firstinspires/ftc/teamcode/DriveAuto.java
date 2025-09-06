@@ -42,10 +42,14 @@ public class DriveAuto extends LinearOpMode {
         Put auto code here.
 
          */
-        rotate(135, "ccw");
-        rotate(135, "cw");
-        rotate(300, "ccw");
-        rotate(60, "cw");
+        move(90, 12, 0.8);
+        move(-90, 6, 1);
+        move(0, 18, 0.5);
+        move(180, 18, 0.75);
+        rotate(90, cw);
+        rotate(90, ccw);
+        rotate(270, cw);
+        rotate(90, cw);
     }
     public void move(double dir, double dis, double spd){
         rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
