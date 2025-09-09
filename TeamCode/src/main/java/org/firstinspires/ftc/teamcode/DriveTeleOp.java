@@ -27,7 +27,7 @@ public class DriveTeleOp extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            joystickMovement(-gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x, -gamepad1.right_stick_y);
+            joystickMovement(-gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y);
         }
     }
 

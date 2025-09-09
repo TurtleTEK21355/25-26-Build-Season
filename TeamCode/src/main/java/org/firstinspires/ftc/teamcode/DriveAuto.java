@@ -17,6 +17,8 @@ public class DriveAuto extends LinearOpMode {
     DcMotor lf;
     DcMotor rb;
     DcMotor rf;
+    // converts encoder value to inches
+    static final double encoderconstant = 41.801;
     @Override
     public void runOpMode() {
         imu = hardwareMap.get(IMU.class, "imu");
@@ -43,13 +45,21 @@ public class DriveAuto extends LinearOpMode {
 
          */
         move(90, 12, 0.8);
+        sleep(500);
         move(-90, 6, 1);
+        sleep(500);
         move(0, 18, 0.5);
+        sleep(500);
         move(180, 18, 0.75);
-        rotate(90, "cw");
-        rotate(90, "ccw");
-        rotate(270, "cw");
-        rotate(90, "cw");
+        sleep(500);
+        rotate(-90, "cw");
+        sleep(500);
+        rotate(-90, "ccw");
+        sleep(500);
+        rotate(-270, "cw");
+        sleep(500);
+        rotate(-90, "cw");
+        sleep(1000);
     }
     public void move(double dir, double dis, double spd){
         rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -66,7 +76,7 @@ public class DriveAuto extends LinearOpMode {
             rb.setPower((y+x)*spd);
             lf.setPower((-y-x)*spd);
             lb.setPower((-y+x)*spd);
-            while (Math.abs(rf.getCurrentPosition()) < (41.801 * (dis - 6)) && (Math.abs(lf.getCurrentPosition()) < (41.801 * (dis - 6)) && opModeIsActive()) && opModeIsActive()) {
+            while (Math.abs(rf.getCurrentPosition()) < (encoderconstant * (dis - 6)) && (Math.abs(lf.getCurrentPosition()) < (41.801 * (dis - 6)) && opModeIsActive()) && opModeIsActive()) {
                 telemetry.addData("rfpos", rf.getCurrentPosition());
                 telemetry.addData("lfpos", lf.getCurrentPosition());
                 telemetry.update();
@@ -101,14 +111,24 @@ public class DriveAuto extends LinearOpMode {
         lf.setPower(0);
         lb.setPower(0);
     }
+
+    /**
+     * @param angle
+     * @param direction
+     */
     public void rotate(double angle, String direction){
         /*
         * Angle is measured in degrees
         *
         * Direction is either clockwise (or cw for short) or counterclockwise (or ccw for short)
         */
-        if (angle > 180) {
-            angle = angle-360;
+        while ((angle > 180 || angle <-180) && opModeIsActive()) {
+           if (angle > 180) {
+               angle = angle-360;
+           } else {
+               angle = angle+360;
+           }
+
         }
         imu.resetYaw();
         YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
