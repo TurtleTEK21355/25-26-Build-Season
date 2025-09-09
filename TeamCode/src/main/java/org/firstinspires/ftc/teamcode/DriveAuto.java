@@ -14,8 +14,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 public class DriveAuto extends LinearOpMode {
     IMU imu;
     DcMotor lb;
-    DcMotor rb;
     DcMotor lf;
+    DcMotor rb;
     DcMotor rf;
     @Override
     public void runOpMode() {
@@ -46,10 +46,10 @@ public class DriveAuto extends LinearOpMode {
         move(-90, 6, 1);
         move(0, 18, 0.5);
         move(180, 18, 0.75);
-        rotate(90, cw);
-        rotate(90, ccw);
-        rotate(270, cw);
-        rotate(90, cw);
+        rotate(90, "cw");
+        rotate(90, "ccw");
+        rotate(270, "cw");
+        rotate(90, "cw");
     }
     public void move(double dir, double dis, double spd){
         rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
