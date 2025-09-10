@@ -44,21 +44,13 @@ public class DriveAuto extends LinearOpMode {
         Put auto code here.
 
          */
-        move(90, 12, 0.8);
+        rotate(90);
         sleep(500);
-        move(-90, 6, 1);
+        rotate(-90);
         sleep(500);
-        move(0, 18, 0.5);
+        rotate(270);
         sleep(500);
-        move(180, 18, 0.75);
-        sleep(500);
-        rotate(-90, "cw");
-        sleep(500);
-        rotate(-90, "ccw");
-        sleep(500);
-        rotate(-270, "cw");
-        sleep(500);
-        rotate(-90, "cw");
+        rotate(90);
         sleep(1000);
     }
     public void move(double dir, double dis, double spd){
@@ -111,19 +103,14 @@ public class DriveAuto extends LinearOpMode {
         lf.setPower(0);
         lb.setPower(0);
     }
-
-    /**
-     * @param angle
-     * @param direction
-     */
-    public void rotate(double angle, String direction){
+    public void rotate(double angle){
         /*
         * Angle is measured in degrees
         *
-        * Direction is either clockwise (or cw for short) or counterclockwise (or ccw for short)
+        * Direction uses positive (clockwise) and negative (counterclockwise) in degrees.
         */
-        while ((angle > 180 || angle <-180) && opModeIsActive()) {
-           if (angle > 180) {
+        while ((Math.abs(angle)>360) && opModeIsActive()) {
+           if (angle > 360) {
                angle = angle-360;
            } else {
                angle = angle+360;
@@ -132,54 +119,25 @@ public class DriveAuto extends LinearOpMode {
         }
         imu.resetYaw();
         YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
-        if (direction == "cw" || direction == "clockwise") {
+        if (angle >= 0) {
 
             // rotates clockwise at half speed until angle is reached
 
-            angle *= -1;
 
             rf.setPower(-0.5);
             rb.setPower(-0.5);
             lf.setPower(-0.5);
             lb.setPower(-0.5);
-            while (opModeIsActive() && Math.abs(angle-orientation.getYaw(AngleUnit.DEGREES))>5) {
+            while (opModeIsActive() && Math.abs(angle-orientation.getYaw(AngleUnit.DEGREES)+180)>5) {
                 orientation = imu.getRobotYawPitchRollAngles();
                 telemetry.addData("Yaw", orientation.getYaw(AngleUnit.DEGREES));
                 telemetry.update();
             }
-            while (opModeIsActive() && Math.abs(angle-orientation.getYaw(AngleUnit.DEGREES))>2) {
+            while (opModeIsActive() && Math.abs(angle-orientation.getYaw(AngleUnit.DEGREES)+180)>2) {
                 orientation = imu.getRobotYawPitchRollAngles();
                 telemetry.addData("Yaw", orientation.getYaw(AngleUnit.DEGREES));
                 telemetry.update();
-                if (Math.abs(angle)-Math.abs(orientation.getYaw(AngleUnit.DEGREES)) > 0) {
-                    rf.setPower(-0.15);
-                    rb.setPower(-0.15);
-                    lf.setPower(-0.15);
-                    lb.setPower(-0.15);
-                } else {
-                    rf.setPower(0.15);
-                    rb.setPower(0.15);
-                    lf.setPower(0.15);
-                    lb.setPower(0.15);
-                }
-            }
-        } else if (direction == "ccw" || direction == "counterclockwise") {
-
-            // rotates counterclockwise at half speed until angle is reached
-            rf.setPower(0.5);
-            rb.setPower(0.5);
-            lf.setPower(0.5);
-            lb.setPower(0.5);
-            while (opModeIsActive() && Math.abs(angle-orientation.getYaw(AngleUnit.DEGREES))>5) {
-                orientation = imu.getRobotYawPitchRollAngles();
-                telemetry.addData("Yaw", orientation.getYaw(AngleUnit.DEGREES));
-                telemetry.update();
-            }
-            while (opModeIsActive() && Math.abs(angle-orientation.getYaw(AngleUnit.DEGREES))>2) {
-                orientation = imu.getRobotYawPitchRollAngles();
-                telemetry.addData("Yaw", orientation.getYaw(AngleUnit.DEGREES));
-                telemetry.update();
-                if (Math.abs(angle)-Math.abs(orientation.getYaw(AngleUnit.DEGREES)) < 0) {
+                if (Math.abs(angle)-Math.abs(orientation.getYaw(AngleUnit.DEGREES)+180) > 0) {
                     rf.setPower(-0.15);
                     rb.setPower(-0.15);
                     lf.setPower(-0.15);
@@ -193,10 +151,32 @@ public class DriveAuto extends LinearOpMode {
             }
         } else {
 
-            // tells telemetry when an invalid direction is entered
-            telemetry.addData("rotating", "invalid input: " + direction);
-            telemetry.update();
-            sleep(500);
+            // rotates counterclockwise at half speed until angle is reached
+            rf.setPower(0.5);
+            rb.setPower(0.5);
+            lf.setPower(0.5);
+            lb.setPower(0.5);
+            while (opModeIsActive() && Math.abs(angle-orientation.getYaw(AngleUnit.DEGREES)+180)>5) {
+                orientation = imu.getRobotYawPitchRollAngles();
+                telemetry.addData("Yaw", orientation.getYaw(AngleUnit.DEGREES));
+                telemetry.update();
+            }
+            while (opModeIsActive() && Math.abs(angle-orientation.getYaw(AngleUnit.DEGREES)+180)>2) {
+                orientation = imu.getRobotYawPitchRollAngles();
+                telemetry.addData("Yaw", orientation.getYaw(AngleUnit.DEGREES));
+                telemetry.update();
+                if (Math.abs(angle)-Math.abs(orientation.getYaw(AngleUnit.DEGREES)+180) < 0) {
+                    rf.setPower(-0.15);
+                    rb.setPower(-0.15);
+                    lf.setPower(-0.15);
+                    lb.setPower(-0.15);
+                } else {
+                    rf.setPower(0.15);
+                    rb.setPower(0.15);
+                    lf.setPower(0.15);
+                    lb.setPower(0.15);
+                }
+            }
         }
 
         // stops robot and tells telemetry that the robot is still
