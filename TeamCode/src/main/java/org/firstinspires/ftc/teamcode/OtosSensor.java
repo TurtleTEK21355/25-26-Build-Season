@@ -6,7 +6,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class OtosSensor {
-    private SparkFunOTOS otos;
+    public SparkFunOTOS otos;
     
     OtosSensor(SparkFunOTOS otos){
         this.otos = otos;
