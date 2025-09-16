@@ -24,7 +24,6 @@ public class DriveYeetSuck extends LinearOpMode {
         rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
         waitForStart();
 
         while (opModeIsActive()) {
@@ -32,9 +31,9 @@ public class DriveYeetSuck extends LinearOpMode {
             telemetry.addData("Yeeter Power:", shooter.getPower());
             telemetry.update();
 
-            intake.setPower(-gamepad1.left_stick_y);
+            intake.setPower(gamepad1.right_stick_y);
             shooter.setPower(gamepad1.left_trigger * .75);
-            joystickMovement(-gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x, gamepad1.right_stick_y);
+            joystickMovement(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
 
 
         }
@@ -42,17 +41,17 @@ public class DriveYeetSuck extends LinearOpMode {
 
 
 
-    public void joystickMovement(double lx, double ly, double rx, double ry) {
-        if (rx != 0 || ry != 0) {
-            rf.setPower((-ry + rx) / 2);
-            rb.setPower((-ry + rx) / 2);
-            lf.setPower((ry + rx) / 2);
-            lb.setPower((ry + rx) / 2);
+    public void joystickMovement(double lx, double ly, double rx) {
+        if (rx != 0 ) {
+            rf.setPower((rx));
+            rb.setPower((rx));
+            lf.setPower((rx));
+            lb.setPower((rx));
         } else {
-            rf.setPower((ly + lx) / 2);
-            rb.setPower((ly - lx) / 2);
-            lf.setPower((-ly + lx) / 2);
-            lb.setPower((-ly - lx) / 2);
+            rf.setPower((ly + lx));
+            rb.setPower((ly - lx));
+            lf.setPower((-ly + lx));
+            lb.setPower((-ly - lx));
         }
     }
 
