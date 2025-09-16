@@ -13,7 +13,7 @@ public class DriveYeetSuck extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        DcMotor intake = hardwareMap.get(DcMotor.class, "intake2");
+        DcMotor intakeAndOuttake = hardwareMap.get(DcMotor.class, "intake2");
         DcMotor shooter = hardwareMap.get(DcMotor.class, "shooterUsingButton");
 
         lb = hardwareMap.get(DcMotor.class, "lb");
@@ -27,15 +27,32 @@ public class DriveYeetSuck extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            telemetry.addData("Motor Power:", intake.getPower());
+            telemetry.addData("Motor Power:", intakeAndOuttake.getPower());
             telemetry.addData("Yeeter Power:", shooter.getPower());
             telemetry.update();
 
-            intake.setPower(gamepad1.right_stick_y);
-            shooter.setPower(gamepad1.left_trigger * .75);
+            double shooterPower = 0;
+            double intakeAndOuttakePower;
+            if (gamepad1.right_trigger == 1) {
+                intakeAndOuttakePower = 1;
+            }
+            else if (gamepad1.right_bumper) {
+                intakeAndOuttakePower = -1;
+            }
+            else {
+                intakeAndOuttakePower = 0;
+            }
+            intakeAndOuttake.setPower(intakeAndOuttakePower);
+
+            while (shooterPower <= 0.75 && gamepad1.left_trigger != 0) {
+                shooter.setPower(gamepad1.left_trigger * shooterPower);
+                shooterPower += 0.03;
+            }
             joystickMovement(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
 
-
+            telemetry.addData("Motor Power:", intakeAndOuttakePower);
+            telemetry.addData("Yeeter Power:", shooterPower);
+            telemetry.update();
         }
     }
 
@@ -43,15 +60,15 @@ public class DriveYeetSuck extends LinearOpMode {
 
     public void joystickMovement(double lx, double ly, double rx) {
         if (rx != 0 ) {
-            rf.setPower((rx));
-            rb.setPower((rx));
-            lf.setPower((rx));
-            lb.setPower((rx));
+            rf.setPower((rx) / 2);
+            rb.setPower((rx) / 2);
+            lf.setPower((rx) / 2);
+            lb.setPower((rx) / 2);
         } else {
-            rf.setPower((ly + lx));
-            rb.setPower((ly - lx));
-            lf.setPower((-ly + lx));
-            lb.setPower((-ly - lx));
+            rf.setPower((ly + lx) / 2);
+            rb.setPower((ly - lx) / 2);
+            lf.setPower((-ly + lx) / 2);
+            lb.setPower((-ly - lx) / 2);
         }
     }
 
