@@ -16,6 +16,7 @@ public class Drivetrain {
     private double kp = 0.9;
     private double ki = 0.0;
     private double kd = 0.0;
+    public enum Component {X, Y, H}
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
         this.frontLeftMotor = frontLeft;
@@ -50,9 +51,9 @@ public class Drivetrain {
 
             Vector2 derivative = new Vector2(error.x - prevError.x, error.y - prevError.y, error.h - prevError.h);
 
-            Vector2 power = new Vector2(Math.min((kp * error.x) + (ki * integral.x) + (kd * derivative.x), Math.abs(speed)),
-                                        Math.min((kp * error.y) + (ki * integral.y) + (kd * derivative.y), Math.abs(speed)),
-                                        Math.min((kp * error.h) + (ki * integral.h) + (kd * derivative.h), Math.abs(speed)));
+            Vector2 power = new Vector2(errorThing(error, Component.X, (kp * error.x) + (ki * integral.x) + (kd * derivative.x), Math.abs(speed)),
+                                        errorThing(error, Component.Y, (kp * error.y) + (ki * integral.y) + (kd * derivative.y), Math.abs(speed)),
+                                        errorThing(error, Component.H, (kp * error.h) + (ki * integral.h) + (kd * derivative.h), Math.abs(speed)));
 
             prevError = new Vector2(error);
 
@@ -77,7 +78,39 @@ public class Drivetrain {
 
     }
 
-    public double errorThing(Vector2 error, double input){
-        if error
+    /**
+     * takes in error and input and outputs correspondinginglingly
+     * @param error the error vector
+     * @param input the input to be outputted
+     * @param component the component which is x, y, or h
+     * @param speed the speed that's put into the movePID method
+     * @return
+     */
+    public double errorThing(Vector2 error, Component component, double input, double speed){
+        switch(component){
+            case X:
+                if (error.x < 0) {
+                    return Math.max(input, speed);
+                }
+                else {
+                    return Math.min(input, speed);
+                }
+            case Y:
+                if (error.y < 0) {
+                    return Math.max(input, speed);
+                }
+                else {
+                    return Math.min(input, speed);
+                }
+            case H:
+                if (error.h < 0) {
+                    return Math.max(input, speed);
+                }
+                else {
+                    return Math.min(input, speed);
+                }
+            default:
+                return 0;
+        }
     }
 }
