@@ -25,13 +25,12 @@ public class DriveYeetSuck extends LinearOpMode {
         lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         waitForStart();
-
+        double shooterPower = 0;
         while (opModeIsActive()) {
             telemetry.addData("Motor Power:", intakeAndOuttake.getPower());
             telemetry.addData("Yeeter Power:", shooter.getPower());
             telemetry.update();
 
-            double shooterPower = 0;
             double intakeAndOuttakePower;
             if (gamepad1.right_trigger == 1) {
                 intakeAndOuttakePower = 1;
@@ -44,10 +43,26 @@ public class DriveYeetSuck extends LinearOpMode {
             }
             intakeAndOuttake.setPower(intakeAndOuttakePower);
 
-            while (shooterPower <= 0.75 && gamepad1.left_trigger != 0) {
-                shooter.setPower(gamepad1.left_trigger * shooterPower);
+            if (gamepad1.left_trigger != 0) {
                 shooterPower += 0.03;
             }
+            else if (gamepad1.left_trigger == 0) {
+                shooterPower = 0;
+            }
+
+            if (shooterPower > 0.75) {
+                shooterPower = 0.75;
+            }
+            shooter.setPower(shooterPower);
+//            if (shooterPower <= 0.75 && gamepad1.left_trigger != 0) {
+//                shooter.setPower(gamepad1.left_trigger * shooterPower);
+//                shooterPower += 0.03;
+//            }
+//            else if (gamepad1.left_trigger == 0)
+//                shooter.setPower(gamepad1.left_trigger * 0);
+//            else if (shooterPower > 0.75) {
+
+//            }
             joystickMovement(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
 
             telemetry.addData("Motor Power:", intakeAndOuttakePower);
