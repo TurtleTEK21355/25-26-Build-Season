@@ -13,15 +13,15 @@ public class BasicGarbage extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         TelemetryPasser.telemetry = telemetry;
-        Drivetrain driveTrain = new Drivetrain(
+        drivetrain = new Drivetrain(
             hardwareMap.get(DcMotor.class, "front left drive"),
             hardwareMap.get(DcMotor.class, "front right drive"),
             hardwareMap.get(DcMotor.class, "back left drive"),
             hardwareMap.get(DcMotor.class, "back right drive"));
-        OtosSensor otosSensor = new OtosSensor(hardwareMap.get(SparkFunOTOS.class, "otos sensor"));
+        otosSensor = new OtosSensor(hardwareMap.get(SparkFunOTOS.class, "otos sensor"));
 
         otosSensor.configureOtos();
         waitForStart();
-        driveTrain.movePID(1, 0, 0, 0.3, otosSensor.otos);
+        drivetrain.movePIDNoTheta(0, 10, 0.3, otosSensor.sensor);
     }
 }

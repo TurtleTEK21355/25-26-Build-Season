@@ -13,22 +13,58 @@ public class Drivetrain {
     private double PIDKillX = 0.75;
     private double PIDKillY = 0.75;
     private double PIDKillH = 10;
-    private double kp = 0.9;
+    private double kp = 0.09;
     private double ki = 0.0;
     private double kd = 0.0;
     public enum Component {X, Y, H}
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
         this.frontLeftMotor = frontLeft;
-        this.frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         this.frontRightMotor = frontRight;
-        this.frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         this.backLeftMotor = backLeft;
-        this.backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         this.backRightMotor = backRight;
-        this.backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.frontLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
+    public void movePIDNoTheta(double targetX, double targetY, double speed, SparkFunOTOS otosSensor){
+        Vector2 prevError = new Vector2(0,0,0);
+        Vector2 integral = new Vector2(0,0,0);
+        boolean PIDLoopActive = true;
+
+        while (PIDLoopActive){
+            Vector2 error = new Vector2(targetX - otosSensor.getPosition().x, targetY - otosSensor.getPosition().y, 0);
+            TelemetryPasser.telemetry.addData("X", otosSensor.getPosition().x);
+            TelemetryPasser.telemetry.addData("Y", otosSensor.getPosition().y);
+
+            TelemetryPasser.telemetry.addData("errorX", error.x);
+            TelemetryPasser.telemetry.addData("errorY", error.y);
+
+            if (Math.abs(error.x) < PIDKillX && Math.abs(error.y) < PIDKillY){
+                break;
+            }
+
+            integral = integral.add(error);
+
+            Vector2 derivative = new Vector2(error.x - prevError.x, error.y - prevError.y, 0);
+
+            Vector2 power = new Vector2(errorThing(error, Component.X, (kp * error.x) + (ki * integral.x) + (kd * derivative.x), Math.abs(speed)),
+                                        errorThing(error, (Component.Y), (kp * error.y) + (ki * integral.y) + (kd * derivative.y), Math.abs(speed)),
+                                        0);
+
+            TelemetryPasser.telemetry.addData("PowerX", power.x);
+            TelemetryPasser.telemetry.addData("PowerY", power.y);
+
+            prevError = new Vector2(error);
+
+            TelemetryPasser.telemetry.update();
+
+            fcControl(power.y, power.x, 0, otosSensor);
+        }
+
+    }
     public void movePID(double targetX, double targetY, double targetH, double speed, SparkFunOTOS otosSensor){
         Vector2 prevError = new Vector2(0,0,0);
         Vector2 integral = new Vector2(0,0,0);
@@ -42,7 +78,7 @@ public class Drivetrain {
             TelemetryPasser.telemetry.addData("errorX", error.x);
             TelemetryPasser.telemetry.addData("errorY", error.y);
             TelemetryPasser.telemetry.addData("errorH", error.h);
-            TelemetryPasser.telemetry.update();
+
             if (Math.abs(error.x) < PIDKillX && Math.abs(error.y) < PIDKillY && Math.abs(error.h) < PIDKillH){
                 break;
             }
@@ -57,7 +93,12 @@ public class Drivetrain {
 
             prevError = new Vector2(error);
 
+            TelemetryPasser.telemetry.addData("PowerX", power.x);
+            TelemetryPasser.telemetry.addData("PowerY", power.y);
+            TelemetryPasser.telemetry.addData("PowerH", power.h);
+
             fcControl(power.y, power.x, power.h, otosSensor);
+            TelemetryPasser.telemetry.update();
         }
 
     }
@@ -71,10 +112,14 @@ public class Drivetrain {
         double correctedY = r * Math.sin(correctedTheta);
         double correctedX = r * Math.cos(correctedTheta);
 
-        frontRightMotor.setPower(Range.clip(correctedY - correctedX - correctedTheta, -1, 1));
-        frontLeftMotor.setPower(Range.clip(correctedY - correctedX + correctedTheta, -1, 1));
-        backRightMotor.setPower(Range.clip(correctedY + correctedX - correctedTheta, -1, 1));
-        backLeftMotor.setPower(Range.clip(correctedY + correctedX + correctedTheta, -1, 1));
+        frontRightMotor.setPower(Range.clip(correctedY - correctedX - h, -1, 1));
+        frontLeftMotor.setPower(Range.clip(correctedY - correctedX + h, -1, 1));
+        backRightMotor.setPower(Range.clip(correctedY + correctedX - h, -1, 1));
+        backLeftMotor.setPower(Range.clip(correctedY + correctedX + h, -1, 1));
+        TelemetryPasser.telemetry.addData("flPower=", frontLeftMotor.getPower());
+        TelemetryPasser.telemetry.addData("frPower=", frontRightMotor.getPower());
+        TelemetryPasser.telemetry.addData("blPower=", backLeftMotor.getPower());
+        TelemetryPasser.telemetry.addData("brPower=", backRightMotor.getPower());
 
     }
 
