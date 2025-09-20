@@ -11,18 +11,25 @@ public class OtosSensor {
     OtosSensor(SparkFunOTOS sensor){
         this.sensor = sensor;
     }
-    public void configureOtos() {
-        sensor.setLinearUnit(DistanceUnit.INCH);
-        sensor.setAngularUnit(AngleUnit.DEGREES);
-        SparkFunOTOS.Pose2D offset = new SparkFunOTOS.Pose2D(0, 0, 0);
-        sensor.setOffset(offset);
-        sensor.setLinearScalar(1.0);
-        sensor.setAngularScalar(1.0);
-        sensor.calibrateImu();
+    public void configureOtos(DistanceUnit distanceUnit, AngleUnit angleUnit, double offsetX, double offsetY, double offsetH, double linearScalar, double angularScalar) {
+        sensor.setLinearUnit(distanceUnit);
+        sensor.setAngularUnit(angleUnit);
 
+        SparkFunOTOS.Pose2D offset = new SparkFunOTOS.Pose2D(offsetX, offsetY, offsetH);
+        sensor.setOffset(offset);
+
+        sensor.setLinearScalar(linearScalar);
+        sensor.setAngularScalar(angularScalar);
+
+        sensor.calibrateImu();
         sensor.resetTracking();
+
         SparkFunOTOS.Pose2D currentPosition = new SparkFunOTOS.Pose2D(0, 0, 0);
         sensor.setPosition(currentPosition);
+
+    }
+    public void resetPosition(){
+        sensor.setPosition(new SparkFunOTOS.Pose2D(0, 0, 0));
 
     }
 }

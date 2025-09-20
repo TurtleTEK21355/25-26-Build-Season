@@ -10,6 +10,7 @@ public class Drivetrain {
     private DcMotor frontRightMotor;
     private DcMotor backLeftMotor;
     private DcMotor backRightMotor;
+    private SparkFunOTOS otosSensor;
     private double PIDKillX = 0.75;
     private double PIDKillY = 0.75;
     private double PIDKillH = 10;
@@ -27,9 +28,24 @@ public class Drivetrain {
         this.frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         this.backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         this.backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+    }
+    public void configureDrivetrain(OtosSensor otosSensor, double kp, double ki, double kd){
+        this.otosSensor = otosSensor.sensor;
+        this.kp = kp;
+        this.ki = ki;
+        this.kd = kd;
     }
 
-    public void movePIDNoTheta(double targetX, double targetY, double speed, SparkFunOTOS otosSensor){
+    public void configureDrivetrain(OtosSensor otosSensor) {
+        this.otosSensor = otosSensor.sensor;
+    }
+
+    public void movePIDNoTheta(double targetX, double targetY, double speed){
         Vector2 prevError = new Vector2(0,0,0);
         Vector2 integral = new Vector2(0,0,0);
         boolean PIDLoopActive = true;
@@ -43,7 +59,7 @@ public class Drivetrain {
             TelemetryPasser.telemetry.addData("errorY", error.y);
 
             if (Math.abs(error.x) < PIDKillX && Math.abs(error.y) < PIDKillY){
-                break;
+                PIDLoopActive = false;
             }
 
             integral = integral.add(error);
@@ -61,11 +77,11 @@ public class Drivetrain {
 
             TelemetryPasser.telemetry.update();
 
-            fcControl(power.y, power.x, 0, otosSensor);
+            fcControl(power.y, power.x, 0);
         }
 
     }
-    public void movePID(double targetX, double targetY, double targetH, double speed, SparkFunOTOS otosSensor){
+    public void movePID(double targetX, double targetY, double targetH, double speed){
         Vector2 prevError = new Vector2(0,0,0);
         Vector2 integral = new Vector2(0,0,0);
         boolean PIDLoopActive = true;
@@ -80,16 +96,16 @@ public class Drivetrain {
             TelemetryPasser.telemetry.addData("errorH", error.h);
 
             if (Math.abs(error.x) < PIDKillX && Math.abs(error.y) < PIDKillY && Math.abs(error.h) < PIDKillH){
-                break;
+                PIDLoopActive = false;
             }
 
             integral = integral.add(error);
 
             Vector2 derivative = new Vector2(error.x - prevError.x, error.y - prevError.y, error.h - prevError.h);
 
-            Vector2 power = new Vector2(errorThing(error, Component.X, (kp * error.x) + (ki * integral.x) + (kd * derivative.x), Math.abs(speed)),
-                                        errorThing(error, Component.Y, (kp * error.y) + (ki * integral.y) + (kd * derivative.y), Math.abs(speed)),
-                                        errorThing(error, Component.H, (kp * error.h) + (ki * integral.h) + (kd * derivative.h), Math.abs(speed)));
+            Vector2 power = new Vector2(errorThing(error, Component.X, (kp * error.x) + (ki * integral.x) + (kd * derivative.x), speed),
+                                        errorThing(error, Component.Y, (kp * error.y) + (ki * integral.y) + (kd * derivative.y), speed),
+                                        errorThing(error, Component.H, (kp * error.h) + (ki * integral.h) + (kd * derivative.h), speed));
 
             prevError = new Vector2(error);
 
@@ -97,13 +113,13 @@ public class Drivetrain {
             TelemetryPasser.telemetry.addData("PowerY", power.y);
             TelemetryPasser.telemetry.addData("PowerH", power.h);
 
-            fcControl(power.y, power.x, power.h, otosSensor);
+            fcControl(power.y, power.x, -power.h);
             TelemetryPasser.telemetry.update();
         }
 
     }
 
-    public void fcControl(double y, double x, double h, SparkFunOTOS otosSensor) {
+    public void fcControl(double y, double x, double h) {
         double r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
         double theta = Math.atan2(y, x);
 
@@ -135,21 +151,21 @@ public class Drivetrain {
         switch(component){
             case X:
                 if (error.x < 0) {
-                    return Math.max(input, speed);
+                    return Math.max(input, -speed);
                 }
                 else {
                     return Math.min(input, speed);
                 }
             case Y:
                 if (error.y < 0) {
-                    return Math.max(input, speed);
+                    return Math.max(input, -speed);
                 }
                 else {
                     return Math.min(input, speed);
                 }
             case H:
                 if (error.h < 0) {
-                    return Math.max(input, speed);
+                    return Math.max(input, -speed);
                 }
                 else {
                     return Math.min(input, speed);
