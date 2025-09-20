@@ -15,6 +15,9 @@ public class BasicGarbage extends LinearOpMode {
     double kp = 0.09;
     double ki;
     double kd;
+    double kpTheta;
+    double kiTheta;
+    double kdTheta;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -30,7 +33,7 @@ public class BasicGarbage extends LinearOpMode {
 
         waitForStart();
         configurePID();
-        drivetrain.configureDrivetrain(otosSensor, kp, ki, kd);
+        drivetrain.configureDrivetrain(otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta);
 
         double speed = 0.3;
 
@@ -46,7 +49,10 @@ public class BasicGarbage extends LinearOpMode {
         modeController.add(
                 new Mode(kp, "Kp"),
                 new Mode(ki, "Ki"),
-                new Mode(kd, "Kd")
+                new Mode(kd, "Kd"),
+                new Mode(kpTheta, "Kp Theta"),
+                new Mode(kiTheta, "Ki Theta"),
+                new Mode(kdTheta, "Kd Theta")
 
         );
 

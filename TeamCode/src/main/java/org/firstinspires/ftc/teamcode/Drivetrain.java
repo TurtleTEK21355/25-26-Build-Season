@@ -17,6 +17,9 @@ public class Drivetrain {
     private double kp = 0.09;
     private double ki = 0.0;
     private double kd = 0.0;
+    double kpTheta;
+    double kiTheta;
+    double kdTheta;
     public enum Component {X, Y, H}
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
@@ -34,11 +37,14 @@ public class Drivetrain {
         this.backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
-    public void configureDrivetrain(OtosSensor otosSensor, double kp, double ki, double kd){
+    public void configureDrivetrain(OtosSensor otosSensor, double kp, double ki, double kd, double kpTheta, double kiTheta, double kdTheta){
         this.otosSensor = otosSensor.sensor;
         this.kp = kp;
         this.ki = ki;
         this.kd = kd;
+        this.kpTheta = kpTheta;
+        this.kiTheta = kiTheta;
+        this.kdTheta = kdTheta;
     }
 
     public void configureDrivetrain(OtosSensor otosSensor) {
@@ -105,7 +111,7 @@ public class Drivetrain {
 
             Vector2 power = new Vector2(errorThing(error, Component.X, (kp * error.x) + (ki * integral.x) + (kd * derivative.x), speed),
                                         errorThing(error, Component.Y, (kp * error.y) + (ki * integral.y) + (kd * derivative.y), speed),
-                                        errorThing(error, Component.H, (kp * error.h) + (ki * integral.h) + (kd * derivative.h), speed));
+                                        errorThing(error, Component.H, (kpTheta * error.h) + (kiTheta * integral.h) + (kdTheta * derivative.h), speed));
 
             prevError = new Vector2(error);
 
