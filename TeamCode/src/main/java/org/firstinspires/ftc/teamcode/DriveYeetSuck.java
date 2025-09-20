@@ -54,6 +54,7 @@ public class DriveYeetSuck extends LinearOpMode {
                 shooterPower = 0.75;
             }
             shooter.setPower(shooterPower);
+            //Alternative
 //            if (shooterPower <= 0.75 && gamepad1.left_trigger != 0) {
 //                shooter.setPower(gamepad1.left_trigger * shooterPower);
 //                shooterPower += 0.03;
