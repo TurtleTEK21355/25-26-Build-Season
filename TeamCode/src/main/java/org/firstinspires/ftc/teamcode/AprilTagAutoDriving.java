@@ -77,8 +77,9 @@ public class AprilTagAutoDriving extends LinearOpMode {
             if (bearing.tagDetected) {
                 telemetry.addLine(String.format("Bearing %6.1f  (deg)", bearing.bearingValue));
                 telemetry.update();
+                //TODO Press A instead of Hold
                 if (gamepad1.a) {
-                    while (bearing.bearingValue > 5) {
+                    if (bearing.bearingValue > 5) {
                         rf.setPower(1);
                         rb.setPower(1);
                         lf.setPower(-1);
