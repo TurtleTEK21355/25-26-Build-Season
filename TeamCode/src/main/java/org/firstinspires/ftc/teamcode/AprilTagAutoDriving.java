@@ -10,10 +10,14 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
+import android.annotation.SuppressLint;
 import android.util.Size;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -23,7 +27,6 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import java.util.List;
 
 @TeleOp(name = "AprilTagAutoDrive", group = "")
-@Disabled
 public class AprilTagAutoDriving extends LinearOpMode {
 
     /**
@@ -36,11 +39,31 @@ public class AprilTagAutoDriving extends LinearOpMode {
      */
     private VisionPortal visionPortal;
 
+    DcMotor lb;
+
+    DcMotor lf;
+
+    DcMotor rb;
+
+    DcMotor rf;
+
     @Override
     public void runOpMode() {
 
         initAprilTag();
 
+        lb = hardwareMap.get(DcMotor.class, "lb");
+        rb = hardwareMap.get(DcMotor.class, "rb");
+        lf = hardwareMap.get(DcMotor.class, "lf");
+        rf = hardwareMap.get(DcMotor.class, "rf");
+        rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rf.setDirection(DcMotorSimple.Direction.FORWARD);
+        rb.setDirection(DcMotorSimple.Direction.FORWARD);
+        lf.setDirection(DcMotorSimple.Direction.REVERSE);
+        lb.setDirection(DcMotorSimple.Direction.REVERSE);
         // Wait for the DS start button to be touched.
         //TODO Change telemetry value
         telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
@@ -50,10 +73,30 @@ public class AprilTagAutoDriving extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            telemetryAprilTag();
-            getBearing();
-            // Push telemetry to the Driver Station.
-            telemetry.update();
+            PotentialBearing bearing = getBearing();
+            if (bearing.tagDetected) {
+                telemetry.addLine(String.format("Bearing %6.1f  (deg)", bearing.bearingValue));
+                telemetry.update();
+                if (gamepad1.a) {
+                    while (bearing.bearingValue > 5) {
+                        rf.setPower(1);
+                        rb.setPower(1);
+                        lf.setPower(-1);
+                        lb.setPower(-1);
+                    } else if (bearing.bearingValue < -5){
+                        rf.setPower(-1);
+                        rb.setPower(-1);
+                        lf.setPower(1);
+                        lb.setPower(1);
+                    } else {
+                        rf.setPower(0);
+                        lf.setPower(0);
+                        rb.setPower(0);
+                        lb.setPower(0);
+                    }
+                    //SHOOT
+                }
+            }
 
             // Save CPU resources; can resume streaming when needed.
             if (gamepad1.dpad_down) {
@@ -166,16 +209,18 @@ public class AprilTagAutoDriving extends LinearOpMode {
 
     }   // end method telemetryAprilTag()
 
-    private void getBearing() {
+    @SuppressLint("DefaultLocale")
+    private PotentialBearing getBearing() {
 
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
         telemetry.addData("# AprilTags Detected", currentDetections.size());
-
         for (AprilTagDetection detection : currentDetections) {
+            telemetry.addLine(String.format("\n==== (ID %d)", detection.id));
             if (detection.id == 24) {
-                telemetry.addLine(String.format("Bearing %6.1f  (deg)", detection.ftcPose.bearing));
+                return new PotentialBearing(true, detection.ftcPose.bearing);
             }
         }
+        return new PotentialBearing(false);
     }
 
 }   // end class
