@@ -5,6 +5,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Drivetrain {
     private DcMotor frontLeftMotor;
     private DcMotor frontRightMotor;
@@ -21,6 +24,8 @@ public class Drivetrain {
     double kiTheta;
     double kdTheta;
     public enum Component {X, Y, H}
+    public boolean fieldCentricEnabled = true;
+    private boolean PIDLoopActive = true;
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
         this.frontLeftMotor = frontLeft;
@@ -180,4 +185,52 @@ public class Drivetrain {
                 return 0;
         }
     }
+    public void movePID(double targetX, double targetY, double targetH, double speed, int holdTime){
+        Vector2 prevError = new Vector2(0,0,0);
+        Vector2 integral = new Vector2(0,0,0);
+        PIDLoopActive = true;
+        boolean timerLock = false;
+        Timer holdTimer = new Timer();
+        TimerTask TurnOffPIDLoop = new TimerTask() {
+            @Override
+            public void run(){
+                PIDLoopActive = false;
+                holdTimer.cancel();
+            }
+        };
+
+        while (PIDLoopActive){
+            Vector2 error = new Vector2(targetX - otosSensor.getPosition().x, targetY - otosSensor.getPosition().y, targetH - otosSensor.getPosition().h);
+            TelemetryPasser.telemetry.addData("X", otosSensor.getPosition().x);
+            TelemetryPasser.telemetry.addData("Y", otosSensor.getPosition().y);
+            TelemetryPasser.telemetry.addData("H", otosSensor.getPosition().h);
+            TelemetryPasser.telemetry.addData("errorX", error.x);
+            TelemetryPasser.telemetry.addData("errorY", error.y);
+            TelemetryPasser.telemetry.addData("errorH", error.h);
+
+            if (Math.abs(error.x) < PIDKillX && Math.abs(error.y) < PIDKillY && Math.abs(error.h) < PIDKillH && !timerLock){
+                holdTimer.schedule(TurnOffPIDLoop, holdTime);
+                timerLock = true;
+            }
+
+            integral = integral.add(error);
+
+            Vector2 derivative = new Vector2(error.x - prevError.x, error.y - prevError.y, error.h - prevError.h);
+
+            Vector2 power = new Vector2(errorThing(error, Component.X, (kp * error.x) + (ki * integral.x) + (kd * derivative.x), speed),
+                    errorThing(error, Component.Y, (kp * error.y) + (ki * integral.y) + (kd * derivative.y), speed),
+                    errorThing(error, Component.H, (kpTheta * error.h) + (kiTheta * integral.h) + (kdTheta * derivative.h), speed));
+
+            prevError = new Vector2(error);
+
+            TelemetryPasser.telemetry.addData("PowerX", power.x);
+            TelemetryPasser.telemetry.addData("PowerY", power.y);
+            TelemetryPasser.telemetry.addData("PowerH", power.h);
+
+            fcControl(power.y, power.x, -power.h);
+            TelemetryPasser.telemetry.update();
+        }
+
+    }
+
 }

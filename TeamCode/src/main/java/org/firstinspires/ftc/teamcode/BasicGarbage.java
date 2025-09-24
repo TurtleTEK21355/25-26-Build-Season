@@ -12,52 +12,54 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class BasicGarbage extends LinearOpMode {
     Drivetrain drivetrain;
     OtosSensor otosSensor;
-    double kp = 0.09;
+    double kp = 0.05;
     double ki;
     double kd;
-    double kpTheta;
+    double kpTheta = 0.03;
     double kiTheta;
     double kdTheta;
+    double speed;
+    boolean fieldCentricEnabled;
 
     @Override
     public void runOpMode() throws InterruptedException {
         TelemetryPasser.telemetry = telemetry;
         otosSensor = new OtosSensor(hardwareMap.get(SparkFunOTOS.class, "otos sensor"));
         otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
-
         drivetrain = new Drivetrain(
-            hardwareMap.get(DcMotor.class, "front left drive"),
-            hardwareMap.get(DcMotor.class, "front right drive"),
-            hardwareMap.get(DcMotor.class, "back left drive"),
-            hardwareMap.get(DcMotor.class, "back right drive"));
+                hardwareMap.get(DcMotor.class, "front left drive"),
+                hardwareMap.get(DcMotor.class, "front right drive"),
+                hardwareMap.get(DcMotor.class, "back left drive"),
+                hardwareMap.get(DcMotor.class, "back right drive"));
 
         waitForStart();
-        configurePID();
+        configureDrivetrain();
         drivetrain.configureDrivetrain(otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta);
+        drivetrain.fieldCentricEnabled = fieldCentricEnabled;
 
-        double speed = 0.3;
-
-        drivetrain.movePID(0, 10, 0, speed);
-        drivetrain.movePID(10, 10, 0, speed);
-        drivetrain.movePID(10, 0, 0, speed);
-        drivetrain.movePID(0, 0, 0, speed);
+        drivetrain.movePID(0, 10, 0, speed, 2000);
+        drivetrain.movePID(10, 10, 0, speed, 2000);
+        drivetrain.movePID(10, 0, 0, speed, 2000);
+        drivetrain.movePID(0, 0, 0, speed, 2000);
 
     }
 
-    public void configurePID(){
+    public void configureDrivetrain(){
         ModeController modeController = new ModeController();
         modeController.add(
                 new Mode(kp, "Kp"),
                 new Mode(ki, "Ki"),
                 new Mode(kd, "Kd"),
-                new Mode(kpTheta, "Kp Theta"),
-                new Mode(kiTheta, "Ki Theta"),
-                new Mode(kdTheta, "Kd Theta")
+                new Mode(kpTheta, "KpTheta"),
+                new Mode(kiTheta, "KiTheta"),
+                new Mode(kdTheta, "KdTheta"),
+                new Mode(0.3, "Speed"),
+                new Mode(true, "FieldCentric")
 
         );
 
         while(opModeIsActive() && !gamepad1.start) {
-            modeController.modeSelection(gamepad1.dpad_left, gamepad1.dpad_right, gamepad1.dpad_up, gamepad1.dpad_down);
+            modeController.modeSelection(gamepad1.dpad_up, gamepad1.dpad_down, gamepad1.dpad_right, gamepad1.dpad_left);
 
             telemetry.addLine("Press start to Start");
 
@@ -73,11 +75,14 @@ public class BasicGarbage extends LinearOpMode {
             telemetry.update();
 
         }
-        kp = modeController.getModeValue("Kp");
-        ki = modeController.getModeValue("Ki");
-        kd = modeController.getModeValue("Kd");
-        telemetry.addData("values", kp);
-        telemetry.addData("values", ki);
-        telemetry.addData("values", kd);
+        kp = modeController.getModeValueDouble("Kp");
+        ki = modeController.getModeValueDouble("Ki");
+        kd = modeController.getModeValueDouble("Kd");
+        kpTheta = modeController.getModeValueDouble("KpTheta");
+        kiTheta = modeController.getModeValueDouble("KiTheta");
+        kdTheta = modeController.getModeValueDouble("KdTheta");
+        speed = modeController.getModeValueDouble("Speed");
+        fieldCentricEnabled = modeController.getModeValueBoolean("FieldCentric");
+
     }
 }

@@ -1,6 +1,4 @@
 package org.firstinspires.ftc.teamcode;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 /**
  * this is a double holding object that has a name and an enum state of UP DOWN and MIDDLE
@@ -11,19 +9,40 @@ public class Mode {
     public enum State {UP,DOWN,MIDDLE}
     private State state = State.MIDDLE;
     private String name = "unnamed";
-    private double value = 0;
+    private double valueDouble = 0;
+    private boolean valueBoolean;
     private double valueChangeAmount = 0.01;
+    public enum Type {DOUBLE, BOOLEAN}
+    private Type type;
 
     public Mode() {}
-    public Mode(double value){
-        this.value = value;
-    }
     public Mode(String name){
+        type = Type.DOUBLE;
+        this.name = name;
+    }
+    public Mode (boolean value){
+        type = Type.BOOLEAN;
+        valueBoolean = value;
+    }
+    public Mode(double value){
+        type = Type.DOUBLE;
+        this.valueDouble = value;
+    }
+    public Mode (boolean value, String name){
+        type = Type.BOOLEAN;
+        valueBoolean = value;
         this.name = name;
     }
     public Mode(double value, String name){
-        this.value = value;
+        type = Type.DOUBLE;
+        this.valueDouble = value;
         this.name = name;
+    }
+    public Mode(double value, String name, double valueChangeAmount){
+        type = Type.DOUBLE;
+        this.valueDouble = value;
+        this.name = name;
+        this.valueChangeAmount = valueChangeAmount;
     }
 
     /**
@@ -48,6 +67,10 @@ public class Mode {
         return state;
     }
 
+    public Type getType() {
+        return type;
+    }
+
     /**
      * sets the state to a enum
      * @param assignedState the new state
@@ -57,17 +80,24 @@ public class Mode {
     }
 
     /**
-     * changes the value depending on the state by 0.01
+     * changes the value depending on the state
      */
     public void valueChange(){
-        if (state == State.UP){
-            this.value += (valueChangeAmount);
-        } else if (state == State.DOWN){
-            this.value -= (valueChangeAmount);
+        if (type == Type.DOUBLE) {
+            if (state == State.UP) {
+                this.valueDouble += (valueChangeAmount);
+            } else if (state == State.DOWN) {
+                this.valueDouble -= (valueChangeAmount);
+            }
+
+            state = State.MIDDLE;
+        } else if (type == Type.BOOLEAN){
+            if (state == State.UP) {
+                this.valueBoolean = true;
+            } else if (state == State.DOWN) {
+                this.valueBoolean = false;
+            }
         }
-
-        state = State.MIDDLE;
-
     }
 
     /**
@@ -90,8 +120,10 @@ public class Mode {
      * gets the value in this mode
      * @return the value
      */
-    public double getValue(){
-        return this.value;
+    public double getValueDouble(){
+        return this.valueDouble;
     }
-
+    public boolean getValueBoolean(){
+        return this.valueBoolean;
+    }
 }

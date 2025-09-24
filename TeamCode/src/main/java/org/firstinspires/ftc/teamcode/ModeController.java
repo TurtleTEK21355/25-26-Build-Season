@@ -40,10 +40,18 @@ public class ModeController {
         return modes.get(selectedMode).getName();
     }
 
-    public double getModeValue(String modeName) {
+    public double getModeValueDouble(String modeName) {
         for (int i = 0; i < modes.size(); i++) {
             if (Objects.equals(modes.get(i).getName(), modeName)) {
-                return modes.get(i).getValue();
+                return modes.get(i).getValueDouble();
+            }
+        }
+        throw new RuntimeException("Mode not found");
+    }
+    public boolean getModeValueBoolean(String modeName) {
+        for (int i = 0; i < modes.size(); i++) {
+            if (Objects.equals(modes.get(i).getName(), modeName)) {
+                return modes.get(i).getValueBoolean();
             }
         }
         throw new RuntimeException("Mode not found");
@@ -92,7 +100,11 @@ public class ModeController {
 
             DecimalFormat valueFormat = new DecimalFormat("##.##");
             valueFormat.setRoundingMode(RoundingMode.HALF_UP);
-            name = name.concat(modes.get(i).getName() + " = " + valueFormat.format(modes.get(i).getValue())) + "\n";
+            if (modes.get(i).getType() == Mode.Type.BOOLEAN) {
+                name = name.concat(modes.get(i).getName() + " = " + modes.get(i).getValueBoolean()) + "\n";
+            } else if (modes.get(i).getType() == Mode.Type.DOUBLE){
+                name = name.concat(modes.get(i).getName() + " = " + valueFormat.format(modes.get(i).getValueDouble())) + "\n";
+            }
 
         }
         return name;
