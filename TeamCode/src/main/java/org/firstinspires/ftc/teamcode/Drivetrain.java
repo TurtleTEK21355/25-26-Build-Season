@@ -24,7 +24,6 @@ public class Drivetrain {
     double kiTheta;
     double kdTheta;
     public enum Component {X, Y, H}
-    public boolean fieldCentricEnabled = true;
     private boolean PIDLoopActive = true;
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
@@ -143,6 +142,17 @@ public class Drivetrain {
         frontLeftMotor.setPower(Range.clip(correctedY - correctedX + h, -1, 1));
         backRightMotor.setPower(Range.clip(correctedY + correctedX - h, -1, 1));
         backLeftMotor.setPower(Range.clip(correctedY + correctedX + h, -1, 1));
+        TelemetryPasser.telemetry.addData("flPower=", frontLeftMotor.getPower());
+        TelemetryPasser.telemetry.addData("frPower=", frontRightMotor.getPower());
+        TelemetryPasser.telemetry.addData("blPower=", backLeftMotor.getPower());
+        TelemetryPasser.telemetry.addData("brPower=", backRightMotor.getPower());
+
+    }
+    public void control(double y, double x, double h) {
+        frontRightMotor.setPower(Range.clip(y - x - h, -1, 1));
+        frontLeftMotor.setPower(Range.clip(y - x + h, -1, 1));
+        backRightMotor.setPower(Range.clip(y + x - h, -1, 1));
+        backLeftMotor.setPower(Range.clip(y + x + h, -1, 1));
         TelemetryPasser.telemetry.addData("flPower=", frontLeftMotor.getPower());
         TelemetryPasser.telemetry.addData("frPower=", frontRightMotor.getPower());
         TelemetryPasser.telemetry.addData("blPower=", backLeftMotor.getPower());

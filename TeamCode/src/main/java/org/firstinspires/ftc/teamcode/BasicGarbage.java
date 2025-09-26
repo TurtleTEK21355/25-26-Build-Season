@@ -35,7 +35,6 @@ public class BasicGarbage extends LinearOpMode {
         waitForStart();
         configureDrivetrain();
         drivetrain.configureDrivetrain(otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta);
-        drivetrain.fieldCentricEnabled = fieldCentricEnabled;
 
         drivetrain.movePID(0, 10, 0, speed, 2000);
         drivetrain.movePID(10, 10, 0, speed, 2000);
