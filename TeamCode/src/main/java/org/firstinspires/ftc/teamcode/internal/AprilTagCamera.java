@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.internalClasses;
+package org.firstinspires.ftc.teamcode.internal;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -9,7 +9,7 @@ public class AprilTagCamera {
     AprilTagProcessor aprilTag;
     VisionPortal visionPortal;
 
-    AprilTagCamera() {
+    public AprilTagCamera(WebcamName webcamName) {
         aprilTag = new AprilTagProcessor.Builder()
 
                 // The following default settings are available to un-comment and edit as needed.
@@ -41,11 +41,7 @@ public class AprilTagCamera {
         VisionPortal.Builder builder = new VisionPortal.Builder();
 
         // Set the camera (webcam vs. built-in RC phone camera).
-        if (USE_WEBCAM) {
-            builder.setCamera();
-        } else {
-            builder.setCamera(BuiltinCameraDirection.BACK);
-        }
+        builder.setCamera(webcamName);
 
         // Choose a camera resolution. Not all cameras support all resolutions.
         //builder.setCameraResolution(new Size(640, 480));

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.internalClasses;
+package org.firstinspires.ftc.teamcode.internal;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.DcMotor;

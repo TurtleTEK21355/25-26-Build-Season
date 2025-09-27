@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.internalClasses;
+package org.firstinspires.ftc.teamcode.internal;
 
 public class Vector2 {
     public double x;

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.internalClasses;
+package org.firstinspires.ftc.teamcode.internal;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 
@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class OtosSensor {
     public SparkFunOTOS sensor;
     
-    OtosSensor(SparkFunOTOS sensor){
+    public OtosSensor(SparkFunOTOS sensor){
         this.sensor = sensor;
     }
     public void configureOtos(DistanceUnit distanceUnit, AngleUnit angleUnit, double offsetX, double offsetY, double offsetH, double linearScalar, double angularScalar) {

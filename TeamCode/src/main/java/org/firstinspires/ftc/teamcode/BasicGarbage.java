@@ -5,8 +5,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.internal.AprilTagCamera;
 import org.firstinspires.ftc.teamcode.internal.Drivetrain;
 import org.firstinspires.ftc.teamcode.internal.Mode;
 import org.firstinspires.ftc.teamcode.internal.ModeController;
@@ -17,6 +19,7 @@ import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 public class BasicGarbage extends LinearOpMode {
     Drivetrain drivetrain;
     OtosSensor otosSensor;
+    AprilTagCamera aprilTagCamera;
     double kp = 0.05;
     double ki;
     double kd;
@@ -28,9 +31,13 @@ public class BasicGarbage extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
+
         TelemetryPasser.telemetry = telemetry;
+
         otosSensor = new OtosSensor(hardwareMap.get(SparkFunOTOS.class, "otos"));
         otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
+
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, "fl"),
                 hardwareMap.get(DcMotor.class, "fr"),
