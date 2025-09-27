@@ -7,6 +7,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.internalClasses.Drivetrain;
+import org.firstinspires.ftc.teamcode.internalClasses.Mode;
+import org.firstinspires.ftc.teamcode.internalClasses.ModeController;
+import org.firstinspires.ftc.teamcode.internalClasses.OtosSensor;
+import org.firstinspires.ftc.teamcode.internalClasses.TelemetryPasser;
 
 @Autonomous(name="BasicGarbage", group="Linear OpMode")
 public class BasicGarbage extends LinearOpMode {
@@ -24,13 +29,13 @@ public class BasicGarbage extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         TelemetryPasser.telemetry = telemetry;
-        otosSensor = new OtosSensor(hardwareMap.get(SparkFunOTOS.class, "otos sensor"));
+        otosSensor = new OtosSensor(hardwareMap.get(SparkFunOTOS.class, "otos"));
         otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
         drivetrain = new Drivetrain(
-                hardwareMap.get(DcMotor.class, "front left drive"),
-                hardwareMap.get(DcMotor.class, "front right drive"),
-                hardwareMap.get(DcMotor.class, "back left drive"),
-                hardwareMap.get(DcMotor.class, "back right drive"));
+                hardwareMap.get(DcMotor.class, "fl"),
+                hardwareMap.get(DcMotor.class, "fr"),
+                hardwareMap.get(DcMotor.class, "bl"),
+                hardwareMap.get(DcMotor.class, "br"));
 
         waitForStart();
         configureDrivetrain();

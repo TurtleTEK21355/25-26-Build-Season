@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.internalClasses;
 
 /**
  * this is a double holding object that has a name and an enum state of UP DOWN and MIDDLE
