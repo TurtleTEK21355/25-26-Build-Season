@@ -7,11 +7,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.internalClasses.Drivetrain;
-import org.firstinspires.ftc.teamcode.internalClasses.Mode;
-import org.firstinspires.ftc.teamcode.internalClasses.ModeController;
-import org.firstinspires.ftc.teamcode.internalClasses.OtosSensor;
-import org.firstinspires.ftc.teamcode.internalClasses.TelemetryPasser;
+import org.firstinspires.ftc.teamcode.internal.Drivetrain;
+import org.firstinspires.ftc.teamcode.internal.Mode;
+import org.firstinspires.ftc.teamcode.internal.ModeController;
+import org.firstinspires.ftc.teamcode.internal.OtosSensor;
+import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
 @Autonomous(name="BasicGarbage", group="Linear OpMode")
 public class BasicGarbage extends LinearOpMode {

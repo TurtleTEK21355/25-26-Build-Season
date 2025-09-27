@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.internalClasses.Drivetrain;
-import org.firstinspires.ftc.teamcode.internalClasses.OtosSensor;
-import org.firstinspires.ftc.teamcode.internalClasses.TelemetryPasser;
+import org.firstinspires.ftc.teamcode.internal.Drivetrain;
+import org.firstinspires.ftc.teamcode.internal.OtosSensor;
+import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
 @TeleOp(name="TeleSlop", group="Iterative OpModes")
 public class TeleSlop extends OpMode {
