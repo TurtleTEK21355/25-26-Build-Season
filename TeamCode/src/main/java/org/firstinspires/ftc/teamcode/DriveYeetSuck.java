@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name = "IntakeAndShooter", group = "")
 public class DriveYeetSuck extends LinearOpMode {
@@ -16,6 +17,7 @@ public class DriveYeetSuck extends LinearOpMode {
         DcMotor intakeAndOuttake = hardwareMap.get(DcMotor.class, "intake2");
         DcMotor shooter = hardwareMap.get(DcMotor.class, "shooterUsingButton");
 
+        shooter.setDirection(DcMotorSimple.Direction.REVERSE);
         lb = hardwareMap.get(DcMotor.class, "lb");
         rb = hardwareMap.get(DcMotor.class, "rb");
         lf = hardwareMap.get(DcMotor.class, "lf");
