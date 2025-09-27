@@ -128,7 +128,7 @@ public class ConceptAprilTag extends LinearOpMode {
 
             // The following default settings are available to un-comment and edit as needed.
             .setDrawAxes(false)
-            .setDrawCubeProjection(false)
+            .setDrawCubeProjection(true)
             .setDrawTagOutline(true)
             .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
             .setTagLibrary(AprilTagGameDatabase.getDecodeTagLibrary())
