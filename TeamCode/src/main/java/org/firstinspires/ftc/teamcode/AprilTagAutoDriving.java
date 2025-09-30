@@ -81,15 +81,15 @@ public class AprilTagAutoDriving extends LinearOpMode {
                 if (gamepad1.a) {
                     //TODO The robot turns endlessly. Maybe the values are too strong? Test.
                     if (bearing.bearingValue > 5) {
-                        rf.setPower(1);
-                        rb.setPower(1);
-                        lf.setPower(-1);
-                        lb.setPower(-1);
+                        rf.setPower(0.1);
+                        rb.setPower(0.1);
+                        lf.setPower(-0.1);
+                        lb.setPower(-0.1);
                     } else if (bearing.bearingValue < -5){
-                        rf.setPower(-1);
-                        rb.setPower(-1);
-                        lf.setPower(1);
-                        lb.setPower(1);
+                        rf.setPower(-0.1);
+                        rb.setPower(-0.1);
+                        lf.setPower(0.1);
+                        lb.setPower(0.1);
                     } else {
                         rf.setPower(0);
                         lf.setPower(0);
