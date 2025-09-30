@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -60,6 +61,7 @@ public class AprilAuto extends LinearOpMode {
     List<AprilTagDetection> currentDetections;
     // converts encoder value to inches
     static final double encoderconstant = 41.801;
+    ElapsedTime timer = new ElapsedTime();
 
     @Override
     public void runOpMode() {
@@ -84,9 +86,11 @@ public class AprilAuto extends LinearOpMode {
         telemetry.addData(">", "Touch START to start OpMode");
         telemetry.update();
         waitForStart();
-        telemetryAprilTag();
-        telemetry.update();
-        aprilMovementX();
+        if (opModeIsActive()) {
+            telemetryAprilTag();
+            telemetry.update();
+            aprilRotation();
+        }
         visionPortal.close();
     }
 
@@ -201,7 +205,7 @@ public class AprilAuto extends LinearOpMode {
                 rb.setPower((y + x) * spd);
                 lf.setPower((-y - x) * spd);
                 lb.setPower((-y + x) * spd);
-                while (Math.abs(rf.getCurrentPosition()) < (encoderconstant * (dis - 6)) && (Math.abs(lf.getCurrentPosition()) < (41.801 * (dis - 6)) && opModeIsActive()) && opModeIsActive()) {
+                while (Math.abs(rf.getCurrentPosition()) < (encoderconstant * (dis - 6)) && (Math.abs(lf.getCurrentPosition()) < (encoderconstant * (dis - 6)) && opModeIsActive()) && opModeIsActive()) {
                     telemetry.addData("rfpos", rf.getCurrentPosition());
                     telemetry.addData("lfpos", lf.getCurrentPosition());
                     telemetry.update();
@@ -214,7 +218,7 @@ public class AprilAuto extends LinearOpMode {
                 rb.setPower((y + x) * 0.15);
                 lf.setPower((-y - x) * 0.15);
                 lb.setPower((-y + x) * 0.15);
-                while (opModeIsActive() && Math.abs(rf.getCurrentPosition()) < (41.801 * 6) && (Math.abs(lf.getCurrentPosition()) < (41.801 * 6) && opModeIsActive())) {
+                while (opModeIsActive() && Math.abs(rf.getCurrentPosition()) > (41.801) && (Math.abs(lf.getCurrentPosition()) > (41.801) && opModeIsActive())) {
                     telemetry.addData("rfpos", rf.getCurrentPosition());
                     telemetry.addData("lfpos", lf.getCurrentPosition());
                     telemetry.update();
@@ -312,34 +316,59 @@ public class AprilAuto extends LinearOpMode {
             }
         }
         public void aprilRotation () {
-            aprilTag.getDetections();
+            telemetry.addData("confirmation", "before for loop");
+            telemetry.update();
+            sleep(1000);
             currentDetections = aprilTag.getDetections();
+            timer.reset();
+            timer.startTime();
+            while (currentDetections.isEmpty() && timer.seconds()<5) {
+                currentDetections = aprilTag.getDetections();
+            }
+            telemetry.addData("list length", currentDetections.size());
+            telemetry.update();
+            sleep(1000);
             for (AprilTagDetection detection : currentDetections) {
-                if (detection.metadata != null) {
-                    if (detection.id == 24 || detection.id == 20) {
+                telemetry.addData("confirmation", "in for loop");
+                telemetry.update();
+                sleep(1000);
+                if (detection.id == 24 || detection.id == 20) {
+                        telemetry.addData("confirmation", "detected tag");
+                        telemetry.update();
+                        sleep(1000);
                         telemetry.addData("Tag Yaw:", detection.ftcPose.yaw);
                         telemetry.update();
                         rotate(detection.ftcPose.yaw);
-                        sleep(2000);
-                    }
+                        telemetry.addData("confirmation", "successp");
+                        telemetry.update();
+                        sleep(1000);
                 }
             }
-            sleep(2000);
         }
         public void aprilMovementX () {
-            aprilTag.getDetections();
+            telemetry.addData("confirmation", "before for loop");
+            telemetry.update();
+            sleep(2000);
+            telemetryAprilTag();
+            telemetry.update();
+            sleep(2000);
             currentDetections = aprilTag.getDetections();
             for (AprilTagDetection detection : currentDetections) {
+                telemetry.addData("confirmation", "inside for loop");
+                telemetry.update();
+                sleep(2000);
                 if (detection.metadata != null) {
+                    telemetry.addData("confirmation", "not null");
+                    telemetry.update();
+                    sleep(2000);
                     if (detection.id == 24 || detection.id == 20) {
-                        telemetry.addData("Tag X:", detection.ftcPose.x);
+                        telemetry.addData("Tag X: ", detection.ftcPose.x);
                         telemetry.update();
-                        move(0, detection.ftcPose.x, 0.5);
                         sleep(2000);
+                        move(0, detection.ftcPose.x, 0.5);
                     }
                 }
             }
-            sleep(2000);
         }
         public void aprilMovementY () {
             currentDetections = aprilTag.getDetections();
