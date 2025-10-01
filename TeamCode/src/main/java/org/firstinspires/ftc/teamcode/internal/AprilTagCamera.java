@@ -3,11 +3,15 @@ package org.firstinspires.ftc.teamcode.internal;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
+import java.util.List;
 
 public class AprilTagCamera {
     AprilTagProcessor aprilTag;
     VisionPortal visionPortal;
+    public List<AprilTagDetection> currentDetections;
 
     public AprilTagCamera(WebcamName webcamName) {
         aprilTag = new AprilTagProcessor.Builder()
@@ -66,4 +70,10 @@ public class AprilTagCamera {
         // Disable or re-enable the aprilTag processor at any time.
         //visionPortal.setProcessorEnabled(aprilTag, true);
     }
+
+    public void updateDetections() {
+        currentDetections = aprilTag.getDetections();
+
+    }
 }
+
