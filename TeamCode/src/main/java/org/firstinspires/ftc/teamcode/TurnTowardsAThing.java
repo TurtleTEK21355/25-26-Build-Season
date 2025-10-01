@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.internal.OtosSensor;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
 @Autonomous(name="BasicGarbage", group="Linear OpMode")
-public class BasicGarbage extends LinearOpMode {
+public class TurnTowardsAThing extends LinearOpMode {
     Drivetrain drivetrain;
     OtosSensor otosSensor;
     AprilTagCamera aprilTagCamera;
@@ -48,10 +48,7 @@ public class BasicGarbage extends LinearOpMode {
         configureVariables();
         drivetrain.configureDrivetrain(aprilTagCamera, otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta);
 
-        drivetrain.movePID(0, 10, 0, speed, 2000);
-        drivetrain.movePID(10, 10, 0, speed, 2000);
-        drivetrain.movePID(10, 0, 0, speed, 2000);
-        drivetrain.movePID(0, 0, 0, speed, 2000);
+
 
     }
 

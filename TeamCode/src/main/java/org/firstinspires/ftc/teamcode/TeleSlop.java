@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.internal.Drivetrain;
 import org.firstinspires.ftc.teamcode.internal.OtosSensor;
+import org.firstinspires.ftc.teamcode.internal.Pose2D;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
 @TeleOp(name="TeleSlop", group="Iterative OpModes")
@@ -33,7 +34,7 @@ public class TeleSlop extends OpMode {
 
     @Override
     public void loop() {
-        drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        drivetrain.fcControl(new Pose2D(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x));
         if (gamepad1.y){
             otosSensor.resetPosition();
         }
