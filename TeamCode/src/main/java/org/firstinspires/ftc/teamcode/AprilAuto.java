@@ -89,7 +89,7 @@ public class AprilAuto extends LinearOpMode {
         if (opModeIsActive()) {
             telemetryAprilTag();
             telemetry.update();
-            aprilRotation();
+            move(90, 6, 0.5);
         }
         visionPortal.close();
     }
@@ -316,55 +316,36 @@ public class AprilAuto extends LinearOpMode {
             }
         }
         public void aprilRotation () {
-            telemetry.addData("confirmation", "before for loop");
-            telemetry.update();
-            sleep(1000);
             currentDetections = aprilTag.getDetections();
             timer.reset();
             timer.startTime();
             while (currentDetections.isEmpty() && timer.seconds()<5) {
                 currentDetections = aprilTag.getDetections();
             }
-            telemetry.addData("list length", currentDetections.size());
-            telemetry.update();
-            sleep(1000);
+            timer.reset();
             for (AprilTagDetection detection : currentDetections) {
-                telemetry.addData("confirmation", "in for loop");
-                telemetry.update();
-                sleep(1000);
                 if (detection.id == 24 || detection.id == 20) {
-                        telemetry.addData("confirmation", "detected tag");
-                        telemetry.update();
-                        sleep(1000);
                         telemetry.addData("Tag Yaw:", detection.ftcPose.yaw);
                         telemetry.update();
                         rotate(detection.ftcPose.yaw);
-                        telemetry.addData("confirmation", "successp");
-                        telemetry.update();
-                        sleep(1000);
                 }
             }
         }
         public void aprilMovementX () {
-            telemetry.addData("confirmation", "before for loop");
-            telemetry.update();
-            sleep(2000);
             telemetryAprilTag();
             telemetry.update();
-            sleep(2000);
             currentDetections = aprilTag.getDetections();
+            timer.reset();
+            timer.startTime();
+            while (currentDetections.isEmpty() && timer.seconds()<5) {
+                currentDetections = aprilTag.getDetections();
+            }
+            timer.reset();
             for (AprilTagDetection detection : currentDetections) {
-                telemetry.addData("confirmation", "inside for loop");
-                telemetry.update();
-                sleep(2000);
                 if (detection.metadata != null) {
-                    telemetry.addData("confirmation", "not null");
-                    telemetry.update();
-                    sleep(2000);
                     if (detection.id == 24 || detection.id == 20) {
                         telemetry.addData("Tag X: ", detection.ftcPose.x);
                         telemetry.update();
-                        sleep(2000);
                         move(0, detection.ftcPose.x, 0.5);
                     }
                 }
@@ -372,6 +353,12 @@ public class AprilAuto extends LinearOpMode {
         }
         public void aprilMovementY () {
             currentDetections = aprilTag.getDetections();
+            timer.reset();
+            timer.startTime();
+            while (currentDetections.isEmpty() && timer.seconds()<5) {
+                currentDetections = aprilTag.getDetections();
+            }
+            timer.reset();
             for (AprilTagDetection detection : currentDetections) {
                 if (detection.metadata != null) {
                     if (detection.id == 24) {
