@@ -15,6 +15,15 @@ public class Drivetrain {
     private DcMotor backRightMotor;
     private SparkFunOTOS otosSensor;
     private AprilTagCamera aprilTagCamera;
+    private double kp;
+    private double ki;
+    private double kd;
+    private double kpTheta;
+    private double kiTheta;
+    private double kdTheta;
+    private Pose2D tolerance = new Pose2D(1, 1, 10);
+    private boolean PIDLoopActive = true;
+
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
         this.frontLeftMotor = frontLeft;
@@ -46,111 +55,33 @@ public class Drivetrain {
         this.otosSensor = otosSensor.sensor;
     }
 
-    public void movePIDNoTheta(double targetX, double targetY, double speed){
-        Pose2D prevError = new Pose2D(0,0,0);
-        Pose2D integral = new Pose2D(0,0,0);
-        boolean PIDLoopActive = true;
-
-        while (PIDLoopActive){
-            Pose2D error = new Pose2D(targetX - otosSensor.getPosition().x, targetY - otosSensor.getPosition().y, 0);
-
-            integral = integral.add(error);
-
-            Pose2D derivative = new Pose2D(error.x - prevError.x, error.y - prevError.y, 0);
-
-            Pose2D power = new Pose2D(errorThing(error, Component.X, (kp * error.x) + (ki * integral.x) + (kd * derivative.x), Math.abs(speed)),
-                                        errorThing(error, (Component.Y), (kp * error.y) + (ki * integral.y) + (kd * derivative.y), Math.abs(speed)),
-                                        0);
-
-            prevError = new Pose2D(error);
-
-            fcControl(power);
-        }
-
-    }
-
-    public void movePID(double targetX, double targetY, double targetH, double speed){
-        Pose2D prevError = new Pose2D(0,0,0);
-        Pose2D integral = new Pose2D(0,0,0);
-        boolean PIDLoopActive = true;
-
-        while (PIDLoopActive){
-            Pose2D error = new Pose2D(targetX - otosSensor.getPosition().x, targetY - otosSensor.getPosition().y, targetH - otosSensor.getPosition().h);
-            TelemetryPasser.telemetry.addData("X", otosSensor.getPosition().x);
-            TelemetryPasser.telemetry.addData("Y", otosSensor.getPosition().y);
-            TelemetryPasser.telemetry.addData("H", otosSensor.getPosition().h);
-            TelemetryPasser.telemetry.addData("errorX", error.x);
-            TelemetryPasser.telemetry.addData("errorY", error.y);
-            TelemetryPasser.telemetry.addData("errorH", error.h);
-
-            if (Math.abs(error.x) < PIDKillX && Math.abs(error.y) < PIDKillY && Math.abs(error.h) < PIDKillH){
-                PIDLoopActive = false;
-            }
-
-            integral = integral.add(error);
-
-            Pose2D derivative = new Pose2D(error.x - prevError.x, error.y - prevError.y, error.h - prevError.h);
-
-            Pose2D power = new Pose2D(errorThing(error, Component.X, (kp * error.x) + (ki * integral.x) + (kd * derivative.x), speed),
-                                        errorThing(error, Component.Y, (kp * error.y) + (ki * integral.y) + (kd * derivative.y), speed),
-                                        errorThing(error, Component.H, (kpTheta * error.h) + (kiTheta * integral.h) + (kdTheta * derivative.h), speed));
-
-            prevError = new Pose2D(error);
-
-            TelemetryPasser.telemetry.addData("PowerX", power.x);
-            TelemetryPasser.telemetry.addData("PowerY", power.y);
-            TelemetryPasser.telemetry.addData("PowerH", power.h);
-
-            fcControl(power.y, power.x, -power.h);
-            TelemetryPasser.telemetry.update();
-        }
-
-    }
-
     public void movePID(double targetX, double targetY, double targetH, double speed, int holdTime){
-        Pose2D prevError = new Pose2D(0,0,0);
-        Pose2D integral = new Pose2D(0,0,0);
+        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
+        PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, tolerance.y, speed);
+        PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kp, ki, kd, targetH, tolerance.h, speed);
         PIDLoopActive = true;
         boolean timerLock = false;
         Timer holdTimer = new Timer();
         TimerTask TurnOffPIDLoop = new TimerTask() {
             @Override
-            public void run(){
+            public void run() {
                 PIDLoopActive = false;
                 holdTimer.cancel();
             }
         };
 
         while (PIDLoopActive){
-            Pose2D error = new Pose2D(targetX - otosSensor.getPosition().x, targetY - otosSensor.getPosition().y, targetH - otosSensor.getPosition().h);
-            TelemetryPasser.telemetry.addData("X", otosSensor.getPosition().x);
-            TelemetryPasser.telemetry.addData("Y", otosSensor.getPosition().y);
-            TelemetryPasser.telemetry.addData("H", otosSensor.getPosition().h);
-            TelemetryPasser.telemetry.addData("errorX", error.x);
-            TelemetryPasser.telemetry.addData("errorY", error.y);
-            TelemetryPasser.telemetry.addData("errorH", error.h);
+            double xPos = otosSensor.getPosition().x;
+            double yPos = otosSensor.getPosition().y;
+            double hPos = otosSensor.getPosition().h;
 
-            if (Math.abs(error.x) < PIDKillX && Math.abs(error.y) < PIDKillY && Math.abs(error.h) < PIDKillH && !timerLock){
+            if (xPID.atTarget() && yPID.atTarget() && hPID.atTarget()){
                 holdTimer.schedule(TurnOffPIDLoop, holdTime);
                 timerLock = true;
             }
 
-            integral = integral.add(error);
+            fcControl(new Pose2D(xPID.calculate(xPos), yPID.calculate(yPos), -hPID.calculate(hPos)));
 
-            Pose2D derivative = new Pose2D(error.x - prevError.x, error.y - prevError.y, error.h - prevError.h);
-
-            Pose2D power = new Pose2D(errorThing(error, Component.X, (kp * error.x) + (ki * integral.x) + (kd * derivative.x), speed),
-                    errorThing(error, Component.Y, (kp * error.y) + (ki * integral.y) + (kd * derivative.y), speed),
-                    -errorThing(error, Component.H, (kpTheta * error.h) + (kiTheta * integral.h) + (kdTheta * derivative.h), speed));
-
-            prevError = new Pose2D(error);
-
-            TelemetryPasser.telemetry.addData("PowerX", power.x);
-            TelemetryPasser.telemetry.addData("PowerY", power.y);
-            TelemetryPasser.telemetry.addData("PowerH", power.h);
-
-            fcControl(power);
-            TelemetryPasser.telemetry.update();
         }
 
     }
@@ -174,6 +105,7 @@ public class Drivetrain {
         TelemetryPasser.telemetry.addData("brPower=", backRightMotor.getPower());
 
     }
+    
     public void control(double y, double x, double h) {
         frontRightMotor.setPower(Range.clip(y - x - h, -1, 1));
         frontLeftMotor.setPower(Range.clip(y - x + h, -1, 1));
@@ -184,42 +116,6 @@ public class Drivetrain {
         TelemetryPasser.telemetry.addData("blPower=", backLeftMotor.getPower());
         TelemetryPasser.telemetry.addData("brPower=", backRightMotor.getPower());
 
-    }
-
-    /**
-     * takes in error and input and outputs correspondinginglingly
-     * @param error the error vector
-     * @param input the input to be outputted
-     * @param component the component which is x, y, or h
-     * @param speed the speed that's put into the movePID method
-     * @return
-     */
-    public double errorThing(Pose2D error, Component component, double input, double speed){
-        switch(component){
-            case X:
-                if (error.x < 0) {
-                    return Math.max(input, -speed);
-                }
-                else {
-                    return Math.min(input, speed);
-                }
-            case Y:
-                if (error.y < 0) {
-                    return Math.max(input, -speed);
-                }
-                else {
-                    return Math.min(input, speed);
-                }
-            case H:
-                if (error.h < 0) {
-                    return Math.max(input, -speed);
-                }
-                else {
-                    return Math.min(input, speed);
-                }
-            default:
-                return 0;
-        }
     }
 
 }
