@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.internal;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import java.util.Timer;
@@ -40,6 +41,7 @@ public class Drivetrain {
         this.backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
+
     public void configureDrivetrain(AprilTagCamera aprilTagCamera, OtosSensor otosSensor, double kp, double ki, double kd, double kpTheta, double kiTheta, double kdTheta){
         this.otosSensor = otosSensor.sensor;
         this.aprilTagCamera = aprilTagCamera;
@@ -49,10 +51,12 @@ public class Drivetrain {
         this.kpTheta = kpTheta;
         this.kiTheta = kiTheta;
         this.kdTheta = kdTheta;
+
     }
 
     public void configureDrivetrain(OtosSensor otosSensor) {
         this.otosSensor = otosSensor.sensor;
+
     }
 
     /**
@@ -61,38 +65,54 @@ public class Drivetrain {
      * @param targetX the x target
      * @param targetH heading target
      * @param speed the max speed pid makes it go slower the closer it gets
-     * @param holdTime the time to keep it at the target for greater accuracy, set to 0 if you want no holdtime
+     * @param holdTime the time to keep it(in milliseconds) at the target for greater accuracy, set to 0 if you want no holdtime
      */
     public void movePID(double targetY, double targetX, double targetH, double speed, int holdTime){
         PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, tolerance.y, speed);
         PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
         PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
-        PIDLoopActive = true;
-        boolean timerLock = false;
-        Timer holdTimer = new Timer();
-        TimerTask TurnOffPIDLoop = new TimerTask() {
-            @Override
-            public void run() {
-                PIDLoopActive = false;
-                holdTimer.cancel();
-            }
-        };
 
-        while (PIDLoopActive){
+        while (!(yPID.atTarget() && xPID.atTarget() && hPID.atTarget())){
+
+        }
+
+        ElapsedTime elapsedTime = new ElapsedTime();
+        elapsedTime.reset();
+
+        while (elapsedTime.milliseconds() < holdTime){
             double yPos = otosSensor.getPosition().y;
             double xPos = otosSensor.getPosition().x;
             double hPos = otosSensor.getPosition().h;
+            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
+            powerTelemetry();
+        }
 
-            if (yPID.atTarget() && xPID.atTarget() && hPID.atTarget() && !timerLock){
-                holdTimer.schedule(TurnOffPIDLoop, holdTime);
-                timerLock = true;
-            }
+    }
+
+    /**
+     * controls the drivetrain to move and rotate to specific points on the field. If the robot is within the tolerance area, it will stop... probably
+     * @param targetY the y target
+     * @param targetX the x target
+     * @param targetH heading target
+     * @param speed the max speed pid makes it go slower the closer it gets
+     */
+    public void movePID(double targetY, double targetX, double targetH, double speed){
+        PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, tolerance.y, speed);
+        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
+        PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
+
+        while (!(yPID.atTarget() && xPID.atTarget() && hPID.atTarget())){
+            double yPos = otosSensor.getPosition().y;
+            double xPos = otosSensor.getPosition().x;
+            double hPos = otosSensor.getPosition().h;
 
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
             powerTelemetry();
         }
 
     }
+    
+
 
     public void fcControl(double y, double x, double h) {
         double r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
