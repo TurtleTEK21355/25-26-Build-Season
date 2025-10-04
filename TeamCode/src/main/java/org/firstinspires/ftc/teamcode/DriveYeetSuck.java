@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.internal.Drivetrain;
+import org.firstinspires.ftc.teamcode.internal.Shooter;
 
 @TeleOp(name = "IntakeAndShooter", group = "")
 public class DriveYeetSuck extends LinearOpMode {
@@ -15,6 +16,7 @@ public class DriveYeetSuck extends LinearOpMode {
     DcMotor rf;
 
     Drivetrain drivetrain;
+    Shooter shooter;
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -24,8 +26,12 @@ public class DriveYeetSuck extends LinearOpMode {
                 hardwareMap.get(DcMotor.class, "lb"),
                 hardwareMap.get(DcMotor.class, "rb"));
         DcMotor intakeAndOuttake = hardwareMap.get(DcMotor.class, "intake2");
-        DcMotor shooter = hardwareMap.get(DcMotor.class, "shooterUsingButton");
-        shooter.setDirection(DcMotorSimple.Direction.REVERSE);
+        //DcMotor shooter = hardwareMap.get(DcMotor.class, "shooterUsingButton");
+       // shooter.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        shooter = new Shooter(
+                hardwareMap.get(DcMotor.class, "shooter1"));
+
         
         waitForStart();
         double shooterPower = 0;
@@ -47,7 +53,8 @@ public class DriveYeetSuck extends LinearOpMode {
             intakeAndOuttake.setPower(intakeAndOuttakePower);
 
             if (gamepad1.left_trigger != 0) {
-                shooterPower += 0.03;
+                shooter.startShooter(); //ONLY RUNS ONCE
+                shooter.runShooter(); //ALWAYS RUNS IF THE SHOOTER IS ON
             }
             else if (gamepad1.left_trigger == 0) {
                 shooterPower = 0;
