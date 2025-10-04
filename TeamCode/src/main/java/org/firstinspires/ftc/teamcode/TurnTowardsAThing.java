@@ -61,8 +61,7 @@ public class TurnTowardsAThing extends LinearOpMode {
                 new Mode(kpTheta, "KpTheta"),
                 new Mode(kiTheta, "KiTheta"),
                 new Mode(kdTheta, "KdTheta"),
-                new Mode(0.3, "Speed"),
-                new Mode(true, "FieldCentric")
+                new Mode(0.3, "Speed")
 
         );
 
@@ -90,7 +89,6 @@ public class TurnTowardsAThing extends LinearOpMode {
         kiTheta = modeController.getModeValueDouble("KiTheta");
         kdTheta = modeController.getModeValueDouble("KdTheta");
         speed = modeController.getModeValueDouble("Speed");
-        fieldCentricEnabled = modeController.getModeValueBoolean("FieldCentric");
 
     }
 }

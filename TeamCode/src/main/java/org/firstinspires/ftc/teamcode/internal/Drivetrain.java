@@ -55,10 +55,18 @@ public class Drivetrain {
         this.otosSensor = otosSensor.sensor;
     }
 
-    public void movePID(double targetX, double targetY, double targetH, double speed, int holdTime){
-        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
+    /**
+     * controls the drivetrain to move and rotate to specific points on the field. If the robot is within the tolerance area, it will stop... probably
+     * @param targetY the y target
+     * @param targetX the x target
+     * @param targetH heading target
+     * @param speed the max speed pid makes it go slower the closer it gets
+     * @param holdTime the time to keep it at the target for greater accuracy, set to 0 if you want no holdtime
+     */
+    public void movePID(double targetY, double targetX, double targetH, double speed, int holdTime){
         PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, tolerance.y, speed);
-        PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kp, ki, kd, targetH, tolerance.h, speed);
+        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
+        PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
         PIDLoopActive = true;
         boolean timerLock = false;
         Timer holdTimer = new Timer();
@@ -71,51 +79,51 @@ public class Drivetrain {
         };
 
         while (PIDLoopActive){
-            double xPos = otosSensor.getPosition().x;
             double yPos = otosSensor.getPosition().y;
+            double xPos = otosSensor.getPosition().x;
             double hPos = otosSensor.getPosition().h;
 
-            if (xPID.atTarget() && yPID.atTarget() && hPID.atTarget()){
+            if (yPID.atTarget() && xPID.atTarget() && hPID.atTarget() && !timerLock){
                 holdTimer.schedule(TurnOffPIDLoop, holdTime);
                 timerLock = true;
             }
 
-            fcControl(new Pose2D(xPID.calculate(xPos), yPID.calculate(yPos), -hPID.calculate(hPos)));
-
+            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
+            powerTelemetry();
         }
 
     }
 
-    public void fcControl(Pose2D power) {
-        double r = Math.sqrt(Math.pow(power.x, 2) + Math.pow(power.y, 2));
-        double theta = Math.atan2(power.y, power.x);
+    public void fcControl(double y, double x, double h) {
+        double r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        double theta = Math.atan2(y, x);
 
         double correctedTheta = theta - Math.toRadians(otosSensor.getPosition().h);
 
         double correctedY = r * Math.sin(correctedTheta);
         double correctedX = r * Math.cos(correctedTheta);
 
-        frontRightMotor.setPower(Range.clip(correctedY - correctedX - power.h, -1, 1));
-        frontLeftMotor.setPower(Range.clip(correctedY - correctedX + power.h, -1, 1));
-        backRightMotor.setPower(Range.clip(correctedY + correctedX - power.h, -1, 1));
-        backLeftMotor.setPower(Range.clip(correctedY + correctedX + power.h, -1, 1));
-        TelemetryPasser.telemetry.addData("flPower=", frontLeftMotor.getPower());
-        TelemetryPasser.telemetry.addData("frPower=", frontRightMotor.getPower());
-        TelemetryPasser.telemetry.addData("blPower=", backLeftMotor.getPower());
-        TelemetryPasser.telemetry.addData("brPower=", backRightMotor.getPower());
-
+        control(correctedY, correctedX, h);
     }
-    
+
+    /**
+     * Y IS FORWARDS AND BACKWARDS
+     * @param y +forwards and -backwards
+     * @param x strafe -left and +right
+     * @param h turn +right and -left
+     */
     public void control(double y, double x, double h) {
         frontRightMotor.setPower(Range.clip(y - x - h, -1, 1));
         frontLeftMotor.setPower(Range.clip(y - x + h, -1, 1));
         backRightMotor.setPower(Range.clip(y + x - h, -1, 1));
         backLeftMotor.setPower(Range.clip(y + x + h, -1, 1));
+    }
+
+    public void powerTelemetry(){
         TelemetryPasser.telemetry.addData("flPower=", frontLeftMotor.getPower());
         TelemetryPasser.telemetry.addData("frPower=", frontRightMotor.getPower());
         TelemetryPasser.telemetry.addData("blPower=", backLeftMotor.getPower());
         TelemetryPasser.telemetry.addData("brPower=", backRightMotor.getPower());
-
+        TelemetryPasser.telemetry.update();
     }
-
 }
