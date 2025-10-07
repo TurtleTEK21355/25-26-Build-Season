@@ -12,7 +12,6 @@ import java.util.Objects;
 
 /**
  * this manages the thingys called modes in an arrayList called "modes"
- *
  */
 public class ModeController {
     double updateTimeValue = 400;
@@ -36,7 +35,7 @@ public class ModeController {
         this.modes.addAll(Arrays.asList(modes));
     }
 
-    public String getCurrentModeName() {
+    public String getSelectedModeName() {
         return modes.get(selectedMode).getName();
     }
 

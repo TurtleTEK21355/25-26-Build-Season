@@ -59,14 +59,6 @@ public class Mode {
         }
     }
 
-    /**
-     * gets the current enum state
-     * @return the current state
-     */
-    public State getState(){
-        return state;
-    }
-
     public Type getType() {
         return type;
     }
@@ -80,24 +72,11 @@ public class Mode {
     }
 
     /**
-     * changes the value depending on the state
+     * gets the current enum state
+     * @return the current state
      */
-    public void valueChange(){
-        if (type == Type.DOUBLE) {
-            if (state == State.UP) {
-                this.valueDouble += (valueChangeAmount);
-            } else if (state == State.DOWN) {
-                this.valueDouble -= (valueChangeAmount);
-            }
-
-            state = State.MIDDLE;
-        } else if (type == Type.BOOLEAN){
-            if (state == State.UP) {
-                this.valueBoolean = true;
-            } else if (state == State.DOWN) {
-                this.valueBoolean = false;
-            }
-        }
+    public State getState(){
+        return state;
     }
 
     /**
@@ -116,14 +95,34 @@ public class Mode {
         return this.name;
     }
 
-    /**
-     * gets the value in this mode
-     * @return the value
-     */
     public double getValueDouble(){
         return this.valueDouble;
     }
+
     public boolean getValueBoolean(){
         return this.valueBoolean;
     }
+
+    /**
+     * changes the value depending on the state
+     */
+    public void valueChange(){
+        if (type == Type.DOUBLE) {
+            if (state == State.UP) {
+                this.valueDouble += (valueChangeAmount);
+            } else if (state == State.DOWN) {
+                this.valueDouble -= (valueChangeAmount);
+            }
+            state = State.MIDDLE;
+
+        } else if (type == Type.BOOLEAN){
+            if (state == State.UP) {
+                this.valueBoolean = true;
+            } else if (state == State.DOWN) {
+                this.valueBoolean = false;
+            }
+            state = State.MIDDLE;
+        }
+    }
+
 }

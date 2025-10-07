@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -72,14 +73,6 @@ public class BasicGarbage extends LinearOpMode {
             modeController.modeSelection(gamepad1.dpad_up, gamepad1.dpad_down, gamepad1.dpad_right, gamepad1.dpad_left);
 
             telemetry.addLine("Press start to Start");
-
-            if (gamepad1.dpad_down) {
-                telemetry.addLine("Dpad Down");
-            } else if (gamepad1.dpad_up) {
-                telemetry.addLine("Dpad Up");
-            } else {
-                telemetry.addLine("");
-            }
 
             telemetry.addLine(modeController.reportModeValue());
             telemetry.update();
