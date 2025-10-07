@@ -31,10 +31,6 @@ public class Shooter {
         return shooterSpeed;
     }
 
-    public void setShooterSpeed(double shooterSpeed) {
-        this.shooterSpeed = shooterSpeed;
-    }
-
     public void increaseShooterSpeed(double increment) {
         shooterSpeed += increment;
     }
