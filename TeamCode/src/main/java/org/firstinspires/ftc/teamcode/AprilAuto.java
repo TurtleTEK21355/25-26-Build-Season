@@ -67,7 +67,6 @@ public class AprilAuto extends LinearOpMode {
     double speed;
     boolean fieldCentricEnabled = false;
     ElapsedTime timer = new ElapsedTime();
-    public List<AprilTagDetection> currentDetections;
 
     @Override
     public void runOpMode() {
@@ -83,11 +82,14 @@ public class AprilAuto extends LinearOpMode {
                 hardwareMap.get(DcMotor.class, "rf"),
                 hardwareMap.get(DcMotor.class, "lb"),
                 hardwareMap.get(DcMotor.class, "rb"));
+        drivetrain.configureDrivetrain(otosSensor);
         telemetry.addData("Status", "Initiaized");
         telemetry.update();
         waitForStart();
         if (opModeIsActive()) {
-
+            aprilRotation();
+            aprilMovementX();
+            aprilMovementY();
         }
     }
 //    public void rotate (double angle){
@@ -169,14 +171,13 @@ public class AprilAuto extends LinearOpMode {
             aprilTagCamera.updateDetections();
             timer.reset();
             timer.startTime();
-            while (aprilTagCamera.currentDetections.isEmpty() && timer.seconds()<5) {
+            while ((aprilTagCamera.currentDetections.isEmpty()) && timer.seconds()<5 && opModeIsActive()) {
                 aprilTagCamera.updateDetections();
             }
             timer.reset();
-            for (AprilTagDetection detection : currentDetections) {
+            for (AprilTagDetection detection : aprilTagCamera.currentDetections) {
                 if (detection.id == 24 || detection.id == 20) {
-                        //import rotate(); to Drivetrain.java or if Phillip's drivetrain
-                        // class already has capability
+                    drivetrain.movePID(0, 0, detection.ftcPose.yaw, 0.6, 150);
                 }
             }
         }
@@ -184,14 +185,14 @@ public class AprilAuto extends LinearOpMode {
             aprilTagCamera.updateDetections();
             timer.reset();
             timer.startTime();
-            while (aprilTagCamera.currentDetections.isEmpty() && timer.seconds()<5) {
+            while (aprilTagCamera.currentDetections.isEmpty() && timer.seconds()<5  && opModeIsActive()) {
                 aprilTagCamera.updateDetections();
             }
             timer.reset();
             for (AprilTagDetection detection : aprilTagCamera.currentDetections) {
                 if (detection.metadata != null) {
                     if (detection.id == 24 || detection.id == 20) {
-                        //Ask Phillip how to use the drivetrain class to move the robot.
+                        drivetrain.movePID(0, detection.ftcPose.x, 0, 0.6, 150);
                     }
                 }
             }
@@ -200,14 +201,14 @@ public class AprilAuto extends LinearOpMode {
             aprilTagCamera.updateDetections();
             timer.reset();
             timer.startTime();
-            while (aprilTagCamera.currentDetections.isEmpty() && timer.seconds()<5) {
+            while (aprilTagCamera.currentDetections.isEmpty() && timer.seconds()<5  && opModeIsActive()) {
                 aprilTagCamera.updateDetections();
             }
             timer.reset();
             for (AprilTagDetection detection : aprilTagCamera.currentDetections) {
                 if (detection.metadata != null) {
                     if (detection.id == 24) {
-                        //Ask Phillip how to use the drivetrain class to move the robot.
+                        drivetrain.movePID(detection.ftcPose.y-45, 0, 0, 0.6, 150);
                     }
                 }
             }
