@@ -10,11 +10,6 @@ import org.firstinspires.ftc.teamcode.internal.Shooter;
 
 @TeleOp(name = "IntakeAndShooter", group = "")
 public class DriveYeetSuck extends LinearOpMode {
-    DcMotor lb;
-    DcMotor rb;
-    DcMotor lf;
-    DcMotor rf;
-
     Drivetrain drivetrain;
     Shooter shooter;
     @Override
@@ -37,7 +32,7 @@ public class DriveYeetSuck extends LinearOpMode {
         double shooterPower = 0;
         while (opModeIsActive()) {
             telemetry.addData("Motor Power:", intakeAndOuttake.getPower());
-            telemetry.addData("Yeeter Power:", shooter);
+            telemetry.addData("Yeeter Power:", shooter.getShooterSpeed());
             telemetry.update();
 
             double intakeAndOuttakePower;
@@ -57,28 +52,11 @@ public class DriveYeetSuck extends LinearOpMode {
                 shooter.runShooter(); //ALWAYS RUNS IF THE SHOOTER IS ON
             }
 
-            joystickMovement(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
-
-            telemetry.addData("Motor Power:", intakeAndOuttakePower);
-            telemetry.addData("Yeeter Power:", shooterPower);
-            telemetry.update();
+            drivetrain.control(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
         }
     }
 
 
 
-    public void joystickMovement(double lx, double ly, double rx) {
-        if (rx != 0 ) {
-            rf.setPower((rx) / 2);
-            rb.setPower((rx) / 2);
-            lf.setPower((rx) / 2);
-            lb.setPower((rx) / 2);
-        } else {
-            rf.setPower((ly + lx) / 2);
-            rb.setPower((ly - lx) / 2);
-            lf.setPower((-ly + lx) / 2);
-            lb.setPower((-ly - lx) / 2);
-        }
-    }
 
 }
