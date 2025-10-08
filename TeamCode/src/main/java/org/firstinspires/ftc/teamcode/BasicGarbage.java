@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -11,8 +10,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.internal.AprilTagCamera;
 import org.firstinspires.ftc.teamcode.internal.Drivetrain;
-import org.firstinspires.ftc.teamcode.internal.Mode;
-import org.firstinspires.ftc.teamcode.internal.ModeController;
+import org.firstinspires.ftc.teamcode.internal.MenuItem;
+import org.firstinspires.ftc.teamcode.internal.Menu;
 import org.firstinspires.ftc.teamcode.internal.OtosSensor;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
@@ -57,15 +56,15 @@ public class BasicGarbage extends LinearOpMode {
     }
 
     public void configureVariables(){
-        ModeController modeController = new ModeController();
+        Menu modeController = new Menu();
         modeController.add(
-                new Mode(kp, "Kp"),
-                new Mode(ki, "Ki"),
-                new Mode(kd, "Kd"),
-                new Mode(kpTheta, "KpTheta"),
-                new Mode(kiTheta, "KiTheta"),
-                new Mode(kdTheta, "KdTheta"),
-                new Mode(0.3, "Speed")
+                new MenuItem(kp, "Kp"),
+                new MenuItem(ki, "Ki"),
+                new MenuItem(kd, "Kd"),
+                new MenuItem(kpTheta, "KpTheta"),
+                new MenuItem(kiTheta, "KiTheta"),
+                new MenuItem(kdTheta, "KdTheta"),
+                new MenuItem(0.3, "Speed")
 
         );
 
