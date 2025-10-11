@@ -4,16 +4,10 @@ package org.firstinspires.ftc.teamcode.internal;
  * this is a double holding object that has a name and an enum state of UP DOWN and MIDDLE
  * if valueChange is called the value will be changed by a set value which probably shouldn't be hardcoded
  */
-public abstract class MenuItem<T> {
-
+public abstract class MenuItem {
     public enum State {UP,DOWN,MIDDLE}
     State state = State.MIDDLE;
-    private String name = "unnamed";
-    private T value;
-    public MenuItem() {}
-    public MenuItem(String name){
-        this.name = name;
-    }
+    String name = "unnamed";
 
     /**
      * changes state to up or down
@@ -54,8 +48,7 @@ public abstract class MenuItem<T> {
     public String getName(){
         return this.name;
     }
-
+    public abstract String getStringValue();
     public abstract void valueChange();
 
-    public abstract Object getValue();
 }

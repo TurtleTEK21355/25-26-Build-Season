@@ -138,6 +138,7 @@ public class Drivetrain {
         double correctedX = r * Math.cos(correctedTheta);
 
         control(correctedY, correctedX, h);
+
     }
 
     /**

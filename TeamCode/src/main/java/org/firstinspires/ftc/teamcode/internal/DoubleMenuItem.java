@@ -4,11 +4,21 @@ public class DoubleMenuItem extends MenuItem{
     private double valueChangeAmount;
     private double value;
 
-    public DoubleMenuItem(double valueChangeAmount) {
+    public DoubleMenuItem(double value, double valueChangeAmount, String name) {
+        this.value = value;
         this.valueChangeAmount = valueChangeAmount;
+        this.name = name;
+
     }
+
     public double getValue(){
         return value;
+
+    }
+
+    public String getStringValue(){
+        return Double.toString(value);
+
     }
 
     /**
@@ -20,7 +30,9 @@ public class DoubleMenuItem extends MenuItem{
         } else if (super.state == State.DOWN) {
             value = value - valueChangeAmount;
         }
-        super.state = State.MIDDLE;
+
+        state = State.MIDDLE;
 
     }
+
 }

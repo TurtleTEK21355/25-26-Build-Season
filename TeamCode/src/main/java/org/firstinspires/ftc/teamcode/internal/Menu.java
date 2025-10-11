@@ -10,21 +10,20 @@ import java.util.List;
 
 
 /**
- * this manages the thingys called modes in an arrayList called "modes"
+ * this manages the thingys called MenuItems in an arrayList called "menuItemList"
  */
 public class Menu {
-    double updateTimeValue = 400;
     private int selectedMenuItem = 0;
     private boolean previousItemLast = false;
     private boolean nextItemLast = false;
     List<MenuItem> menuItemList = new ArrayList<>();
     private ElapsedTime firstTimer;
     private ElapsedTime loopTimer;
+    private boolean lock1 = false;
 
     public Menu() {
         firstTimer = new ElapsedTime();
-        firstTimer.startTime();
-
+        loopTimer = new ElapsedTime();
     }
 
     public void add(MenuItem m) {
@@ -62,11 +61,30 @@ public class Menu {
 
         menuItemList.get(selectedMenuItem).stateChange(valueUp, valueDown);
 
-        if (firstTimer.milliseconds() > updateTimeValue) {
-            menuItemList.get(selectedMenuItem).valueChange();
+        MenuItem.State selectedItemState = menuItemList.get(selectedMenuItem).getState();
+
+        if (selectedItemState != MenuItem.State.MIDDLE) {
+            if (!lock1) {
+                menuItemList.get(selectedMenuItem).valueChange();
+                firstTimer.startTime();
+                lock1 = true;
+            }
+        } else {
+            lock1 = false;
             firstTimer.reset();
 
         }
+
+        if (firstTimer.milliseconds() > 1000) {
+            menuItemList.get(selectedMenuItem).valueChange();
+            loopTimer.startTime();
+        }
+
+        if (loopTimer.milliseconds() > 100){
+            menuItemList.get(selectedMenuItem).valueChange();
+            loopTimer.reset();
+        }
+
     }
 
     /**
@@ -81,7 +99,7 @@ public class Menu {
 
             DecimalFormat valueFormat = new DecimalFormat("##.##");
             valueFormat.setRoundingMode(RoundingMode.HALF_UP);
-            name = name.concat(menuItemList.get(i).getName() + " = " + menuItemList.get(i).getValue()) + "\n";
+            name = name.concat(menuItemList.get(i).getName() + " = " + menuItemList.get(i).getStringValue()) + "\n";
 
         }
         return name;
