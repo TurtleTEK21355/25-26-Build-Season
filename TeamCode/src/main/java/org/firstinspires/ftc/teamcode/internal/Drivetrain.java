@@ -19,9 +19,11 @@ public class Drivetrain {
     private double kp;
     private double ki;
     private double kd;
+
     private double kpTheta;
     private double kiTheta;
     private double kdTheta;
+
     private Pose2D tolerance = new Pose2D(1, 1, 10);
     private boolean PIDLoopActive = true;
 
@@ -45,9 +47,11 @@ public class Drivetrain {
     public void configureDrivetrain(AprilTagCamera aprilTagCamera, OtosSensor otosSensor, double kp, double ki, double kd, double kpTheta, double kiTheta, double kdTheta){
         this.otosSensor = otosSensor.sensor;
         this.aprilTagCamera = aprilTagCamera;
+
         this.kp = kp;
         this.ki = ki;
         this.kd = kd;
+
         this.kpTheta = kpTheta;
         this.kiTheta = kiTheta;
         this.kdTheta = kdTheta;
@@ -63,7 +67,7 @@ public class Drivetrain {
      * controls the drivetrain to move and rotate to specific points on the field. If the robot is within the tolerance area, it will stop... probably
      * @param targetY the y target
      * @param targetX the x target
-     * @param targetH heading target
+     * @param targetH heading(rotation) target
      * @param speed the max speed pid makes it go slower the closer it gets
      * @param holdTime the time to keep it(in milliseconds) at the target for greater accuracy, set to 0 if you want no holdtime
      */
@@ -73,6 +77,13 @@ public class Drivetrain {
         PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
 
         while (!(yPID.atTarget() && xPID.atTarget() && hPID.atTarget())){
+            double yPos = otosSensor.getPosition().y;
+            double xPos = otosSensor.getPosition().x;
+            double hPos = otosSensor.getPosition().h;
+
+            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
+
+            powerTelemetry();
 
         }
 
@@ -83,8 +94,11 @@ public class Drivetrain {
             double yPos = otosSensor.getPosition().y;
             double xPos = otosSensor.getPosition().x;
             double hPos = otosSensor.getPosition().h;
+
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
+
             powerTelemetry();
+
         }
 
     }
@@ -93,7 +107,7 @@ public class Drivetrain {
      * controls the drivetrain to move and rotate to specific points on the field. If the robot is within the tolerance area, it will stop... probably
      * @param targetY the y target
      * @param targetX the x target
-     * @param targetH heading target
+     * @param targetH heading(rotation) target
      * @param speed the max speed pid makes it go slower the closer it gets
      */
     public void movePID(double targetY, double targetX, double targetH, double speed){
@@ -107,12 +121,12 @@ public class Drivetrain {
             double hPos = otosSensor.getPosition().h;
 
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
+
             powerTelemetry();
+
         }
 
     }
-    
-
 
     public void fcControl(double y, double x, double h) {
         double r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
@@ -124,6 +138,7 @@ public class Drivetrain {
         double correctedX = r * Math.cos(correctedTheta);
 
         control(correctedY, correctedX, h);
+
     }
 
     /**
@@ -137,6 +152,7 @@ public class Drivetrain {
         frontLeftMotor.setPower(Range.clip(y - x + h, -1, 1));
         backRightMotor.setPower(Range.clip(y + x - h, -1, 1));
         backLeftMotor.setPower(Range.clip(y + x + h, -1, 1));
+
     }
 
     public void powerTelemetry(){

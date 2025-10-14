@@ -9,9 +9,10 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.internal.AprilTagCamera;
+import org.firstinspires.ftc.teamcode.internal.DoubleMenuItem;
 import org.firstinspires.ftc.teamcode.internal.Drivetrain;
-import org.firstinspires.ftc.teamcode.internal.Mode;
-import org.firstinspires.ftc.teamcode.internal.ModeController;
+import org.firstinspires.ftc.teamcode.internal.MenuItem;
+import org.firstinspires.ftc.teamcode.internal.Menu;
 import org.firstinspires.ftc.teamcode.internal.OtosSensor;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
@@ -26,8 +27,8 @@ public class BasicGarbage extends LinearOpMode {
     double kpTheta = 0.03;
     double kiTheta;
     double kdTheta;
-    double speed;
-    boolean fieldCentricEnabled;
+    double speed = 0.3;
+    double valueChangeAmount = 0.05;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -56,42 +57,34 @@ public class BasicGarbage extends LinearOpMode {
     }
 
     public void configureVariables(){
-        ModeController modeController = new ModeController();
-        modeController.add(
-                new Mode(kp, "Kp"),
-                new Mode(ki, "Ki"),
-                new Mode(kd, "Kd"),
-                new Mode(kpTheta, "KpTheta"),
-                new Mode(kiTheta, "KiTheta"),
-                new Mode(kdTheta, "KdTheta"),
-                new Mode(0.3, "Speed")
+        DoubleMenuItem kpItem = new DoubleMenuItem(kp, valueChangeAmount, "Kp");
+        DoubleMenuItem kiItem = new DoubleMenuItem(ki, valueChangeAmount, "Ki");
+        DoubleMenuItem kdItem = new DoubleMenuItem(kd, valueChangeAmount, "Kd");
+        DoubleMenuItem kpThetaItem = new DoubleMenuItem(kpTheta, valueChangeAmount, "KpTheta");
+        DoubleMenuItem kiThetaItem = new DoubleMenuItem(kiTheta, valueChangeAmount, "KiTheta");
+        DoubleMenuItem kdThetaItem = new DoubleMenuItem(kdTheta, valueChangeAmount, "KdTheta");
+        DoubleMenuItem speedItem =  new DoubleMenuItem(speed, valueChangeAmount, "Speed");
 
-        );
+        Menu modeController = new Menu();
+        modeController.add(kpItem, kiItem, kpItem, kpThetaItem, kiThetaItem, kdThetaItem, speedItem);
 
         while(opModeIsActive() && !gamepad1.start) {
             modeController.modeSelection(gamepad1.dpad_up, gamepad1.dpad_down, gamepad1.dpad_right, gamepad1.dpad_left);
 
             telemetry.addLine("Press start to Start");
 
-            if (gamepad1.dpad_down) {
-                telemetry.addLine("Dpad Down");
-            } else if (gamepad1.dpad_up) {
-                telemetry.addLine("Dpad Up");
-            } else {
-                telemetry.addLine("");
-            }
-
             telemetry.addLine(modeController.reportModeValue());
             telemetry.update();
 
         }
-        kp = modeController.getModeValueDouble("Kp");
-        ki = modeController.getModeValueDouble("Ki");
-        kd = modeController.getModeValueDouble("Kd");
-        kpTheta = modeController.getModeValueDouble("KpTheta");
-        kiTheta = modeController.getModeValueDouble("KiTheta");
-        kdTheta = modeController.getModeValueDouble("KdTheta");
-        speed = modeController.getModeValueDouble("Speed");
+
+        kp = kpItem.getValue();
+        ki = kiItem.getValue();
+        kd = kdItem.getValue();
+        kpTheta = kpThetaItem.getValue();
+        kiTheta = kiThetaItem.getValue();
+        kdTheta = kdThetaItem.getValue();
+        speed = speedItem.getValue();
 
     }
 }
