@@ -24,8 +24,7 @@ public class Drivetrain {
     private double kiTheta;
     private double kdTheta;
 
-    private Pose2D tolerance = new Pose2D(1, 1, 10);
-    private boolean PIDLoopActive = true;
+    private Pose2D tolerance = new Pose2D(2, 2, 10);
 
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
