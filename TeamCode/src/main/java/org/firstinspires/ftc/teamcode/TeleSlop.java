@@ -22,11 +22,11 @@ public class TeleSlop extends OpMode {
     public void init() {
         TelemetryPasser.telemetry = telemetry;
         drivetrain = new Drivetrain(
-                hardwareMap.get(DcMotor.class, "front left drive"),
-                hardwareMap.get(DcMotor.class, "front right drive"),
-                hardwareMap.get(DcMotor.class, "back left drive"),
-                hardwareMap.get(DcMotor.class, "back right drive"));
-        otosSensor = new OtosSensor(hardwareMap.get(SparkFunOTOS.class, "otos sensor"));
+                hardwareMap.get(DcMotor.class, "fl"),
+                hardwareMap.get(DcMotor.class, "fr"),
+                hardwareMap.get(DcMotor.class, "bl"),
+                hardwareMap.get(DcMotor.class, "br"));
+        otosSensor = new OtosSensor(hardwareMap.get(SparkFunOTOS.class, "otos"));
 
         otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
         drivetrain.configureDrivetrain(otosSensor);

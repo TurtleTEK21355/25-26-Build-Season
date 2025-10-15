@@ -50,9 +50,9 @@ public class BasicGarbage extends LinearOpMode {
         drivetrain.configureDrivetrain(aprilTagCamera, otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta);
 
         drivetrain.movePID(0, 10, 0, speed, 2000);
-        drivetrain.movePID(10, 10, 0, speed, 2000);
-        drivetrain.movePID(10, 0, 0, speed, 2000);
-        drivetrain.movePID(0, 0, 0, speed, 2000);
+        drivetrain.movePID(10, 10, 90, speed, 2000);
+        drivetrain.movePID(10, 0, 180, speed, 2000);
+        drivetrain.movePID(0, 0, 270, speed, 2000);
 
     }
 
