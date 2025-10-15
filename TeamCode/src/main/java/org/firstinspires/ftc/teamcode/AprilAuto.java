@@ -87,9 +87,7 @@ public class AprilAuto extends LinearOpMode {
         telemetry.update();
         waitForStart();
         if (opModeIsActive()) {
-            aprilRotation();
-            aprilMovementX();
-            aprilMovementY();
+            aprilAlignment();
         }
     }
 //    public void rotate (double angle){
@@ -167,7 +165,7 @@ public class AprilAuto extends LinearOpMode {
 //            lb.setPower(0);
 //        }
 //    }
-        public void aprilRotation () {
+        public void aprilAlignment () {
             aprilTagCamera.updateDetections();
             timer.reset();
             timer.startTime();
@@ -178,39 +176,40 @@ public class AprilAuto extends LinearOpMode {
             for (AprilTagDetection detection : aprilTagCamera.currentDetections) {
                 if (detection.id == 24 || detection.id == 20) {
                     drivetrain.movePID(0, 0, detection.ftcPose.yaw, 0.6, 150);
+                    drivetrain.movePID(detection.ftcPose.y, detection.ftcPose.x, 0, 0.6, 150);
                 }
             }
         }
-        public void aprilMovementX () {
-            aprilTagCamera.updateDetections();
-            timer.reset();
-            timer.startTime();
-            while (aprilTagCamera.currentDetections.isEmpty() && timer.seconds()<5  && opModeIsActive()) {
-                aprilTagCamera.updateDetections();
-            }
-            timer.reset();
-            for (AprilTagDetection detection : aprilTagCamera.currentDetections) {
-                if (detection.metadata != null) {
-                    if (detection.id == 24 || detection.id == 20) {
-                        drivetrain.movePID(0, detection.ftcPose.x, 0, 0.6, 150);
-                    }
-                }
-            }
-        }
-        public void aprilMovementY () {
-            aprilTagCamera.updateDetections();
-            timer.reset();
-            timer.startTime();
-            while (aprilTagCamera.currentDetections.isEmpty() && timer.seconds()<5  && opModeIsActive()) {
-                aprilTagCamera.updateDetections();
-            }
-            timer.reset();
-            for (AprilTagDetection detection : aprilTagCamera.currentDetections) {
-                if (detection.metadata != null) {
-                    if (detection.id == 24) {
-                        drivetrain.movePID(detection.ftcPose.y-45, 0, 0, 0.6, 150);
-                    }
-                }
-            }
-        }
+//        public void aprilMovementX () {
+//            aprilTagCamera.updateDetections();
+//            timer.reset();
+//            timer.startTime();
+//            while (aprilTagCamera.currentDetections.isEmpty() && timer.seconds()<5  && opModeIsActive()) {
+//                aprilTagCamera.updateDetections();
+//            }
+//            timer.reset();
+//            for (AprilTagDetection detection : aprilTagCamera.currentDetections) {
+//                if (detection.metadata != null) {
+//                    if (detection.id == 24 || detection.id == 20) {
+//                        drivetrain.movePID(detection.ftcPose.y, detection.ftcPose.x, 0, 0.6, 150);
+//                    }
+//                }
+//            }
+//        }
+//        public void aprilMovementY () {
+//            aprilTagCamera.updateDetections();
+//            timer.reset();
+//            timer.startTime();
+//            while (aprilTagCamera.currentDetections.isEmpty() && timer.seconds()<5  && opModeIsActive()) {
+//                aprilTagCamera.updateDetections();
+//            }
+//            timer.reset();
+//            for (AprilTagDetection detection : aprilTagCamera.currentDetections) {
+//                if (detection.metadata != null) {
+//                    if (detection.id == 24) {
+//                        drivetrain.movePID(detection.ftcPose.y-45, 0, 0, 0.6, 150);
+//                    }
+//                }
+//            }
+//        }
 }
