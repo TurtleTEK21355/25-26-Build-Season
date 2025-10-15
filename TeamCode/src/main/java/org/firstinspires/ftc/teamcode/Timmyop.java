@@ -28,11 +28,9 @@
  */
 
 package org.firstinspires.ftc.teamcode;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -59,6 +57,12 @@ public class Timmyop extends OpMode
     private DcMotor frontrightDrive = null;
     private DcMotor backleftDrive = null;
     private DcMotor backrightDrive = null;
+    private double speed;
+    private boolean noButtonPressed=true;
+    private double minSpeed = 0.1;
+    private double maxSpeed = 1.0;
+
+
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -69,10 +73,10 @@ public class Timmyop extends OpMode
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        backleftDrive = hardwareMap.get(DcMotor.class, "backleftPower");
-        backrightDrive = hardwareMap.get(DcMotor.class, "backrightPower");
-        frontleftDrive = hardwareMap.get(DcMotor.class, "frontleftPower");
-        frontrightDrive = hardwareMap.get(DcMotor.class, "frontrightPower");
+        backleftDrive = hardwareMap.get(DcMotor.class, "bl");
+        backrightDrive = hardwareMap.get(DcMotor.class, "br");
+        frontleftDrive = hardwareMap.get(DcMotor.class, "fl");
+        frontrightDrive = hardwareMap.get(DcMotor.class, "fr");
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
@@ -132,13 +136,36 @@ public class Timmyop extends OpMode
         // rightPower = -gamepad1.right_stick_y ;
 
         // Send calculated power to wheels
-        backleftDrive.setPower(backleftPower*0.5);
-        backrightDrive.setPower(backrightPower*0.5);
-        frontleftDrive.setPower(frontleftPower*0.5);
-        frontrightDrive.setPower(frontrightPower*0.5);
+        backleftDrive.setPower(backleftPower*speed);
+        backrightDrive.setPower(backrightPower*speed);
+        frontleftDrive.setPower(frontleftPower*speed);
+        frontrightDrive.setPower(frontrightPower*speed);
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime);
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", backleftPower, backrightPower ,frontleftPower, frontrightPower);
+
+        if (gamepad1.dpad_up && noButtonPressed){
+            speed += 0.05;
+            noButtonPressed = false;
+
+        } else if (gamepad1.dpad_down && noButtonPressed) {
+            speed -= 0.05;
+            noButtonPressed = false;
+
+        } else if (gamepad1.dpad_down || gamepad1.dpad_up){
+            noButtonPressed = false;
+
+        } else {
+            noButtonPressed = true;
+
+        }
+        if (speed > maxSpeed){
+            speed = maxSpeed;
+        } else if (speed < minSpeed) {
+            speed = minSpeed;
+        }
+        telemetry.addData("Shooter Speed =", speed);
+        telemetry.update();
     }
 
     /*
