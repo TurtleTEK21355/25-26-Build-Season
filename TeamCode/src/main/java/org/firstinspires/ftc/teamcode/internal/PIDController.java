@@ -27,10 +27,16 @@ public class PIDController {
         double derivative = error - previousError;
         previousError = error;
         return proportional * kp + integral * ki + derivative * kd;
+
     }
 
-    public boolean atTarget(){
-        return (Math.abs(error) > tolerance);
+    /**
+     * tells if the absolute distance from target is greater than the tolerance
+     * @param current the current position
+     */
+    public boolean atTarget(double current){
+        double distance = target - current;
+        return (Math.abs(distance) <= tolerance);
 
     }
 

@@ -20,6 +20,7 @@ public class Menu {
     private ElapsedTime firstTimer;
     private ElapsedTime loopTimer;
     private boolean lock1 = false;
+    private boolean lock2 = false;
 
     public Menu() {
         firstTimer = new ElapsedTime();
@@ -69,20 +70,24 @@ public class Menu {
                 firstTimer.startTime();
                 lock1 = true;
             }
+            if (!lock2) {
+                if (firstTimer.milliseconds() > 1000) {
+                    menuItemList.get(selectedMenuItem).valueChange();
+                    loopTimer.startTime();
+                    lock2 = true;
+                }
+            }
+
+            if (loopTimer.milliseconds() > 100){
+                menuItemList.get(selectedMenuItem).valueChange();
+                loopTimer.reset();
+            }
         } else {
             lock1 = false;
+            lock2 = false;
             firstTimer.reset();
-
-        }
-
-        if (firstTimer.milliseconds() > 1000) {
-            menuItemList.get(selectedMenuItem).valueChange();
-            loopTimer.startTime();
-        }
-
-        if (loopTimer.milliseconds() > 100){
-            menuItemList.get(selectedMenuItem).valueChange();
             loopTimer.reset();
+
         }
 
     }
@@ -97,8 +102,6 @@ public class Menu {
                 name = name.concat("> ");
             }
 
-            DecimalFormat valueFormat = new DecimalFormat("##.##");
-            valueFormat.setRoundingMode(RoundingMode.HALF_UP);
             name = name.concat(menuItemList.get(i).getName() + " = " + menuItemList.get(i).getStringValue()) + "\n";
 
         }

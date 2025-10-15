@@ -75,27 +75,38 @@ public class Drivetrain {
         PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
         PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
 
-        while (!(yPID.atTarget() && xPID.atTarget() && hPID.atTarget())){
-            double yPos = otosSensor.getPosition().y;
-            double xPos = otosSensor.getPosition().x;
-            double hPos = otosSensor.getPosition().h;
+        double yPos = otosSensor.getPosition().y;
+        double xPos = otosSensor.getPosition().x;
+        double hPos = otosSensor.getPosition().h;
+
+        while (!yPID.atTarget(yPos) || !xPID.atTarget(xPos) || !hPID.atTarget(hPos)){
+            yPos = otosSensor.getPosition().y;
+            xPos = otosSensor.getPosition().x;
+            hPos = otosSensor.getPosition().h;
 
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
 
+            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(xPos));
+            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(yPos));
+            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(hPos));
             powerTelemetry();
 
         }
 
-        ElapsedTime elapsedTime = new ElapsedTime();
-        elapsedTime.reset();
+        ElapsedTime holdTimer = new ElapsedTime();
+        holdTimer.reset();
 
-        while (elapsedTime.milliseconds() < holdTime){
-            double yPos = otosSensor.getPosition().y;
-            double xPos = otosSensor.getPosition().x;
-            double hPos = otosSensor.getPosition().h;
+        while (holdTimer.milliseconds() <= holdTime){
+            yPos = otosSensor.getPosition().y;
+            xPos = otosSensor.getPosition().x;
+            hPos = otosSensor.getPosition().h;
 
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
 
+            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(xPos));
+            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(yPos));
+            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(hPos));
+            TelemetryPasser.telemetry.addData("timer", holdTimer);
             powerTelemetry();
 
         }
@@ -113,11 +124,14 @@ public class Drivetrain {
         PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, tolerance.y, speed);
         PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
         PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
+        double yPos = otosSensor.getPosition().y;
+        double xPos = otosSensor.getPosition().x;
+        double hPos = otosSensor.getPosition().h;
 
-        while (!(yPID.atTarget() && xPID.atTarget() && hPID.atTarget())){
-            double yPos = otosSensor.getPosition().y;
-            double xPos = otosSensor.getPosition().x;
-            double hPos = otosSensor.getPosition().h;
+        while (!yPID.atTarget(yPos) || !xPID.atTarget(xPos) || !hPID.atTarget(hPos)){
+            yPos = otosSensor.getPosition().y;
+            xPos = otosSensor.getPosition().x;
+            hPos = otosSensor.getPosition().h;
 
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
 
@@ -155,10 +169,10 @@ public class Drivetrain {
     }
 
     public void powerTelemetry(){
-        TelemetryPasser.telemetry.addData("flPower=", frontLeftMotor.getPower());
-        TelemetryPasser.telemetry.addData("frPower=", frontRightMotor.getPower());
-        TelemetryPasser.telemetry.addData("blPower=", backLeftMotor.getPower());
-        TelemetryPasser.telemetry.addData("brPower=", backRightMotor.getPower());
+        TelemetryPasser.telemetry.addData("fl Power=", frontLeftMotor.getPower());
+        TelemetryPasser.telemetry.addData("fr Power=", frontRightMotor.getPower());
+        TelemetryPasser.telemetry.addData("bl Power=", backLeftMotor.getPower());
+        TelemetryPasser.telemetry.addData("br Power=", backRightMotor.getPower());
         TelemetryPasser.telemetry.update();
     }
 }

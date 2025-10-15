@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.internal;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 public class BooleanMenuItem extends MenuItem{
     private boolean value;
 
@@ -16,7 +19,10 @@ public class BooleanMenuItem extends MenuItem{
 
     @Override
     public String getStringValue() {
-        return Boolean.toString(value);
+        DecimalFormat valueFormat = new DecimalFormat("##.##");
+        valueFormat.setRoundingMode(RoundingMode.HALF_UP);
+        return valueFormat.format(value);
+
     }
 
     /**

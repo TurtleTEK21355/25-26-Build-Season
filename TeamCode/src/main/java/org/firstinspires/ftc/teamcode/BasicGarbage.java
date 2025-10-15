@@ -28,7 +28,7 @@ public class BasicGarbage extends LinearOpMode {
     double kiTheta;
     double kdTheta;
     double speed = 0.3;
-    double valueChangeAmount = 0.05;
+    double valueChangeAmount = 0.01;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -66,7 +66,7 @@ public class BasicGarbage extends LinearOpMode {
         DoubleMenuItem speedItem =  new DoubleMenuItem(speed, valueChangeAmount, "Speed");
 
         Menu modeController = new Menu();
-        modeController.add(kpItem, kiItem, kpItem, kpThetaItem, kiThetaItem, kdThetaItem, speedItem);
+        modeController.add(kpItem, kiItem, kdItem, kpThetaItem, kiThetaItem, kdThetaItem, speedItem);
 
         while(opModeIsActive() && !gamepad1.start) {
             modeController.modeSelection(gamepad1.dpad_up, gamepad1.dpad_down, gamepad1.dpad_right, gamepad1.dpad_left);

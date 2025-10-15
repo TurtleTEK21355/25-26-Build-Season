@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.internal;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 public class DoubleMenuItem extends MenuItem{
     private double valueChangeAmount;
     private double value;
@@ -17,7 +20,9 @@ public class DoubleMenuItem extends MenuItem{
     }
 
     public String getStringValue(){
-        return Double.toString(value);
+        DecimalFormat valueFormat = new DecimalFormat("##.##");
+        valueFormat.setRoundingMode(RoundingMode.HALF_UP);
+        return valueFormat.format(value);
 
     }
 
