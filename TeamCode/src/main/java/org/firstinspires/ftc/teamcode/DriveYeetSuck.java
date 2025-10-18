@@ -21,6 +21,7 @@ public class DriveYeetSuck extends LinearOpMode {
                 hardwareMap.get(DcMotor.class, "lb"),
                 hardwareMap.get(DcMotor.class, "rb"));
         DcMotor intakeAndOuttake = hardwareMap.get(DcMotor.class, "intake2");
+
         //DcMotor shooter = hardwareMap.get(DcMotor.class, "shooterUsingButton");
        // shooter.setDirection(DcMotorSimple.Direction.REVERSE);
 

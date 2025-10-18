@@ -36,6 +36,7 @@ public class AprilTagAutoShooter extends LinearOpMode {
 
     DcMotor rf;
 
+    int a;
     @Override
     public void runOpMode() {
 
@@ -63,7 +64,7 @@ public class AprilTagAutoShooter extends LinearOpMode {
         while (opModeIsActive()) {
 
             PotentialBearing bearing;
-            if (bearing.tagDetected) {
+            if (a > 5) {//bearing.tagDetected) {
                 telemetry.addLine(String.format("Bearing %6.1f  (deg)", bearing.bearingValue));
                 //TODO Press A instead of Hold
                 telemetry.update();
