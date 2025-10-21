@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,8 +25,10 @@ public class Drivetrain {
     private double kpTheta;
     private double kiTheta;
     private double kdTheta;
+    List<Double> aprilPositions;
 
     private Pose2D tolerance = new Pose2D(2, 2, 10);
+    AprilTagCamera aTag;
 
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
@@ -135,6 +139,45 @@ public class Drivetrain {
 
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
 
+            powerTelemetry();
+
+        }
+
+    }
+    public void movePIDAprilTag(double targetY, double targetX, double targetH, double speed, int holdTime){
+        PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, tolerance.y, speed);
+        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
+        PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
+        aprilTagCamera.updateDetections();
+        aprilPositions = aprilTagCamera.detectionPositions;
+
+
+        while (!yPID.atTarget(aprilPositions.get(1)) || !xPID.atTarget(aprilPositions.get(0)) || !hPID.atTarget(aprilPositions.get(2))){
+            aprilTagCamera.updateDetections();
+            aprilPositions = aprilTagCamera.detectionPositions;
+
+            fcControl(yPID.calculate(aprilPositions.get(1)), xPID.calculate(aprilPositions.get(0)), -hPID.calculate(aprilPositions.get(2)));
+
+            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(aprilPositions.get(0)));
+            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(aprilPositions.get(1)));
+            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(aprilPositions.get(2)));
+            powerTelemetry();
+
+        }
+
+        ElapsedTime holdTimer = new ElapsedTime();
+        holdTimer.reset();
+
+        while (holdTimer.milliseconds() <= holdTime){
+            aprilTagCamera.updateDetections();
+            aprilPositions = aprilTagCamera.detectionPositions;
+
+            fcControl(yPID.calculate(aprilPositions.get(1)), xPID.calculate(aprilPositions.get(0)), -hPID.calculate(aprilPositions.get(2)));
+
+            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(aprilPositions.get(0)));
+            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(aprilPositions.get(1)));
+            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(aprilPositions.get(2)));
+            TelemetryPasser.telemetry.addData("timer", holdTimer);
             powerTelemetry();
 
         }

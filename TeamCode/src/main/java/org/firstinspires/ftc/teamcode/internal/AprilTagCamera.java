@@ -6,12 +6,14 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AprilTagCamera {
     AprilTagProcessor aprilTag;
     VisionPortal visionPortal;
     public List<AprilTagDetection> currentDetections;
+    public List<Double> detectionPositions = new ArrayList<>();
 
     public AprilTagCamera(WebcamName webcamName) {
         aprilTag = new AprilTagProcessor.Builder()
@@ -73,7 +75,14 @@ public class AprilTagCamera {
 
     public void updateDetections() {
         currentDetections = aprilTag.getDetections();
-
+        detectionPositions.clear();
+        for (AprilTagDetection detection : currentDetections) {
+            if (detection.id == 24 || detection.id == 20) {
+                detectionPositions.add(detection.ftcPose.x);
+                detectionPositions.add(detection.ftcPose.y);
+                detectionPositions.add(detection.ftcPose.yaw);
+            }
+        }
     }
 }
 
