@@ -61,15 +61,15 @@ public class NoahsTestClass extends LinearOpMode {
         DoubleMenuItem kdThetaItem = new DoubleMenuItem(kdTheta, valueChangeAmount, "KdTheta");
         DoubleMenuItem speedItem =  new DoubleMenuItem(speed, valueChangeAmount, "Speed");
 
-        Menu modeController = new Menu();
-        modeController.add(kpItem, kiItem, kdItem, kpThetaItem, kiThetaItem, kdThetaItem, speedItem);
+        Menu menu = new Menu();
+        menu.add(kpItem, kiItem, kdItem, kpThetaItem, kiThetaItem, kdThetaItem, speedItem);
 
         while(opModeIsActive() && !gamepad1.start) {
-            modeController.modeSelection(gamepad1.dpad_up, gamepad1.dpad_down, gamepad1.dpad_right, gamepad1.dpad_left);
+            menu.itemSelection(gamepad1.dpad_up, gamepad1.dpad_down, gamepad1.dpad_right, gamepad1.dpad_left);
 
             telemetry.addLine("Press start to Start");
 
-            telemetry.addLine(modeController.reportModeValue());
+            telemetry.addLine(menu.reportModeValue());
             telemetry.update();
 
         }
