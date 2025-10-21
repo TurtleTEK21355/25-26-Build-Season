@@ -124,12 +124,13 @@ public class Drivetrain {
      * @param speed the max speed pid makes it go slower the closer it gets
      */
     public void movePID(double targetY, double targetX, double targetH, double speed){
-        PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, tolerance.y, speed);
-        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
-        PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
         double yPos = otosSensor.getPosition().y;
         double xPos = otosSensor.getPosition().x;
         double hPos = otosSensor.getPosition().h;
+
+        PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, tolerance.y, speed);
+        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
+        PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
 
         while (!yPID.atTarget(yPos) || !xPID.atTarget(xPos) || !hPID.atTarget(hPos)){
             yPos = otosSensor.getPosition().y;

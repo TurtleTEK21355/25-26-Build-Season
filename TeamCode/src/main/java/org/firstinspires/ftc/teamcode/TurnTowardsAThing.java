@@ -11,7 +11,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.internal.AprilTagCamera;
 import org.firstinspires.ftc.teamcode.internal.DoubleMenuItem;
 import org.firstinspires.ftc.teamcode.internal.Drivetrain;
-import org.firstinspires.ftc.teamcode.internal.MenuItem;
 import org.firstinspires.ftc.teamcode.internal.Menu;
 import org.firstinspires.ftc.teamcode.internal.OtosSensor;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
@@ -66,7 +65,7 @@ public class TurnTowardsAThing extends LinearOpMode {
         modeController.add(kpItem, kiItem, kpItem, kpThetaItem, kiThetaItem, kdThetaItem, speedItem);
 
         while(opModeIsActive() && !gamepad1.start) {
-            modeController.modeSelection(gamepad1.dpad_up, gamepad1.dpad_down, gamepad1.dpad_right, gamepad1.dpad_left);
+            modeController.itemSelection(gamepad1.dpad_up, gamepad1.dpad_down, gamepad1.dpad_right, gamepad1.dpad_left);
 
             telemetry.addLine("Press start to Start");
 
