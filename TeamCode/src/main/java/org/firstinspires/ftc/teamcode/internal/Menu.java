@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.internal;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +23,8 @@ public class Menu {
     public Menu() {
         firstTimer = new ElapsedTime();
         loopTimer = new ElapsedTime();
+        firstTimer.startTime();
+        loopTimer.startTime();
     }
 
     public void add(MenuItem m) {
@@ -35,11 +35,7 @@ public class Menu {
         this.menuItemList.addAll(Arrays.asList(modes));
     }
 
-    public String getSelectedModeName() {
-        return menuItemList.get(selectedMenuItem).getName();
-    }
-
-    public void modeSelection(boolean previousMenuItem, boolean nextMenuItem, boolean valueUp, boolean valueDown) {
+    public void itemSelection(boolean previousMenuItem, boolean nextMenuItem, boolean valueUp, boolean valueDown) {
         if (previousMenuItem && !previousItemLast) {
             selectedMenuItem -= 1;
             previousItemLast = true;
@@ -67,27 +63,23 @@ public class Menu {
         if (selectedItemState != MenuItem.State.MIDDLE) {
             if (!lock1) {
                 menuItemList.get(selectedMenuItem).valueChange();
-                firstTimer.startTime();
+                firstTimer.reset();
                 lock1 = true;
-            }
-            if (!lock2) {
-                if (firstTimer.milliseconds() > 1000) {
+            } else if (firstTimer.milliseconds() > 1000) {
+                if (!lock2) {
                     menuItemList.get(selectedMenuItem).valueChange();
-                    loopTimer.startTime();
+                    loopTimer.reset();
                     lock2 = true;
+                } else if (loopTimer.milliseconds() > 100) {
+                    menuItemList.get(selectedMenuItem).valueChange();
+                    loopTimer.reset();
                 }
-            }
-
-            if (loopTimer.milliseconds() > 100){
-                menuItemList.get(selectedMenuItem).valueChange();
-                loopTimer.reset();
             }
         } else {
             lock1 = false;
             lock2 = false;
             firstTimer.reset();
             loopTimer.reset();
-
         }
 
     }
