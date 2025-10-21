@@ -78,9 +78,9 @@ public class AprilTagCamera {
         detectionPositions.clear();
         for (AprilTagDetection detection : currentDetections) {
             if (detection.id == 24 || detection.id == 20) {
-                detectionPositions.add(detection.ftcPose.x);
-                detectionPositions.add(detection.ftcPose.y);
-                detectionPositions.add(detection.ftcPose.yaw);
+                detectionPositions.set(0, detection.ftcPose.x);
+                detectionPositions.set(1, detection.ftcPose.y);
+                detectionPositions.set(2, detection.ftcPose.yaw);
             }
         }
     }

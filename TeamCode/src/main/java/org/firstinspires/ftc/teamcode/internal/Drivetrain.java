@@ -28,7 +28,6 @@ public class Drivetrain {
     List<Double> aprilPositions;
 
     private Pose2D tolerance = new Pose2D(2, 2, 10);
-    AprilTagCamera aTag;
 
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
@@ -148,8 +147,14 @@ public class Drivetrain {
         PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, tolerance.y, speed);
         PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
         PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
+        ElapsedTime timer = new ElapsedTime();
+        timer.reset();
+        timer.startTime();
         aprilTagCamera.updateDetections();
-        aprilPositions = aprilTagCamera.detectionPositions;
+        while ((aprilTagCamera.currentDetections.isEmpty()) && timer.seconds()<5) {
+            aprilTagCamera.updateDetections();
+        }
+        timer.reset();
 
 
         while (!yPID.atTarget(aprilPositions.get(1)) || !xPID.atTarget(aprilPositions.get(0)) || !hPID.atTarget(aprilPositions.get(2))){
