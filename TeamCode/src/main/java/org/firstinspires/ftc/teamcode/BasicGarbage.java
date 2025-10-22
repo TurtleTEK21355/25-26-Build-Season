@@ -26,7 +26,7 @@ public class BasicGarbage extends LinearOpMode {
     double kpTheta = 0.03;
     double kiTheta;
     double kdTheta;
-    double speed = 0.3;
+    double speed = 0.5;
     double valueChangeAmount = 0.01;
 
     @Override
@@ -50,8 +50,9 @@ public class BasicGarbage extends LinearOpMode {
 
         drivetrain.movePID(0, 10, 0, speed, 1000);
         drivetrain.movePID(10, 10, 90, speed, 1000);
-        drivetrain.movePID(10, 0, 180, speed, 1000);
-        drivetrain.movePID(0, 0, -90, speed, 1000);
+        drivetrain.movePID(10, 10, 135, speed, 1000);
+        drivetrain.movePID(10, 0, -135, speed, 1000);
+        drivetrain.movePID(0, 0, 270, speed, 1000);
         drivetrain.movePID(0,0,0,speed,1000);
 
     }

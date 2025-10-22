@@ -92,6 +92,7 @@ public class Drivetrain {
             TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(xPos));
             TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(yPos));
             TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(hPos));
+            TelemetryPasser.telemetry.addData("hPosition", hPos);
             powerTelemetry();
 
         }
@@ -109,6 +110,7 @@ public class Drivetrain {
             TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(xPos));
             TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(yPos));
             TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(hPos));
+            TelemetryPasser.telemetry.addData("hPosition", hPos);
             TelemetryPasser.telemetry.addData("timer", holdTimer);
             powerTelemetry();
 
