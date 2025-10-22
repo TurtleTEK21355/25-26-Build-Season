@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.internal.Drivetrain;
 import org.firstinspires.ftc.teamcode.internal.Shooter;
+import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
 @TeleOp(name = "IntakeAndShooter", group = "")
 public class DriveYeetSuck extends LinearOpMode {
@@ -14,7 +15,7 @@ public class DriveYeetSuck extends LinearOpMode {
     Shooter shooter;
     @Override
     public void runOpMode() throws InterruptedException {
-
+        TelemetryPasser.telemetry = telemetry;
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, "lf"),
                 hardwareMap.get(DcMotor.class, "rf"),

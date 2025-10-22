@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.internal;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -41,17 +38,22 @@ public class Shooter {
 
     public void runShooter() {
         //Check Current State (Starting up, Full Power, Ball Release, Off)
-        if (shooterOff) return;
+        if (shooterOff) {
+            shooterSpeed = 0;
+            leftMotor.setPower(shooterSpeed);
+            return;
+        }
         if (timer.time() < 1) {
-           shooterSpeed =.75 * timer.time() * timer.time();
+           shooterSpeed =timer.time() * timer.time();
+           leftMotor.setPower(shooterSpeed);
         }
         else if (timer.time() < 2) {
-            shooterSpeed = 0.75;
+            shooterSpeed = 1;
+            leftMotor.setPower(shooterSpeed);
         }
         else {
-            //TODO SHOOT THE BALL
-            telemetry.addLine("Usable");
-            telemetry.update();
+            TelemetryPasser.telemetry.addLine("Usable");
+            TelemetryPasser.telemetry.update();
         }
     }
 
@@ -64,7 +66,7 @@ public class Shooter {
     }
 
     public void stopShooter() {
-
+        //TODO STOP THE ROBOT APOCALYPSE
     }
 
     //    public void twoShooter(DcMotor leftShooter, DcMotor rightShooter) {
