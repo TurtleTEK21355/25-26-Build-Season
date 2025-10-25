@@ -53,7 +53,9 @@ public class DriveYeetSuck extends LinearOpMode {
                 shooter.startShooter(); //ONLY RUNS ONCE
                 shooter.runShooter(); //ALWAYS RUNS IF THE SHOOTER IS ON
             }
-
+            else if (gamepad1.left_trigger == 0) {
+                shooter.stopShooter();
+            }
             drivetrain.control(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
         }
     }
