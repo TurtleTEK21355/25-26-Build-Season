@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.internal;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -7,14 +8,14 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AprilTagCamera {
     AprilTagProcessor aprilTag;
     VisionPortal visionPortal;
-    public List<AprilTagDetection> currentDetections;
-    public List<Double> detectionPositions = new ArrayList<>();
-
+    Pose2D detectionPositions = new Pose2D(0,0,0);
+    Boolean isDetected = false;
     public AprilTagCamera(WebcamName webcamName) {
         aprilTag = new AprilTagProcessor.Builder()
 
@@ -74,15 +75,23 @@ public class AprilTagCamera {
     }
 
     public void updateDetections() {
-        currentDetections = aprilTag.getDetections();
-        detectionPositions.clear();
-        for (AprilTagDetection detection : currentDetections) {
-            if (detection.id == 24 || detection.id == 20) {
-                detectionPositions.set(0, detection.ftcPose.x);
-                detectionPositions.set(1, detection.ftcPose.y);
-                detectionPositions.set(2, detection.ftcPose.yaw);
+        isDetected = false;
+        for (AprilTagDetection detection : aprilTag.getDetections()) {
+            if (detection.id == 20) {
+                isDetected = true;
+                detectionPositions.x = detection.ftcPose.x;
+                detectionPositions.y = detection.ftcPose.y;
+                detectionPositions.h = detection.ftcPose.yaw;
             }
         }
+    }
+    public Pose2D getDetections() {
+        updateDetections();
+        return (detectionPositions);
+    }
+    public boolean isDetected() {
+        updateDetections();
+        return (isDetected);
     }
 }
 

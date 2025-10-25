@@ -46,41 +46,8 @@ public class NoahsTestClass extends LinearOpMode {
                 hardwareMap.get(DcMotor.class, "rb"));
 
         waitForStart();
-        configureVariables();
         drivetrain.configureDrivetrain(aprilTagCamera, otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta);
         drivetrain.movePIDAprilTag(45, 0, 0, speed, 2000);
-
-    }
-
-    public void configureVariables(){
-        DoubleMenuItem kpItem = new DoubleMenuItem(kp, valueChangeAmount, "Kp");
-        DoubleMenuItem kiItem = new DoubleMenuItem(ki, valueChangeAmount, "Ki");
-        DoubleMenuItem kdItem = new DoubleMenuItem(kd, valueChangeAmount, "Kd");
-        DoubleMenuItem kpThetaItem = new DoubleMenuItem(kpTheta, valueChangeAmount, "KpTheta");
-        DoubleMenuItem kiThetaItem = new DoubleMenuItem(kiTheta, valueChangeAmount, "KiTheta");
-        DoubleMenuItem kdThetaItem = new DoubleMenuItem(kdTheta, valueChangeAmount, "KdTheta");
-        DoubleMenuItem speedItem =  new DoubleMenuItem(speed, valueChangeAmount, "Speed");
-
-        Menu menu = new Menu();
-        menu.add(kpItem, kiItem, kdItem, kpThetaItem, kiThetaItem, kdThetaItem, speedItem);
-
-        while(opModeIsActive() && !gamepad1.start) {
-            menu.itemSelection(gamepad1.dpad_up, gamepad1.dpad_down, gamepad1.dpad_right, gamepad1.dpad_left);
-
-            telemetry.addLine("Press start to Start");
-
-            telemetry.addLine(menu.reportModeValue());
-            telemetry.update();
-
-        }
-
-        kp = kpItem.getValue();
-        ki = kiItem.getValue();
-        kd = kdItem.getValue();
-        kpTheta = kpThetaItem.getValue();
-        kiTheta = kiThetaItem.getValue();
-        kdTheta = kdThetaItem.getValue();
-        speed = speedItem.getValue();
 
     }
 }

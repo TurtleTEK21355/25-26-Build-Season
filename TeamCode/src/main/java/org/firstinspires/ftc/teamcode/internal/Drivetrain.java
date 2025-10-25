@@ -26,8 +26,8 @@ public class Drivetrain {
     private double kiTheta;
     private double kdTheta;
     List<Double> aprilPositions;
-
     private Pose2D tolerance = new Pose2D(2, 2, 10);
+    Pose2D position;
 
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
@@ -146,29 +146,44 @@ public class Drivetrain {
         }
 
     }
+
+
+    public void fcControl(double y, double x, double h) {
+        double r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        double theta = Math.atan2(y, x);
+
+        double correctedTheta = theta - Math.toRadians(otosSensor.getPosition().h);
+
+        double correctedY = r * Math.sin(correctedTheta);
+        double correctedX = r * Math.cos(correctedTheta);
+
+        control(correctedY, correctedX, h);
+
+    }
     public void movePIDAprilTag(double targetY, double targetX, double targetH, double speed, int holdTime){
         PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, tolerance.y, speed);
         PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
         PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
+        position = aprilTagCamera.getDetections();
         ElapsedTime timer = new ElapsedTime();
         timer.reset();
         timer.startTime();
-        aprilTagCamera.updateDetections();
-        while ((aprilTagCamera.currentDetections.isEmpty()) && timer.seconds()<5) {
+        while ((!aprilTagCamera.isDetected()) && timer.seconds()<5) {
             aprilTagCamera.updateDetections();
+            TelemetryPasser.telemetry.addData("Is Detection?", "No");
+            TelemetryPasser.telemetry.update();
         }
         timer.reset();
 
+        position = aprilTagCamera.getDetections();
+        while (!yPID.atTarget(position.y) || !xPID.atTarget(position.x) || !hPID.atTarget(position.h)){
+            position = aprilTagCamera.getDetections();
 
-        while (!yPID.atTarget(aprilPositions.get(1)) || !xPID.atTarget(aprilPositions.get(0)) || !hPID.atTarget(aprilPositions.get(2))){
-            aprilTagCamera.updateDetections();
-            aprilPositions = aprilTagCamera.detectionPositions;
+            fcControl(yPID.calculate(position.y), xPID.calculate(position.x), -hPID.calculate(position.h));
 
-            fcControl(yPID.calculate(aprilPositions.get(1)), xPID.calculate(aprilPositions.get(0)), -hPID.calculate(aprilPositions.get(2)));
-
-            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(aprilPositions.get(0)));
-            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(aprilPositions.get(1)));
-            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(aprilPositions.get(2)));
+            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(position.x));
+            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(position.y));
+            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(position.h));
             powerTelemetry();
 
         }
@@ -177,26 +192,24 @@ public class Drivetrain {
         holdTimer.reset();
 
         while (holdTimer.milliseconds() <= holdTime){
-            aprilTagCamera.updateDetections();
-            aprilPositions = aprilTagCamera.detectionPositions;
+            position = aprilTagCamera.getDetections();
+            fcControlAprilTag(yPID.calculate(position.y), xPID.calculate(position.x), -hPID.calculate(position.h));
 
-            fcControl(yPID.calculate(aprilPositions.get(1)), xPID.calculate(aprilPositions.get(0)), -hPID.calculate(aprilPositions.get(2)));
-
-            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(aprilPositions.get(0)));
-            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(aprilPositions.get(1)));
-            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(aprilPositions.get(2)));
+            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(position.x));
+            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(position.y));
+            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(position.h));
             TelemetryPasser.telemetry.addData("timer", holdTimer);
             powerTelemetry();
 
         }
 
     }
-
-    public void fcControl(double y, double x, double h) {
+    public void fcControlAprilTag(double y, double x, double h) {
         double r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
         double theta = Math.atan2(y, x);
 
-        double correctedTheta = theta - Math.toRadians(otosSensor.getPosition().h);
+        position = aprilTagCamera.getDetections();
+        double correctedTheta = theta - Math.toRadians(position.h);
 
         double correctedY = r * Math.sin(correctedTheta);
         double correctedX = r * Math.cos(correctedTheta);

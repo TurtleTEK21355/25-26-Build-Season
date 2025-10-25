@@ -10,6 +10,7 @@ public class PIDControllerHeading extends PIDControllerSpeedLimit{
 
     @Override
     public double calculate(double current) {
-
+        return (0);
+        // ^this is temporary until Phillip doesn't commit broken code
     }
 }
