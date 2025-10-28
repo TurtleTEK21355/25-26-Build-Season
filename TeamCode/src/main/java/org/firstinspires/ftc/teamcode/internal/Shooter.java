@@ -69,6 +69,10 @@ public class Shooter {
         leftMotor.setPower(0);
         shooterOff = true;
 
+        //TODO STOP THE ROBOT APOCALYPSE
+        leftMotor.setPower(0);
+        shooterOff = true;
+
     }
 
     //    public void twoShooter(DcMotor leftShooter, DcMotor rightShooter) {
