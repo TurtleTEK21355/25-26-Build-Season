@@ -46,7 +46,7 @@ public class TurnTowardsAThing extends LinearOpMode {
 
         waitForStart();
         configureVariables();
-        drivetrain.configureDrivetrain(aprilTagCamera, otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta);
+        drivetrain.configureDrivetrain(aprilTagCamera, otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta, 0, 0, 0);
 
 
 

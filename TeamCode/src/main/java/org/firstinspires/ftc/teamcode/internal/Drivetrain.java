@@ -6,11 +6,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class Drivetrain {
     private DcMotor frontLeftMotor;
     private DcMotor frontRightMotor;
@@ -25,9 +20,10 @@ public class Drivetrain {
     private double kpTheta;
     private double kiTheta;
     private double kdTheta;
-    List<Double> aprilPositions;
     private Pose2D tolerance = new Pose2D(2, 2, 10);
     Pose2D position;
+    Pose2D offset;
+    Pose2D aprilOffset;
 
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
@@ -46,7 +42,7 @@ public class Drivetrain {
 
     }
 
-    public void configureDrivetrain(AprilTagCamera aprilTagCamera, OtosSensor otosSensor, double kp, double ki, double kd, double kpTheta, double kiTheta, double kdTheta){
+    public void configureDrivetrain(AprilTagCamera aprilTagCamera, OtosSensor otosSensor, double kp, double ki, double kd, double kpTheta, double kiTheta, double kdTheta, double offsetX, double offsetY, double offsetH) {
         this.otosSensor = otosSensor.sensor;
         this.aprilTagCamera = aprilTagCamera;
 
@@ -57,7 +53,8 @@ public class Drivetrain {
         this.kpTheta = kpTheta;
         this.kiTheta = kiTheta;
         this.kdTheta = kdTheta;
-
+        offset = new Pose2D(offsetX,offsetY,offsetH);
+        aprilOffset = new Pose2D(0,0,0);
     }
 
     public void configureDrivetrain(OtosSensor otosSensor) {
@@ -78,43 +75,134 @@ public class Drivetrain {
         PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
         PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
 
-        double yPos = otosSensor.getPosition().y;
-        double xPos = otosSensor.getPosition().x;
-        double hPos = otosSensor.getPosition().h;
+        /*
+        * applies offset by rotating the origin and then applying x/y offset
+        * uses following equations:
+        * x' = xcos(theta)+ysin(theta)-yoffset
+        * y' = -xsin(theta)+ycos(theta)-xoffset
+        * h' = h+hoffset
+        */
+        double yPos = (-(otosSensor.getPosition().x)*Math.sin(offset.h))+(otosSensor.getPosition().y*Math.cos(offset.h))+offset.y;
+        double xPos = otosSensor.getPosition().x*Math.cos(offset.h)+(otosSensor.getPosition().y*Math.sin(offset.h))+offset.x;
+        double hPos = otosSensor.getPosition().h+offset.h;
 
+        // continues updating speed using PID until position targets are reached
         while (!yPID.atTarget(yPos) || !xPID.atTarget(xPos) || !hPID.atTarget(hPos)){
-            yPos = otosSensor.getPosition().y;
-            xPos = otosSensor.getPosition().x;
-            hPos = otosSensor.getPosition().h;
-
+            yPos = (-(otosSensor.getPosition().x)*Math.sin(offset.h))+(otosSensor.getPosition().y*Math.cos(offset.h))+offset.y;
+            xPos = otosSensor.getPosition().x*Math.cos(offset.h)+(otosSensor.getPosition().y*Math.sin(offset.h))+offset.x;
+            hPos = otosSensor.getPosition().h+offset.h;
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
 
+            TelemetryPasser.telemetry.addData("xPosition", xPos);
+            TelemetryPasser.telemetry.addData("yPosition", yPos);
+            TelemetryPasser.telemetry.addData("hPosition", hPos);
+            TelemetryPasser.telemetry.addLine();
+            TelemetryPasser.telemetry.addData("Targetx", targetX);
+            TelemetryPasser.telemetry.addData("Targety", targetY);
+            TelemetryPasser.telemetry.addData("Targeth", targetH);
+            TelemetryPasser.telemetry.addLine();
             TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(xPos));
             TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(yPos));
             TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(hPos));
-            TelemetryPasser.telemetry.addData("hPosition", hPos);
+            TelemetryPasser.telemetry.addLine();
             powerTelemetry();
-
         }
 
+        // holds for a specified time (while still correcting position) for more accurate movement
         ElapsedTime holdTimer = new ElapsedTime();
         holdTimer.reset();
 
         while (holdTimer.milliseconds() <= holdTime){
-            yPos = otosSensor.getPosition().y;
-            xPos = otosSensor.getPosition().x;
-            hPos = otosSensor.getPosition().h;
-
+            yPos = (-(otosSensor.getPosition().x)*Math.sin(offset.h))+(otosSensor.getPosition().y*Math.cos(offset.h))+offset.y;
+            xPos = otosSensor.getPosition().x*Math.cos(offset.h)+(otosSensor.getPosition().y*Math.sin(offset.h))+offset.x;
+            hPos = otosSensor.getPosition().h+offset.h;
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
 
+            TelemetryPasser.telemetry.addData("xPosition", xPos);
+            TelemetryPasser.telemetry.addData("yPosition", yPos);
+            TelemetryPasser.telemetry.addData("hPosition", hPos);
+            TelemetryPasser.telemetry.addLine();
+            TelemetryPasser.telemetry.addData("Targetx", targetX);
+            TelemetryPasser.telemetry.addData("Targety", targetY);
+            TelemetryPasser.telemetry.addData("Targeth", targetH);
+            TelemetryPasser.telemetry.addLine();
             TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(xPos));
             TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(yPos));
             TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(hPos));
-            TelemetryPasser.telemetry.addData("hPosition", hPos);
-            TelemetryPasser.telemetry.addData("timer", holdTimer);
+            TelemetryPasser.telemetry.addLine();
             powerTelemetry();
-
         }
+
+        //ensures no motors are being sent power after the robot has reached positions and fulfilled hold time.
+        control(0,0,0);
+
+    }
+    public void movePID(double targetY, double targetX, double targetH, double speed, int holdTime, double mToleranceX, double mToleranceY, double mToleranceH){
+        Pose2D manualTolerance = new Pose2D(mToleranceX, mToleranceY, mToleranceH);
+        PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, manualTolerance.y, speed);
+        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, manualTolerance.x, speed);
+        PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, manualTolerance.h, speed);
+
+        /*
+         * applies offset by rotating the origin and then applying x/y offset
+         * uses following equations:
+         * x' = x*cos(theta)+y*sin(theta)-y_offset
+         * y' = -x*sin(theta)+y*cos(theta)-x_offset
+         * h' = h+h_offset
+         */
+        double yPos = (-(otosSensor.getPosition().x)*Math.sin(offset.h))+(otosSensor.getPosition().y*Math.cos(offset.h))+offset.y;
+        double xPos = otosSensor.getPosition().x*Math.cos(offset.h)+(otosSensor.getPosition().y*Math.sin(offset.h))+offset.x;
+        double hPos = otosSensor.getPosition().h+offset.h;
+
+        // continues updating speed using PID until position targets are reached
+        while (!yPID.atTarget(yPos) || !xPID.atTarget(xPos) || !hPID.atTarget(hPos)){
+            yPos = (-(otosSensor.getPosition().x)*Math.sin(offset.h))+(otosSensor.getPosition().y*Math.cos(offset.h))+offset.y;
+            xPos = otosSensor.getPosition().x*Math.cos(offset.h)+(otosSensor.getPosition().y*Math.sin(offset.h))+offset.x;
+            hPos = otosSensor.getPosition().h+offset.h;
+            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
+
+            TelemetryPasser.telemetry.addData("xPosition", xPos);
+            TelemetryPasser.telemetry.addData("yPosition", yPos);
+            TelemetryPasser.telemetry.addData("hPosition", hPos);
+            TelemetryPasser.telemetry.addLine();
+            TelemetryPasser.telemetry.addData("Targetx", targetX);
+            TelemetryPasser.telemetry.addData("Targety", targetY);
+            TelemetryPasser.telemetry.addData("Targeth", targetH);
+            TelemetryPasser.telemetry.addLine();
+            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(xPos));
+            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(yPos));
+            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(hPos));
+            TelemetryPasser.telemetry.addLine();
+            powerTelemetry();
+        }
+
+        // holds for a specified time (while still correcting position) for more accurate movement
+        ElapsedTime holdTimer = new ElapsedTime();
+        holdTimer.reset();
+
+        while (holdTimer.milliseconds() <= holdTime){
+            yPos = (-(otosSensor.getPosition().x)*Math.sin(offset.h))+(otosSensor.getPosition().y*Math.cos(offset.h))+offset.y;
+            xPos = otosSensor.getPosition().x*Math.cos(offset.h)+(otosSensor.getPosition().y*Math.sin(offset.h))+offset.x;
+            hPos = otosSensor.getPosition().h+offset.h;
+            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
+
+            TelemetryPasser.telemetry.addData("xPosition", xPos);
+            TelemetryPasser.telemetry.addData("yPosition", yPos);
+            TelemetryPasser.telemetry.addData("hPosition", hPos);
+            TelemetryPasser.telemetry.addLine();
+            TelemetryPasser.telemetry.addData("Targetx", targetX);
+            TelemetryPasser.telemetry.addData("Targety", targetY);
+            TelemetryPasser.telemetry.addData("Targeth", targetH);
+            TelemetryPasser.telemetry.addLine();
+            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(xPos));
+            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(yPos));
+            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(hPos));
+            TelemetryPasser.telemetry.addLine();
+            powerTelemetry();
+        }
+
+        //ensures no motors are being sent power after the robot has reached positions and fulfilled hold time.
+        control(0,0,0);
 
     }
 
@@ -157,17 +245,20 @@ public class Drivetrain {
         double correctedY = r * Math.sin(correctedTheta);
         double correctedX = r * Math.cos(correctedTheta);
 
-        control(correctedY, correctedX, h);
+        control(correctedY, correctedX, -h);
 
     }
-    public void movePIDAprilTag(double targetY, double targetX, double targetH, double speed, int holdTime){
-        PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, tolerance.y, speed);
-        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
-        PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
-        position = aprilTagCamera.getDetections();
+
+    /* After the robot moves to where it thinks is (-1.5, 1.5) at -45 degrees,
+     * it will correct its odometry based on the position of AprilTag ID 20
+     * and move to the correct location.
+     */
+    public void correctViaAprilTagTest() {
+        movePID(5, -5, 45, 0.25, 1000);
         ElapsedTime timer = new ElapsedTime();
         timer.reset();
         timer.startTime();
+        // Robot may take up to 5 seconds to detect an AprilTag
         while ((!aprilTagCamera.isDetected()) && timer.seconds()<5) {
             aprilTagCamera.updateDetections();
             TelemetryPasser.telemetry.addData("Is Detection?", "No");
@@ -175,47 +266,11 @@ public class Drivetrain {
         }
         timer.reset();
 
+        // uses AprilTag detections to correct odometry
+        // offset to be changed when robot is built to account for camera position relative to odometry sensor
         position = aprilTagCamera.getDetections();
-        while (!yPID.atTarget(position.y) || !xPID.atTarget(position.x) || !hPID.atTarget(position.h)){
-            position = aprilTagCamera.getDetections();
-
-            fcControl(yPID.calculate(position.y), xPID.calculate(position.x), -hPID.calculate(position.h));
-
-            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(position.x));
-            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(position.y));
-            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(position.h));
-            powerTelemetry();
-
-        }
-
-        ElapsedTime holdTimer = new ElapsedTime();
-        holdTimer.reset();
-
-        while (holdTimer.milliseconds() <= holdTime){
-            position = aprilTagCamera.getDetections();
-            fcControlAprilTag(yPID.calculate(position.y), xPID.calculate(position.x), -hPID.calculate(position.h));
-
-            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(position.x));
-            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(position.y));
-            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(position.h));
-            TelemetryPasser.telemetry.addData("timer", holdTimer);
-            powerTelemetry();
-
-        }
-
-    }
-    public void fcControlAprilTag(double y, double x, double h) {
-        double r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-        double theta = Math.atan2(y, x);
-
-        position = aprilTagCamera.getDetections();
-        double correctedTheta = theta - Math.toRadians(position.h);
-
-        double correctedY = r * Math.sin(correctedTheta);
-        double correctedX = r * Math.cos(correctedTheta);
-
-        control(correctedY, correctedX, h);
-
+        position.y *= -1;
+        position.x *= -1;
     }
 
     /**
@@ -229,9 +284,10 @@ public class Drivetrain {
         frontLeftMotor.setPower(Range.clip(y - x + h, -1, 1));
         backRightMotor.setPower(Range.clip(y + x - h, -1, 1));
         backLeftMotor.setPower(Range.clip(y + x + h, -1, 1));
-
     }
 
+     // 1. Sends power of each motor to telemetry
+     // 2. Updates telemetry
     public void powerTelemetry(){
         TelemetryPasser.telemetry.addData("fl Power=", frontLeftMotor.getPower());
         TelemetryPasser.telemetry.addData("fr Power=", frontRightMotor.getPower());

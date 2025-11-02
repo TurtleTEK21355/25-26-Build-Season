@@ -46,7 +46,7 @@ public class BasicGarbage extends LinearOpMode {
 
         waitForStart();
         configureVariables();
-        drivetrain.configureDrivetrain(aprilTagCamera, otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta);
+        drivetrain.configureDrivetrain(aprilTagCamera, otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta, 0, 0, 0);
 
         drivetrain.movePID(0, 10, 0, speed, 1000);
         drivetrain.movePID(10, 10, 90, speed, 1000);
