@@ -19,9 +19,7 @@ public class BooleanMenuItem extends MenuItem{
 
     @Override
     public String getStringValue() {
-        DecimalFormat valueFormat = new DecimalFormat("##.##");
-        valueFormat.setRoundingMode(RoundingMode.HALF_UP);
-        return valueFormat.format(value);
+        return String.valueOf(value);
 
     }
 
