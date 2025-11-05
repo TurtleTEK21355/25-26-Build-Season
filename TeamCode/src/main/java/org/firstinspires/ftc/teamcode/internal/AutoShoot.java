@@ -1,8 +1,18 @@
 package org.firstinspires.ftc.teamcode.internal;
 
+
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+
 public class AutoShoot {
-    MATH.calculate()
+
+    AprilTagCamera aprilTagCamera;
+    public AutoShoot(WebcamName webcam){
+        aprilTagCamera = new AprilTagCamera(webcam);
+    }
+
     //Measure Distance
-    //Insert Distance into Formula
+    double distance = 1;
+    double requiredPower = MATH.calculate(distance);
     //Set Power According to Formula
+    motor.setPower(requiredPower);
 }
