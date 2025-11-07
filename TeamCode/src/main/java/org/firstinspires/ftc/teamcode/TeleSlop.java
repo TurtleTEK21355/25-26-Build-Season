@@ -50,8 +50,8 @@ public class TeleSlop extends OpMode {
         if (gamepad1.y){
             otosSensor.resetPosition();
         }
-        ballPathChangeThisNamePleaseIDKWhatToCallIt.flywheelSpin(gamepad1.right_bumper, 1.0);
-        ballPathChangeThisNamePleaseIDKWhatToCallIt.IntakeSpin(-gamepad1.right_stick_y);
+        ballPathChangeThisNamePleaseIDKWhatToCallIt.flywheelSetPower(gamepad1.right_bumper, 1.0);
+        ballPathChangeThisNamePleaseIDKWhatToCallIt.IntakeSetPower(-gamepad1.right_stick_y);
 
 
     }

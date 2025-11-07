@@ -82,15 +82,17 @@ public class Drivetrain {
         * y' = -xsin(theta)+ycos(theta)-xoffset
         * h' = h+hoffset
         */
-        double yPos = (-(otosSensor.getPosition().x)*Math.sin(offset.h))+(otosSensor.getPosition().y*Math.cos(offset.h))+offset.y;
-        double xPos = otosSensor.getPosition().x*Math.cos(offset.h)+(otosSensor.getPosition().y*Math.sin(offset.h))+offset.x;
-        double hPos = otosSensor.getPosition().h+offset.h;
+        SparkFunOTOS.Pose2D realPos = otosSensor.getPosition();
+        double yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
+        double xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
+        double hPos = realPos.h+offset.h;
 
         // continues updating speed using PID until position targets are reached
         while (!yPID.atTarget(yPos) || !xPID.atTarget(xPos) || !hPID.atTarget(hPos)){
-            yPos = (-(otosSensor.getPosition().x)*Math.sin(offset.h))+(otosSensor.getPosition().y*Math.cos(offset.h))+offset.y;
-            xPos = otosSensor.getPosition().x*Math.cos(offset.h)+(otosSensor.getPosition().y*Math.sin(offset.h))+offset.x;
-            hPos = otosSensor.getPosition().h+offset.h;
+            realPos = otosSensor.getPosition();
+            yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
+            xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
+            hPos = realPos.h+offset.h;
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
 
             TelemetryPasser.telemetry.addData("xPosition", xPos);
@@ -113,9 +115,10 @@ public class Drivetrain {
         holdTimer.reset();
 
         while (holdTimer.milliseconds() <= holdTime){
-            yPos = (-(otosSensor.getPosition().x)*Math.sin(offset.h))+(otosSensor.getPosition().y*Math.cos(offset.h))+offset.y;
-            xPos = otosSensor.getPosition().x*Math.cos(offset.h)+(otosSensor.getPosition().y*Math.sin(offset.h))+offset.x;
-            hPos = otosSensor.getPosition().h+offset.h;
+            realPos = otosSensor.getPosition();
+            yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
+            xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
+            hPos = realPos.h+offset.h;
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
 
             TelemetryPasser.telemetry.addData("xPosition", xPos);
@@ -150,15 +153,17 @@ public class Drivetrain {
          * y' = -x*sin(theta)+y*cos(theta)-x_offset
          * h' = h+h_offset
          */
-        double yPos = (-(otosSensor.getPosition().x)*Math.sin(offset.h))+(otosSensor.getPosition().y*Math.cos(offset.h))+offset.y;
-        double xPos = otosSensor.getPosition().x*Math.cos(offset.h)+(otosSensor.getPosition().y*Math.sin(offset.h))+offset.x;
-        double hPos = otosSensor.getPosition().h+offset.h;
+        SparkFunOTOS.Pose2D realPos = otosSensor.getPosition();
+        double yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
+        double xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
+        double hPos = realPos.h+offset.h;
 
         // continues updating speed using PID until position targets are reached
         while (!yPID.atTarget(yPos) || !xPID.atTarget(xPos) || !hPID.atTarget(hPos)){
-            yPos = (-(otosSensor.getPosition().x)*Math.sin(offset.h))+(otosSensor.getPosition().y*Math.cos(offset.h))+offset.y;
-            xPos = otosSensor.getPosition().x*Math.cos(offset.h)+(otosSensor.getPosition().y*Math.sin(offset.h))+offset.x;
-            hPos = otosSensor.getPosition().h+offset.h;
+            realPos = otosSensor.getPosition();
+            yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
+            xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
+            hPos = realPos.h+offset.h;
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
 
             TelemetryPasser.telemetry.addData("xPosition", xPos);
@@ -181,9 +186,10 @@ public class Drivetrain {
         holdTimer.reset();
 
         while (holdTimer.milliseconds() <= holdTime){
-            yPos = (-(otosSensor.getPosition().x)*Math.sin(offset.h))+(otosSensor.getPosition().y*Math.cos(offset.h))+offset.y;
-            xPos = otosSensor.getPosition().x*Math.cos(offset.h)+(otosSensor.getPosition().y*Math.sin(offset.h))+offset.x;
-            hPos = otosSensor.getPosition().h+offset.h;
+            realPos = otosSensor.getPosition();
+            yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
+            xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
+            hPos = realPos.h+offset.h;
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
 
             TelemetryPasser.telemetry.addData("xPosition", xPos);

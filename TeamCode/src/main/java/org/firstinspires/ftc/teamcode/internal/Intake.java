@@ -12,9 +12,7 @@ public class Intake {
         intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
-
-    void spin(double power) {
+    void setPower(double power) {
         intakeMotor.setPower(Range.clip(power, -1.0, 1.0));
     }
-    //should add a method that is better for teleop
 }

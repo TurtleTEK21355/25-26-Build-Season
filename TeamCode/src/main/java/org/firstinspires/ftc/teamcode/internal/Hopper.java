@@ -10,15 +10,19 @@ import com.qualcomm.robotcore.util.Range;
 public class Hopper {
     private CRServo rightServo;
     private CRServo leftServo;
-    private ColorSensor colorSensor;
+    //private ColorSensor colorSensor; different sensor will be used
 
     public Hopper(CRServo rightServo) {
         this.rightServo = rightServo;
         this.rightServo.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
-    void spin(double power) {
+    void setPower(double power) {
         rightServo.setPower(Range.clip(power, -1.0, 1.0));
     }
-    //will have things to check when balls are ready to be shot
+    void ballReady(){
+        /*
+        return sensor;
+         */
+    }
 }

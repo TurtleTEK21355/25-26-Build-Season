@@ -16,7 +16,7 @@ public class FlyWheel {
         flyWheelMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     }
 
-    void spin(double power) {
+    void setPower(double power) {
         flyWheelMotor.setPower(Range.clip(power, -1, 1));
     }
 }

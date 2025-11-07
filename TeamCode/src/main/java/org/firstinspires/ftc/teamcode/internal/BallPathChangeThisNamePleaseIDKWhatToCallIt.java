@@ -12,16 +12,16 @@ public class BallPathChangeThisNamePleaseIDKWhatToCallIt {
 
     }
 
-    public void flywheelSpin(boolean enabled, double power) {
+    public void flywheelSetPower(boolean enabled, double power) {
         if (enabled) {
-            flyWheel.spin(power);
+            flyWheel.setPower(power);
         }
     }
-    public void HopperSpin(double power) {
-        hopper.spin(power);
+    public void HopperSetPower(double power) {
+        hopper.setPower(power);
     }
-    public void IntakeSpin(double power) {
-        intake.spin(power);
+    public void IntakeSetPower(double power) {
+        intake.setPower(power);
     }
     //this is not permanent and very bad
     //there will be methods that handle moving balls around to the right place and shoot them all at the same time
