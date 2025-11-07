@@ -23,6 +23,8 @@ public class BallPathChangeThisNamePleaseIDKWhatToCallIt {
     public void IntakeSetPower(double power) {
         intake.setPower(power);
     }
-    //this is not permanent and very bad
-    //there will be methods that handle moving balls around to the right place and shoot them all at the same time
+
+    public void teleOpControl(boolean intakeSpin, double flyWheel) {
+
+    }
 }
