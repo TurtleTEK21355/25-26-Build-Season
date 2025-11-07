@@ -28,15 +28,13 @@ public class Hopper {
     }
 
     void openGate() {
-        ballGate.setPosition(0.5);
+        ballGate.setPosition(0);
     }
 
     void closeGate() {
         ballGate.setPosition(1);
     }
     boolean ballReady() {
-        /*
-        return sensor;
-         */
+        return breakBeamSensor.inProximity();
     }
 }
