@@ -47,6 +47,6 @@ public class NoahsTestClass extends LinearOpMode {
 
         waitForStart();
         drivetrain.configureDrivetrain(aprilTagCamera, otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta, 0, 0, 0);
-        drivetrain.movePID(5,0,0,0.5,2000, 1, 0.25, 5);
+        drivetrain.correctViaAprilTagTest();
     }
 }

@@ -21,9 +21,8 @@ public class Drivetrain {
     private double kiTheta;
     private double kdTheta;
     private Pose2D tolerance = new Pose2D(2, 2, 10);
-    Pose2D position;
-    Pose2D offset;
-    Pose2D aprilOffset;
+    Pose2D position = new Pose2D(0,0,0);
+    Pose2D offset = new Pose2D(0,0,0);
 
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
@@ -54,7 +53,30 @@ public class Drivetrain {
         this.kiTheta = kiTheta;
         this.kdTheta = kdTheta;
         offset = new Pose2D(offsetX,offsetY,offsetH);
-        aprilOffset = new Pose2D(0,0,0);
+        tolerance.x = 2;
+        tolerance.y = 2;
+        tolerance.h = 10;
+    }
+    public void configureDrivetrain(AprilTagCamera aprilTagCamera, OtosSensor otosSensor, double kp, double ki, double kd, double kpTheta, double kiTheta, double kdTheta, double offsetX, double offsetY, double offsetH, double mToleranceX, double mToleranceY, double mToleranceH) {
+        this.otosSensor = otosSensor.sensor;
+        this.aprilTagCamera = aprilTagCamera;
+
+        this.kp = kp;
+        this.ki = ki;
+        this.kd = kd;
+
+        this.kpTheta = kpTheta;
+        this.kiTheta = kiTheta;
+        this.kdTheta = kdTheta;
+        offset = new Pose2D(offsetX,offsetY,offsetH);
+        tolerance.x = mToleranceX;
+        tolerance.y = mToleranceY;
+        tolerance.h = mToleranceH;
+    }
+    public void configureTolerance(double mToleranceX, double mToleranceY, double mToleranceH) {
+        tolerance.x = mToleranceX;
+        tolerance.y = mToleranceY;
+        tolerance.h = mToleranceH;
     }
 
     public void configureDrivetrain(OtosSensor otosSensor) {
@@ -82,17 +104,15 @@ public class Drivetrain {
         * y' = -xsin(theta)+ycos(theta)-xoffset
         * h' = h+hoffset
         */
-        SparkFunOTOS.Pose2D realPos = otosSensor.getPosition();
-        double yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
-        double xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
-        double hPos = realPos.h+offset.h;
+        double yPos = (-(otosSensor.getPosition().x)*Math.sin(offset.h))+(otosSensor.getPosition().y*Math.cos(offset.h))+offset.y;
+        double xPos = otosSensor.getPosition().x*Math.cos(offset.h)+(otosSensor.getPosition().y*Math.sin(offset.h))+offset.x;
+        double hPos = otosSensor.getPosition().h+offset.h;
 
         // continues updating speed using PID until position targets are reached
         while (!yPID.atTarget(yPos) || !xPID.atTarget(xPos) || !hPID.atTarget(hPos)){
-            realPos = otosSensor.getPosition();
-            yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
-            xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
-            hPos = realPos.h+offset.h;
+            yPos = (-(otosSensor.getPosition().x)*Math.sin(offset.h))+(otosSensor.getPosition().y*Math.cos(offset.h))+offset.y;
+            xPos = otosSensor.getPosition().x*Math.cos(offset.h)+(otosSensor.getPosition().y*Math.sin(offset.h))+offset.x;
+            hPos = otosSensor.getPosition().h+offset.h;
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
 
             TelemetryPasser.telemetry.addData("xPosition", xPos);
@@ -115,81 +135,9 @@ public class Drivetrain {
         holdTimer.reset();
 
         while (holdTimer.milliseconds() <= holdTime){
-            realPos = otosSensor.getPosition();
-            yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
-            xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
-            hPos = realPos.h+offset.h;
-            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
-
-            TelemetryPasser.telemetry.addData("xPosition", xPos);
-            TelemetryPasser.telemetry.addData("yPosition", yPos);
-            TelemetryPasser.telemetry.addData("hPosition", hPos);
-            TelemetryPasser.telemetry.addLine();
-            TelemetryPasser.telemetry.addData("Targetx", targetX);
-            TelemetryPasser.telemetry.addData("Targety", targetY);
-            TelemetryPasser.telemetry.addData("Targeth", targetH);
-            TelemetryPasser.telemetry.addLine();
-            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(xPos));
-            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(yPos));
-            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(hPos));
-            TelemetryPasser.telemetry.addLine();
-            powerTelemetry();
-        }
-
-        //ensures no motors are being sent power after the robot has reached positions and fulfilled hold time.
-        control(0,0,0);
-
-    }
-    public void movePID(double targetY, double targetX, double targetH, double speed, int holdTime, double mToleranceX, double mToleranceY, double mToleranceH){
-        Pose2D manualTolerance = new Pose2D(mToleranceX, mToleranceY, mToleranceH);
-        PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, manualTolerance.y, speed);
-        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, manualTolerance.x, speed);
-        PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, manualTolerance.h, speed);
-
-        /*
-         * applies offset by rotating the origin and then applying x/y offset
-         * uses following equations:
-         * x' = x*cos(theta)+y*sin(theta)-y_offset
-         * y' = -x*sin(theta)+y*cos(theta)-x_offset
-         * h' = h+h_offset
-         */
-        SparkFunOTOS.Pose2D realPos = otosSensor.getPosition();
-        double yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
-        double xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
-        double hPos = realPos.h+offset.h;
-
-        // continues updating speed using PID until position targets are reached
-        while (!yPID.atTarget(yPos) || !xPID.atTarget(xPos) || !hPID.atTarget(hPos)){
-            realPos = otosSensor.getPosition();
-            yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
-            xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
-            hPos = realPos.h+offset.h;
-            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
-
-            TelemetryPasser.telemetry.addData("xPosition", xPos);
-            TelemetryPasser.telemetry.addData("yPosition", yPos);
-            TelemetryPasser.telemetry.addData("hPosition", hPos);
-            TelemetryPasser.telemetry.addLine();
-            TelemetryPasser.telemetry.addData("Targetx", targetX);
-            TelemetryPasser.telemetry.addData("Targety", targetY);
-            TelemetryPasser.telemetry.addData("Targeth", targetH);
-            TelemetryPasser.telemetry.addLine();
-            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(xPos));
-            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(yPos));
-            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(hPos));
-            TelemetryPasser.telemetry.addLine();
-            powerTelemetry();
-        }
-
-        // holds for a specified time (while still correcting position) for more accurate movement
-        ElapsedTime holdTimer = new ElapsedTime();
-        holdTimer.reset();
-
-        while (holdTimer.milliseconds() <= holdTime){
-            realPos = otosSensor.getPosition();
-            yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
-            xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
-            hPos = realPos.h+offset.h;
+            yPos = (-(otosSensor.getPosition().x)*Math.sin(offset.h))+(otosSensor.getPosition().y*Math.cos(offset.h))+offset.y;
+            xPos = otosSensor.getPosition().x*Math.cos(offset.h)+(otosSensor.getPosition().y*Math.sin(offset.h))+offset.x;
+            hPos = otosSensor.getPosition().h+offset.h;
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
 
             TelemetryPasser.telemetry.addData("xPosition", xPos);
@@ -260,7 +208,7 @@ public class Drivetrain {
      * and move to the correct location.
      */
     public void correctViaAprilTagTest() {
-        movePID(5, -5, 45, 0.25, 1000);
+        movePID(48, -48, 45, 0.25, 1000);
         ElapsedTime timer = new ElapsedTime();
         timer.reset();
         timer.startTime();
@@ -275,8 +223,10 @@ public class Drivetrain {
         // uses AprilTag detections to correct odometry
         // offset to be changed when robot is built to account for camera position relative to odometry sensor
         position = aprilTagCamera.getDetections();
-        position.y *= -1;
-        position.x *= -1;
+        offset.x += position.x*Math.cos(-135)+position.y*Math.sin(-135)-60;
+        offset.y += -position.x*Math.sin(-135)+position.y*Math.cos(-135)+60;
+        offset.h += 45-position.h;
+        movePID(5, -5, 45, 0.25, 1000);
     }
 
     /**
