@@ -16,7 +16,6 @@ public class Drivetrain {
     private double kp;
     private double ki;
     private double kd;
-
     private double kpTheta;
     private double kiTheta;
     private double kdTheta;
@@ -299,6 +298,5 @@ public class Drivetrain {
         TelemetryPasser.telemetry.addData("fr Power=", frontRightMotor.getPower());
         TelemetryPasser.telemetry.addData("bl Power=", backLeftMotor.getPower());
         TelemetryPasser.telemetry.addData("br Power=", backRightMotor.getPower());
-        TelemetryPasser.telemetry.update();
     }
 }

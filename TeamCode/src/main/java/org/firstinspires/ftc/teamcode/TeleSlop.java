@@ -5,9 +5,11 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
 import org.firstinspires.ftc.teamcode.internal.BallPathChangeThisNamePleaseIDKWhatToCallIt;
 import org.firstinspires.ftc.teamcode.internal.Drivetrain;
 import org.firstinspires.ftc.teamcode.internal.FlyWheel;
@@ -36,7 +38,9 @@ public class TeleSlop extends OpMode {
 
         ballPathChangeThisNamePleaseIDKWhatToCallIt = new BallPathChangeThisNamePleaseIDKWhatToCallIt(
                 new FlyWheel(hardwareMap.get(DcMotor.class, "flyWheel")),
-                new Hopper(hardwareMap.get(CRServo.class, "rightServo")),
+                new Hopper(hardwareMap.get(CRServo.class, "rightServo"),
+                            hardwareMap.get(Servo.class, "ballGate"),
+                            hardwareMap.get(Ada2167BreakBeam.class, "ballSensor")),
                 new Intake(hardwareMap.get(DcMotor.class, "Intake")));
 
         otosSensor = new OtosSensor(hardwareMap.get(SparkFunOTOS.class, "otos"));
@@ -47,12 +51,15 @@ public class TeleSlop extends OpMode {
     @Override
     public void loop() {
         drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+
         if (gamepad1.y){
             otosSensor.resetPosition();
         }
-        ballPathChangeThisNamePleaseIDKWhatToCallIt.flywheelSetPower(gamepad1.right_bumper, 1.0);
-        ballPathChangeThisNamePleaseIDKWhatToCallIt.IntakeSetPower(-gamepad1.right_stick_y);
+        
+        ballPathChangeThisNamePleaseIDKWhatToCallIt.teleOpControl(gamepad1.left_bumper, gamepad1.right_bumper);
 
+        telemetry.update();
 
     }
+
 }
