@@ -1,8 +1,9 @@
 package org.firstinspires.ftc.teamcode.internal;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class BallPathChangeThisNamePleaseIDKWhatToCallIt {
+public class ShooterSystem {
     FlyWheel flyWheel;
     Hopper hopper;
     Intake intake;
@@ -11,11 +12,10 @@ public class BallPathChangeThisNamePleaseIDKWhatToCallIt {
     private Mode mode = Mode.NORMAL;
 
 
-    public BallPathChangeThisNamePleaseIDKWhatToCallIt(FlyWheel flyWheel, Hopper hopper, Intake intake){
+    public ShooterSystem(FlyWheel flyWheel, Hopper hopper, Intake intake){
         this.flyWheel = flyWheel;
         this.hopper = hopper;
         this.intake = intake;
-
     }
 
     public void flywheelSetPower(boolean enabled, double power) {
@@ -23,7 +23,10 @@ public class BallPathChangeThisNamePleaseIDKWhatToCallIt {
             flyWheel.setPower(power);
         }
     }
-    public void HopperSetPower(double power) {
+    public void flywheelSetPower(double power) {
+            flyWheel.setPower(power);
+    }
+    public void hopperSetPower(double power) {
         hopper.setPower(power);
     }
     public void IntakeSetPower(double power) {
@@ -32,7 +35,7 @@ public class BallPathChangeThisNamePleaseIDKWhatToCallIt {
 
     public void teleOpControl(boolean intakeSpin, boolean shoot) {
         if (hopper.ballReady() && shoot) {      //if a ball is detected in the top and the shoot button is pressed
-            flyWheel.setPower(1);       //turn on the flywheel
+            flyWheel.setPower(0.3);       //turn on the flywheel
             flyWheelTimer.startTime();      //start the timer for the shooter to run
             flyWheelTimer.reset();      //reset it for good measure
             mode = Mode.SHOOT;      //this is so theres no issue with setting the power of things to the wrong level on the bottom
@@ -41,7 +44,7 @@ public class BallPathChangeThisNamePleaseIDKWhatToCallIt {
 
         if (mode == Mode.SHOOT) {       //while the flywheel is shooting
             if (flyWheelTimer.milliseconds() > 1000) {      //if the shooting timer is up it will turn off everything and set back to non shooting mode
-                flyWheel.setPower(0);
+                flyWheel.setPower(0.3);
                 hopper.setPower(0);
                 hopper.closeGate();
                 flyWheelTimer.reset();
@@ -79,6 +82,18 @@ public class BallPathChangeThisNamePleaseIDKWhatToCallIt {
 
     TelemetryPasser.telemetry.addData("ball at top", hopper.ballReady());
 
+    }
+    public void testWheels(boolean intakeSpin, boolean shoot) {
+        if (intakeSpin) {
+            intake.setPower(-1);
+        } else {
+            intake.setPower(0);
+        }
+        if (shoot) {
+            flyWheel.setPower(1);
+        } else {
+            flyWheel.setPower(0);
+        }
     }
 
 }

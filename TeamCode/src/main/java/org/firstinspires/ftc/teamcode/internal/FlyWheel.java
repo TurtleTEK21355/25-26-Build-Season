@@ -13,7 +13,7 @@ public class FlyWheel {
     public FlyWheel(DcMotor flyWheelMotor) {
         this.flyWheelMotor = flyWheelMotor;
         flyWheelMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        flyWheelMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        flyWheelMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     void setPower(double power) {

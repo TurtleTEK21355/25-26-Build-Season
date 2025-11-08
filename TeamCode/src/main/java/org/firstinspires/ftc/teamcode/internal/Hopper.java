@@ -10,21 +10,22 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
 
 public class Hopper {
-    private CRServo rightServo;
-    private CRServo leftServo;
+    private CRServo servo;
     private Servo ballGate;
     private Ada2167BreakBeam breakBeamSensor;
 
 
-    public Hopper(CRServo rightServo, Servo ballGate, Ada2167BreakBeam breakBeamSensor) {
-        this.rightServo = rightServo;
-        this.rightServo.setDirection(DcMotorSimple.Direction.FORWARD);
+    public Hopper(CRServo servo, Servo ballGate, Ada2167BreakBeam breakBeamSensor) {
+        this.servo = servo;
+        this.servo.setDirection(DcMotorSimple.Direction.FORWARD);
         this.ballGate = ballGate;
         this.breakBeamSensor = breakBeamSensor;
     }
 
     void setPower(double power) {
-        rightServo.setPower(Range.clip(power, -1.0, 1.0));
+        servo.setPower(Range.clip(power, -1.0, 1.0));
+        TelemetryPasser.telemetry.addData("power",
+                servo.getPower());
     }
 
     void openGate() {
