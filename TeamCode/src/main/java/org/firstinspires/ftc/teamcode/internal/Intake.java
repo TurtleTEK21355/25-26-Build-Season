@@ -9,7 +9,7 @@ public class Intake {
 
     public Intake(DcMotor intakeMotor){
         this.intakeMotor = intakeMotor;
-        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
     void setPower(double power) {

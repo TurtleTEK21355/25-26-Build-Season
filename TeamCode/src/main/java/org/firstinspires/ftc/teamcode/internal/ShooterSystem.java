@@ -30,16 +30,18 @@ public class ShooterSystem {
         intake.setPower(power);
     }
 
-    public void teleOpControl(boolean shoot, boolean intakeSpin, boolean hopperspin, boolean gate) {
+    public void teleOpControl(boolean shoot, boolean intakeSpin, boolean hopperspinforward, boolean gate, boolean hopperspinbackward) {
         TelemetryPasser.telemetry.addData("shoot", hopper.ballReady());
-        if(hopperspin) {
+        if(hopperspinforward) {
+            hopper.setPower(1);
+        } else if (hopperspinbackward) {
             hopper.setPower(-1);
         } else {hopper.setPower(0);}
         if (shoot) {
             flyWheel.setPower(0.8);
         } else {flyWheel.setPower(0);}
         if (intakeSpin) {
-            intake.setPower(-0.4);
+            intake.setPower(0.8);
         } else {intake.setPower(0);}
         if (gate) {
             hopper.openGate();
@@ -49,7 +51,6 @@ public class ShooterSystem {
 //            flyWheel.setPower(0.8);       //turn on the flywheel
 //            flyWheelTimer.startTime();      //start the timer for the shooter to run
 //            flyWheelTimer.reset(); //reset it for good measure
-//            hopper.openGate();
 //            mode = Mode.SHOOT;      //this is so theres no issue with setting the power of things to the wrong level on the bottom
 //
 //        }

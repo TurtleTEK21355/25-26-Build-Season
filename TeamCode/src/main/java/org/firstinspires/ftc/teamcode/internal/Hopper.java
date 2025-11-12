@@ -19,7 +19,7 @@ public class Hopper {
 
     public Hopper(CRServo servo, Servo ballGate, Ada2167BreakBeam breakBeamSensor) {
         this.servo = servo;
-        this.servo.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.servo.setDirection(DcMotorSimple.Direction.REVERSE);
         this.ballGate = ballGate;
         this.breakBeamSensor = breakBeamSensor;
     }
