@@ -40,7 +40,7 @@ public class Drivetrain {
         this.backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
-
+    
     public void configureDrivetrain(AprilTagCamera aprilTagCamera, OtosSensor otosSensor, double kp, double ki, double kd, double kpTheta, double kiTheta, double kdTheta, double offsetX, double offsetY, double offsetH) {
         this.otosSensor = otosSensor.sensor;
         this.aprilTagCamera = aprilTagCamera;
@@ -52,10 +52,15 @@ public class Drivetrain {
         this.kpTheta = kpTheta;
         this.kiTheta = kiTheta;
         this.kdTheta = kdTheta;
+
         offset = new Pose2D(offsetX,offsetY,offsetH);
         aprilOffset = new Pose2D(0,0,0);
+
     }
 
+    /**
+     * this one is for teleop because you dont need the pid stuff
+     */
     public void configureDrivetrain(OtosSensor otosSensor) {
         this.otosSensor = otosSensor.sensor;
 
@@ -72,7 +77,7 @@ public class Drivetrain {
     public void movePID(double targetY, double targetX, double targetH, double speed, int holdTime){
         PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, tolerance.y, speed);
         PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
-        PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
+        PIDControllerHeading hPID = new PIDControllerHeading(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
 
         /*
         * applies offset by rotating the origin and then applying x/y offset
@@ -143,7 +148,7 @@ public class Drivetrain {
         Pose2D manualTolerance = new Pose2D(mToleranceX, mToleranceY, mToleranceH);
         PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, manualTolerance.y, speed);
         PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, manualTolerance.x, speed);
-        PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, manualTolerance.h, speed);
+        PIDControllerHeading hPID = new PIDControllerHeading(kpTheta, kiTheta, kdTheta, targetH, manualTolerance.h, speed);
 
         /*
          * applies offset by rotating the origin and then applying x/y offset
@@ -225,7 +230,7 @@ public class Drivetrain {
 
         PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, tolerance.y, speed);
         PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
-        PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
+        PIDControllerHeading hPID = new PIDControllerHeading(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
 
         while (!yPID.atTarget(yPos) || !xPID.atTarget(xPos) || !hPID.atTarget(hPos)){
             yPos = otosSensor.getPosition().y;
