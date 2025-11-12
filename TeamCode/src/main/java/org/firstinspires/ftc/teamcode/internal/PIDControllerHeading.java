@@ -6,11 +6,18 @@ public class PIDControllerHeading extends PIDControllerSpeedLimit{
         super(kp, ki, kd, target, tolerance, speed);
     }
 
-    private double realTarget = target % 360;
-
     @Override
     public double calculate(double current) {
-        return (0);
-        // ^this is temporary until Phillip doesn't commit broken code
+        if (target > 0) {
+            if (target - current > 180) {
+                target = target - 360;
+            }
+        } else {
+            if (target - current < -180) {
+                target = target + 360;
+            }
+        }
+
+        return super.calculate(current);
     }
 }

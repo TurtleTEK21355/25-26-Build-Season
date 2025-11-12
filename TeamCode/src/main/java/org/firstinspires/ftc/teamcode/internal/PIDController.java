@@ -7,7 +7,6 @@ public class PIDController {
     double target;
     double error;
     double tolerance;
-
     double previousError = 0;
     double integral = 0;
 
