@@ -19,7 +19,7 @@ public class Drivetrain {
     private double kpTheta;
     private double kiTheta;
     private double kdTheta;
-    private Pose2D tolerance = new Pose2D(2, 2, 10);
+    private final Pose2D tolerance = new Pose2D(2, 2, 10);
     Pose2D position;
     Pose2D offset;
     Pose2D aprilOffset;
@@ -40,7 +40,7 @@ public class Drivetrain {
         this.backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
-    
+
     public void configureDrivetrain(AprilTagCamera aprilTagCamera, OtosSensor otosSensor, double kp, double ki, double kd, double kpTheta, double kiTheta, double kdTheta, double offsetX, double offsetY, double offsetH) {
         this.otosSensor = otosSensor.sensor;
         this.aprilTagCamera = aprilTagCamera;
