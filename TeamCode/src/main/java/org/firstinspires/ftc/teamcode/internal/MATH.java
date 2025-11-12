@@ -15,5 +15,4 @@ public class MATH {
          return Math.sqrt((-GRAVITY*Math.pow(length, 2))/(2*Math.pow(cos(THETA), 2)*(HEIGHT - length * tan(THETA))));
     }
 
-
 }

@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.internal.Drivetrain;
 import org.firstinspires.ftc.teamcode.internal.MATH;
 import org.firstinspires.ftc.teamcode.internal.Shooter;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
 
@@ -17,8 +18,11 @@ import java.util.List;
 public class AutoShoot extends LinearOpMode {
     Shooter shooter;
 
+    AprilTagProcessor April;
     DcMotor motor;
     Drivetrain drivetrain;
+
+    double distance;
     public void runOpMode() throws InterruptedException {
         //shooter = new Shooter(
                 //hardwareMap.get(DcMotor.class, "shooter1"));
@@ -34,30 +38,25 @@ public class AutoShoot extends LinearOpMode {
         );
 
         PotentialRange range = getRange(aprilTagCamera);
-        if (range.tagDetected) {
-            //TODO FIX THE TELEMETRY
-            telemetry.addLine(String.format("Bearing %6.1f  (deg)", range.rangeValue));
-            //TODO Press A instead of Hold
-            telemetry.update();
-            if (gamepad1.a) {
-                int x = 1;
-            }
-        }
-
-
 
         //Measure Distance
-        double distance = 1;
-        double requiredPower;
         while (opModeIsActive()) {
+            if (range.tagDetected) {
+                telemetry.addLine(String.format("Distance %6.1f  (in)", range.rangeValue));
+                //TODO Press A instead of Hold
+                telemetry.update();
+                if (gamepad1.a) {
+                    telemetry.addLine(MATH.calculate(range.rangeValue));               
+                    motor.setPower(MATH.calculate(range.rangeValue)); //TODO Might be a problem later
+                }
+            }
 
-            requiredPower = MATH.calculate(distance);
+
             //Set Power According to Formula
-            motor.setPower(requiredPower);
         }
     }
 private PotentialRange getRange(AprilTagCamera aprilTagCamera) {
-    List<AprilTagDetection> currentDetections = AprilAuto.getDetections();
+    List<AprilTagDetection> currentDetections = April.getDetections();
     telemetry.addData("# AprilTags Detected", currentDetections.size());
     for (AprilTagDetection detection : currentDetections) {
         telemetry.addLine(String.format("\n==== (ID %d)", detection.id));
