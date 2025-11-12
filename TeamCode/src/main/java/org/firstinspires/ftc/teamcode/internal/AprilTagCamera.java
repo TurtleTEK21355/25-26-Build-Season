@@ -93,5 +93,13 @@ public class AprilTagCamera {
         updateDetections();
         return (isDetected);
     }
+    public double getBearing() {
+        for (AprilTagDetection detection : aprilTag.getDetections()) {
+            if (detection.id == 20) {
+                return(detection.ftcPose.bearing);
+            }
+        }
+        return(0.0);
+    }
 }
 

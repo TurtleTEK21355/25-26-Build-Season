@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.configuration.ServoFlavor;
+import com.qualcomm.robotcore.hardware.configuration.annotations.ServoType;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
@@ -29,11 +31,11 @@ public class Hopper {
     }
 
     void openGate() {
-        ballGate.setPosition(0);
+        ballGate.setPosition(0.25);
     }
 
     void closeGate() {
-        ballGate.setPosition(1);
+        ballGate.setPosition(0);
     }
     boolean ballReady() {
         return breakBeamSensor.inProximity();
