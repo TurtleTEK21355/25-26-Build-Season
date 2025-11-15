@@ -19,4 +19,7 @@ public class FlyWheel {
     void setPower(double power) {
         flyWheelMotor.setPower(Range.clip(power, -1, 1));
     }
+    double getPower() {
+        return flyWheelMotor.getPower();
+    }
 }

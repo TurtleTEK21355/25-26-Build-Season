@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.internal;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.tan;
+
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class ShooterSystem {
@@ -7,8 +10,15 @@ public class ShooterSystem {
     Hopper hopper;
     Intake intake;
     ElapsedTime flyWheelTimer = new ElapsedTime();
+    ElapsedTime generalTimer = new ElapsedTime();
     private enum Mode {NORMAL, SHOOT};
     private Mode mode = Mode.NORMAL;
+    static double GRAVITY = 386.09; //Inches per second squared
+    static double HEIGHT = 40; //inches tall
+
+    static double THETA = 1.13446401; //Ramp Angle in Radians
+
+    static double maxSpeed = 388.590;
 
 
     public ShooterSystem(FlyWheel flyWheel, Hopper hopper, Intake intake){
@@ -30,6 +40,33 @@ public class ShooterSystem {
         intake.setPower(power);
     }
 
+    public void autoShoot(double bearing) {
+        double timer = 0;
+        if (!hopper.ballReady()) {
+            hopper.setPower(1);
+        }
+        generalTimer.startTime();
+        while(!hopper.ballReady() && timer<5) {
+            timer = generalTimer.seconds();
+        }
+        generalTimer.reset();
+        if (timer>4.9) {
+            TelemetryPasser.telemetry.addData("Shoot", "failed");
+        } else {
+            double power = (Math.sqrt((-GRAVITY*Math.pow(bearing, 2))/(2*Math.pow(cos(THETA), 2)*(HEIGHT - bearing * tan(THETA)))));
+            flyWheel.setPower(power);
+            while (flyWheel.getPower() < power-0.075);
+            hopper.openGate();
+            generalTimer.startTime();
+            hopper.setPower(1);
+            while(generalTimer.milliseconds()<1250);
+            generalTimer.reset();
+            hopper.setPower(0);
+            flyWheel.setPower(0);
+            hopper.closeGate();
+        }
+
+    }
     public void teleOpControl(boolean shoot, boolean intakeSpin, boolean hopperspinforward, boolean gate, boolean hopperspinbackward) {
         TelemetryPasser.telemetry.addData("shoot", hopper.ballReady());
         if(hopperspinforward) {

@@ -299,4 +299,8 @@ public class Drivetrain {
         TelemetryPasser.telemetry.addData("bl Power=", backLeftMotor.getPower());
         TelemetryPasser.telemetry.addData("br Power=", backRightMotor.getPower());
     }
+    public double shootingPosition() {
+        movePID(36,-36,45,0.5,1000,2,2,5);
+        return aprilTagCamera.getRange();
+    }
 }
