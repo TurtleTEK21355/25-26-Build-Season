@@ -18,16 +18,22 @@ public class ShooterSystem {
 
     }
 
-    public void flywheelSetPower(boolean enabled, double power) {
-        if (enabled) {
-            flyWheel.setPower(power);
-        }
+    public void flywheelSetPower(double power) {
+        flyWheel.setPower(power);
     }
     public void HopperSetPower(double power) {
         hopper.setPower(power);
     }
     public void IntakeSetPower(double power) {
         intake.setPower(power);
+    }
+
+    public void Shoot(){
+        //for auto
+    }
+
+    public void Intake(){
+        //for auto
     }
 
     public void teleOpControl(boolean shoot, boolean intakeSpin, boolean hopperspinforward, boolean gate, boolean hopperspinbackward) {

@@ -30,17 +30,17 @@ public class TeleSlop extends OpMode {
         TelemetryPasser.telemetry = telemetry;
 
         drivetrain = new Drivetrain(
-                hardwareMap.get(DcMotor.class, "lf"),
-                hardwareMap.get(DcMotor.class, "rf"),
-                hardwareMap.get(DcMotor.class, "lb"),
-                hardwareMap.get(DcMotor.class, "rb"));
+                hardwareMap.get(DcMotor.class, "fl"),
+                hardwareMap.get(DcMotor.class, "fr"),
+                hardwareMap.get(DcMotor.class, "bl"),
+                hardwareMap.get(DcMotor.class, "br"));
 
-        shooterSystem = new ShooterSystem(
-                new FlyWheel(hardwareMap.get(DcMotor.class, "shooter")),
-                new Hopper(hardwareMap.get(CRServo.class, "hopper"),
-                            hardwareMap.get(Servo.class, "ballGate"),
-                            hardwareMap.get(Ada2167BreakBeam.class, "ballSensor")),
-                new Intake(hardwareMap.get(DcMotor.class, "intake")));
+//        shooterSystem = new ShooterSystem(
+//                new FlyWheel(hardwareMap.get(DcMotor.class, "shooter")),
+//                new Hopper(hardwareMap.get(CRServo.class, "hopper"),
+//                            hardwareMap.get(Servo.class, "ballGate"),
+//                            hardwareMap.get(Ada2167BreakBeam.class, "ballSensor")),
+//                new Intake(hardwareMap.get(DcMotor.class, "intake")));
 
         otosSensor = new OtosSensor(hardwareMap.get(SparkFunOTOS.class, "otos"));
         otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
@@ -49,13 +49,15 @@ public class TeleSlop extends OpMode {
 
     @Override
     public void loop() {
-        drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        drivetrain.fcControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
         if (gamepad1.y){
             otosSensor.resetPosition();
         }
+        telemetry.addData("hpos:", otosSensor.sensor.getPosition().h);
+        drivetrain.powerTelemetry();
 
-        shooterSystem.teleOpControl(gamepad1.left_bumper, gamepad1.right_bumper, gamepad1.a, gamepad1.b, gamepad1.y);
+        //shooterSystem.teleOpControl(gamepad1.left_bumper, gamepad1.right_bumper, gamepad1.a, gamepad1.b, gamepad1.y);
 
         telemetry.update();
 
