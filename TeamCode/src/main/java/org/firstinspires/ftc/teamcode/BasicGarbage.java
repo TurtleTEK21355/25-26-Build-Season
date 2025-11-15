@@ -33,7 +33,7 @@ public class BasicGarbage extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         TelemetryPasser.telemetry = telemetry;
 
-        aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
+        //aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
 
         otosSensor = new OtosSensor(hardwareMap.get(SparkFunOTOS.class, "otos"));
         otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
@@ -46,7 +46,7 @@ public class BasicGarbage extends LinearOpMode {
 
         waitForStart();
         configureVariables();
-        drivetrain.configureDrivetrain(aprilTagCamera, otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta, 0, 0, 0);
+        drivetrain.configureDrivetrain(otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta, 0, 0, 0);
 
         drivetrain.movePID(0, 10, 0, speed, 1000);
         drivetrain.movePID(10, 10, 90, speed, 1000);

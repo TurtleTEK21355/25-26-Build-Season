@@ -19,21 +19,20 @@ public class Drivetrain {
     private double kpTheta;
     private double kiTheta;
     private double kdTheta;
-    private Pose2D tolerance = new Pose2D(2, 2, 10);
+    private final Pose2D tolerance = new Pose2D(2, 2, 10);
     Pose2D position;
     Pose2D offset;
     Pose2D aprilOffset;
-
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
         this.frontLeftMotor = frontLeft;
         this.frontRightMotor = frontRight;
         this.backLeftMotor = backLeft;
         this.backRightMotor = backRight;
-        this.frontLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        this.backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         this.frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -52,10 +51,31 @@ public class Drivetrain {
         this.kpTheta = kpTheta;
         this.kiTheta = kiTheta;
         this.kdTheta = kdTheta;
+
         offset = new Pose2D(offsetX,offsetY,offsetH);
         aprilOffset = new Pose2D(0,0,0);
+
     }
 
+    public void configureDrivetrain(OtosSensor otosSensor, double kp, double ki, double kd, double kpTheta, double kiTheta, double kdTheta, double offsetX, double offsetY, double offsetH) {
+        this.otosSensor = otosSensor.sensor;
+
+        this.kp = kp;
+        this.ki = ki;
+        this.kd = kd;
+
+        this.kpTheta = kpTheta;
+        this.kiTheta = kiTheta;
+        this.kdTheta = kdTheta;
+
+        offset = new Pose2D(offsetX,offsetY,offsetH);
+        aprilOffset = new Pose2D(0,0,0);
+
+    }
+
+    /**
+     * this one is for teleop because you dont need the pid stuff
+     */
     public void configureDrivetrain(OtosSensor otosSensor) {
         this.otosSensor = otosSensor.sensor;
 
@@ -72,7 +92,7 @@ public class Drivetrain {
     public void movePID(double targetY, double targetX, double targetH, double speed, int holdTime){
         PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, tolerance.y, speed);
         PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
-        PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
+        PIDControllerHeading hPID = new PIDControllerHeading(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
 
         /*
         * applies offset by rotating the origin and then applying x/y offset
@@ -92,7 +112,7 @@ public class Drivetrain {
             yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
             xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
             hPos = realPos.h+offset.h;
-            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
+            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), hPID.calculate(hPos));
 
             TelemetryPasser.telemetry.addData("xPosition", xPos);
             TelemetryPasser.telemetry.addData("yPosition", yPos);
@@ -107,6 +127,7 @@ public class Drivetrain {
             TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(hPos));
             TelemetryPasser.telemetry.addLine();
             powerTelemetry();
+            TelemetryPasser.telemetry.update();
         }
 
         // holds for a specified time (while still correcting position) for more accurate movement
@@ -118,7 +139,7 @@ public class Drivetrain {
             yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
             xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
             hPos = realPos.h+offset.h;
-            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
+            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), hPID.calculate(hPos));
 
             TelemetryPasser.telemetry.addData("xPosition", xPos);
             TelemetryPasser.telemetry.addData("yPosition", yPos);
@@ -133,17 +154,19 @@ public class Drivetrain {
             TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(hPos));
             TelemetryPasser.telemetry.addLine();
             powerTelemetry();
+            TelemetryPasser.telemetry.update();
         }
 
         //ensures no motors are being sent power after the robot has reached positions and fulfilled hold time.
         control(0,0,0);
 
     }
+
     public void movePID(double targetY, double targetX, double targetH, double speed, int holdTime, double mToleranceX, double mToleranceY, double mToleranceH){
         Pose2D manualTolerance = new Pose2D(mToleranceX, mToleranceY, mToleranceH);
         PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, manualTolerance.y, speed);
         PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, manualTolerance.x, speed);
-        PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, manualTolerance.h, speed);
+        PIDControllerHeading hPID = new PIDControllerHeading(kpTheta, kiTheta, kdTheta, targetH, manualTolerance.h, speed);
 
         /*
          * applies offset by rotating the origin and then applying x/y offset
@@ -163,7 +186,7 @@ public class Drivetrain {
             yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
             xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
             hPos = realPos.h+offset.h;
-            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
+            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), hPID.calculate(hPos));
 
             TelemetryPasser.telemetry.addData("xPosition", xPos);
             TelemetryPasser.telemetry.addData("yPosition", yPos);
@@ -178,6 +201,7 @@ public class Drivetrain {
             TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(hPos));
             TelemetryPasser.telemetry.addLine();
             powerTelemetry();
+            TelemetryPasser.telemetry.update();
         }
 
         // holds for a specified time (while still correcting position) for more accurate movement
@@ -189,20 +213,9 @@ public class Drivetrain {
             yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
             xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
             hPos = realPos.h+offset.h;
-            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
+            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), hPID.calculate(hPos));
 
-            TelemetryPasser.telemetry.addData("xPosition", xPos);
-            TelemetryPasser.telemetry.addData("yPosition", yPos);
-            TelemetryPasser.telemetry.addData("hPosition", hPos);
-            TelemetryPasser.telemetry.addLine();
-            TelemetryPasser.telemetry.addData("Targetx", targetX);
-            TelemetryPasser.telemetry.addData("Targety", targetY);
-            TelemetryPasser.telemetry.addData("Targeth", targetH);
-            TelemetryPasser.telemetry.addLine();
-            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(xPos));
-            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(yPos));
-            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(hPos));
-            TelemetryPasser.telemetry.addLine();
+
             powerTelemetry();
         }
 
@@ -225,14 +238,14 @@ public class Drivetrain {
 
         PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, tolerance.y, speed);
         PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
-        PIDControllerSpeedLimit hPID = new PIDControllerSpeedLimit(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
+        PIDControllerHeading hPID = new PIDControllerHeading(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
 
         while (!yPID.atTarget(yPos) || !xPID.atTarget(xPos) || !hPID.atTarget(hPos)){
             yPos = otosSensor.getPosition().y;
             xPos = otosSensor.getPosition().x;
             hPos = otosSensor.getPosition().h;
 
-            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), -hPID.calculate(hPos));
+            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), hPID.calculate(hPos));
 
             powerTelemetry();
 
@@ -242,15 +255,15 @@ public class Drivetrain {
 
 
     public void fcControl(double y, double x, double h) {
-        double r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        double r = Math.hypot(y, x);
         double theta = Math.atan2(y, x);
 
-        double correctedTheta = theta - Math.toRadians(otosSensor.getPosition().h);
+        double correctedTheta = theta + Math.toRadians(otosSensor.getPosition().h);
 
         double correctedY = r * Math.sin(correctedTheta);
         double correctedX = r * Math.cos(correctedTheta);
 
-        control(correctedY, correctedX, -h);
+        control(correctedY, correctedX, h);
 
     }
 
@@ -285,9 +298,9 @@ public class Drivetrain {
      * @param h turn +right and -left
      */
     public void control(double y, double x, double h) {
-        frontRightMotor.setPower(Range.clip(y - x - h, -1, 1));
+        frontRightMotor.setPower(Range.clip(y + x - h, -1, 1));
         frontLeftMotor.setPower(Range.clip(y - x + h, -1, 1));
-        backRightMotor.setPower(Range.clip(y + x - h, -1, 1));
+        backRightMotor.setPower(Range.clip(y - x - h, -1, 1));
         backLeftMotor.setPower(Range.clip(y + x + h, -1, 1));
     }
 
