@@ -29,11 +29,15 @@ public class Shooter {
     }
 
     public void increaseShooterSpeed(double increment) {
-        shooterSpeed += increment;
+        if (shooterSpeed <1) {
+            shooterSpeed += increment;
+        }
     }
 
     public void decreaseShooterSpeed(double increment) {
-        shooterSpeed -= increment;
+        if (shooterSpeed >0) {
+            shooterSpeed -= increment;
+        }
     }
 
     public void runShooter() {
@@ -48,7 +52,7 @@ public class Shooter {
            leftMotor.setPower(shooterSpeed);
         }
         else if (timer.time() < 2) {
-            shooterSpeed = 1;
+            shooterSpeed = 0.85;
             leftMotor.setPower(shooterSpeed);
         }
         else {
@@ -70,8 +74,6 @@ public class Shooter {
         shooterOff = true;
 
         //TODO STOP THE ROBOT APOCALYPSE
-        leftMotor.setPower(0);
-        shooterOff = true;
 
     }
 

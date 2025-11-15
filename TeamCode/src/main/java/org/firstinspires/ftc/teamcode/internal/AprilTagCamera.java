@@ -66,4 +66,7 @@ public class AprilTagCamera {
         // Disable or re-enable the aprilTag processor at any time.
         //visionPortal.setProcessorEnabled(aprilTag, true);
     }
+    public Pose2D getDetections() {
+
+    }
 }

@@ -149,9 +149,9 @@ public class Drivetrain {
 
     }
     public void control(double y, double x, double h) {
-        frontRightMotor.setPower(Range.clip(y - x - h, -1, 1));
+        frontRightMotor.setPower(Range.clip(y + x - h, -1, 1));
         frontLeftMotor.setPower(Range.clip(y - x + h, -1, 1));
-        backRightMotor.setPower(Range.clip(y + x - h, -1, 1));
+        backRightMotor.setPower(Range.clip(y - x - h, -1, 1));
         backLeftMotor.setPower(Range.clip(y + x + h, -1, 1));
         TelemetryPasser.telemetry.addData("flPower=", frontLeftMotor.getPower());
         TelemetryPasser.telemetry.addData("frPower=", frontRightMotor.getPower());

@@ -39,6 +39,18 @@ public class AutoShoot extends LinearOpMode {
 
         PotentialRange range = getRange(aprilTagCamera);
 
+        if (range.tagDetected) {
+            //TODO FIX THE TELEMETRY
+            telemetry.addLine(String.format("Range %6.1f  (in)", range.rangeValue));
+            //TODO Press A instead of Hold
+            telemetry.update();
+            if (gamepad1.a) {
+                int x = 1;
+            }
+        }
+
+
+
         //Measure Distance
         while (opModeIsActive()) {
             if (range.tagDetected) {

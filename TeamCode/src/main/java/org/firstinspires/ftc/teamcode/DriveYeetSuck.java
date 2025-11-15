@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.internal.Drivetrain;
 import org.firstinspires.ftc.teamcode.internal.Shooter;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
-@TeleOp(name = "IntakeAndShooter", group = "")
+@TeleOp(name = "UseThisOnePLEASE", group = "")
 public class DriveYeetSuck extends LinearOpMode {
     Drivetrain drivetrain;
     Shooter shooter;
@@ -56,7 +56,15 @@ public class DriveYeetSuck extends LinearOpMode {
             else if (gamepad1.left_trigger == 0) {
                 shooter.stopShooter();
             }
-            drivetrain.control(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+            drivetrain.control(gamepad1.left_stick_y * 0.5, gamepad1.left_stick_x * 0.5, gamepad1.right_stick_x);
+            if (gamepad1.a) {
+                shooter.increaseShooterSpeed(0.05);
+                sleep(500);
+            }
+            if (gamepad1.b) {
+                shooter.decreaseShooterSpeed(0.05);
+                sleep(500);
+            }
         }
     }
 
