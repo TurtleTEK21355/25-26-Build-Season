@@ -42,7 +42,7 @@ public class ShooterSystem {
 
     public void autoShoot(double range) {
         double timer = 0;
-        double power = (Math.sqrt((-GRAVITY*Math.pow(range, 2))/(2*Math.pow(cos(THETA), 2)*(HEIGHT - range * tan(THETA)))));
+        double power = (Math.sqrt((-GRAVITY*Math.pow(range, 2))/(2*Math.pow(cos(THETA), 2)*(HEIGHT - range * tan(THETA)))))/maxSpeed;
         flyWheel.setPower(power);
         while (flyWheel.getPower() < power-0.075);
         hopper.openGate();
