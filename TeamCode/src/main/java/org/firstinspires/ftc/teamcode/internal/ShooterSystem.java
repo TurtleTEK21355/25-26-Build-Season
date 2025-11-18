@@ -6,9 +6,9 @@ import static java.lang.Math.tan;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class ShooterSystem {
-    FlyWheel flyWheel;
-    Hopper hopper;
-    Intake intake;
+    private FlyWheel flyWheel;
+    private Hopper hopper;
+    private Intake intake;
     ElapsedTime flyWheelTimer = new ElapsedTime();
     ElapsedTime generalTimer = new ElapsedTime();
     private enum Mode {NORMAL, SHOOT};
@@ -42,29 +42,17 @@ public class ShooterSystem {
 
     public void autoShoot(double bearing) {
         double timer = 0;
-        if (!hopper.ballReady()) {
-            hopper.setPower(1);
-        }
+        double power = (Math.sqrt((-GRAVITY*Math.pow(range, 2))/(2*Math.pow(cos(THETA), 2)*(HEIGHT - range * tan(THETA)))));
+        flyWheel.setPower(power);
+        while (flyWheel.getPower() < power-0.075);
+        hopper.openGate();
         generalTimer.startTime();
-        while(!hopper.ballReady() && timer<5) {
-            timer = generalTimer.seconds();
-        }
+        hopper.setPower(1);
+        while(generalTimer.milliseconds()<1250);
         generalTimer.reset();
-        if (timer>4.9) {
-            TelemetryPasser.telemetry.addData("Shoot", "failed");
-        } else {
-            double power = (Math.sqrt((-GRAVITY*Math.pow(bearing, 2))/(2*Math.pow(cos(THETA), 2)*(HEIGHT - bearing * tan(THETA)))));
-            flyWheel.setPower(power);
-            while (flyWheel.getPower() < power-0.075);
-            hopper.openGate();
-            generalTimer.startTime();
-            hopper.setPower(1);
-            while(generalTimer.milliseconds()<1250);
-            generalTimer.reset();
-            hopper.setPower(0);
-            flyWheel.setPower(0);
-            hopper.closeGate();
-        }
+        hopper.setPower(0);
+        flyWheel.setPower(0);
+        hopper.closeGate();
 
     }
     public void teleOpControl(boolean shoot, boolean intakeSpin, boolean hopperspinforward, boolean gate, boolean hopperspinbackward) {
