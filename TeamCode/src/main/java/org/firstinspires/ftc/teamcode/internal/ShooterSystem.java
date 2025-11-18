@@ -40,7 +40,7 @@ public class ShooterSystem {
         intake.setPower(power);
     }
 
-    public void autoShoot(double bearing) {
+    public void autoShoot(double range) {
         double timer = 0;
         double power = (Math.sqrt((-GRAVITY*Math.pow(range, 2))/(2*Math.pow(cos(THETA), 2)*(HEIGHT - range * tan(THETA)))));
         flyWheel.setPower(power);
