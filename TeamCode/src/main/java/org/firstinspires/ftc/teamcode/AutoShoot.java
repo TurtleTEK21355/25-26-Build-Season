@@ -58,7 +58,6 @@ public class AutoShoot extends LinearOpMode {
                 //TODO Press A instead of Hold
                 telemetry.update();
                 if (gamepad1.a) {
-                    telemetry.addLine(MATH.calculate(range.rangeValue));               
                     motor.setPower(MATH.calculate(range.rangeValue)); //TODO Might be a problem later
                 }
             }
