@@ -29,10 +29,10 @@ public class Drivetrain {
         this.frontRightMotor = frontRight;
         this.backLeftMotor = backLeft;
         this.backRightMotor = backRight;
-        this.frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        this.frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        this.backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.frontLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         this.frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
