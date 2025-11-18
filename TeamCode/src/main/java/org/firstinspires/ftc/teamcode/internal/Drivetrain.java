@@ -29,10 +29,10 @@ public class Drivetrain {
         this.frontRightMotor = frontRight;
         this.backLeftMotor = backLeft;
         this.backRightMotor = backRight;
-        this.frontLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        this.backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         this.frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -258,7 +258,7 @@ public class Drivetrain {
         double r = Math.hypot(y, x);
         double theta = Math.atan2(y, x);
 
-        double correctedTheta = theta + Math.toRadians(otosSensor.getPosition().h);
+        double correctedTheta = theta - Math.toRadians(otosSensor.getPosition().h);
 
         double correctedY = r * Math.sin(correctedTheta);
         double correctedX = r * Math.cos(correctedTheta);
@@ -298,10 +298,10 @@ public class Drivetrain {
      * @param h turn +right and -left
      */
     public void control(double y, double x, double h) {
-        frontRightMotor.setPower(Range.clip(y + x - h, -1, 1));
-        frontLeftMotor.setPower(Range.clip(y - x + h, -1, 1));
-        backRightMotor.setPower(Range.clip(y - x - h, -1, 1));
-        backLeftMotor.setPower(Range.clip(y + x + h, -1, 1));
+        frontRightMotor.setPower(Range.clip(y - x - h, -1, 1));
+        frontLeftMotor.setPower(Range.clip(y + x + h, -1, 1));
+        backRightMotor.setPower(Range.clip(y + x - h, -1, 1));
+        backLeftMotor.setPower(Range.clip(y - x + h, -1, 1));
     }
 
      // 1. Sends power of each motor to telemetry

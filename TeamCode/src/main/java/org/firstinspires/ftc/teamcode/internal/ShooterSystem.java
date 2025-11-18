@@ -88,7 +88,7 @@ public class ShooterSystem {
 //                flyWheelTimer.reset();
 //                mode = Mode.NORMAL;
 //
-//            } else if (flyWheelTimer.milliseconds() > 500) {
+//            } else if (flyWheelTimer.milliseconds() > 400) {
 //                hopper.openGate();
 //                hopper.setPower(1);
 //
