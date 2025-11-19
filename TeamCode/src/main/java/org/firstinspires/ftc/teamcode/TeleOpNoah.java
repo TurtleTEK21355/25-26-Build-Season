@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -36,7 +37,7 @@ public class TeleOpNoah extends OpMode {
                 hardwareMap.get(DcMotor.class, "rb"));
 
         shooterSystem = new ShooterSystem(
-                new FlyWheel(hardwareMap.get(DcMotor.class, "shooter")),
+                new FlyWheel(hardwareMap.get(DcMotorEx.class, "shooter")),
                 new Hopper(hardwareMap.get(CRServo.class, "hopper"),
                             hardwareMap.get(Servo.class, "ballGate"),
                             hardwareMap.get(Ada2167BreakBeam.class, "ballSensor")),

@@ -54,6 +54,7 @@ public class ShooterSystem {
         flyWheel.setPower(0);
         hopper.closeGate();
 
+
     }
     public void teleOpControl(boolean shoot, boolean intakeSpin, boolean hopperspinforward, boolean gate, boolean hopperspinbackward) {
         TelemetryPasser.telemetry.addData("shoot", hopper.ballReady());
