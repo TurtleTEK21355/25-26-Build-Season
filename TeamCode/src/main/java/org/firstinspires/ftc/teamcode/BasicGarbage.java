@@ -52,7 +52,7 @@ public class BasicGarbage extends LinearOpMode {
         drivetrain.movePID(10, 10, 90, speed, 1000);
         drivetrain.movePID(10, 10, 135, speed, 1000);
         drivetrain.movePID(10, 0, -135, speed, 1000);
-        drivetrain.movePID(0, 0, 270, speed, 1000);
+        drivetrain.movePID(0, 0, -90, speed, 1000);
         drivetrain.movePID(0,0,0,speed,1000);
 
     }

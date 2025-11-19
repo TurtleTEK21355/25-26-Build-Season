@@ -18,6 +18,6 @@ public class PIDControllerHeading extends PIDControllerSpeedLimit{
             }
         }
 
-        return super.calculate(current);
+        return -super.calculate(current);
     }
 }
