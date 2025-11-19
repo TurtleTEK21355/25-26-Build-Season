@@ -39,10 +39,10 @@ public class BasicGarbage extends LinearOpMode {
         otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
 
         drivetrain = new Drivetrain(
-                hardwareMap.get(DcMotor.class, "fl"),
-                hardwareMap.get(DcMotor.class, "fr"),
-                hardwareMap.get(DcMotor.class, "bl"),
-                hardwareMap.get(DcMotor.class, "br"));
+                hardwareMap.get(DcMotor.class, "lf"),
+                hardwareMap.get(DcMotor.class, "rf"),
+                hardwareMap.get(DcMotor.class, "lb"),
+                hardwareMap.get(DcMotor.class, "rb"));
 
         waitForStart();
         configureVariables();
