@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.internal.Menu;
 import org.firstinspires.ftc.teamcode.internal.OtosSensor;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
-@Autonomous(name="BasicGarbage", group="Linear OpMode")
+@Autonomous(name="Don't Use", group="Linear OpMode")
 public class BasicGarbage extends LinearOpMode {
     Drivetrain drivetrain;
     OtosSensor otosSensor;

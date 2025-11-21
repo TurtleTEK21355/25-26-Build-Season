@@ -303,6 +303,38 @@ public class Drivetrain {
         backRightMotor.setPower(Range.clip(y + x - h, -1, 1));
         backLeftMotor.setPower(Range.clip(y - x + h, -1, 1));
     }
+    public void joystickMovement(double ly, double lx, double rx, double ry) {
+        if (rx != 0 || ry != 0) {
+            double magnitude = Math.sqrt((ry*ry)+(rx*rx));
+            TelemetryPasser.telemetry.addData("magnitude", magnitude);
+            TelemetryPasser.telemetry.update();
+            double fr = (ry + rx) / 2;
+            double br = (ry + rx) / 2;
+            double fl = (ry - rx) / 2;
+            double bl = (ry - rx) / 2;
+            double min = Math.min(Math.min(fr, br), Math.min(fl, bl));
+            frontRightMotor.setPower((fr/min)*magnitude);
+            backRightMotor.setPower((br/min)*magnitude);
+            frontLeftMotor.setPower((fl/min)*magnitude);
+            backLeftMotor.setPower((bl/min)*magnitude);
+        } else {
+            //double magnitude = Math.sqrt((ly*ly)+(lx*lx));
+            double magnitude = 1;
+            TelemetryPasser.telemetry.addData("magnitude", magnitude);
+            TelemetryPasser.telemetry.update();
+            double fr = (ly - lx) / 2;
+            double br = (ly + lx) / 2;
+            double fl = (ly + lx) / 2;
+            double bl = (ly - lx) / 2;
+            double min = Math.min(Math.min(fr, br), Math.min(fl, bl));
+            min = Math.abs(min);
+            frontRightMotor.setPower((fr/min)*magnitude);
+            backRightMotor.setPower((br/min)*magnitude);
+            frontLeftMotor.setPower((fl/min)*magnitude);
+            backLeftMotor.setPower((bl/min)*magnitude);
+
+        }
+    }
 
      // 1. Sends power of each motor to telemetry
      // 2. Updates telemetry

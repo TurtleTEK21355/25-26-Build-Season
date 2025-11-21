@@ -24,7 +24,7 @@ import org.firstinspires.ftc.teamcode.internal.OtosSensor;
 import org.firstinspires.ftc.teamcode.internal.ShooterSystem;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
-@Autonomous(name="Noah's Test Class", group="Autonomous")
+@Autonomous(name="Use This Auto", group="Autonomous")
 public class NoahsTestClass extends LinearOpMode {
     Drivetrain drivetrain;
     OtosSensor otosSensor;
@@ -61,7 +61,9 @@ public class NoahsTestClass extends LinearOpMode {
         drivetrain.configureDrivetrain(otosSensor);
 
         waitForStart();
-        drivetrain.configureDrivetrain(aprilTagCamera, otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta, -24, 64, -90);
-        drivetrain.movePID(36,-36,-45,0.5,1000,2,2,5);
+        drivetrain.configureDrivetrain(aprilTagCamera, otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta, 0, 0, 0);
+        drivetrain.control(0.75,0,0);
+        sleep(1000);
+        drivetrain.control(0,0,0);
     }
 }

@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.internal.OtosSensor;
 import org.firstinspires.ftc.teamcode.internal.ShooterSystem;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
-@TeleOp(name="UseThisTeleOp", group="Iterative OpModes")
+@TeleOp(name="Don't Use", group="Iterative OpModes")
 public class TeleOpNoah extends OpMode {
 
     Drivetrain drivetrain;

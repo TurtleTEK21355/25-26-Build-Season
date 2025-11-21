@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.internal.Menu;
 import org.firstinspires.ftc.teamcode.internal.OtosSensor;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
-@Autonomous(name="Turn Towards a thing", group="Linear OpMode")
+@Autonomous(name="Don't Use", group="Linear OpMode")
 public class TurnTowardsAThing extends LinearOpMode {
     Drivetrain drivetrain;
     OtosSensor otosSensor;
