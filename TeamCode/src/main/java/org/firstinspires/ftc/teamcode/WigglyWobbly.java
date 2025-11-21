@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.teamcode.internal.Drivetrain;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
-@TeleOp(name="TeleOP", group="Iterative OpModes")
+@TeleOp(name="Don't Use", group="Iterative OpModes")
 public class WigglyWobbly extends OpMode {
 
     Drivetrain drivetrain;

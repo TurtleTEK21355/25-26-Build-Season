@@ -18,13 +18,14 @@ import org.firstinspires.ftc.teamcode.internal.Hopper;
 import org.firstinspires.ftc.teamcode.internal.*;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
 
-@TeleOp(name="TeleSlop", group="Iterative OpModes")
+@TeleOp(name="UseThisOneNotTheOtherOnePleasePLEASE", group="USE THIS")
 public class TeleSlop extends OpMode {
 
     Drivetrain drivetrain;
     OtosSensor otosSensor;
     ShooterSystem shooterSystem;
     PartnerPark partnerPark;
+    String set = "none";
 
     @Override
     public void init() {
@@ -53,16 +54,26 @@ public class TeleSlop extends OpMode {
 
     @Override
     public void loop() {
-        drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        drivetrain.joystickMovement(gamepad1.left_stick_y, -gamepad1.left_stick_x, gamepad1.right_stick_x, gamepad1.right_stick_y);
 
-        if (gamepad1.y){
+        if (gamepad1.back){
             otosSensor.resetPosition();
         }
         telemetry.addData("hpos:", otosSensor.sensor.getPosition().h);
         drivetrain.powerTelemetry();
-
-        shooterSystem.teleOpControl(gamepad1.left_bumper, gamepad1.right_bumper, gamepad1.a, gamepad1.b, gamepad1.y);
-//        partnerPark.control(gamepad1.x, gamepad1.b);
+        if (gamepad2.a) {
+            set = "a";
+        } else if (gamepad2.b) {
+            set = "b";
+        } else if (gamepad2.x) {
+            set = "x";
+        } else if (gamepad2.y) {
+            set = "y";
+        } else {
+            set = "none";
+        }
+        shooterSystem.teleOpControl(set, gamepad2.dpad_down, gamepad2.right_bumper, gamepad2.dpad_up, gamepad2.left_bumper);
+//        partnerPark.control(gamepad1.right_bumper, gamepad1.left_bumper);
         telemetry.update();
 
     }

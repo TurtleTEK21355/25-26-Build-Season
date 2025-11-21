@@ -56,16 +56,29 @@ public class ShooterSystem {
 
 
     }
-    public void teleOpControl(boolean shoot, boolean intakeSpin, boolean hopperspinforward, boolean gate, boolean hopperspinbackward) {
+    public void teleOpControl(String shoot, boolean intakeSpin, boolean hopperspinforward, boolean gate, boolean hopperspinbackward) {
         TelemetryPasser.telemetry.addData("shoot", hopper.ballReady());
         if(hopperspinforward) {
             hopper.setPower(1);
         } else if (hopperspinbackward) {
             hopper.setPower(-1);
         } else {hopper.setPower(0);}
-        if (shoot) {
-            flyWheel.setPower(0.8);
-        } else {flyWheel.setPower(0);}
+        switch (shoot) {
+            case "a":
+                flyWheel.setPower(0.5);
+                break;
+            case "b":
+                flyWheel.setPower(0.6);
+                break;
+            case "x":
+                flyWheel.setPower(0.7);
+                break;
+            case "y":
+                flyWheel.setPower(0.8);
+                break;
+            default:
+                flyWheel.setPower(0);
+        }
         if (intakeSpin) {
             intake.setPower(0.8);
         } else {intake.setPower(0);}
