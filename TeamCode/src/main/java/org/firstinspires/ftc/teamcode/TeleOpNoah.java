@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
 import org.firstinspires.ftc.teamcode.internal.Drivetrain;
 import org.firstinspires.ftc.teamcode.internal.FlyWheel;
+import org.firstinspires.ftc.teamcode.internal.HardwareNames;
 import org.firstinspires.ftc.teamcode.internal.Hopper;
 import org.firstinspires.ftc.teamcode.internal.Intake;
 import org.firstinspires.ftc.teamcode.internal.OtosSensor;
@@ -25,16 +26,17 @@ public class TeleOpNoah extends OpMode {
     Drivetrain drivetrain;
     OtosSensor otosSensor;
     ShooterSystem shooterSystem;
+    HardwareNames hardwareNames = new HardwareNames();
 
     @Override
     public void init() {
         TelemetryPasser.telemetry = telemetry;
 
         drivetrain = new Drivetrain(
-                hardwareMap.get(DcMotor.class, "lf"),
-                hardwareMap.get(DcMotor.class, "rf"),
-                hardwareMap.get(DcMotor.class, "lb"),
-                hardwareMap.get(DcMotor.class, "rb"));
+                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),
+                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR)),
+                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_LEFT_MOTOR)),
+                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_RIGHT_MOTOR)));
 
         shooterSystem = new ShooterSystem(
                 new FlyWheel(hardwareMap.get(DcMotorEx.class, "shooter")),

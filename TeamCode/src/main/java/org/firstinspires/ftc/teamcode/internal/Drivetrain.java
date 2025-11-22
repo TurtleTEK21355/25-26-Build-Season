@@ -23,6 +23,15 @@ public class Drivetrain {
     Pose2D position;
     Pose2D offset;
     Pose2D aprilOffset;
+    double yPosTelemetry;
+    double xPosTelemetry;
+    double hPosTelemetry;
+    double yTargetTelemetry;
+    double xTargetTelemetry;
+    double hTargetTelemetry;
+    boolean yAtTargetTelemetry;
+    boolean xAtTargetTelemetry;
+    boolean hAtTargetTelemetry;
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
         this.frontLeftMotor = frontLeft;
@@ -81,6 +90,12 @@ public class Drivetrain {
 
     }
 
+    public Pose2D getPosition() {
+        return new Pose2D(otosSensor.getPosition().x,
+                otosSensor.getPosition().y,
+                otosSensor.getPosition().h);
+    }
+
     /**
      * controls the drivetrain to move and rotate to specific points on the field. If the robot is within the tolerance area, it will stop... probably
      * @param targetY the y target
@@ -112,22 +127,25 @@ public class Drivetrain {
             yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
             xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
             hPos = realPos.h+offset.h;
+
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), hPID.calculate(hPos));
 
-            TelemetryPasser.telemetry.addData("xPosition", xPos);
-            TelemetryPasser.telemetry.addData("yPosition", yPos);
-            TelemetryPasser.telemetry.addData("hPosition", hPos);
-            TelemetryPasser.telemetry.addLine();
-            TelemetryPasser.telemetry.addData("Targetx", targetX);
-            TelemetryPasser.telemetry.addData("Targety", targetY);
-            TelemetryPasser.telemetry.addData("Targeth", targetH);
-            TelemetryPasser.telemetry.addLine();
-            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(xPos));
-            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(yPos));
-            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(hPos));
-            TelemetryPasser.telemetry.addLine();
+            xPosTelemetry = xPos;
+            yPosTelemetry = yPos;
+            hPosTelemetry = hPos;
+
+            xTargetTelemetry = targetX;
+            yTargetTelemetry = targetY;
+            hTargetTelemetry = targetH;
+
+            xAtTargetTelemetry = xPID.atTarget(xPos);
+            yAtTargetTelemetry = yPID.atTarget(yPos);
+            hAtTargetTelemetry = hPID.atTarget(hPos);
+
             powerTelemetry();
+            PIDTelemetry();
             TelemetryPasser.telemetry.update();
+
         }
 
         // holds for a specified time (while still correcting position) for more accurate movement
@@ -141,19 +159,20 @@ public class Drivetrain {
             hPos = realPos.h+offset.h;
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), hPID.calculate(hPos));
 
-            TelemetryPasser.telemetry.addData("xPosition", xPos);
-            TelemetryPasser.telemetry.addData("yPosition", yPos);
-            TelemetryPasser.telemetry.addData("hPosition", hPos);
-            TelemetryPasser.telemetry.addLine();
-            TelemetryPasser.telemetry.addData("Targetx", targetX);
-            TelemetryPasser.telemetry.addData("Targety", targetY);
-            TelemetryPasser.telemetry.addData("Targeth", targetH);
-            TelemetryPasser.telemetry.addLine();
-            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(xPos));
-            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(yPos));
-            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(hPos));
-            TelemetryPasser.telemetry.addLine();
+            xPosTelemetry = xPos;
+            yPosTelemetry = yPos;
+            hPosTelemetry = hPos;
+
+            xTargetTelemetry = targetX;
+            yTargetTelemetry = targetY;
+            hTargetTelemetry = targetH;
+
+            xAtTargetTelemetry = xPID.atTarget(xPos);
+            yAtTargetTelemetry = yPID.atTarget(yPos);
+            hAtTargetTelemetry = hPID.atTarget(hPos);
+
             powerTelemetry();
+            PIDTelemetry();
             TelemetryPasser.telemetry.update();
         }
 
@@ -188,20 +207,22 @@ public class Drivetrain {
             hPos = realPos.h+offset.h;
             fcControl(yPID.calculate(yPos), xPID.calculate(xPos), hPID.calculate(hPos));
 
-            TelemetryPasser.telemetry.addData("xPosition", xPos);
-            TelemetryPasser.telemetry.addData("yPosition", yPos);
-            TelemetryPasser.telemetry.addData("hPosition", hPos);
-            TelemetryPasser.telemetry.addLine();
-            TelemetryPasser.telemetry.addData("Targetx", targetX);
-            TelemetryPasser.telemetry.addData("Targety", targetY);
-            TelemetryPasser.telemetry.addData("Targeth", targetH);
-            TelemetryPasser.telemetry.addLine();
-            TelemetryPasser.telemetry.addData("atTargetx", xPID.atTarget(xPos));
-            TelemetryPasser.telemetry.addData("atTargety", yPID.atTarget(yPos));
-            TelemetryPasser.telemetry.addData("atTargeth", hPID.atTarget(hPos));
-            TelemetryPasser.telemetry.addLine();
+            xPosTelemetry = xPos;
+            yPosTelemetry = yPos;
+            hPosTelemetry = hPos;
+
+            xTargetTelemetry = targetX;
+            yTargetTelemetry = targetY;
+            hTargetTelemetry = targetH;
+
+            xAtTargetTelemetry = xPID.atTarget(xPos);
+            yAtTargetTelemetry = yPID.atTarget(yPos);
+            hAtTargetTelemetry = hPID.atTarget(hPos);
+
             powerTelemetry();
+            PIDTelemetry();
             TelemetryPasser.telemetry.update();
+
         }
 
         // holds for a specified time (while still correcting position) for more accurate movement
@@ -343,6 +364,21 @@ public class Drivetrain {
         TelemetryPasser.telemetry.addData("fr Power=", frontRightMotor.getPower());
         TelemetryPasser.telemetry.addData("bl Power=", backLeftMotor.getPower());
         TelemetryPasser.telemetry.addData("br Power=", backRightMotor.getPower());
+    }
+
+    public void PIDTelemetry(){
+        TelemetryPasser.telemetry.addData("xPosition", xPosTelemetry);
+        TelemetryPasser.telemetry.addData("yPosition", yPosTelemetry);
+        TelemetryPasser.telemetry.addData("hPosition", hPosTelemetry);
+        TelemetryPasser.telemetry.addLine();
+        TelemetryPasser.telemetry.addData("Targetx", xTargetTelemetry);
+        TelemetryPasser.telemetry.addData("Targety", yTargetTelemetry);
+        TelemetryPasser.telemetry.addData("Targeth", hTargetTelemetry);
+        TelemetryPasser.telemetry.addLine();
+        TelemetryPasser.telemetry.addData("atTargetx", xAtTargetTelemetry);
+        TelemetryPasser.telemetry.addData("atTargety", yAtTargetTelemetry);
+        TelemetryPasser.telemetry.addData("atTargeth", hAtTargetTelemetry);
+        TelemetryPasser.telemetry.addLine();
     }
     public double shootingPosition() {
         movePID(36,-36,45,0.5,1000,2,2,5);

@@ -26,16 +26,17 @@ public class TeleSlop extends OpMode {
     ShooterSystem shooterSystem;
     PartnerPark partnerPark;
     String set = "none";
+    HardwareNames hardwareNames = new HardwareNames();
 
     @Override
     public void init() {
         TelemetryPasser.telemetry = telemetry;
 
         drivetrain = new Drivetrain(
-                hardwareMap.get(DcMotor.class, "lf"),
-                hardwareMap.get(DcMotor.class, "rf"),
-                hardwareMap.get(DcMotor.class, "lb"),
-                hardwareMap.get(DcMotor.class, "rb"));
+                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),
+                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR)),
+                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_LEFT_MOTOR)),
+                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_RIGHT_MOTOR)));
 
         shooterSystem = new ShooterSystem(
                 new FlyWheel(hardwareMap.get(DcMotorEx.class, "shooter")),
@@ -59,8 +60,7 @@ public class TeleSlop extends OpMode {
         if (gamepad1.back){
             otosSensor.resetPosition();
         }
-        telemetry.addData("hpos:", otosSensor.sensor.getPosition().h);
-        drivetrain.powerTelemetry();
+
         if (gamepad2.a) {
             set = "a";
         } else if (gamepad2.b) {
@@ -74,6 +74,8 @@ public class TeleSlop extends OpMode {
         }
         shooterSystem.teleOpControl(set, gamepad2.dpad_down, gamepad2.right_bumper, gamepad2.dpad_up, gamepad2.left_bumper);
 //        partnerPark.control(gamepad1.right_bumper, gamepad1.left_bumper);
+        telemetry.addData("hpos:", otosSensor.sensor.getPosition().h);
+        drivetrain.powerTelemetry();
         telemetry.update();
 
     }

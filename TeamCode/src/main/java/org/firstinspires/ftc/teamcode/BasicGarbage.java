@@ -11,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.internal.AprilTagCamera;
 import org.firstinspires.ftc.teamcode.internal.DoubleMenuItem;
 import org.firstinspires.ftc.teamcode.internal.Drivetrain;
+import org.firstinspires.ftc.teamcode.internal.HardwareNames;
 import org.firstinspires.ftc.teamcode.internal.Menu;
 import org.firstinspires.ftc.teamcode.internal.OtosSensor;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
@@ -28,6 +29,7 @@ public class BasicGarbage extends LinearOpMode {
     double kdTheta;
     double speed = 0.5;
     double valueChangeAmount = 0.01;
+    HardwareNames hardwareNames = new HardwareNames();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -39,14 +41,17 @@ public class BasicGarbage extends LinearOpMode {
         otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
 
         drivetrain = new Drivetrain(
-                hardwareMap.get(DcMotor.class, "lf"),
-                hardwareMap.get(DcMotor.class, "rf"),
-                hardwareMap.get(DcMotor.class, "lb"),
-                hardwareMap.get(DcMotor.class, "rb"));
+                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),
+                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR)),
+                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_LEFT_MOTOR)),
+                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_RIGHT_MOTOR)));
 
         waitForStart();
+
         configureVariables();
         drivetrain.configureDrivetrain(otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta, 0, 0, 0);
+
+
 
         drivetrain.movePID(0, 10, 0, speed, 1000);
         drivetrain.movePID(10, 10, 90, speed, 1000);
@@ -58,16 +63,16 @@ public class BasicGarbage extends LinearOpMode {
     }
 
     public void configureVariables(){
+        DoubleMenuItem speedItem =  new DoubleMenuItem(speed, valueChangeAmount, "Speed");
         DoubleMenuItem kpItem = new DoubleMenuItem(kp, valueChangeAmount, "Kp");
         DoubleMenuItem kiItem = new DoubleMenuItem(ki, valueChangeAmount, "Ki");
         DoubleMenuItem kdItem = new DoubleMenuItem(kd, valueChangeAmount, "Kd");
         DoubleMenuItem kpThetaItem = new DoubleMenuItem(kpTheta, valueChangeAmount, "KpTheta");
         DoubleMenuItem kiThetaItem = new DoubleMenuItem(kiTheta, valueChangeAmount, "KiTheta");
         DoubleMenuItem kdThetaItem = new DoubleMenuItem(kdTheta, valueChangeAmount, "KdTheta");
-        DoubleMenuItem speedItem =  new DoubleMenuItem(speed, valueChangeAmount, "Speed");
 
         Menu menu = new Menu();
-        menu.add(kpItem, kiItem, kdItem, kpThetaItem, kiThetaItem, kdThetaItem, speedItem);
+        menu.add(speedItem, kpItem, kiItem, kdItem, kpThetaItem, kiThetaItem, kdThetaItem);
 
         while(opModeIsActive() && !gamepad1.start) {
             menu.itemSelection(gamepad1.dpad_up, gamepad1.dpad_down, gamepad1.dpad_right, gamepad1.dpad_left);
@@ -79,13 +84,13 @@ public class BasicGarbage extends LinearOpMode {
 
         }
 
+        speed = speedItem.getValue();
         kp = kpItem.getValue();
         ki = kiItem.getValue();
         kd = kdItem.getValue();
         kpTheta = kpThetaItem.getValue();
         kiTheta = kiThetaItem.getValue();
         kdTheta = kdThetaItem.getValue();
-        speed = speedItem.getValue();
 
     }
 }
