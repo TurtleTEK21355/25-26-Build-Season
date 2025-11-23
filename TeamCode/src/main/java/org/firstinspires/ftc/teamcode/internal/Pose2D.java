@@ -1,21 +1,28 @@
 package org.firstinspires.ftc.teamcode.internal;
 
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
+
 public class Pose2D {
     public double x;
     public double y;
     public double h;
 
-    Pose2D(Pose2D vector){
-        this.x = vector.x;
-        this.y = vector.y;
-        this.h = vector.h;
+    Pose2D(Pose2D pose2D){
+        this.x = pose2D.x;
+        this.y = pose2D.y;
+        this.h = pose2D.h;
     }
     public Pose2D(double x, double y, double h){
         this.x = x;
         this.y = y;
         this.h = h;
     }
-    Pose2D(double r, double theta){
+    public Pose2D(SparkFunOTOS.Pose2D pose2D) {
+        this.x = pose2D.x;
+        this.y = pose2D.y;
+        this.h = pose2D.h;
+    }
+    public Pose2D(double r, double theta){
     this.x = r * Math.cos(theta);
     this.y = r * Math.sin(theta);
     }
@@ -27,4 +34,7 @@ public class Pose2D {
         return new Pose2D(this.x + other.x, this.y + other.y, this.h + other.h);
     }
 
+    public SparkFunOTOS.Pose2D toSparkFunPose2D(){
+        return new SparkFunOTOS.Pose2D(x, y, h);
+    }
 }

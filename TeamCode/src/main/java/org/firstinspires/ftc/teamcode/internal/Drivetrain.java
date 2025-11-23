@@ -13,12 +13,8 @@ public class Drivetrain {
     private DcMotor backRightMotor;
     private SparkFunOTOS otosSensor;
     private AprilTagCamera aprilTagCamera;
-    private double kp;
-    private double ki;
-    private double kd;
-    private double kpTheta;
-    private double kiTheta;
-    private double kdTheta;
+    private PIDConstants pidConstants;
+    private PIDConstants thetaPIDConstants;
     private final Pose2D tolerance = new Pose2D(2, 2, 10);
     Pose2D position;
     Pose2D offset;
@@ -49,51 +45,32 @@ public class Drivetrain {
 
     }
 
-    public void configureDrivetrain(AprilTagCamera aprilTagCamera, OtosSensor otosSensor, double kp, double ki, double kd, double kpTheta, double kiTheta, double kdTheta, double offsetX, double offsetY, double offsetH) {
+    public void configureDrivetrain(AprilTagCamera aprilTagCamera, OtosSensor otosSensor, PIDConstants pidConstants, PIDConstants thetaPIDConstants, double offsetX, double offsetY, double offsetH) {
         this.otosSensor = otosSensor.sensor;
         this.aprilTagCamera = aprilTagCamera;
 
-        this.kp = kp;
-        this.ki = ki;
-        this.kd = kd;
-
-        this.kpTheta = kpTheta;
-        this.kiTheta = kiTheta;
-        this.kdTheta = kdTheta;
+        this.pidConstants = pidConstants;
+        this.thetaPIDConstants = thetaPIDConstants;
 
         offset = new Pose2D(offsetX,offsetY,offsetH);
         aprilOffset = new Pose2D(0,0,0);
 
     }
 
-    public void configureDrivetrain(OtosSensor otosSensor, double kp, double ki, double kd, double kpTheta, double kiTheta, double kdTheta, double offsetX, double offsetY, double offsetH) {
+    public void configureDrivetrain(OtosSensor otosSensor, PIDConstants pidConstants, PIDConstants thetaPIDConstants, double offsetX, double offsetY, double offsetH) {
         this.otosSensor = otosSensor.sensor;
 
-        this.kp = kp;
-        this.ki = ki;
-        this.kd = kd;
-
-        this.kpTheta = kpTheta;
-        this.kiTheta = kiTheta;
-        this.kdTheta = kdTheta;
+        this.pidConstants = pidConstants;
+        this.thetaPIDConstants = thetaPIDConstants;
 
         offset = new Pose2D(offsetX,offsetY,offsetH);
         aprilOffset = new Pose2D(0,0,0);
 
     }
 
-    /**
-     * this one is for teleop because you dont need the pid stuff
-     */
     public void configureDrivetrain(OtosSensor otosSensor) {
         this.otosSensor = otosSensor.sensor;
 
-    }
-
-    public Pose2D getPosition() {
-        return new Pose2D(otosSensor.getPosition().x,
-                otosSensor.getPosition().y,
-                otosSensor.getPosition().h);
     }
 
     /**
@@ -105,9 +82,9 @@ public class Drivetrain {
      * @param holdTime the time to keep it(in milliseconds) at the target for greater accuracy, set to 0 if you want no holdtime
      */
     public void movePID(double targetY, double targetX, double targetH, double speed, int holdTime){
-        PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, tolerance.y, speed);
-        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
-        PIDControllerHeading hPID = new PIDControllerHeading(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
+        PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(pidConstants, targetY, tolerance.y, speed);
+        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(pidConstants, targetX, tolerance.x, speed);
+        PIDControllerHeading hPID = new PIDControllerHeading(thetaPIDConstants, targetH, tolerance.h, speed);
 
         /*
         * applies offset by rotating the origin and then applying x/y offset
@@ -183,9 +160,9 @@ public class Drivetrain {
 
     public void movePID(double targetY, double targetX, double targetH, double speed, int holdTime, double mToleranceX, double mToleranceY, double mToleranceH){
         Pose2D manualTolerance = new Pose2D(mToleranceX, mToleranceY, mToleranceH);
-        PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, manualTolerance.y, speed);
-        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, manualTolerance.x, speed);
-        PIDControllerHeading hPID = new PIDControllerHeading(kpTheta, kiTheta, kdTheta, targetH, manualTolerance.h, speed);
+        PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(pidConstants, targetY, manualTolerance.y, speed);
+        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(pidConstants, targetX, manualTolerance.x, speed);
+        PIDControllerHeading hPID = new PIDControllerHeading(thetaPIDConstants, targetH, manualTolerance.h, speed);
 
         /*
          * applies offset by rotating the origin and then applying x/y offset
@@ -257,9 +234,9 @@ public class Drivetrain {
         double xPos = otosSensor.getPosition().x;
         double hPos = otosSensor.getPosition().h;
 
-        PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(kp, ki, kd, targetY, tolerance.y, speed);
-        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(kp, ki, kd, targetX, tolerance.x, speed);
-        PIDControllerHeading hPID = new PIDControllerHeading(kpTheta, kiTheta, kdTheta, targetH, tolerance.h, speed);
+        PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(pidConstants, targetY, tolerance.y, speed);
+        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(pidConstants, targetX, tolerance.x, speed);
+        PIDControllerHeading hPID = new PIDControllerHeading(thetaPIDConstants, targetH, tolerance.h, speed);
 
         while (!yPID.atTarget(yPos) || !xPID.atTarget(xPos) || !hPID.atTarget(hPos)){
             yPos = otosSensor.getPosition().y;
@@ -383,5 +360,21 @@ public class Drivetrain {
     public double shootingPosition() {
         movePID(36,-36,45,0.5,1000,2,2,5);
         return aprilTagCamera.getRange();
+    }
+
+    public Pose2D getPosition() {
+        return new Pose2D(otosSensor.getPosition());
+    }
+
+    public PIDConstants getPIDConstants() {
+        return pidConstants;
+    }
+
+    public PIDConstants getThetaPIDConstants() {
+        return thetaPIDConstants;
+    }
+
+    public Pose2D getTolerance() {
+        return tolerance;
     }
 }

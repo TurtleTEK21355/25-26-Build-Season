@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.internal;
 
 public class PIDControllerHeading extends PIDControllerSpeedLimit{
 
-    PIDControllerHeading(double kp, double ki, double kd, double target, double tolerance, double speed) {
-        super(kp, ki, kd, target, tolerance, speed);
+    PIDControllerHeading(PIDConstants pidConstants, double target, double tolerance, double speed) {
+        super(pidConstants, target, tolerance, speed);
     }
 
     @Override

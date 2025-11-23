@@ -1,31 +1,30 @@
 package org.firstinspires.ftc.teamcode.internal;
 
 public class PIDController {
-    double kp;
-    double ki;
-    double kd;
+
+    PIDConstants pidConstants;
     double target;
     double error;
     double tolerance;
     double previousError = 0;
+    double proportional;
     double integral = 0;
+    double derivative;
 
 
-    PIDController(double kp, double ki, double kd, double target, double tolerance){
-        this.kp = kp;
-        this.ki = ki;
-        this.kd = kd;
+    PIDController(PIDConstants pidConstants, double target, double tolerance){
+        this.pidConstants = pidConstants;
         this.target = target;
         this.tolerance = tolerance;
     }
 
     public double calculate(double current){
         error = target - current;
-        double proportional = error;
+        proportional = error;
         integral += error;
-        double derivative = error - previousError;
+        derivative = error - previousError;
         previousError = error;
-        return proportional * kp + integral * ki + derivative * kd;
+        return proportional * pidConstants.getKp() + integral * pidConstants.getKi() + derivative * pidConstants.getKd();
 
     }
 

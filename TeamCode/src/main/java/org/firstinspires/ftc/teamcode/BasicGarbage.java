@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.internal.AprilTagCamera;
@@ -13,7 +12,10 @@ import org.firstinspires.ftc.teamcode.internal.DoubleMenuItem;
 import org.firstinspires.ftc.teamcode.internal.Drivetrain;
 import org.firstinspires.ftc.teamcode.internal.HardwareNames;
 import org.firstinspires.ftc.teamcode.internal.Menu;
+import org.firstinspires.ftc.teamcode.internal.MovePIDCommand;
 import org.firstinspires.ftc.teamcode.internal.OtosSensor;
+import org.firstinspires.ftc.teamcode.internal.PIDConstants;
+import org.firstinspires.ftc.teamcode.internal.Pose2D;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
 @Autonomous(name="Don't Use", group="Linear OpMode")
@@ -49,8 +51,13 @@ public class BasicGarbage extends LinearOpMode {
         waitForStart();
 
         configureVariables();
-        drivetrain.configureDrivetrain(otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta, 0, 0, 0);
+        drivetrain.configureDrivetrain(otosSensor, new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta), 0, 0, 0);
 
+
+        MovePIDCommand driveForward = new MovePIDCommand(drivetrain, new Pose2D(10, 0, 0), speed);
+        do {
+            driveForward.loop();
+        } while (!driveForward.is_completed() && opModeIsActive());
 
 
         drivetrain.movePID(0, 10, 0, speed, 1000);

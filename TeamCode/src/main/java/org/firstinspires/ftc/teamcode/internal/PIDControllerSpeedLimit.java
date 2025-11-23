@@ -4,8 +4,8 @@ public class PIDControllerSpeedLimit extends PIDController{
 
     private final double speed;
 
-    PIDControllerSpeedLimit(double kp, double ki, double kd, double target, double tolerance, double speed) {
-        super(kp, ki, kd, target, tolerance);
+    PIDControllerSpeedLimit(PIDConstants pidConstants, double target, double tolerance, double speed) {
+        super(pidConstants, target, tolerance);
         this.speed = speed;
 
     }
