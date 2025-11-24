@@ -4,6 +4,12 @@ Defines how power manipulates each motor/servo on the robot.
 ## Drivetrain
 - Positive values move motor forwards relative to the robot.
 - All positive = go forward
+- positive strafe = strafe right
+- positive turn = turn right/clockwise
+## OTOS Sensor
+- Positive Y = towards obelisk/scoring side
+- Positive X = audience right/red goal
+- Positive H = clockwise
 
 ## Shooter System
 ### FlyWheel
