@@ -1,9 +1,11 @@
-package org.firstinspires.ftc.teamcode.internal;
+package org.firstinspires.ftc.teamcode;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.tan;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
 public class ShooterSystem {
     private FlyWheel flyWheel;

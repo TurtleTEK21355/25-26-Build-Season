@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode.internal;
 
-import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.Drivetrain;
 
 public class MovePIDHoldTimeCommand extends MovePIDCommand{
     ElapsedTime holdTimer = new ElapsedTime();
@@ -18,11 +19,12 @@ public class MovePIDHoldTimeCommand extends MovePIDCommand{
         if (super.isCompleted()) {
             holdTimer.startTime();
         }
+        TelemetryPasser.telemetry.addData("holdTime", holdTime - holdTimer.milliseconds());
     }
 
     @Override
     public boolean isCompleted() {
-        return (super.isCompleted() && (holdTimer.milliseconds() >= holdTime));
+        return (holdTimer.milliseconds() >= holdTime);
 
     }
 

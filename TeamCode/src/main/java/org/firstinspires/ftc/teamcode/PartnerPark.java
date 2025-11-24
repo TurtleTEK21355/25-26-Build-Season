@@ -1,7 +1,9 @@
-package org.firstinspires.ftc.teamcode.internal;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
+import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
 public class PartnerPark {
     private DcMotor rightViperSlide;
