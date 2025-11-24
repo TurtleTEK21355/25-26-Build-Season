@@ -12,13 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
-import org.firstinspires.ftc.teamcode.internal.Drivetrain;
-import org.firstinspires.ftc.teamcode.internal.FlyWheel;
 import org.firstinspires.ftc.teamcode.internal.HardwareNames;
-import org.firstinspires.ftc.teamcode.internal.Hopper;
-import org.firstinspires.ftc.teamcode.internal.Intake;
-import org.firstinspires.ftc.teamcode.internal.OTOSSensor;
-import org.firstinspires.ftc.teamcode.internal.ShooterSystem;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
 @Disabled

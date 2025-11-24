@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode.internal;
 
-import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.Drivetrain;
 
 public class MovePIDHoldTimeCommand extends MovePIDCommand{
     ElapsedTime holdTimer = new ElapsedTime();

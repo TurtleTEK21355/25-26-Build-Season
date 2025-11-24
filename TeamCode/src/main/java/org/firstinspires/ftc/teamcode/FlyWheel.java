@@ -1,12 +1,11 @@
-package org.firstinspires.ftc.teamcode.internal;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import java.nio.file.attribute.FileOwnerAttributeView;
+import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
 public class FlyWheel {
     private DcMotorEx flyWheelMotor;
