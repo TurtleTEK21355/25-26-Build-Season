@@ -14,7 +14,8 @@ public class HardwareNames {
         HOPPER_WHEEL,
         SHOOTER_GATE,
         BALL_READY_SENSOR,
-        INTAKE_MOTOR
+        INTAKE_MOTOR,
+        APRIL_TAG_CAMERA
 
     }
 
@@ -31,6 +32,7 @@ public class HardwareNames {
         nameList.put(Name.SHOOTER_GATE, "ballGate");
         nameList.put(Name.BALL_READY_SENSOR, "ballSensor");
         nameList.put(Name.INTAKE_MOTOR, "intake");
+        nameList.put(Name.APRIL_TAG_CAMERA, "Webcam 1");
 
     }
     public String get(Name name){

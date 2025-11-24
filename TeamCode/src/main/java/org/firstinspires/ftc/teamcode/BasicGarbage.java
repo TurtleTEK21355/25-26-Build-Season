@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.internal.AprilTagCamera;
@@ -15,6 +16,7 @@ import org.firstinspires.ftc.teamcode.internal.Drivetrain;
 import org.firstinspires.ftc.teamcode.internal.HardwareNames;
 import org.firstinspires.ftc.teamcode.internal.Menu;
 import org.firstinspires.ftc.teamcode.internal.MovePIDCommand;
+import org.firstinspires.ftc.teamcode.internal.MovePIDHoldTimeCommand;
 import org.firstinspires.ftc.teamcode.internal.OTOSSensor;
 import org.firstinspires.ftc.teamcode.internal.PIDConstants;
 import org.firstinspires.ftc.teamcode.internal.Pose2D;
@@ -39,9 +41,9 @@ public class BasicGarbage extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         TelemetryPasser.telemetry = telemetry;
 
-        //aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
+        aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(HardwareNames.Name.APRIL_TAG_CAMERA)));
 
-        otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, "otos"));
+        otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
         otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
 
         waitForStart();
@@ -58,8 +60,12 @@ public class BasicGarbage extends LinearOpMode {
 
         CommandList commands = new CommandList();
 
-        commands.add(new MovePIDCommand(drivetrain, new Pose2D(10, 0, 0), speed));
-
+        commands.add(new MovePIDHoldTimeCommand(new Pose2D(10, 0, 0),1000, speed, drivetrain));
+        commands.add(new MovePIDHoldTimeCommand(new Pose2D(10, 10, 90), 1000, speed, drivetrain));
+        commands.add(new MovePIDHoldTimeCommand(new Pose2D(10, 10, 135), 1000, speed, drivetrain));
+        commands.add(new MovePIDHoldTimeCommand(new Pose2D(10, 0, -135), 1000, speed, drivetrain));
+        commands.add(new MovePIDHoldTimeCommand(new Pose2D(0, 0, -90), 1000, speed, drivetrain));
+        commands.add(new MovePIDHoldTimeCommand(new Pose2D(0, 0, 0), 1000, speed, drivetrain));
 
         for (Command command : commands) {
             do {
@@ -67,13 +73,6 @@ public class BasicGarbage extends LinearOpMode {
                 telemetry.update();
             } while (!command.isCompleted() && opModeIsActive());
         }
-
-        drivetrain.movePID(0, 10, 0, speed, 1000);
-        drivetrain.movePID(10, 10, 90, speed, 1000);
-        drivetrain.movePID(10, 10, 135, speed, 1000);
-        drivetrain.movePID(10, 0, -135, speed, 1000);
-        drivetrain.movePID(0, 0, -90, speed, 1000);
-        drivetrain.movePID(0,0,0,speed,1000);
 
     }
 

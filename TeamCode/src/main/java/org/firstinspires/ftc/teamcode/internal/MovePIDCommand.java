@@ -10,7 +10,7 @@ public class MovePIDCommand extends Command{
     PIDControllerHeading hPID;
 
 
-    public MovePIDCommand(Drivetrain drivetrain, Pose2D target, double speed) {
+    public MovePIDCommand(Pose2D target, double speed, Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
         this.target = target;
         this.speed = speed;
@@ -23,7 +23,7 @@ public class MovePIDCommand extends Command{
     public void loop() {
         position = drivetrain.getPosition();
         drivetrain.fcControl(yPID.calculate(position.y), xPID.calculate(position.x), hPID.calculate(position.h));
-        drivetrain.PIDTelemetry();
+        drivetrain.PIDTelemetry(position, target, xPID.atTarget(position.x), yPID.atTarget(position.y), hPID.atTarget(position.h));
     }
 
     @Override

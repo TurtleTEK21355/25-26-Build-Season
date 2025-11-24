@@ -137,7 +137,6 @@ public class Drivetrain {
             hAtTargetTelemetry = hPID.atTarget(hPos);
 
             powerTelemetry();
-            PIDTelemetry();
             TelemetryPasser.telemetry.update();
 
         }
@@ -166,7 +165,6 @@ public class Drivetrain {
             hAtTargetTelemetry = hPID.atTarget(hPos);
 
             powerTelemetry();
-            PIDTelemetry();
             TelemetryPasser.telemetry.update();
         }
 
@@ -214,7 +212,6 @@ public class Drivetrain {
             hAtTargetTelemetry = hPID.atTarget(hPos);
 
             powerTelemetry();
-            PIDTelemetry();
             TelemetryPasser.telemetry.update();
 
         }
@@ -360,18 +357,18 @@ public class Drivetrain {
         TelemetryPasser.telemetry.addData("br Power=", backRightMotor.getPower());
     }
 
-    public void PIDTelemetry(){
-        TelemetryPasser.telemetry.addData("xPosition", xPosTelemetry);
-        TelemetryPasser.telemetry.addData("yPosition", yPosTelemetry);
-        TelemetryPasser.telemetry.addData("hPosition", hPosTelemetry);
+    public void PIDTelemetry(Pose2D pos, Pose2D target, boolean xAtTarget, boolean yAtTarget, boolean hAtTarget){
+        TelemetryPasser.telemetry.addData("xPosition", pos.x);
+        TelemetryPasser.telemetry.addData("yPosition", pos.y);
+        TelemetryPasser.telemetry.addData("hPosition", pos.h);
         TelemetryPasser.telemetry.addLine();
-        TelemetryPasser.telemetry.addData("Targetx", xTargetTelemetry);
-        TelemetryPasser.telemetry.addData("Targety", yTargetTelemetry);
-        TelemetryPasser.telemetry.addData("Targeth", hTargetTelemetry);
+        TelemetryPasser.telemetry.addData("Targetx", target.x);
+        TelemetryPasser.telemetry.addData("Targety", target.y);
+        TelemetryPasser.telemetry.addData("Targeth", target.h);
         TelemetryPasser.telemetry.addLine();
-        TelemetryPasser.telemetry.addData("atTargetx", xAtTargetTelemetry);
-        TelemetryPasser.telemetry.addData("atTargety", yAtTargetTelemetry);
-        TelemetryPasser.telemetry.addData("atTargeth", hAtTargetTelemetry);
+        TelemetryPasser.telemetry.addData("atTargetx", xAtTarget);
+        TelemetryPasser.telemetry.addData("atTargety", yAtTarget);
+        TelemetryPasser.telemetry.addData("atTargeth", hAtTarget);
         TelemetryPasser.telemetry.addLine();
     }
     public double shootingPosition() {

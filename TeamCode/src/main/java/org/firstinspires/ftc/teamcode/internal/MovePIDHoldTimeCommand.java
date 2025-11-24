@@ -7,8 +7,8 @@ public class MovePIDHoldTimeCommand extends MovePIDCommand{
     ElapsedTime holdTimer = new ElapsedTime();
     private final double holdTime;
 
-    public MovePIDHoldTimeCommand(Drivetrain drivetrain, Pose2D target, double speed, double holdTime) {
-        super(drivetrain, target, speed);
+    public MovePIDHoldTimeCommand(Pose2D target, double holdTime, double speed, Drivetrain drivetrain) {
+        super(target, speed, drivetrain);
         this.holdTime = holdTime;
     }
 
