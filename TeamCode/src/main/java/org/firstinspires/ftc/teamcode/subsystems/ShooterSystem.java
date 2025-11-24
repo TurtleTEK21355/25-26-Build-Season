@@ -33,9 +33,6 @@ public class ShooterSystem {
     public void flywheelSetPower(double power) {
             flyWheel.setPower(power);
     }
-    public void hopperSetPower(double power) {
-        hopper.setPower(power);
-    }
     public void intakeSetPower(double power) {
         intake.setPower(power);
     }
@@ -46,44 +43,24 @@ public class ShooterSystem {
         hopper.closeGate();
     }
 
-    public void autoShoot(double range) {
-        double timer = 0;
-        double power = (Math.sqrt((-GRAVITY*Math.pow(range, 2))/(2*Math.pow(cos(THETA), 2)*(HEIGHT - range * tan(THETA)))))/maxSpeed;
-        flyWheel.setPower(power);
-        while (flyWheel.getPower() < power-0.075);
-        hopper.openGate();
-        generalTimer.startTime();
-        hopper.setPower(1);
-        while(generalTimer.milliseconds()<1250);
-        generalTimer.reset();
-        hopper.setPower(0);
-        flyWheel.setPower(0);
-        hopper.closeGate();
-
-    }
-    public void teleOpControl(String shoot, boolean intakeSpin, boolean hopperspinforward, boolean gate, boolean hopperspinbackward) {
+//    public void autoShoot(double range) {
+//        double timer = 0;
+//        double power = (Math.sqrt((-GRAVITY*Math.pow(range, 2))/(2*Math.pow(cos(THETA), 2)*(HEIGHT - range * tan(THETA)))))/maxSpeed;
+//        flyWheel.setPower(power);
+//        while (flyWheel.getPower() < power-0.075);
+//        hopper.openGate();
+//        generalTimer.startTime();
+//        hopper.setPower(1);
+//        while(generalTimer.milliseconds()<1250);
+//        generalTimer.reset();
+//        hopper.setPower(0);
+//        flyWheel.setPower(0);
+//        hopper.closeGate();
+//
+//    }
+    public void teleOpControl(double shoot, boolean intakeSpin, boolean gate) {
         TelemetryPasser.telemetry.addData("shoot", hopper.ballReady());
-        if(hopperspinforward) {
-            hopper.setPower(1);
-        } else if (hopperspinbackward) {
-            hopper.setPower(-1);
-        } else {hopper.setPower(0);}
-        switch (shoot) {
-            case "a":
-                flyWheel.setPower(0.5);
-                break;
-            case "b":
-                flyWheel.setPower(0.6);
-                break;
-            case "x":
-                flyWheel.setPower(0.7);
-                break;
-            case "y":
-                flyWheel.setPower(0.8);
-                break;
-            default:
-                flyWheel.setPower(0);
-        }
+        flyWheel.setPower(shoot);
         if (intakeSpin) {
             intake.setPower(0.8);
         } else {intake.setPower(0);}
