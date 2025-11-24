@@ -18,7 +18,7 @@ public class HardwareNames {
 
     }
 
-    public HashMap<Name, String> nameList = new HashMap<>();
+    private HashMap<Name, String> nameList = new HashMap<>();
 
     public HardwareNames() {
         nameList.put(Name.FRONT_LEFT_MOTOR, "lf");

@@ -8,20 +8,22 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.internal.AprilTagCamera;
+import org.firstinspires.ftc.teamcode.internal.Command;
+import org.firstinspires.ftc.teamcode.internal.CommandList;
 import org.firstinspires.ftc.teamcode.internal.DoubleMenuItem;
 import org.firstinspires.ftc.teamcode.internal.Drivetrain;
 import org.firstinspires.ftc.teamcode.internal.HardwareNames;
 import org.firstinspires.ftc.teamcode.internal.Menu;
 import org.firstinspires.ftc.teamcode.internal.MovePIDCommand;
-import org.firstinspires.ftc.teamcode.internal.OtosSensor;
+import org.firstinspires.ftc.teamcode.internal.OTOSSensor;
 import org.firstinspires.ftc.teamcode.internal.PIDConstants;
 import org.firstinspires.ftc.teamcode.internal.Pose2D;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
-@Autonomous(name="Don't Use", group="Linear OpMode")
+@Autonomous(name="Test Auto Phil", group="Linear OpMode")
 public class BasicGarbage extends LinearOpMode {
     Drivetrain drivetrain;
-    OtosSensor otosSensor;
+    OTOSSensor otosSensor;
     AprilTagCamera aprilTagCamera;
     double kp = 0.05;
     double ki;
@@ -39,26 +41,32 @@ public class BasicGarbage extends LinearOpMode {
 
         //aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
 
-        otosSensor = new OtosSensor(hardwareMap.get(SparkFunOTOS.class, "otos"));
+        otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, "otos"));
         otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
+
+        waitForStart();
+
+        configureVariables();
 
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR)),
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_LEFT_MOTOR)),
-                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_RIGHT_MOTOR)));
+                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_RIGHT_MOTOR)),
+                otosSensor.sensor);
+        drivetrain.configureDrivetrain(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta), 0, 0, 0);
 
-        waitForStart();
+        CommandList commands = new CommandList();
 
-        configureVariables();
-        drivetrain.configureDrivetrain(otosSensor, new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta), 0, 0, 0);
+        commands.add(new MovePIDCommand(drivetrain, new Pose2D(10, 0, 0), speed));
 
 
-        MovePIDCommand driveForward = new MovePIDCommand(drivetrain, new Pose2D(10, 0, 0), speed);
-        do {
-            driveForward.loop();
-        } while (!driveForward.is_completed() && opModeIsActive());
-
+        for (Command command : commands) {
+            do {
+                command.loop();
+                telemetry.update();
+            } while (!command.isCompleted() && opModeIsActive());
+        }
 
         drivetrain.movePID(0, 10, 0, speed, 1000);
         drivetrain.movePID(10, 10, 90, speed, 1000);
@@ -86,7 +94,7 @@ public class BasicGarbage extends LinearOpMode {
 
             telemetry.addLine("Press start to Start");
 
-            telemetry.addLine(menu.reportModeValue());
+            telemetry.addLine(menu.reportMenuItemValue());
             telemetry.update();
 
         }

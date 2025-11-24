@@ -8,27 +8,24 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
 import org.firstinspires.ftc.teamcode.internal.AprilTagCamera;
-import org.firstinspires.ftc.teamcode.internal.DoubleMenuItem;
 import org.firstinspires.ftc.teamcode.internal.Drivetrain;
 import org.firstinspires.ftc.teamcode.internal.FlyWheel;
 import org.firstinspires.ftc.teamcode.internal.HardwareNames;
 import org.firstinspires.ftc.teamcode.internal.Hopper;
 import org.firstinspires.ftc.teamcode.internal.Intake;
-import org.firstinspires.ftc.teamcode.internal.MenuItem;
-import org.firstinspires.ftc.teamcode.internal.Menu;
-import org.firstinspires.ftc.teamcode.internal.OtosSensor;
+import org.firstinspires.ftc.teamcode.internal.OTOSSensor;
+import org.firstinspires.ftc.teamcode.internal.PIDConstants;
 import org.firstinspires.ftc.teamcode.internal.ShooterSystem;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
 @Autonomous(name="Use This Auto", group="Autonomous")
 public class NoahsTestClass extends LinearOpMode {
     Drivetrain drivetrain;
-    OtosSensor otosSensor;
+    OTOSSensor otosSensor;
     AprilTagCamera aprilTagCamera;
     double kp = 0.05;
     double ki;
@@ -45,12 +42,15 @@ public class NoahsTestClass extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         TelemetryPasser.telemetry = telemetry;
 
+        otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, "otos"));
+        otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
+
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR)),
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_LEFT_MOTOR)),
-                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_RIGHT_MOTOR)));
-
+                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_RIGHT_MOTOR)),
+                otosSensor.sensor);
 
         shooterSystem = new ShooterSystem(
                 new FlyWheel(hardwareMap.get(DcMotorEx.class, "shooter")),
@@ -59,12 +59,14 @@ public class NoahsTestClass extends LinearOpMode {
                         hardwareMap.get(Ada2167BreakBeam.class, "ballSensor")),
                 new Intake(hardwareMap.get(DcMotor.class, "intake")));
 
-        otosSensor = new OtosSensor(hardwareMap.get(SparkFunOTOS.class, "otos"));
-        otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
-        drivetrain.configureDrivetrain(otosSensor);
-
         waitForStart();
-        drivetrain.configureDrivetrain(aprilTagCamera, otosSensor, kp, ki, kd, kpTheta, kiTheta, kdTheta, 0, 0, 0);
+        drivetrain.configureDrivetrain(
+                aprilTagCamera,
+                new PIDConstants(kp, ki, kd),
+                new PIDConstants(kpTheta, kiTheta, kdTheta),
+                0,
+                0,
+                0);
         drivetrain.control(0.75,0,0);
         sleep(1000);
         drivetrain.control(0,0,0);

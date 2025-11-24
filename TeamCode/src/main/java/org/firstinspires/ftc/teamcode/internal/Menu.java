@@ -31,8 +31,8 @@ public class Menu {
         this.menuItemList.add(m);
     }
 
-    public void add(MenuItem... modes) {
-        this.menuItemList.addAll(Arrays.asList(modes));
+    public void add(MenuItem... menuItems) {
+        this.menuItemList.addAll(Arrays.asList(menuItems));
     }
 
     public void itemSelection(boolean previousMenuItem, boolean nextMenuItem, boolean valueUp, boolean valueDown) {
@@ -87,7 +87,7 @@ public class Menu {
     /**
      * reports the values and names of the modes as a string with the selected one having ">" before it
      */
-    public String reportModeValue() {
+    public String reportMenuItemValue() {
         String name = "";
         for(int i = 0; i < menuItemList.size(); i++) {
             if (i == selectedMenuItem) {

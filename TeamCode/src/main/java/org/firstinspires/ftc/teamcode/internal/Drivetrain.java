@@ -16,9 +16,9 @@ public class Drivetrain {
     private PIDConstants pidConstants;
     private PIDConstants thetaPIDConstants;
     private final Pose2D tolerance = new Pose2D(2, 2, 10);
-    Pose2D position;
-    Pose2D offset;
-    Pose2D aprilOffset;
+    private Pose2D position;
+    private Pose2D offset;
+    private Pose2D aprilOffset;
     double yPosTelemetry;
     double xPosTelemetry;
     double hPosTelemetry;
@@ -45,8 +45,24 @@ public class Drivetrain {
 
     }
 
-    public void configureDrivetrain(AprilTagCamera aprilTagCamera, OtosSensor otosSensor, PIDConstants pidConstants, PIDConstants thetaPIDConstants, double offsetX, double offsetY, double offsetH) {
-        this.otosSensor = otosSensor.sensor;
+    public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight, SparkFunOTOS otosSensor){
+        this.frontLeftMotor = frontLeft;
+        this.frontRightMotor = frontRight;
+        this.backLeftMotor = backLeft;
+        this.backRightMotor = backRight;
+        this.otosSensor = otosSensor;
+        this.frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+    }
+
+    public void configureDrivetrain(AprilTagCamera aprilTagCamera, PIDConstants pidConstants, PIDConstants thetaPIDConstants, double offsetX, double offsetY, double offsetH) {
         this.aprilTagCamera = aprilTagCamera;
 
         this.pidConstants = pidConstants;
@@ -57,9 +73,7 @@ public class Drivetrain {
 
     }
 
-    public void configureDrivetrain(OtosSensor otosSensor, PIDConstants pidConstants, PIDConstants thetaPIDConstants, double offsetX, double offsetY, double offsetH) {
-        this.otosSensor = otosSensor.sensor;
-
+    public void configureDrivetrain(PIDConstants pidConstants, PIDConstants thetaPIDConstants, double offsetX, double offsetY, double offsetH) {
         this.pidConstants = pidConstants;
         this.thetaPIDConstants = thetaPIDConstants;
 
@@ -68,10 +82,6 @@ public class Drivetrain {
 
     }
 
-    public void configureDrivetrain(OtosSensor otosSensor) {
-        this.otosSensor = otosSensor.sensor;
-
-    }
 
     /**
      * controls the drivetrain to move and rotate to specific points on the field. If the robot is within the tolerance area, it will stop... probably

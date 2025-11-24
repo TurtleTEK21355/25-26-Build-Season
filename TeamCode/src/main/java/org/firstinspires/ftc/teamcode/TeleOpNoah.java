@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -16,15 +17,16 @@ import org.firstinspires.ftc.teamcode.internal.FlyWheel;
 import org.firstinspires.ftc.teamcode.internal.HardwareNames;
 import org.firstinspires.ftc.teamcode.internal.Hopper;
 import org.firstinspires.ftc.teamcode.internal.Intake;
-import org.firstinspires.ftc.teamcode.internal.OtosSensor;
+import org.firstinspires.ftc.teamcode.internal.OTOSSensor;
 import org.firstinspires.ftc.teamcode.internal.ShooterSystem;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 
-@TeleOp(name="Don't Use", group="Iterative OpModes")
+@Disabled
+@TeleOp(name="TeleOpNoah", group="Iterative OpModes")
 public class TeleOpNoah extends OpMode {
 
     Drivetrain drivetrain;
-    OtosSensor otosSensor;
+    OTOSSensor otosSensor;
     ShooterSystem shooterSystem;
     HardwareNames hardwareNames = new HardwareNames();
 
@@ -45,7 +47,7 @@ public class TeleOpNoah extends OpMode {
                             hardwareMap.get(Ada2167BreakBeam.class, "ballSensor")),
                 new Intake(hardwareMap.get(DcMotor.class, "intake")));
 
-        otosSensor = new OtosSensor(hardwareMap.get(SparkFunOTOS.class, "otos"));
+        otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, "otos"));
         otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
         drivetrain.configureDrivetrain(otosSensor);
     }

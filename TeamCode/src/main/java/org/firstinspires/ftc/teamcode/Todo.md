@@ -8,6 +8,7 @@
     [ ] Move from launch
     [ ] Shoot Balls
     [ ] Pick up Balls
+[ ] Getting Rid of While loops in internal classes
 
 
 ## TELEOP

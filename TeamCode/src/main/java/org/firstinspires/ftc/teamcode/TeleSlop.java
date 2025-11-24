@@ -11,18 +11,18 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.internal.Drivetrain;
-import org.firstinspires.ftc.teamcode.internal.OtosSensor;
+import org.firstinspires.ftc.teamcode.internal.OTOSSensor;
 import org.firstinspires.ftc.teamcode.internal.ShooterSystem;
 import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.internal.Hopper;
 import org.firstinspires.ftc.teamcode.internal.*;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
 
-@TeleOp(name="UseThisOneNotTheOtherOnePleasePLEASE", group="USE THIS")
+@TeleOp(name="UseThisOneNotTheOtherOnePleasePLEASE", group="Iterative OpModes")
 public class TeleSlop extends OpMode {
 
     Drivetrain drivetrain;
-    OtosSensor otosSensor;
+    OTOSSensor otosSensor;
     ShooterSystem shooterSystem;
     PartnerPark partnerPark;
     String set = "none";
@@ -48,7 +48,7 @@ public class TeleSlop extends OpMode {
 //                hardwareMap.get(DcMotor.class, "vsr"),
 //                hardwareMap.get(DcMotor.class, "vsl"));
 
-        otosSensor = new OtosSensor(hardwareMap.get(SparkFunOTOS.class, "otos"));
+        otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, "otos"));
         otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
         drivetrain.configureDrivetrain(otosSensor);
     }

@@ -23,10 +23,11 @@ public class MovePIDCommand extends Command{
     public void loop() {
         position = drivetrain.getPosition();
         drivetrain.fcControl(yPID.calculate(position.y), xPID.calculate(position.x), hPID.calculate(position.h));
+        drivetrain.PIDTelemetry();
     }
 
     @Override
-    public boolean is_completed() {
+    public boolean isCompleted() {
         return (!yPID.atTarget(position.y) || !xPID.atTarget(position.x) || !hPID.atTarget(position.h));
     }
 
