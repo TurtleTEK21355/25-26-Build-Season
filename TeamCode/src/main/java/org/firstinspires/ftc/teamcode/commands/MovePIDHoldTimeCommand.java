@@ -8,11 +8,11 @@ import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 
 public class MovePIDHoldTimeCommand extends MovePIDCommand{
     private ElapsedTime holdTimer = new ElapsedTime();
-    private final double holdTime;
+    private final int holdTime;
     private boolean holdTimerStartLock = false;
 
 
-    public MovePIDHoldTimeCommand(Pose2D target, double holdTime, double speed, Drivetrain drivetrain) {
+    public MovePIDHoldTimeCommand(Pose2D target, int holdTime, double speed, Drivetrain drivetrain) {
         super(target, speed, drivetrain);
         this.holdTime = holdTime;
     }

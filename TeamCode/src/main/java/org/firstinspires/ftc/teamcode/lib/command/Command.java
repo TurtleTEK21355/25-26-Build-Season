@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode.lib.command;
 
 public abstract class Command {
-    public abstract void loop();
+    public void init(){}
+    public void loop(){}
     public abstract boolean isCompleted();
 
 }
