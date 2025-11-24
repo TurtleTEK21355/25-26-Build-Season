@@ -25,7 +25,7 @@ public class TeleSlop extends OpMode {
     OTOSSensor otosSensor;
     ShooterSystem shooterSystem;
     PartnerPark partnerPark;
-    String set = "none";
+    double set = 0;
     HardwareNames hardwareNames = new HardwareNames();
 
     @Override
@@ -44,7 +44,7 @@ public class TeleSlop extends OpMode {
 
         shooterSystem = new ShooterSystem(
                 new FlyWheel(hardwareMap.get(DcMotorEx.class, hardwareNames.get(HardwareNames.Name.SHOOTER_FLYWHEEL))),
-                new Hopper(hardwareMap.get(CRServo.class, hardwareNames.get(HardwareNames.Name.HOPPER_WHEEL)),
+                new Hopper(
                         hardwareMap.get(Servo.class, hardwareNames.get(HardwareNames.Name.SHOOTER_GATE)),
                         hardwareMap.get(Ada2167BreakBeam.class, hardwareNames.get(HardwareNames.Name.BALL_READY_SENSOR))),
                 new Intake(hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.INTAKE_MOTOR))));
@@ -64,17 +64,17 @@ public class TeleSlop extends OpMode {
         }
 
         if (gamepad2.a) {
-            set = "a";
+            set = 0.65;
         } else if (gamepad2.b) {
-            set = "b";
+            set = 0.7;
         } else if (gamepad2.x) {
-            set = "x";
+            set = 0.75;
         } else if (gamepad2.y) {
-            set = "y";
+            set = 0.8;
         } else {
-            set = "none";
+            set = 0;
         }
-        shooterSystem.teleOpControl(set, gamepad2.dpad_down, gamepad2.right_bumper, gamepad2.dpad_up, gamepad2.left_bumper);
+        shooterSystem.teleOpControl(set, gamepad2.right_bumper,gamepad2.left_bumper);
 //        partnerPark.control(gamepad1.right_bumper, gamepad1.left_bumper);
         telemetry.addData("hpos:", otosSensor.getPosition().h);
         drivetrain.powerTelemetry();

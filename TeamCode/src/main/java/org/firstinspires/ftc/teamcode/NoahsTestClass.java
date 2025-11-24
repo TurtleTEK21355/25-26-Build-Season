@@ -54,7 +54,7 @@ public class NoahsTestClass extends LinearOpMode {
 
         shooterSystem = new ShooterSystem(
                 new FlyWheel(hardwareMap.get(DcMotorEx.class, "shooter")),
-                new Hopper(hardwareMap.get(CRServo.class, "hopper"),
+                new Hopper(
                         hardwareMap.get(Servo.class, "ballGate"),
                         hardwareMap.get(Ada2167BreakBeam.class, "ballSensor")),
                 new Intake(hardwareMap.get(DcMotor.class, "intake")));
