@@ -1,15 +1,12 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.tan;
-
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 
 public class ShooterSystem {
     private FlyWheel flyWheel;
-    private Hopper hopper;
+    private GateSystem gateSystem;
     private Intake intake;
     ElapsedTime flyWheelTimer = new ElapsedTime();
     ElapsedTime generalTimer = new ElapsedTime();
@@ -23,9 +20,8 @@ public class ShooterSystem {
     static double maxSpeed = 388.590;
 
 
-    public ShooterSystem(FlyWheel flyWheel, Hopper hopper, Intake intake){
+    public ShooterSystem(FlyWheel flyWheel, GateSystem gateSystem, Intake intake){
         this.flyWheel = flyWheel;
-        this.hopper = hopper;
         this.intake = intake;
 
     }
@@ -37,10 +33,10 @@ public class ShooterSystem {
         intake.setPower(power);
     }
     public void openGate() {
-        hopper.openGate();
+        gateSystem.openGate();
     }
     public void closeGate() {
-        hopper.closeGate();
+        gateSystem.closeGate();
     }
 
 //    public void autoShoot(double range) {
@@ -59,14 +55,15 @@ public class ShooterSystem {
 //
 //    }
     public void teleOpControl(double shoot, boolean intakeSpin, boolean gate) {
-        TelemetryPasser.telemetry.addData("shoot", hopper.ballReady());
+        TelemetryPasser.telemetry.addData("shoot", gateSystem.ballReady());
         flyWheel.setPower(shoot);
         if (intakeSpin) {
             intake.setPower(0.8);
         } else {intake.setPower(0);}
         if (gate) {
-            hopper.openGate();
-        } else {hopper.closeGate();}
+            gateSystem.openGate();
+        } else {
+            gateSystem.closeGate();}
 //        if (shoot) {      //if a ball is detected in the top and the shoot button is pressed
 //            TelemetryPasser.telemetry.addData("shoot", hopper.ballReady());
 //            flyWheel.setPower(0.8);       //turn on the flywheel

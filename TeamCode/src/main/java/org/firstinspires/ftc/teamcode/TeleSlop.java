@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -14,7 +13,7 @@ import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.FlyWheel;
 import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
-import org.firstinspires.ftc.teamcode.subsystems.Hopper;
+import org.firstinspires.ftc.teamcode.subsystems.GateSystem;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.PartnerPark;
@@ -46,7 +45,7 @@ public class TeleSlop extends OpMode {
 
         shooterSystem = new ShooterSystem(
                 new FlyWheel(hardwareMap.get(DcMotorEx.class, hardwareNames.get(HardwareNames.Name.SHOOTER_FLYWHEEL))),
-                new Hopper(
+                new GateSystem(
                         hardwareMap.get(Servo.class, hardwareNames.get(HardwareNames.Name.SHOOTER_GATE)),
                         hardwareMap.get(Ada2167BreakBeam.class, hardwareNames.get(HardwareNames.Name.BALL_READY_SENSOR))),
                 new Intake(hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.INTAKE_MOTOR))));
@@ -59,7 +58,7 @@ public class TeleSlop extends OpMode {
 
     @Override
     public void loop() {
-        drivetrain.joystickMovement(gamepad1.left_stick_y, -gamepad1.left_stick_x, gamepad1.right_stick_x, gamepad1.right_stick_y);
+        drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad2.left_stick_x);
 
         if (gamepad1.back){
             otosSensor.resetPosition();

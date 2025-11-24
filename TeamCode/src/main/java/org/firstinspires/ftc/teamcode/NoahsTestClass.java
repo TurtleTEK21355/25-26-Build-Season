@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -16,7 +15,7 @@ import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
 import org.firstinspires.ftc.teamcode.subsystems.AprilTagCamera;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.FlyWheel;
-import org.firstinspires.ftc.teamcode.subsystems.Hopper;
+import org.firstinspires.ftc.teamcode.subsystems.GateSystem;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
@@ -53,7 +52,7 @@ public class NoahsTestClass extends LinearOpMode {
 
         shooterSystem = new ShooterSystem(
                 new FlyWheel(hardwareMap.get(DcMotorEx.class, "shooter")),
-                new Hopper(
+                new GateSystem(
                         hardwareMap.get(Servo.class, "ballGate"),
                         hardwareMap.get(Ada2167BreakBeam.class, "ballSensor")),
                 new Intake(hardwareMap.get(DcMotor.class, "intake")));
