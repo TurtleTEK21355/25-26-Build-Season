@@ -21,6 +21,7 @@ public class Hopper {
         this.servo = servo;
         this.servo.setDirection(DcMotorSimple.Direction.REVERSE);
         this.ballGate = ballGate;
+        this.ballGate.setDirection(Servo.Direction.REVERSE);
         this.breakBeamSensor = breakBeamSensor;
     }
 

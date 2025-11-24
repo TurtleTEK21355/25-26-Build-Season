@@ -50,7 +50,7 @@ public class NoahsTestClass extends LinearOpMode {
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR)),
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_LEFT_MOTOR)),
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_RIGHT_MOTOR)),
-                otosSensor.sensor);
+                otosSensor, aprilTagCamera);
 
         shooterSystem = new ShooterSystem(
                 new FlyWheel(hardwareMap.get(DcMotorEx.class, "shooter")),
@@ -61,7 +61,6 @@ public class NoahsTestClass extends LinearOpMode {
 
         waitForStart();
         drivetrain.configurePIDConstants(
-                aprilTagCamera,
                 new PIDConstants(kp, ki, kd),
                 new PIDConstants(kpTheta, kiTheta, kdTheta),
                 0,
