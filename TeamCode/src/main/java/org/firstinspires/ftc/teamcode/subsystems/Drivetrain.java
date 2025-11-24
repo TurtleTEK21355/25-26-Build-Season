@@ -39,10 +39,6 @@ public class Drivetrain {
         this.frontRightMotor = frontRight;
         this.backLeftMotor = backLeft;
         this.backRightMotor = backRight;
-        this.frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        this.frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        this.backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         this.frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -56,10 +52,6 @@ public class Drivetrain {
         this.backLeftMotor = backLeft;
         this.backRightMotor = backRight;
         this.otosSensor = otosSensor;
-        this.frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        this.frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        this.backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         this.frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -74,10 +66,6 @@ public class Drivetrain {
         this.backRightMotor = backRight;
         this.otosSensor = otosSensor;
         this.aprilTagCamera = aprilTagCamera;
-        this.frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        this.frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        this.backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         this.frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -270,18 +258,9 @@ public class Drivetrain {
 
     }
 
-
-    public void fcControl(double y, double x, double h) {
-        double r = Math.hypot(y, x);
-        double theta = Math.atan2(y, x);
-
-        double correctedTheta = theta - Math.toRadians(otosSensor.getPosition().h);
-
-        double correctedY = r * Math.sin(correctedTheta);
-        double correctedX = r * Math.cos(correctedTheta);
-
-        control(correctedY, correctedX, h);
-
+    public double shootingPosition() {
+        movePID(36,-36,45,0.5,1000,2,2,5);
+        return aprilTagCamera.getRange();
     }
 
     /* After the robot moves to where it thinks is (-1.5, 1.5) at -45 degrees,
@@ -308,6 +287,19 @@ public class Drivetrain {
         position.x *= -1;
     }
 
+    public void fcControl(double y, double x, double h) {
+        double r = Math.hypot(y, x);
+        double theta = Math.atan2(y, x);
+
+        double correctedTheta = theta - Math.toRadians(otosSensor.getPosition().h);
+
+        double correctedY = r * Math.sin(correctedTheta);
+        double correctedX = r * Math.cos(correctedTheta);
+
+        control(correctedY, correctedX, h);
+
+    }
+
     /**
      * Y IS FORWARDS AND BACKWARDS
      * @param y +forwards and -backwards
@@ -320,6 +312,7 @@ public class Drivetrain {
         backRightMotor.setPower(Range.clip(y + x - h, -1, 1));
         backLeftMotor.setPower(Range.clip(y - x + h, -1, 1));
     }
+
     public void joystickMovement(double ly, double lx, double rx, double ry) {
         if (rx != 0 || ry != 0) {
             double magnitude = Math.sqrt((ry*ry)+(rx*rx));
@@ -353,8 +346,7 @@ public class Drivetrain {
         }
     }
 
-     // 1. Sends power of each motor to telemetry
-     // 2. Updates telemetry
+     // Sends power of each motor to telemetry
     public void powerTelemetry(){
         TelemetryPasser.telemetry.addData("fl Power=", frontLeftMotor.getPower());
         TelemetryPasser.telemetry.addData("fr Power=", frontRightMotor.getPower());
@@ -376,9 +368,12 @@ public class Drivetrain {
         TelemetryPasser.telemetry.addData("atTargeth", hAtTarget);
         TelemetryPasser.telemetry.addLine();
     }
-    public double shootingPosition() {
-        movePID(36,-36,45,0.5,1000,2,2,5);
-        return aprilTagCamera.getRange();
+
+    public void setWheelDirection(DcMotorSimple.Direction lf, DcMotorSimple.Direction rf, DcMotorSimple.Direction lb, DcMotorSimple.Direction rb) {
+        this.frontLeftMotor.setDirection(lf);
+        this.frontRightMotor.setDirection(rf);
+        this.backLeftMotor.setDirection(lb);
+        this.backRightMotor.setDirection(rb);
     }
 
     public Pose2D getPosition() {
