@@ -53,8 +53,8 @@ public class BasicGarbage extends LinearOpMode {
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR)),
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_LEFT_MOTOR)),
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_RIGHT_MOTOR)),
-                otosSensor.sensor);
-        drivetrain.configureDrivetrain(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta), 0, 0, 0);
+                otosSensor);
+        drivetrain.configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta), 0, 0, 0);
 
         CommandList commands = new CommandList();
 

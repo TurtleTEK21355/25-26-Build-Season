@@ -16,7 +16,7 @@ public class MovePIDCommand extends Command{
         this.speed = speed;
         yPID = new PIDControllerSpeedLimit(drivetrain.getPIDConstants(), target.y, drivetrain.getTolerance().y, speed);
         xPID = new PIDControllerSpeedLimit(drivetrain.getPIDConstants(), target.x, drivetrain.getTolerance().x, speed);
-        hPID = new PIDControllerHeading(drivetrain.getPIDConstants(), target.h, drivetrain.getTolerance().h, speed);
+        hPID = new PIDControllerHeading(drivetrain.getThetaPIDConstants(), target.h, drivetrain.getTolerance().h, speed);
     }
 
     @Override

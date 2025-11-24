@@ -28,10 +28,8 @@ public class ShooterSystem {
 
     }
 
-    public void flywheelSetPower(boolean enabled, double power) {
-        if (enabled) {
+    public void flywheelSetPower(double power) {
             flyWheel.setPower(power);
-        }
     }
     public void HopperSetPower(double power) {
         hopper.setPower(power);
@@ -53,7 +51,6 @@ public class ShooterSystem {
         hopper.setPower(0);
         flyWheel.setPower(0);
         hopper.closeGate();
-
 
     }
     public void teleOpControl(String shoot, boolean intakeSpin, boolean hopperspinforward, boolean gate, boolean hopperspinbackward) {

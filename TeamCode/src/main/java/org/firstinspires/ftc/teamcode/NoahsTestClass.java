@@ -60,7 +60,7 @@ public class NoahsTestClass extends LinearOpMode {
                 new Intake(hardwareMap.get(DcMotor.class, "intake")));
 
         waitForStart();
-        drivetrain.configureDrivetrain(
+        drivetrain.configurePIDConstants(
                 aprilTagCamera,
                 new PIDConstants(kp, ki, kd),
                 new PIDConstants(kpTheta, kiTheta, kdTheta),

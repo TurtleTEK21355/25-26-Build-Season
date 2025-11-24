@@ -5,10 +5,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class MovePIDHoldTimeCommand extends MovePIDCommand{
     ElapsedTime holdTimer = new ElapsedTime();
-    private double holdTime;
+    private final double holdTime;
 
     public MovePIDHoldTimeCommand(Drivetrain drivetrain, Pose2D target, double speed, double holdTime) {
         super(drivetrain, target, speed);
+        this.holdTime = holdTime;
     }
 
     @Override

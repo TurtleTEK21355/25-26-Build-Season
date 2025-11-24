@@ -6,7 +6,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class OTOSSensor {
-    public SparkFunOTOS sensor;
+    private SparkFunOTOS sensor;
     
     public OTOSSensor(SparkFunOTOS sensor){
         this.sensor = sensor;
@@ -28,8 +28,18 @@ public class OTOSSensor {
         sensor.setPosition(currentPosition);
 
     }
+
     public void resetPosition(){
         sensor.setPosition(new SparkFunOTOS.Pose2D(0, 0, 0));
 
     }
+
+    public Pose2D getPosition() {
+        return new Pose2D(sensor.getPosition());
+    }
+
+    public void setPosition(Pose2D position) {
+        sensor.setPosition(position.toSparkFunPose2D());
+    }
+
 }

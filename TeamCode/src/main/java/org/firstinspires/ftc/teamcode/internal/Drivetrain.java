@@ -11,7 +11,7 @@ public class Drivetrain {
     private DcMotor frontRightMotor;
     private DcMotor backLeftMotor;
     private DcMotor backRightMotor;
-    private SparkFunOTOS otosSensor;
+    private OTOSSensor otosSensor;
     private AprilTagCamera aprilTagCamera;
     private PIDConstants pidConstants;
     private PIDConstants thetaPIDConstants;
@@ -45,7 +45,7 @@ public class Drivetrain {
 
     }
 
-    public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight, SparkFunOTOS otosSensor){
+    public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight, OTOSSensor otosSensor){
         this.frontLeftMotor = frontLeft;
         this.frontRightMotor = frontRight;
         this.backLeftMotor = backLeft;
@@ -62,18 +62,25 @@ public class Drivetrain {
 
     }
 
-    public void configureDrivetrain(AprilTagCamera aprilTagCamera, PIDConstants pidConstants, PIDConstants thetaPIDConstants, double offsetX, double offsetY, double offsetH) {
+    public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight, OTOSSensor otosSensor, AprilTagCamera aprilTagCamera){
+        this.frontLeftMotor = frontLeft;
+        this.frontRightMotor = frontRight;
+        this.backLeftMotor = backLeft;
+        this.backRightMotor = backRight;
+        this.otosSensor = otosSensor;
         this.aprilTagCamera = aprilTagCamera;
-
-        this.pidConstants = pidConstants;
-        this.thetaPIDConstants = thetaPIDConstants;
-
-        offset = new Pose2D(offsetX,offsetY,offsetH);
-        aprilOffset = new Pose2D(0,0,0);
+        this.frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.backRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
 
-    public void configureDrivetrain(PIDConstants pidConstants, PIDConstants thetaPIDConstants, double offsetX, double offsetY, double offsetH) {
+    public void configurePIDConstants(PIDConstants pidConstants, PIDConstants thetaPIDConstants, double offsetX, double offsetY, double offsetH) {
         this.pidConstants = pidConstants;
         this.thetaPIDConstants = thetaPIDConstants;
 
@@ -103,7 +110,7 @@ public class Drivetrain {
         * y' = -xsin(theta)+ycos(theta)-xoffset
         * h' = h+hoffset
         */
-        SparkFunOTOS.Pose2D realPos = otosSensor.getPosition();
+        Pose2D realPos = otosSensor.getPosition();
         double yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
         double xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
         double hPos = realPos.h+offset.h;
@@ -181,7 +188,7 @@ public class Drivetrain {
          * y' = -x*sin(theta)+y*cos(theta)-x_offset
          * h' = h+h_offset
          */
-        SparkFunOTOS.Pose2D realPos = otosSensor.getPosition();
+        Pose2D realPos = otosSensor.getPosition();
         double yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
         double xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
         double hPos = realPos.h+offset.h;
