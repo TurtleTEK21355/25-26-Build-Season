@@ -8,15 +8,17 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.internal.Command;
-import org.firstinspires.ftc.teamcode.internal.CommandList;
-import org.firstinspires.ftc.teamcode.internal.DoubleMenuItem;
-import org.firstinspires.ftc.teamcode.internal.HardwareNames;
-import org.firstinspires.ftc.teamcode.internal.Menu;
-import org.firstinspires.ftc.teamcode.internal.MovePIDHoldTimeCommand;
-import org.firstinspires.ftc.teamcode.internal.PIDConstants;
-import org.firstinspires.ftc.teamcode.internal.Pose2D;
-import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
+import org.firstinspires.ftc.teamcode.lib.command.Command;
+import org.firstinspires.ftc.teamcode.lib.command.CommandList;
+import org.firstinspires.ftc.teamcode.lib.menu.DoubleMenuItem;
+import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
+import org.firstinspires.ftc.teamcode.lib.menu.Menu;
+import org.firstinspires.ftc.teamcode.commands.MovePIDHoldTimeCommand;
+import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
+import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
+import org.firstinspires.ftc.teamcode.subsystems.AprilTagCamera;
+import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 
 @Autonomous(name="Test Auto Phil", group="Linear OpMode")
 public class BasicGarbage extends LinearOpMode {

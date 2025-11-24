@@ -1,15 +1,15 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.internal.PIDConstants;
-import org.firstinspires.ftc.teamcode.internal.PIDControllerHeading;
-import org.firstinspires.ftc.teamcode.internal.PIDControllerSpeedLimit;
-import org.firstinspires.ftc.teamcode.internal.Pose2D;
-import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
+import org.firstinspires.ftc.teamcode.TelemetryPasser;
+import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
+import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
+import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerSpeedLimit;
+import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 
 public class Drivetrain {
     private DcMotor frontLeftMotor;
@@ -382,7 +382,7 @@ public class Drivetrain {
     }
 
     public Pose2D getPosition() {
-        return new Pose2D(otosSensor.getPosition());
+        return otosSensor.getPosition();
     }
 
     public PIDConstants getPIDConstants() {

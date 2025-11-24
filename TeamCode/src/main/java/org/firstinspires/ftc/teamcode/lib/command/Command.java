@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.internal;
+package org.firstinspires.ftc.teamcode.lib.command;
 
 public abstract class Command {
     public abstract void loop();

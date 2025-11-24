@@ -12,8 +12,13 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
-import org.firstinspires.ftc.teamcode.internal.HardwareNames;
-import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
+import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
+import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.FlyWheel;
+import org.firstinspires.ftc.teamcode.subsystems.Hopper;
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
+import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
 @Disabled
 @TeleOp(name="TeleOpNoah", group="Iterative OpModes")

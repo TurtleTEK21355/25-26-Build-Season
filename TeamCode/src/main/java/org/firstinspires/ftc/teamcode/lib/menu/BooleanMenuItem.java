@@ -1,9 +1,6 @@
-package org.firstinspires.ftc.teamcode.internal;
+package org.firstinspires.ftc.teamcode.lib.menu;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-
-public class BooleanMenuItem extends MenuItem{
+public class BooleanMenuItem extends MenuItem {
     private boolean value;
 
     public BooleanMenuItem(boolean value, String name) {

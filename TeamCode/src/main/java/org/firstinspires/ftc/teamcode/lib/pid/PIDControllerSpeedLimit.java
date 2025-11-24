@@ -1,10 +1,10 @@
-package org.firstinspires.ftc.teamcode.internal;
+package org.firstinspires.ftc.teamcode.lib.pid;
 
 public class PIDControllerSpeedLimit extends PIDController{
 
     private final double speed;
 
-    PIDControllerSpeedLimit(PIDConstants pidConstants, double target, double tolerance, double speed) {
+    public PIDControllerSpeedLimit(PIDConstants pidConstants, double target, double tolerance, double speed) {
         super(pidConstants, target, tolerance);
         this.speed = speed;
 

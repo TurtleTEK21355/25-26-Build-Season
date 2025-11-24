@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.internal;
+package org.firstinspires.ftc.teamcode.lib.menu;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 

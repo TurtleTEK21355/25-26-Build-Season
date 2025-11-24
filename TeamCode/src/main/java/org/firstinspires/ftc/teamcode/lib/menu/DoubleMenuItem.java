@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.internal;
+package org.firstinspires.ftc.teamcode.lib.menu;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
-public class DoubleMenuItem extends MenuItem{
+public class DoubleMenuItem extends MenuItem {
     private double valueChangeAmount;
     private double value;
 

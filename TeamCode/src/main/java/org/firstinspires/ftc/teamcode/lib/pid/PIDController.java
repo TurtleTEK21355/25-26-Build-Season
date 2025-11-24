@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.internal;
+package org.firstinspires.ftc.teamcode.lib.pid;
 
 public class PIDController {
 
@@ -12,7 +12,7 @@ public class PIDController {
     double derivative;
 
 
-    PIDController(PIDConstants pidConstants, double target, double tolerance){
+    public PIDController(PIDConstants pidConstants, double target, double tolerance){
         this.pidConstants = pidConstants;
         this.target = target;
         this.tolerance = tolerance;

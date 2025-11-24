@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.subsystems;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.tan;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.internal.TelemetryPasser;
+import org.firstinspires.ftc.teamcode.TelemetryPasser;
 
 public class ShooterSystem {
     private FlyWheel flyWheel;
@@ -33,28 +33,57 @@ public class ShooterSystem {
     public void flywheelSetPower(double power) {
             flyWheel.setPower(power);
     }
-    public void IntakeSetPower(double power) {
+    public void hopperSetPower(double power) {
+        hopper.setPower(power);
+    }
+    public void intakeSetPower(double power) {
         intake.setPower(power);
     }
+    public void openGate() {
+        hopper.openGate();
+    }
+    public void closeGate() {
+        hopper.closeGate();
+    }
 
-//    public void autoShoot(double range) {
-//        double timer = 0;
-//        double power = (Math.sqrt((-GRAVITY*Math.pow(range, 2))/(2*Math.pow(cos(THETA), 2)*(HEIGHT - range * tan(THETA)))))/maxSpeed;
-//        flyWheel.setPower(power);
-//        while (flyWheel.getPower() < power-0.075);
-//        hopper.openGate();
-//        generalTimer.startTime();
-//        hopper.setPower(1);
-//        while(generalTimer.milliseconds()<1250);
-//        generalTimer.reset();
-//        hopper.setPower(0);
-//        flyWheel.setPower(0);
-//        hopper.closeGate();
-//
-//    }
-    public void teleOpControl(double shoot, boolean intakeSpin, boolean gate) {
+    public void autoShoot(double range) {
+        double timer = 0;
+        double power = (Math.sqrt((-GRAVITY*Math.pow(range, 2))/(2*Math.pow(cos(THETA), 2)*(HEIGHT - range * tan(THETA)))))/maxSpeed;
+        flyWheel.setPower(power);
+        while (flyWheel.getPower() < power-0.075);
+        hopper.openGate();
+        generalTimer.startTime();
+        hopper.setPower(1);
+        while(generalTimer.milliseconds()<1250);
+        generalTimer.reset();
+        hopper.setPower(0);
+        flyWheel.setPower(0);
+        hopper.closeGate();
+
+    }
+    public void teleOpControl(String shoot, boolean intakeSpin, boolean hopperspinforward, boolean gate, boolean hopperspinbackward) {
         TelemetryPasser.telemetry.addData("shoot", hopper.ballReady());
-        flyWheel.setPower(shoot);
+        if(hopperspinforward) {
+            hopper.setPower(1);
+        } else if (hopperspinbackward) {
+            hopper.setPower(-1);
+        } else {hopper.setPower(0);}
+        switch (shoot) {
+            case "a":
+                flyWheel.setPower(0.5);
+                break;
+            case "b":
+                flyWheel.setPower(0.6);
+                break;
+            case "x":
+                flyWheel.setPower(0.7);
+                break;
+            case "y":
+                flyWheel.setPower(0.8);
+                break;
+            default:
+                flyWheel.setPower(0);
+        }
         if (intakeSpin) {
             intake.setPower(0.8);
         } else {intake.setPower(0);}

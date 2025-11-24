@@ -1,4 +1,7 @@
-package org.firstinspires.ftc.teamcode.internal;
+package org.firstinspires.ftc.teamcode.commands;
+
+import org.firstinspires.ftc.teamcode.lib.command.Command;
+import org.firstinspires.ftc.teamcode.lib.command.CommandList;
 
 import java.util.Arrays;
 

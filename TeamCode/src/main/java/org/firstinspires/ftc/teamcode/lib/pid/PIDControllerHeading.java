@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.internal;
+package org.firstinspires.ftc.teamcode.lib.pid;
 
 public class PIDControllerHeading extends PIDControllerSpeedLimit{
 
-    PIDControllerHeading(PIDConstants pidConstants, double target, double tolerance, double speed) {
+    public PIDControllerHeading(PIDConstants pidConstants, double target, double tolerance, double speed) {
         super(pidConstants, target, tolerance, speed);
     }
 
