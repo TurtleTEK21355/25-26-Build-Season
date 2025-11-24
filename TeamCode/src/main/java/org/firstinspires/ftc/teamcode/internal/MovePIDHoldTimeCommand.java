@@ -18,11 +18,12 @@ public class MovePIDHoldTimeCommand extends MovePIDCommand{
         if (super.isCompleted()) {
             holdTimer.startTime();
         }
+        TelemetryPasser.telemetry.addData("holdTime", holdTime - holdTimer.milliseconds());
     }
 
     @Override
     public boolean isCompleted() {
-        return (super.isCompleted() && (holdTimer.milliseconds() >= holdTime));
+        return (holdTimer.milliseconds() >= holdTime);
 
     }
 

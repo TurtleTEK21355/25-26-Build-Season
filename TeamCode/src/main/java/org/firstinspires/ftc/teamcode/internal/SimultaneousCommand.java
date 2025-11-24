@@ -21,16 +21,12 @@ public class SimultaneousCommand extends Command {
 
     @Override
     public boolean isCompleted() {
-        int completedAmount = 0;
-
         for (Command command : commandList) {
-            if (command.isCompleted()) {
-                completedAmount += 1;
+            if (!command.isCompleted()) {
+                return false;
             }
         }
-
-        return (completedAmount >= commandList.size());
-
+        return true;
     }
 
 }
