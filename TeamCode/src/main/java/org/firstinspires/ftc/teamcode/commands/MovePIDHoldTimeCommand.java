@@ -7,8 +7,10 @@ import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 
 public class MovePIDHoldTimeCommand extends MovePIDCommand{
-    ElapsedTime holdTimer = new ElapsedTime();
+    private ElapsedTime holdTimer = new ElapsedTime();
     private final double holdTime;
+    private boolean holdTimerStartLock = false;
+
 
     public MovePIDHoldTimeCommand(Pose2D target, double holdTime, double speed, Drivetrain drivetrain) {
         super(target, speed, drivetrain);
@@ -18,15 +20,17 @@ public class MovePIDHoldTimeCommand extends MovePIDCommand{
     @Override
     public void loop() {
         super.loop();
-        if (super.isCompleted()) {
-            holdTimer.startTime();
+        if (super.isCompleted() && !holdTimerStartLock) {
+            holdTimer.reset();
+            holdTimerStartLock = true;
         }
+        TelemetryPasser.telemetry.addData("at Position", super.isCompleted());
         TelemetryPasser.telemetry.addData("holdTime", holdTime - holdTimer.milliseconds());
     }
 
     @Override
     public boolean isCompleted() {
-        return (holdTimer.milliseconds() >= holdTime);
+        return (super.isCompleted() && holdTimer.milliseconds() >= holdTime);
 
     }
 

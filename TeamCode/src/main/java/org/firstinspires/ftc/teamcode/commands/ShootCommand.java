@@ -21,7 +21,6 @@ public class ShootCommand extends Command {
         this.shooterSystem = shooterSystem;
         power = (Math.sqrt((-GRAVITY*Math.pow(range, 2))/(2*Math.pow(Math.cos(THETA), 2)*(HEIGHT - range * Math.tan(THETA)))))/ MAX_SPEED;
 
-
     }
 
     @Override
