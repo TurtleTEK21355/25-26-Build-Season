@@ -23,6 +23,7 @@ public class ShooterSystem {
     public ShooterSystem(FlyWheel flyWheel, GateSystem gateSystem, Intake intake){
         this.flyWheel = flyWheel;
         this.intake = intake;
+        this.gateSystem = gateSystem;
 
     }
 

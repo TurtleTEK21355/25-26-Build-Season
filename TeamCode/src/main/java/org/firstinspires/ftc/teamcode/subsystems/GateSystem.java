@@ -17,14 +17,14 @@ public class GateSystem {
     }
 
     void openGate() {
-        ballGate.setPosition((double)1/3);
-        TelemetryPasser.telemetry.addData("expected position", (double)1/3);
+        ballGate.setPosition(0);
+        TelemetryPasser.telemetry.addData("expected position", (0));
         TelemetryPasser.telemetry.addData("position", ballGate.getPosition());
     }
 
     void closeGate() {
-        ballGate.setPosition(0);
-        TelemetryPasser.telemetry.addData("expected position", 0);
+        ballGate.setPosition((double)1/3);
+        TelemetryPasser.telemetry.addData("expected position", (double)1/3);
         TelemetryPasser.telemetry.addData("position", ballGate.getPosition());
     }
     boolean ballReady() {
