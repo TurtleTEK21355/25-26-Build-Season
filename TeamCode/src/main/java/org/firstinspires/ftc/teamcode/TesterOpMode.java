@@ -31,6 +31,9 @@ public class TesterOpMode extends LinearOpMode {
         frontRightMotor = hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR));
         backLeftMotor = hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_LEFT_MOTOR));
         backRightMotor = hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_RIGHT_MOTOR));
+
+        waitForStart();
+
         testMotor(frontLeftMotor, "frontLeft");
         testMotor(frontRightMotor, "frontRight");
         testMotor(backLeftMotor, "backLeft");

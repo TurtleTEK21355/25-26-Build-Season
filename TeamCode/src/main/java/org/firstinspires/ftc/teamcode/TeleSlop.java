@@ -33,7 +33,7 @@ public class TeleSlop extends OpMode {
     public void init() {
         TelemetryPasser.telemetry = telemetry;
 
-        otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, "otos"));
+        otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
         otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
 
         drivetrain = new Drivetrain(
@@ -58,7 +58,7 @@ public class TeleSlop extends OpMode {
 
     @Override
     public void loop() {
-        drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad2.left_stick_x);
 
         if (gamepad1.back){
             otosSensor.resetPosition();

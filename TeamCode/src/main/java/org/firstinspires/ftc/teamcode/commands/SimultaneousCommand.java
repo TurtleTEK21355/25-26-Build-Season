@@ -14,6 +14,12 @@ public class SimultaneousCommand extends Command {
         commandList.addAll(Arrays.asList(commands));
     }
 
+    @Override
+    public void init() {
+        for (Command command : commandList) {
+            command.init();
+        }
+    }
 
     @Override
     public void loop() {

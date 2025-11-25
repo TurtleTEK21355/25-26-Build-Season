@@ -34,7 +34,7 @@ public class MovePIDCommand extends Command {
 
     @Override
     public boolean isCompleted() {
-        return (!yPID.atTarget(position.y) || !xPID.atTarget(position.x) || !hPID.atTarget(position.h));
+        return (yPID.atTarget(position.y) && xPID.atTarget(position.x) && hPID.atTarget(position.h));
     }
 
 }
