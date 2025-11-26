@@ -23,11 +23,15 @@ public class ShooterSystem {
     public ShooterSystem(FlyWheel flyWheel, GateSystem gateSystem, Intake intake){
         this.flyWheel = flyWheel;
         this.intake = intake;
+        this.gateSystem = gateSystem;
 
     }
 
-    public void flywheelSetPower(double power) {
-            flyWheel.setPower(power);
+    public void flywheelSetVelocity(double velocity) {
+            flyWheel.setVelocity(velocity);
+    }
+    public double flywheelGetVelocity() {
+        return flyWheel.getVelocity();
     }
     public void intakeSetPower(double power) {
         intake.setPower(power);
@@ -38,6 +42,7 @@ public class ShooterSystem {
     public void closeGate() {
         gateSystem.closeGate();
     }
+    public boolean ballReady() {return gateSystem.ballReady();}
 
 //    public void autoShoot(double range) {
 //        double timer = 0;
@@ -56,7 +61,7 @@ public class ShooterSystem {
 //    }
     public void teleOpControl(double shoot, boolean intakeSpin, boolean gate) {
         TelemetryPasser.telemetry.addData("shoot", gateSystem.ballReady());
-        flyWheel.setPower(shoot);
+        flyWheel.setVelocity(shoot*6000);
         if (intakeSpin) {
             intake.setPower(0.8);
         } else {intake.setPower(0);}

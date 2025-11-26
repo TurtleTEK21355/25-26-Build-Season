@@ -9,7 +9,7 @@ public class SimultaneousCommand extends Command {
 
     private final CommandList commandList;
 
-    SimultaneousCommand(Command... commands) {
+    public SimultaneousCommand(Command... commands) {
         commandList = new CommandList();
         commandList.addAll(Arrays.asList(commands));
     }

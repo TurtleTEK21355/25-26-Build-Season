@@ -86,7 +86,12 @@ public class Drivetrain {
         aprilOffset = new Pose2D(0,0,0);
 
     }
-
+    public double getOffsetX() {
+        return offset.x;
+    }
+    public double getOffsetY() {
+        return offset.y;
+    }
 
     /**
      * controls the drivetrain to move and rotate to specific points on the field. If the robot is within the tolerance area, it will stop... probably
