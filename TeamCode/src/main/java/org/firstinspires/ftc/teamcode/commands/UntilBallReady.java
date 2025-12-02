@@ -7,33 +7,16 @@ public class UntilBallReady extends Command {
 
     public UntilBallReady(ShooterSystem shooterSystem) {
         this.shooterSystem = shooterSystem;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        this.ready = ready;
+
     }
 
     @Override
     public void init() {
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     }
 
     @Override
     public boolean isCompleted() {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        if (ready) {
-            return (!shooterSystem.ballReady());
-        } else {
-            return (shooterSystem.ballReady());
-        }
-=======
         return shooterSystem.ballReady();
->>>>>>> Stashed changes
-=======
-        return shooterSystem.ballReady();
->>>>>>> Stashed changes
+
     }
 }
