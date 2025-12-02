@@ -84,7 +84,7 @@ public class AutoFrontBlue extends CommandOpMode{
         addCommand(new IntakeAuto(shooterSystem, false));
         addCommand(new GatePosition(shooterSystem, false));
         addCommand(new FlyWheelVelocity(shooterSystem, false));
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(-30, 15, 0),1500, speed, drivetrain));
+        addCommand(new MovePIDHoldTimeCommand(new Pose2D(-30, 10, 0),1500, speed, drivetrain));
 
 
     }

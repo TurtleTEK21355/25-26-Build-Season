@@ -267,36 +267,6 @@ public class Drivetrain {
         }
 
     }
-
-    public double shootingPosition() {
-        movePID(36,-36,45,0.5,1000,2,2,5);
-        return aprilTagCamera.getRange();
-    }
-
-    /* After the robot moves to where it thinks is (-1.5, 1.5) at -45 degrees,
-     * it will correct its odometry based on the position of AprilTag ID 20
-     * and move to the correct location.
-     */
-    public void correctViaAprilTagTest() {
-        movePID(5, -5, 45, 0.25, 1000);
-        ElapsedTime timer = new ElapsedTime();
-        timer.reset();
-        timer.startTime();
-        // Robot may take up to 5 seconds to detect an AprilTag
-        while ((!aprilTagCamera.isDetected()) && timer.seconds()<5) {
-            aprilTagCamera.updateDetections();
-            TelemetryPasser.telemetry.addData("Is Detection?", "No");
-            TelemetryPasser.telemetry.update();
-        }
-        timer.reset();
-
-        // uses AprilTag detections to correct odometry
-        // offset to be changed when robot is built to account for camera position relative to odometry sensor
-        position = aprilTagCamera.getDetections();
-        position.y *= -1;
-        position.x *= -1;
-    }
-
     public void fcControl(double y, double x, double h) {
         double r = Math.hypot(y, x);
         double theta = Math.atan2(y, x);
@@ -392,7 +362,7 @@ public class Drivetrain {
 
     public double getRange() {
         Pose2D position = otosSensor.getPosition();
-        return Math.sqrt(Math.pow(position.x-offset.x-56.4, 2)+Math.pow(position.y-offset.y+60, 2));
+        return Math.sqrt(Math.pow(position.x-offset.x-67.215, 2)+Math.pow(position.y-offset.y+74.871, 2));
     }
 
     public PIDConstants getPIDConstants() {

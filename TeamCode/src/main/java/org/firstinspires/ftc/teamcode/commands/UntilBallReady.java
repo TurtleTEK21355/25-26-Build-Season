@@ -13,16 +13,14 @@ public class UntilBallReady extends Command {
 
     @Override
     public void init() {
-        if (ready) {
-            while(!shooterSystem.ballReady());
-        } else {
-            while(shooterSystem.ballReady());
-        }
     }
 
     @Override
     public boolean isCompleted() {
-        return true;
+        if (ready) {
+            return (!shooterSystem.ballReady());
+        } else {
+            return (shooterSystem.ballReady());
+        }
     }
-
 }

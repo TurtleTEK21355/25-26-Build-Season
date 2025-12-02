@@ -34,7 +34,7 @@ public class TeleSlop extends OpMode {
         TelemetryPasser.telemetry = telemetry;
 
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
-        otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, -30, 15, 0, 1.0, 1.0);
+        otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, -30, 10, 0, 1.0, 1.0);
 
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),
