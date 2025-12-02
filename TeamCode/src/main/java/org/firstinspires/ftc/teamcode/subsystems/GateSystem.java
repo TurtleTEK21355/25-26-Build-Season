@@ -15,7 +15,6 @@ public class GateSystem {
         this.ballGate.setDirection(Servo.Direction.REVERSE);
         this.breakBeamSensor = breakBeamSensor;
     }
-
     void closeGate() {
         ballGate.setPosition((double)1/3);
         TelemetryPasser.telemetry.addData("expected position", (double)1/3);
