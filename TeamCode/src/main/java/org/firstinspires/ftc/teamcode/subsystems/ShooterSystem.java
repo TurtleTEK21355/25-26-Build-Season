@@ -64,7 +64,7 @@ public class ShooterSystem {
     public void teleOpControl(double range, boolean intakeForward, boolean shoot, double intakeBackward) {
         TelemetryPasser.telemetry.addData("shoot", gateSystem.ballReady());
         expectedVelocity = (Math.sqrt((-GRAVITY*Math.pow(range, 2))/(2*Math.pow(Math.cos(THETA), 2)*(HEIGHT - range * Math.tan(THETA)))))/maxSpeed;
-        flyWheel.setVelocity(Range.clip(expectedVelocity, 0.4, 1));
+        flyWheel.setVelocity(Range.clip(expectedVelocity, 600, 1500));
         if (intakeForward) {
             intake.setPower(0.8);
         } else if (intakeBackward > 0.1)

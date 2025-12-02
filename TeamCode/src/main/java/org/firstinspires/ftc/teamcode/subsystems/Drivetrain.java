@@ -23,7 +23,6 @@ public class Drivetrain {
     private final Pose2D tolerance = new Pose2D(2, 2, 10);
     private Pose2D position;
     private Pose2D offset;
-    private Pose2D aprilOffset;
     double yPosTelemetry;
     double xPosTelemetry;
     double hPosTelemetry;
@@ -83,8 +82,6 @@ public class Drivetrain {
         this.thetaPIDConstants = thetaPIDConstants;
 
         offset = new Pose2D(offsetX,offsetY,offsetH);
-        aprilOffset = new Pose2D(0,0,0);
-
     }
     public double getOffsetX() {
         return offset.x;
