@@ -23,11 +23,14 @@ public class MovePIDCommand extends Command {
         yPID = new PIDControllerSpeedLimit(drivetrain.getPIDConstants(), target.y, drivetrain.getTolerance().y, speed);
         xPID = new PIDControllerSpeedLimit(drivetrain.getPIDConstants(), target.x, drivetrain.getTolerance().x, speed);
         hPID = new PIDControllerHeading(drivetrain.getThetaPIDConstants(), target.h, drivetrain.getTolerance().h, speed);
+        position = drivetrain.getPosition();
     }
 
     @Override
     public void loop() {
         position = drivetrain.getPosition();
+        position.x += drivetrain.getOffsetX();
+        position.y += drivetrain.getOffsetY();
         drivetrain.fcControl(yPID.calculate(position.y), xPID.calculate(position.x), hPID.calculate(position.h));
         drivetrain.PIDTelemetry(position, target, xPID.atTarget(position.x), yPID.atTarget(position.y), hPID.atTarget(position.h));
     }

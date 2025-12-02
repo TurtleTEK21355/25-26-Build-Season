@@ -15,16 +15,15 @@ public class GateSystem {
         this.ballGate.setDirection(Servo.Direction.REVERSE);
         this.breakBeamSensor = breakBeamSensor;
     }
-
-    void openGate() {
-        ballGate.setPosition(0);
-        TelemetryPasser.telemetry.addData("expected position", (0));
-        TelemetryPasser.telemetry.addData("position", ballGate.getPosition());
-    }
-
     void closeGate() {
         ballGate.setPosition((double)1/3);
         TelemetryPasser.telemetry.addData("expected position", (double)1/3);
+        TelemetryPasser.telemetry.addData("position", ballGate.getPosition());
+    }
+
+    void openGate() {
+        ballGate.setPosition(0);
+        TelemetryPasser.telemetry.addData("expected position", 0);
         TelemetryPasser.telemetry.addData("position", ballGate.getPosition());
     }
     boolean ballReady() {

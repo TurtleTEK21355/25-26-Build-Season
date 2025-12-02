@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.PartnerPark;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
-@TeleOp(name="UseThisOneNotTheOtherOnePleasePLEASE", group="Iterative OpModes")
+@TeleOp(name="TeleSlop", group="Iterative OpModes")
 public class TeleSlop extends OpMode {
 
     Drivetrain drivetrain;
@@ -34,7 +34,7 @@ public class TeleSlop extends OpMode {
         TelemetryPasser.telemetry = telemetry;
 
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
-        otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
+        otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, -30, 15, 0, 1.0, 1.0);
 
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),
@@ -58,24 +58,12 @@ public class TeleSlop extends OpMode {
 
     @Override
     public void loop() {
-        drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad2.left_stick_x);
 
-        if (gamepad1.back){
-            otosSensor.resetPosition();
-        }
-
-        if (gamepad2.a) {
-            set = 0.65;
-        } else if (gamepad2.b) {
-            set = 0.7;
-        } else if (gamepad2.x) {
-            set = 0.75;
-        } else if (gamepad2.y) {
-            set = 0.8;
-        } else {
-            set = 0;
-        }
-        shooterSystem.teleOpControl(set, gamepad2.right_bumper,gamepad2.left_bumper);
+        drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+//        if (gamepad1.back){
+//            otosSensor.resetPosition();
+//        }
+        shooterSystem.teleOpControl(drivetrain.getRange(), gamepad2.left_bumper,gamepad2.right_bumper, gamepad2.left_trigger);
 //        partnerPark.control(gamepad1.right_bumper, gamepad1.left_bumper);
         telemetry.addData("hpos:", otosSensor.getPosition().h);
         drivetrain.powerTelemetry();

@@ -86,7 +86,12 @@ public class Drivetrain {
         aprilOffset = new Pose2D(0,0,0);
 
     }
-
+    public double getOffsetX() {
+        return offset.x;
+    }
+    public double getOffsetY() {
+        return offset.y;
+    }
 
     /**
      * controls the drivetrain to move and rotate to specific points on the field. If the robot is within the tolerance area, it will stop... probably
@@ -383,6 +388,11 @@ public class Drivetrain {
 
     public Pose2D getPosition() {
         return otosSensor.getPosition();
+    }
+
+    public double getRange() {
+        Pose2D position = otosSensor.getPosition();
+        return Math.sqrt(Math.pow(position.x-offset.x-56.4, 2)+Math.pow(position.y-offset.y+60, 2));
     }
 
     public PIDConstants getPIDConstants() {

@@ -17,11 +17,10 @@ public class FlyWheel {
         flyWheelMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-    void setPower(double power) {
-        flyWheelMotor.setPower(Range.clip(power, -1, 1));
-        TelemetryPasser.telemetry.addData("FlyWheel Velocity", flyWheelMotor.getVelocity());
+    void setVelocity(double velocity) {
+        flyWheelMotor.setVelocity(Range.clip(velocity, -6000, 6000));
     }
-    double getPower() {
-        return flyWheelMotor.getPower();
+    double getVelocity() {
+        return flyWheelMotor.getVelocity();
     }
 }
