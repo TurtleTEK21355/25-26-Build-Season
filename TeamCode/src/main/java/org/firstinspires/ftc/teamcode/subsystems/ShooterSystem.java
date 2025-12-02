@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 
@@ -18,6 +19,7 @@ public class ShooterSystem {
     static double THETA = 1.13446401; //Ramp Angle in Radians
 
     static double maxSpeed = 388.590;
+    private double expectedVelocity;
 
 
     public ShooterSystem(FlyWheel flyWheel, GateSystem gateSystem, Intake intake){
@@ -59,13 +61,17 @@ public class ShooterSystem {
 //        hopper.closeGate();
 //
 //    }
-    public void teleOpControl(double shoot, boolean intakeSpin, boolean gate) {
+    public void teleOpControl(double range, boolean intakeForward, boolean shoot, double intakeBackward) {
         TelemetryPasser.telemetry.addData("shoot", gateSystem.ballReady());
-        flyWheel.setVelocity(shoot*6000);
-        if (intakeSpin) {
+        expectedVelocity = (Math.sqrt((-GRAVITY*Math.pow(range, 2))/(2*Math.pow(Math.cos(THETA), 2)*(HEIGHT - range * Math.tan(THETA)))))/maxSpeed;
+        flyWheel.setVelocity(Range.clip(expectedVelocity, 0.4, 1));
+        if (intakeForward) {
             intake.setPower(0.8);
-        } else {intake.setPower(0);}
-        if (gate) {
+        } else if (intakeBackward > 0.1)
+        {intake.setPower(-0.7);} else {
+            intake.setPower(0);
+        }
+        if (shoot &&(flywheelGetVelocity() > (expectedVelocity-80))) {
             gateSystem.openGate();
         } else {
             gateSystem.closeGate();}

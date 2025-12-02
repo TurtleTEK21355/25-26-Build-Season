@@ -390,6 +390,11 @@ public class Drivetrain {
         return otosSensor.getPosition();
     }
 
+    public double getRange() {
+        Pose2D position = otosSensor.getPosition();
+        return Math.sqrt(Math.pow(position.x-offset.x-56.4, 2)+Math.pow(position.y-offset.y+60, 2));
+    }
+
     public PIDConstants getPIDConstants() {
         return pidConstants;
     }
