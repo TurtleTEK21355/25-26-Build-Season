@@ -11,12 +11,15 @@ public class TimerCommand extends Command {
     public TimerCommand(int milliseconds) {
         this.milliseconds = milliseconds;
     }
+
     @Override
     public void init() {
         timer.reset();
     }
+
     @Override
     public boolean isCompleted() {
         return timer.milliseconds() >= milliseconds;
     }
+
 }
