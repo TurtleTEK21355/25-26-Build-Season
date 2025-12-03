@@ -8,7 +8,7 @@ public class TimerCommand extends Command {
     private ElapsedTime timer = new ElapsedTime();
     private int milliseconds;
 
-    TimerCommand(int milliseconds) {
+    public TimerCommand(int milliseconds) {
         this.milliseconds = milliseconds;
     }
     @Override

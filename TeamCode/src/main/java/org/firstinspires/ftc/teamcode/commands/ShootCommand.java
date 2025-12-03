@@ -10,7 +10,7 @@ public class ShootCommand extends Command {
     private ShooterSystem shooterSystem;
     private double range;
     private double timer = 0;
-    private double power;
+    private double velocity;
     private static final double GRAVITY = 386.09; //Inches per second squared
     private static final double HEIGHT = 40; //inches tall
     private static final double THETA = 1.13446401; //Ramp Angle in Radians
@@ -19,13 +19,13 @@ public class ShootCommand extends Command {
     ShootCommand(double range, ShooterSystem shooterSystem) {
         this.range = range;
         this.shooterSystem = shooterSystem;
-        power = (Math.sqrt((-GRAVITY*Math.pow(range, 2))/(2*Math.pow(Math.cos(THETA), 2)*(HEIGHT - range * Math.tan(THETA)))))/ MAX_SPEED;
+        velocity = ((Math.sqrt((-GRAVITY*Math.pow(range, 2))/(2*Math.pow(Math.cos(THETA), 2)*(HEIGHT - range * Math.tan(THETA)))))/ MAX_SPEED) * 6000;
 
     }
 
     @Override
     public void loop() {
-        shooterSystem.flywheelSetPower(power);
+        shooterSystem.flywheelSetVelocity(velocity);
 
     }
 
