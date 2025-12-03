@@ -15,7 +15,6 @@ import org.firstinspires.ftc.teamcode.commands.MovePIDHoldTimeCommand;
 import org.firstinspires.ftc.teamcode.commands.FlyWheelVelocity;
 import org.firstinspires.ftc.teamcode.commands.SimultaneousCommand;
 import org.firstinspires.ftc.teamcode.commands.TimerCommand;
-import org.firstinspires.ftc.teamcode.commands.UntilBallReady;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.menu.DoubleMenuItem;
@@ -51,7 +50,7 @@ public class AutoFrontBlue extends CommandOpMode{
         TelemetryPasser.telemetry = telemetry;
         aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(HardwareNames.Name.APRIL_TAG_CAMERA)));
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
-        otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
+        otosSensor.configureOtos(-40, 65.75, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR)),
@@ -65,7 +64,8 @@ public class AutoFrontBlue extends CommandOpMode{
                         hardwareMap.get(Ada2167BreakBeam.class, hardwareNames.get(HardwareNames.Name.BALL_READY_SENSOR))),
                 new Intake(hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.INTAKE_MOTOR))));
         configureVariables();
-        drivetrain.configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta), -40, 65.75, 0);
+        drivetrain.configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
+
         addCommand(new SimultaneousCommand((new FlyWheelVelocity(shooterSystem, true)), (new MovePIDHoldTimeCommand(new Pose2D(-24, 24, 45),1000, speed, drivetrain))));
         addCommand(new GatePosition(shooterSystem, true));
         addCommand(new IntakeAuto(shooterSystem, true));
@@ -75,7 +75,8 @@ public class AutoFrontBlue extends CommandOpMode{
         addCommand(new FlyWheelVelocity(shooterSystem, true));
         addCommand(new GatePosition(shooterSystem, true));
         addCommand(new IntakeAuto(shooterSystem, true));
-        addCommand(new TimerCommand(250));        addCommand(new IntakeAuto(shooterSystem, false));
+        addCommand(new TimerCommand(250));
+        addCommand(new IntakeAuto(shooterSystem, false));
         addCommand(new GatePosition(shooterSystem, false));
         addCommand(new FlyWheelVelocity(shooterSystem, true));
         addCommand(new GatePosition(shooterSystem, true));

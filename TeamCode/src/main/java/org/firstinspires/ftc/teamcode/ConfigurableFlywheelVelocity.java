@@ -38,7 +38,7 @@ public class ConfigurableFlywheelVelocity extends OpMode {
         TelemetryPasser.telemetry = telemetry;
 
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
-        otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, -30, 10, 0, 1.0, 1.0);
+        otosSensor.configureOtos(-30, 10, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
 
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),
@@ -67,7 +67,7 @@ public class ConfigurableFlywheelVelocity extends OpMode {
         if (gamepad1.back){
             otosSensor.resetPosition();
         }
-        shooterSystem.teleOpControlConfigurableVelocity(drivetrain.getRange(), gamepad2.left_bumper,gamepad2.right_bumper, gamepad2.left_trigger, velocity);
+        shooterSystem.teleOpControlConfigurableVelocity(velocity, gamepad2.left_bumper,gamepad2.right_bumper, gamepad2.left_trigger);
         telemetry.addLine(menu.reportMenuItemValue());
         drivetrain.powerTelemetry();
         telemetry.update();

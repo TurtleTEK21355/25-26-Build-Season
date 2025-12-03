@@ -2,13 +2,10 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
-import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
-import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerSpeedLimit;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 
 public class Drivetrain {
@@ -50,7 +47,7 @@ public class Drivetrain {
 
     }
 
-    public void configurePIDConstants(PIDConstants pidConstants, PIDConstants thetaPIDConstants, double offsetX, double offsetY, double offsetH) {
+    public void configurePIDConstants(PIDConstants pidConstants, PIDConstants thetaPIDConstants) {
         this.pidConstants = pidConstants;
         this.thetaPIDConstants = thetaPIDConstants;
 
@@ -116,26 +113,26 @@ public class Drivetrain {
         }
     }
 
-     // Sends power of each motor to telemetry
+    // Sends power of each motor to telemetry
     public void powerTelemetry(){
-        TelemetryPasser.telemetry.addData("fl Power=", frontLeftMotor.getPower());
-        TelemetryPasser.telemetry.addData("fr Power=", frontRightMotor.getPower());
-        TelemetryPasser.telemetry.addData("bl Power=", backLeftMotor.getPower());
-        TelemetryPasser.telemetry.addData("br Power=", backRightMotor.getPower());
+        TelemetryPasser.telemetry.addData("fl Power", frontLeftMotor.getPower());
+        TelemetryPasser.telemetry.addData("fr Power", frontRightMotor.getPower());
+        TelemetryPasser.telemetry.addData("bl Power", backLeftMotor.getPower());
+        TelemetryPasser.telemetry.addData("br Power", backRightMotor.getPower());
     }
 
     public void PIDTelemetry(Pose2D pos, Pose2D target, boolean xAtTarget, boolean yAtTarget, boolean hAtTarget){
-        TelemetryPasser.telemetry.addData("xPosition", pos.x);
-        TelemetryPasser.telemetry.addData("yPosition", pos.y);
-        TelemetryPasser.telemetry.addData("hPosition", pos.h);
+        TelemetryPasser.telemetry.addData("X Position", pos.x);
+        TelemetryPasser.telemetry.addData("Y Position", pos.y);
+        TelemetryPasser.telemetry.addData("Heading", pos.h);
         TelemetryPasser.telemetry.addLine();
-        TelemetryPasser.telemetry.addData("Targetx", target.x);
-        TelemetryPasser.telemetry.addData("Targety", target.y);
-        TelemetryPasser.telemetry.addData("Targeth", target.h);
+        TelemetryPasser.telemetry.addData("Target X", target.x);
+        TelemetryPasser.telemetry.addData("Target Y", target.y);
+        TelemetryPasser.telemetry.addData("Target H", target.h);
         TelemetryPasser.telemetry.addLine();
-        TelemetryPasser.telemetry.addData("atTargetx", xAtTarget);
-        TelemetryPasser.telemetry.addData("atTargety", yAtTarget);
-        TelemetryPasser.telemetry.addData("atTargeth", hAtTarget);
+        TelemetryPasser.telemetry.addData("At Target X", xAtTarget);
+        TelemetryPasser.telemetry.addData("At Target Y", yAtTarget);
+        TelemetryPasser.telemetry.addData("At Target H", hAtTarget);
         TelemetryPasser.telemetry.addLine();
     }
 
@@ -148,11 +145,6 @@ public class Drivetrain {
 
     public Pose2D getPosition() {
         return otosSensor.getPosition();
-    }
-
-    public double getRange() {
-        Pose2D position = otosSensor.getPosition();
-        return Math.sqrt(Math.pow(position.x-67.215, 2)+Math.pow(position.y+74.871, 2));
     }
 
     public PIDConstants getPIDConstants() {

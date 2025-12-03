@@ -4,20 +4,19 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
+import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 
 public class ShooterSystem {
     private FlyWheel flyWheel;
     private GateSystem gateSystem;
     private Intake intake;
-    ElapsedTime flyWheelTimer = new ElapsedTime();
-    ElapsedTime generalTimer = new ElapsedTime();
-    private enum Mode {NORMAL, SHOOT};
-    private Mode mode = Mode.NORMAL;
-    static double GRAVITY = 386.09; //Inches per second squared
-    static double HEIGHT = 40; //inches tall
-    static double THETA = 1.13446401; //Ramp Angle in Radians
-    static double maxSpeed = 388.590;
-    private double expectedVelocity;
+
+    private final double GRAVITY = 386.09; //Inches per second squared
+    private final double HEIGHT = 40; //inches tall
+    private final double THETA = 1.13446401; //Ramp Angle in Radians
+    private final double MAX_SPEED = 386; //inches per second?
+    private final double MAX_RPM = 7214; //this ones gotta be rpm hopefully
+    private final double TICKS_PER_ROTATION = 28; //ticks per rotation of 5000 series motor
 
 
     public ShooterSystem(FlyWheel flyWheel, GateSystem gateSystem, Intake intake){
@@ -44,39 +43,23 @@ public class ShooterSystem {
     }
     public boolean ballReady() {return gateSystem.ballReady();}
 
-//    public void autoShoot(double range) {
-//        double timer = 0;
-//        double power = (Math.sqrt((-GRAVITY*Math.pow(range, 2))/(2*Math.pow(cos(THETA), 2)*(HEIGHT - range * tan(THETA)))))/maxSpeed;
-//        flyWheel.setPower(power);
-//        while (flyWheel.getPower() < power-0.075);
-//        hopper.openGate();
-//        generalTimer.startTime();
-//        hopper.setPower(1);
-//        while(generalTimer.milliseconds()<1250);
-//        generalTimer.reset();
-//        hopper.setPower(0);
-//        flyWheel.setPower(0);
-//        hopper.closeGate();
-//
-//    }
-
-    public void teleOpControl(double range, boolean intakeForward, boolean shoot, double intakeBackward) {
+    public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward) {
         TelemetryPasser.telemetry.addData("shoot", ballReady());
-        expectedVelocity = (Math.sqrt((-GRAVITY*Math.pow(range, 2))/(2*Math.pow(Math.cos(THETA), 2)*(HEIGHT - range * Math.tan(THETA)))))/maxSpeed;
-        flyWheel.setVelocity(Range.clip(expectedVelocity, 600, 1500));
+        double flyWheelTargetSpeed = getTicksPerSecondForPosition(position);
+        flywheelSetVelocity(Range.clip(flyWheelTargetSpeed, 600, 1500));
         if (intakeForward) {
             intake.setPower(0.8);
         } else if (intakeBackward > 0.1)
         {intake.setPower(-0.7);} else {
             intake.setPower(0);
         }
-        if (shoot &&(flywheelGetVelocity() > (expectedVelocity-80))) {
+        if (shoot && (flywheelGetVelocity() > (flyWheelTargetSpeed-80))) { //what does minus 80 mean???!?!?!?!??!
             gateSystem.openGate();
         } else {
             gateSystem.closeGate();}
 
     }
-    public void teleOpControlConfigurableVelocity(double range, boolean intakeForward, boolean shoot, double intakeBackward, double velocity) {
+    public void teleOpControlConfigurableVelocity(double velocity, boolean intakeForward, boolean shoot, double intakeBackward) {
         TelemetryPasser.telemetry.addData("shoot", ballReady());
         flyWheel.setVelocity(velocity);
         if (intakeForward) {
@@ -85,48 +68,43 @@ public class ShooterSystem {
         {intake.setPower(-0.7);} else {
             intake.setPower(0);
         }
-        if (shoot &&(flywheelGetVelocity() > (expectedVelocity-80))) {
+        if (shoot &&(flywheelGetVelocity() > (velocity-80))) {
             gateSystem.openGate();
         } else {
             gateSystem.closeGate();}
 
     }
 
-    public void philTeleOpControl(boolean shoot, boolean intake, double range) {
-        if (shoot) {      //if a ball is detected in the top and the shoot button is pressed
-            TelemetryPasser.telemetry.addData("shoot", ballReady());
-            expectedVelocity = (Math.sqrt((-GRAVITY*Math.pow(range, 2))/(2*Math.pow(Math.cos(THETA), 2)*(HEIGHT - range * Math.tan(THETA)))))/maxSpeed;
-            flywheelSetVelocity(Range.clip(expectedVelocity, 600, 1500));
-            flyWheelTimer.reset(); //reset timer to start
-            mode = Mode.SHOOT;      //this is so theres no issue with setting the power of things to the wrong level on the bottom
+    private double getRange(Pose2D position) {
+        return Math.sqrt(Math.pow(position.x-67.215, 2)+Math.pow(position.y+74.871, 2));
+        //TODO: GET RID OF NUMBERS
+    }
 
-        }
+    private double getTicksPerSecondForPosition(Pose2D position) {
 
-        if (mode == Mode.SHOOT) {       //while the flywheel is shooting
-            if (flyWheelTimer.milliseconds() > 1000) {      //if the shooting timer is up it will turn off everything and set back to non shooting mode
-                flywheelSetVelocity(0);
-                intakeSetPower(0);
-                closeGate();
-                flyWheelTimer.reset();
-                mode = Mode.NORMAL;
+        double range = getRange(position);
 
-            } else if (flyWheelTimer.milliseconds() > 400) {
-                openGate();
-                intakeSetPower(1);
+        double expectedVelocity = (
+                Math.sqrt(
+                    (
+                        -GRAVITY*Math.pow(range, 2)
+                    )
+                    /
+                    (
+                        2*Math.pow(Math.cos(THETA), 2)
+                        *
+                        (HEIGHT - range * Math.tan(THETA))
+                    )
+                )
+            );
 
-            }
+        double adjustedForMaxSpeed  = expectedVelocity/MAX_SPEED;
 
-        }
+        double rotationPerMinute = adjustedForMaxSpeed/MAX_RPM;
 
-        if (mode == Mode.NORMAL) {
-            if (intake) {
-                intakeSetPower(0.8);
+        double ticksPerSecond = (rotationPerMinute/60)*TICKS_PER_ROTATION;
 
-            } else {
-                intakeSetPower(0);
-            }
-        }
-
+        return ticksPerSecond;
     }
 
 }

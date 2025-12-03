@@ -33,7 +33,7 @@ public class TeleSlop extends OpMode {
         TelemetryPasser.telemetry = telemetry;
 
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
-        otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, -30, 10, 0, 1.0, 1.0);
+        otosSensor.configureOtos(-30, 10, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
 
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),
@@ -52,17 +52,16 @@ public class TeleSlop extends OpMode {
 //                hardwareMap.get(DcMotor.class, "vsr"),
 //                hardwareMap.get(DcMotor.class, "vsl"));
 
-
     }
 
     @Override
     public void loop() {
 
         drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
-//        if (gamepad1.back){
-//            otosSensor.resetPosition();
-//        }
-        shooterSystem.teleOpControl(drivetrain.getRange(), gamepad2.left_bumper,gamepad2.right_bumper, gamepad2.left_trigger);
+        if (gamepad1.back){
+            otosSensor.resetPosition();
+        }
+        shooterSystem.teleOpControl(otosSensor.getPosition(), gamepad2.left_bumper,gamepad2.right_bumper, gamepad2.left_trigger);
 //        partnerPark.control(gamepad1.right_bumper, gamepad1.left_bumper);
         telemetry.addData("hpos:", otosSensor.getPosition().h);
         drivetrain.powerTelemetry();

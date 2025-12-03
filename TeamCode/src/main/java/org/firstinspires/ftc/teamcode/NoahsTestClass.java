@@ -41,14 +41,14 @@ public class NoahsTestClass extends LinearOpMode {
         TelemetryPasser.telemetry = telemetry;
 
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, "otos"));
-        otosSensor.configureOtos(DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0, 0, 1.0, 1.0);
+        otosSensor.configureOtos(-30, 10, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
 
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR)),
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_LEFT_MOTOR)),
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_RIGHT_MOTOR)),
-                otosSensor, aprilTagCamera);
+                otosSensor);
 
         shooterSystem = new ShooterSystem(
                 new FlyWheel(hardwareMap.get(DcMotorEx.class, "shooter")),
@@ -60,10 +60,8 @@ public class NoahsTestClass extends LinearOpMode {
         waitForStart();
         drivetrain.configurePIDConstants(
                 new PIDConstants(kp, ki, kd),
-                new PIDConstants(kpTheta, kiTheta, kdTheta),
-                0,
-                0,
-                0);
+                new PIDConstants(kpTheta, kiTheta, kdTheta));
+
         drivetrain.control(0.75,0,0);
         sleep(1000);
         drivetrain.control(0,0,0);

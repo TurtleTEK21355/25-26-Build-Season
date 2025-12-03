@@ -13,11 +13,9 @@ public class OTOSSensor {
     public OTOSSensor(SparkFunOTOS sensor){
         this.sensor = sensor;
     }
-    public void configureOtos(DistanceUnit distanceUnit, AngleUnit angleUnit, double offsetX, double offsetY, double offsetH, double linearScalar, double angularScalar) {
+    public void configureOtos(double offsetX, double offsetY, double offsetH, DistanceUnit distanceUnit, AngleUnit angleUnit, double linearScalar, double angularScalar) {
         sensor.setLinearUnit(distanceUnit);
         sensor.setAngularUnit(angleUnit);
-
-        offset = new Pose2D(offsetX, offsetY, offsetH);
 
         sensor.setLinearScalar(linearScalar);
         sensor.setAngularScalar(angularScalar);
@@ -25,8 +23,9 @@ public class OTOSSensor {
         sensor.calibrateImu();
         sensor.resetTracking();
 
-        SparkFunOTOS.Pose2D currentPosition = new SparkFunOTOS.Pose2D(0, 0, 0);
-        sensor.setPosition(currentPosition);
+        offset = new Pose2D(offsetX, offsetY, offsetH); //this will set the offset of the otossensor for the whole runtime and it will always get and set with this offset added on to it.
+
+        setPosition(new Pose2D(0, 0,0)); // uses the class setPosition method which applies offset
 
     }
 
@@ -36,11 +35,15 @@ public class OTOSSensor {
     }
 
     public Pose2D getPosition() {
-        return new Pose2D(sensor.getPosition().x + offset.x, sensor.getPosition().y + offset.y, sensor.getPosition().h + offset.h);
+        SparkFunOTOS.Pose2D position = sensor.getPosition();
+
+        return new Pose2D(position.x + offset.x, position.y + offset.y, position.h + offset.h);
     }
 
     public void setPosition(Pose2D position) {
-        sensor.setPosition(new Pose2D(position.x + offset.x, position.y + offset.y, position.h + offset.h).toSparkFunPose2D());
+        Pose2D offsetPosition = new Pose2D(position.x + offset.x, position.y + offset.y, position.h + offset.h);
+
+        sensor.setPosition(offsetPosition.toSparkFunPose2D());
     }
 
 }
