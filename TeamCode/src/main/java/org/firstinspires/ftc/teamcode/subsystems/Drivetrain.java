@@ -17,21 +17,10 @@ public class Drivetrain {
     private DcMotor backLeftMotor;
     private DcMotor backRightMotor;
     private OTOSSensor otosSensor;
-    private AprilTagCamera aprilTagCamera;
     private PIDConstants pidConstants;
     private PIDConstants thetaPIDConstants;
     private final Pose2D tolerance = new Pose2D(2, 2, 10);
-    private Pose2D position;
-    private Pose2D offset;
-    double yPosTelemetry;
-    double xPosTelemetry;
-    double hPosTelemetry;
-    double yTargetTelemetry;
-    double xTargetTelemetry;
-    double hTargetTelemetry;
-    boolean yAtTargetTelemetry;
-    boolean xAtTargetTelemetry;
-    boolean hAtTargetTelemetry;
+
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
         this.frontLeftMotor = frontLeft;
@@ -61,209 +50,13 @@ public class Drivetrain {
 
     }
 
-    public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight, OTOSSensor otosSensor, AprilTagCamera aprilTagCamera){
-        this.frontLeftMotor = frontLeft;
-        this.frontRightMotor = frontRight;
-        this.backLeftMotor = backLeft;
-        this.backRightMotor = backRight;
-        this.otosSensor = otosSensor;
-        this.aprilTagCamera = aprilTagCamera;
-        this.frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        setWheelDirection(DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD);
-
-
-    }
-
     public void configurePIDConstants(PIDConstants pidConstants, PIDConstants thetaPIDConstants, double offsetX, double offsetY, double offsetH) {
         this.pidConstants = pidConstants;
         this.thetaPIDConstants = thetaPIDConstants;
 
-        offset = new Pose2D(offsetX,offsetY,offsetH);
-    }
-    public double getOffsetX() {
-        return offset.x;
-    }
-    public double getOffsetY() {
-        return offset.y;
     }
 
-    /**
-     * controls the drivetrain to move and rotate to specific points on the field. If the robot is within the tolerance area, it will stop... probably
-     * @param targetY the y target
-     * @param targetX the x target
-     * @param targetH heading(rotation) target
-     * @param speed the max speed pid makes it go slower the closer it gets
-     * @param holdTime the time to keep it(in milliseconds) at the target for greater accuracy, set to 0 if you want no holdtime
-     */
-    public void movePID(double targetY, double targetX, double targetH, double speed, int holdTime){
-        PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(pidConstants, targetY, tolerance.y, speed);
-        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(pidConstants, targetX, tolerance.x, speed);
-        PIDControllerHeading hPID = new PIDControllerHeading(thetaPIDConstants, targetH, tolerance.h, speed);
 
-        /*
-        * applies offset by rotating the origin and then applying x/y offset
-        * uses following equations:
-        * x' = xcos(theta)+ysin(theta)-yoffset
-        * y' = -xsin(theta)+ycos(theta)-xoffset
-        * h' = h+hoffset
-        */
-        Pose2D realPos = otosSensor.getPosition();
-        double yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
-        double xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
-        double hPos = realPos.h+offset.h;
-
-        // continues updating speed using PID until position targets are reached
-        while (!yPID.atTarget(yPos) || !xPID.atTarget(xPos) || !hPID.atTarget(hPos)){
-            realPos = otosSensor.getPosition();
-            yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
-            xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
-            hPos = realPos.h+offset.h;
-
-            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), hPID.calculate(hPos));
-
-            xPosTelemetry = xPos;
-            yPosTelemetry = yPos;
-            hPosTelemetry = hPos;
-
-            xTargetTelemetry = targetX;
-            yTargetTelemetry = targetY;
-            hTargetTelemetry = targetH;
-
-            xAtTargetTelemetry = xPID.atTarget(xPos);
-            yAtTargetTelemetry = yPID.atTarget(yPos);
-            hAtTargetTelemetry = hPID.atTarget(hPos);
-
-            powerTelemetry();
-            TelemetryPasser.telemetry.update();
-
-        }
-
-        // holds for a specified time (while still correcting position) for more accurate movement
-        ElapsedTime holdTimer = new ElapsedTime();
-        holdTimer.reset();
-
-        while (holdTimer.milliseconds() <= holdTime){
-            realPos = otosSensor.getPosition();
-            yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
-            xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
-            hPos = realPos.h+offset.h;
-            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), hPID.calculate(hPos));
-
-            xPosTelemetry = xPos;
-            yPosTelemetry = yPos;
-            hPosTelemetry = hPos;
-
-            xTargetTelemetry = targetX;
-            yTargetTelemetry = targetY;
-            hTargetTelemetry = targetH;
-
-            xAtTargetTelemetry = xPID.atTarget(xPos);
-            yAtTargetTelemetry = yPID.atTarget(yPos);
-            hAtTargetTelemetry = hPID.atTarget(hPos);
-
-            powerTelemetry();
-            TelemetryPasser.telemetry.update();
-        }
-
-        //ensures no motors are being sent power after the robot has reached positions and fulfilled hold time.
-        control(0,0,0);
-
-    }
-
-    public void movePID(double targetY, double targetX, double targetH, double speed, int holdTime, double mToleranceX, double mToleranceY, double mToleranceH){
-        Pose2D manualTolerance = new Pose2D(mToleranceX, mToleranceY, mToleranceH);
-        PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(pidConstants, targetY, manualTolerance.y, speed);
-        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(pidConstants, targetX, manualTolerance.x, speed);
-        PIDControllerHeading hPID = new PIDControllerHeading(thetaPIDConstants, targetH, manualTolerance.h, speed);
-
-        /*
-         * applies offset by rotating the origin and then applying x/y offset
-         * uses following equations:
-         * x' = x*cos(theta)+y*sin(theta)-y_offset
-         * y' = -x*sin(theta)+y*cos(theta)-x_offset
-         * h' = h+h_offset
-         */
-        Pose2D realPos = otosSensor.getPosition();
-        double yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
-        double xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
-        double hPos = realPos.h+offset.h;
-
-        // continues updating speed using PID until position targets are reached
-        while (!yPID.atTarget(yPos) || !xPID.atTarget(xPos) || !hPID.atTarget(hPos)){
-            realPos = otosSensor.getPosition();
-            yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
-            xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
-            hPos = realPos.h+offset.h;
-            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), hPID.calculate(hPos));
-
-            xPosTelemetry = xPos;
-            yPosTelemetry = yPos;
-            hPosTelemetry = hPos;
-
-            xTargetTelemetry = targetX;
-            yTargetTelemetry = targetY;
-            hTargetTelemetry = targetH;
-
-            xAtTargetTelemetry = xPID.atTarget(xPos);
-            yAtTargetTelemetry = yPID.atTarget(yPos);
-            hAtTargetTelemetry = hPID.atTarget(hPos);
-
-            powerTelemetry();
-            TelemetryPasser.telemetry.update();
-
-        }
-
-        // holds for a specified time (while still correcting position) for more accurate movement
-        ElapsedTime holdTimer = new ElapsedTime();
-        holdTimer.reset();
-
-        while (holdTimer.milliseconds() <= holdTime){
-            realPos = otosSensor.getPosition();
-            yPos = (-(realPos.x)*Math.sin(offset.h))+(realPos.y*Math.cos(offset.h))+offset.y;
-            xPos = realPos.x*Math.cos(offset.h)+(realPos.y*Math.sin(offset.h))+offset.x;
-            hPos = realPos.h+offset.h;
-            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), hPID.calculate(hPos));
-
-
-            powerTelemetry();
-        }
-
-        //ensures no motors are being sent power after the robot has reached positions and fulfilled hold time.
-        control(0,0,0);
-
-    }
-
-    /**
-     * controls the drivetrain to move and rotate to specific points on the field. If the robot is within the tolerance area, it will stop... probably
-     * @param targetY the y target
-     * @param targetX the x target
-     * @param targetH heading(rotation) target
-     * @param speed the max speed pid makes it go slower the closer it gets
-     */
-    public void movePID(double targetY, double targetX, double targetH, double speed){
-        double yPos = otosSensor.getPosition().y;
-        double xPos = otosSensor.getPosition().x;
-        double hPos = otosSensor.getPosition().h;
-
-        PIDControllerSpeedLimit yPID = new PIDControllerSpeedLimit(pidConstants, targetY, tolerance.y, speed);
-        PIDControllerSpeedLimit xPID = new PIDControllerSpeedLimit(pidConstants, targetX, tolerance.x, speed);
-        PIDControllerHeading hPID = new PIDControllerHeading(thetaPIDConstants, targetH, tolerance.h, speed);
-
-        while (!yPID.atTarget(yPos) || !xPID.atTarget(xPos) || !hPID.atTarget(hPos)){
-            yPos = otosSensor.getPosition().y;
-            xPos = otosSensor.getPosition().x;
-            hPos = otosSensor.getPosition().h;
-
-            fcControl(yPID.calculate(yPos), xPID.calculate(xPos), hPID.calculate(hPos));
-
-            powerTelemetry();
-
-        }
-
-    }
     public void fcControl(double y, double x, double h) {
         double r = Math.hypot(y, x);
         double theta = Math.atan2(y, x);
@@ -359,7 +152,7 @@ public class Drivetrain {
 
     public double getRange() {
         Pose2D position = otosSensor.getPosition();
-        return Math.sqrt(Math.pow(position.x-offset.x-67.215, 2)+Math.pow(position.y-offset.y+74.871, 2));
+        return Math.sqrt(Math.pow(position.x-67.215, 2)+Math.pow(position.y+74.871, 2));
     }
 
     public PIDConstants getPIDConstants() {

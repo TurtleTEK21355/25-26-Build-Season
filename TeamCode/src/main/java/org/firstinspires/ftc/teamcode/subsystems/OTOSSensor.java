@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 
 public class OTOSSensor {
     private SparkFunOTOS sensor;
+    private Pose2D offset;
     
     public OTOSSensor(SparkFunOTOS sensor){
         this.sensor = sensor;
@@ -16,8 +17,7 @@ public class OTOSSensor {
         sensor.setLinearUnit(distanceUnit);
         sensor.setAngularUnit(angleUnit);
 
-        SparkFunOTOS.Pose2D offset = new SparkFunOTOS.Pose2D(offsetX, offsetY, offsetH);
-        sensor.setOffset(offset);
+        offset = new Pose2D(offsetX, offsetY, offsetH);
 
         sensor.setLinearScalar(linearScalar);
         sensor.setAngularScalar(angularScalar);
@@ -31,16 +31,16 @@ public class OTOSSensor {
     }
 
     public void resetPosition(){
-        sensor.setPosition(new SparkFunOTOS.Pose2D(0, 0, 0));
+        setPosition(new Pose2D(0, 0, 0));
 
     }
 
     public Pose2D getPosition() {
-        return new Pose2D(sensor.getPosition());
+        return new Pose2D(sensor.getPosition().x + offset.x, sensor.getPosition().y + offset.y, sensor.getPosition().h + offset.h);
     }
 
     public void setPosition(Pose2D position) {
-        sensor.setPosition(position.toSparkFunPose2D());
+        sensor.setPosition(new Pose2D(position.x + offset.x, position.y + offset.y, position.h + offset.h).toSparkFunPose2D());
     }
 
 }
