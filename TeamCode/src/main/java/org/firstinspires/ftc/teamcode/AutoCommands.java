@@ -58,7 +58,7 @@ public class AutoCommands extends CommandOpMode{
 
     }
 
-    public void configureVariables(){
+    private void configureVariables(){
         DoubleMenuItem speedItem =  new DoubleMenuItem(speed, valueChangeAmount, "Speed");
         DoubleMenuItem kpItem = new DoubleMenuItem(kp, valueChangeAmount, "Kp");
         DoubleMenuItem kiItem = new DoubleMenuItem(ki, valueChangeAmount, "Ki");
