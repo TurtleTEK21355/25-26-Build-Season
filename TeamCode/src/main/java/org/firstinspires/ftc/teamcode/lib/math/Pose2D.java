@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.lib.math;
 
+import androidx.annotation.NonNull;
+
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 
 public class Pose2D {
@@ -36,5 +38,11 @@ public class Pose2D {
 
     public SparkFunOTOS.Pose2D toSparkFunPose2D(){
         return new SparkFunOTOS.Pose2D(x, y, h);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ", " + h + ")";
     }
 }

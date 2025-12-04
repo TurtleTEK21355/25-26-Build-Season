@@ -37,7 +37,7 @@ public class OTOSSensor {
     public Pose2D getPosition() {
         SparkFunOTOS.Pose2D position = sensor.getPosition();
 
-        return new Pose2D(position.x + offset.x, position.y + offset.y, position.h + offset.h);
+        return new Pose2D(position.x, position.y, position.h);
     }
 
     public void setPosition(Pose2D position) {

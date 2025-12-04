@@ -9,7 +9,6 @@ import org.firstinspires.ftc.teamcode.TelemetryPasser;
 
 public class FlyWheel {
     private DcMotorEx flyWheelMotor;
-    TelemetryPasser telemetry;
 
     public FlyWheel(DcMotorEx flyWheelMotor) {
         this.flyWheelMotor = flyWheelMotor;
@@ -18,9 +17,10 @@ public class FlyWheel {
     }
 
     void setVelocity(double velocity) {
-        flyWheelMotor.setVelocity(Range.clip(velocity, -6000, 6000));
+        flyWheelMotor.setVelocity(Range.clip(velocity, -1500, 1500));
     }
     double getVelocity() {
+        TelemetryPasser.telemetry.addData("FlyWheel Velocity in ticks/s", flyWheelMotor.getVelocity());
         return flyWheelMotor.getVelocity();
     }
 }

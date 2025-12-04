@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.commands;
 
+import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerSpeedLimit;
@@ -35,6 +36,10 @@ public class MovePIDCommand extends Command {
 
     @Override
     public boolean isCompleted() {
+        TelemetryPasser.telemetry.addData("yPID at Position", yPID.atTarget(position.y));
+        TelemetryPasser.telemetry.addData("xPID at Position", xPID.atTarget(position.x));
+        TelemetryPasser.telemetry.addData("hPID at Position", hPID.atTarget(position.h));
+        TelemetryPasser.telemetry.addData("dt pos", drivetrain.getPosition());
         return (yPID.atTarget(position.y) && xPID.atTarget(position.x) && hPID.atTarget(position.h));
     }
 

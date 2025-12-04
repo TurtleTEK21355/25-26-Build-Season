@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.commands.StartIntakeCommand;
 import org.firstinspires.ftc.teamcode.commands.StopFlywheelCommand;
 import org.firstinspires.ftc.teamcode.commands.StopIntakeCommand;
 import org.firstinspires.ftc.teamcode.commands.TimerCommand;
+import org.firstinspires.ftc.teamcode.commands.UntilBallReadyCommand;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.menu.DoubleMenuItem;
@@ -40,13 +41,13 @@ public class AutoFrontBlue extends CommandOpMode{
     OTOSSensor otosSensor;
     AprilTagCamera aprilTagCamera;
     ShooterSystem shooterSystem;
-    double kp = 0.05;
+    double kp = 0.06;
     double ki;
     double kd;
     double kpTheta = 0.03;
     double kiTheta;
     double kdTheta;
-    double speed = 0.5;
+    double speed = 0.3;
     double valueChangeAmount = 0.01;
 
     @Override
@@ -67,25 +68,32 @@ public class AutoFrontBlue extends CommandOpMode{
                         hardwareMap.get(Servo.class, hardwareNames.get(HardwareNames.Name.SHOOTER_GATE)),
                         hardwareMap.get(Ada2167BreakBeam.class, hardwareNames.get(HardwareNames.Name.BALL_READY_SENSOR))),
                 new Intake(hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.INTAKE_MOTOR))));
-        configureVariables();
+//        configureVariables();
         drivetrain.configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
 
-        addCommand(new SimultaneousCommand((new StartFlywheelCommand(shooterSystem)), (new MovePIDHoldTimeCommand(new Pose2D(-24, 24, 45),1000, speed, drivetrain))));
+        addCommand(new SimultaneousCommand((new StartFlywheelCommand(shooterSystem)), (new MovePIDHoldTimeCommand(new Pose2D(-12, 12, 45),1000, speed, drivetrain))));
         addCommand(new OpenGateCommand(shooterSystem));
         addCommand(new StartIntakeCommand(shooterSystem));
         addCommand(new TimerCommand(250));
-        addCommand(new StopIntakeCommand(shooterSystem));
+
         addCommand(new CloseGateCommand(shooterSystem));
+        addCommand(new UntilBallReadyCommand(shooterSystem, false));
+        addCommand(new StopIntakeCommand(shooterSystem));
+
         addCommand(new StartFlywheelCommand(shooterSystem));
         addCommand(new OpenGateCommand(shooterSystem));
         addCommand(new StartIntakeCommand(shooterSystem));
         addCommand(new TimerCommand(250));
-        addCommand(new StopIntakeCommand(shooterSystem));
+
         addCommand(new CloseGateCommand(shooterSystem));
+        addCommand(new UntilBallReadyCommand(shooterSystem, false));
+        addCommand(new StopIntakeCommand(shooterSystem));
+
         addCommand(new StartFlywheelCommand(shooterSystem));
         addCommand(new OpenGateCommand(shooterSystem));
         addCommand(new StartIntakeCommand(shooterSystem));
         addCommand(new TimerCommand(250));
+
         addCommand(new StopIntakeCommand(shooterSystem));
         addCommand(new CloseGateCommand(shooterSystem));
         addCommand(new StopFlywheelCommand(shooterSystem));

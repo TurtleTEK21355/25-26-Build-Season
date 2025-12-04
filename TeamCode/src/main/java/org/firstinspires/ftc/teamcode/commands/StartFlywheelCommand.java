@@ -26,6 +26,6 @@ public class StartFlywheelCommand extends Command {
 
     @Override
     public boolean isCompleted() {
-        return (shooterSystem.flywheelGetVelocity() > 1100);
+        return (shooterSystem.flywheelGetVelocity() > 1150);
     }
 }

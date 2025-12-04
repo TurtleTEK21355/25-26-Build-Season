@@ -15,7 +15,7 @@ public class ShooterSystem {
     private final double HEIGHT = 40; //inches tall
     private final double THETA = 1.13446401; //Ramp Angle in Radians
     private final double MAX_SPEED = 386; //inches per second?
-    private final double MAX_RPM = 7214; //this ones gotta be rpm hopefully
+    private final double MAX_RPM = 3214; //this ones gotta be rpm hopefully
     private final double TICKS_PER_ROTATION = 28; //ticks per rotation of 5000 series motor
 
 
@@ -45,15 +45,15 @@ public class ShooterSystem {
 
     public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward) {
         TelemetryPasser.telemetry.addData("shoot", ballReady());
-        double flyWheelTargetSpeed = getTicksPerSecondForPosition(position);
-        flywheelSetVelocity(Range.clip(flyWheelTargetSpeed, 600, 1500));
+        double flyWheelTargetSpeed = 1200; //method for calculating optimal speed doesn't work; it returns near-zero values
+        flywheelSetVelocity(Range.clip(flyWheelTargetSpeed, -1500, 1500));
         if (intakeForward) {
             intake.setPower(0.8);
         } else if (intakeBackward > 0.1)
         {intake.setPower(-0.7);} else {
             intake.setPower(0);
         }
-        if (shoot && (flywheelGetVelocity() > (flyWheelTargetSpeed-80))) { //what does minus 80 mean???!?!?!?!??!
+        if (shoot && (flywheelGetVelocity() > (flyWheelTargetSpeed-80))) { //what does minus 80 mean???!?!?!?!??! Response: It is the tolerance
             gateSystem.openGate();
         } else {
             gateSystem.closeGate();}
@@ -83,7 +83,7 @@ public class ShooterSystem {
     private double getTicksPerSecondForPosition(Pose2D position) {
 
         double range = getRange(position);
-
+        TelemetryPasser.telemetry.addData("range", range);
         double expectedVelocity = (
                 Math.sqrt(
                     (
@@ -97,12 +97,16 @@ public class ShooterSystem {
                     )
                 )
             );
+        TelemetryPasser.telemetry.addData("CalcRPM before adjusting", expectedVelocity);
 
         double adjustedForMaxSpeed  = expectedVelocity/MAX_SPEED;
+        TelemetryPasser.telemetry.addData("CalcRPM after adjusting", adjustedForMaxSpeed);
 
         double rotationPerMinute = adjustedForMaxSpeed/MAX_RPM;
+        TelemetryPasser.telemetry.addData("CalcRPM/MaxRPM", expectedVelocity);
 
         double ticksPerSecond = (rotationPerMinute/60)*TICKS_PER_ROTATION;
+        TelemetryPasser.telemetry.addData("Tps", ticksPerSecond);
 
         return ticksPerSecond;
     }
