@@ -11,7 +11,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.commands.CloseGateCommand;
 import org.firstinspires.ftc.teamcode.commands.OpenGateCommand;
-import org.firstinspires.ftc.teamcode.commands.IntakeAuto;
 import org.firstinspires.ftc.teamcode.commands.MovePIDHoldTimeCommand;
 import org.firstinspires.ftc.teamcode.commands.SimultaneousCommand;
 import org.firstinspires.ftc.teamcode.commands.StartFlywheelCommand;
