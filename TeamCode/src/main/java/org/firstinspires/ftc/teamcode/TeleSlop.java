@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
+import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.FlyWheel;
 import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
@@ -25,15 +26,17 @@ public class TeleSlop extends OpMode {
     Drivetrain drivetrain;
     OTOSSensor otosSensor;
     ShooterSystem shooterSystem;
+    Pose2D position;
     PartnerPark partnerPark;
     HardwareNames hardwareNames = new HardwareNames();
 
     @Override
     public void init() {
         TelemetryPasser.telemetry = telemetry;
-
+        Object positionObject = blackboard.getOrDefault("Position", new Pose2D(0,0,0));
+        Pose2D position = (Pose2D) positionObject;
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
-        otosSensor.configureOtos(-30, 10, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
+        otosSensor.configureOtos(position.x, position.y, position.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
 
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),

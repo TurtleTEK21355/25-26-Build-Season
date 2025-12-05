@@ -39,6 +39,7 @@ public class AutoFrontRed extends CommandOpMode{
     OTOSSensor otosSensor;
     AprilTagCamera aprilTagCamera;
     ShooterSystem shooterSystem;
+    public static final Pose2D POSITION = new Pose2D(-20, 58, 0);
     double kp = 0.07;
     double ki;
     double kd;
@@ -97,7 +98,7 @@ public class AutoFrontRed extends CommandOpMode{
         addCommand(new SetFlywheelCommand(shooterSystem, 0));
         addCommand(new TimerCommand(400));
         addCommand(new MovePIDHoldTimeCommand(new Pose2D(20, 58, 0),1500, speed, drivetrain));
-
+        blackboard.put("Position", POSITION);
 
     }
 

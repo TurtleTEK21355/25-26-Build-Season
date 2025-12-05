@@ -45,7 +45,7 @@ public class ShooterSystem {
 
     public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward) {
         TelemetryPasser.telemetry.addData("shoot", ballReady());
-        double flyWheelTargetSpeed = 1200; //method for calculating optimal speed doesn't work; it returns near-zero values
+        double flyWheelTargetSpeed = 1.7*Math.sqrt(6000*getRange(position)); //method for calculating optimal speed doesn't work; it returns near-zero values
         flywheelSetVelocity(Range.clip(flyWheelTargetSpeed, -1500, 1500));
         if (intakeForward) {
             intake.setPower(0.8);
@@ -53,7 +53,7 @@ public class ShooterSystem {
         {intake.setPower(-0.7);} else {
             intake.setPower(0);
         }
-        if (shoot && (flywheelGetVelocity() > (flyWheelTargetSpeed-80))) { //what does minus 80 mean???!?!?!?!??! Response: It is the tolerance
+        if (shoot && (flywheelGetVelocity() > (flyWheelTargetSpeed-40))) {
             gateSystem.openGate();
         } else {
             gateSystem.closeGate();}
