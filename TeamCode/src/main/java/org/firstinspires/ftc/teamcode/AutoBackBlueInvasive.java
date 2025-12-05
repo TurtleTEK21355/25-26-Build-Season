@@ -15,7 +15,6 @@ import org.firstinspires.ftc.teamcode.commands.MovePIDHoldTimeCommand;
 import org.firstinspires.ftc.teamcode.commands.SimultaneousCommand;
 import org.firstinspires.ftc.teamcode.commands.SetFlywheelCommand;
 import org.firstinspires.ftc.teamcode.commands.StartIntakeCommand;
-import org.firstinspires.ftc.teamcode.commands.StopFlywheelCommand;
 import org.firstinspires.ftc.teamcode.commands.StopIntakeCommand;
 import org.firstinspires.ftc.teamcode.commands.TimerCommand;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
@@ -32,14 +31,14 @@ import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
-@Autonomous(name="Auto Front Blue", group="Autonomous")
-public class AutoFrontBlue extends CommandOpMode{
+@Autonomous(name="Auto Back Blue (Invasive)", group="Autonomous")
+public class AutoBackBlueInvasive extends CommandOpMode{
     HardwareNames hardwareNames = new HardwareNames();
     Drivetrain drivetrain;
     OTOSSensor otosSensor;
     AprilTagCamera aprilTagCamera;
     ShooterSystem shooterSystem;
-    double kp = 0.07;
+    double kp = 0.06;
     double ki;
     double kd;
     double kpTheta = 0.03;
@@ -57,7 +56,7 @@ public class AutoFrontBlue extends CommandOpMode{
         TelemetryPasser.telemetry = telemetry;
         aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(HardwareNames.Name.APRIL_TAG_CAMERA)));
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
-        otosSensor.configureOtos(-37.5, 61, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
+        otosSensor.configureOtos(-15, -61, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR)),
@@ -96,7 +95,7 @@ public class AutoFrontBlue extends CommandOpMode{
         addCommand(new CloseGateCommand(shooterSystem));
         addCommand(new SetFlywheelCommand(shooterSystem, 0));
         addCommand(new TimerCommand(400));
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(-20, 58, 0),1500, speed, drivetrain));
+        addCommand(new MovePIDHoldTimeCommand(new Pose2D(-16, -24, 0),1500, speed, drivetrain));
 
 
     }

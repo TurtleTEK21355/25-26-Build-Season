@@ -32,14 +32,14 @@ import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
-@Autonomous(name="Auto Front Blue", group="Autonomous")
-public class AutoFrontBlue extends CommandOpMode{
+@Autonomous(name="Auto Back Red", group="Autonomous")
+public class AutoBackRed extends CommandOpMode{
     HardwareNames hardwareNames = new HardwareNames();
     Drivetrain drivetrain;
     OTOSSensor otosSensor;
     AprilTagCamera aprilTagCamera;
     ShooterSystem shooterSystem;
-    double kp = 0.07;
+    double kp = 0.06;
     double ki;
     double kd;
     double kpTheta = 0.03;
@@ -50,14 +50,14 @@ public class AutoFrontBlue extends CommandOpMode{
     int shootWaitTime = 300;
     int lastShootWaitTime = 400;
 
-    int flyWheelVelocity = 1150;
+    int flyWheelVelocity = 1400;
 
     @Override
     public void initialize() {
         TelemetryPasser.telemetry = telemetry;
         aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(HardwareNames.Name.APRIL_TAG_CAMERA)));
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
-        otosSensor.configureOtos(-37.5, 61, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
+        otosSensor.configureOtos(0, 0, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR)),
@@ -73,30 +73,7 @@ public class AutoFrontBlue extends CommandOpMode{
 //        configureVariables();
         drivetrain.configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
 
-        addCommand(new SimultaneousCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(new Pose2D(-16, 16, 45),1000, speed, drivetrain))));
-        addCommand(new OpenGateCommand(shooterSystem));
-        addCommand(new TimerCommand(1000));
-
-        addCommand(new StartIntakeCommand(shooterSystem));
-        addCommand(new TimerCommand(shootWaitTime));
-//        addCommand(new UntilBallReadyCommand(shooterSystem, false));
-        addCommand(new StopIntakeCommand(shooterSystem));
-
-        addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
-        addCommand(new StartIntakeCommand(shooterSystem));
-        addCommand(new TimerCommand(shootWaitTime));
-//        addCommand(new UntilBallReadyComm447and(shooterSystem, false));
-        addCommand(new StopIntakeCommand(shooterSystem));
-
-        addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
-        addCommand(new StartIntakeCommand(shooterSystem));
-        addCommand(new TimerCommand(lastShootWaitTime));
-        addCommand(new StopIntakeCommand(shooterSystem));
-
-        addCommand(new CloseGateCommand(shooterSystem));
-        addCommand(new SetFlywheelCommand(shooterSystem, 0));
-        addCommand(new TimerCommand(400));
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(-20, 58, 0),1500, speed, drivetrain));
+        addCommand(new MovePIDHoldTimeCommand(new Pose2D(10, 0, 0),1500, speed, drivetrain));
 
 
     }

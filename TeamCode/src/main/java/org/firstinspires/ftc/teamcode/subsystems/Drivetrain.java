@@ -16,7 +16,7 @@ public class Drivetrain {
     private OTOSSensor otosSensor;
     private PIDConstants pidConstants;
     private PIDConstants thetaPIDConstants;
-    private final Pose2D tolerance = new Pose2D(2, 2, 10);
+    private final Pose2D tolerance = new Pose2D(2, 2, 2.5);
 
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){

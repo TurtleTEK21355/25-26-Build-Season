@@ -4,13 +4,13 @@ import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
-public class StartFlywheelCommand extends Command {
+public class SetFlywheelCommand extends Command {
     private ShooterSystem shooterSystem;
-    private double velocity = 1200;
+    private double velocity = 0;
 
-    public StartFlywheelCommand(ShooterSystem shooterSystem) {
+    public SetFlywheelCommand(ShooterSystem shooterSystem, double velocity) {
         this.shooterSystem = shooterSystem;
-
+        this.velocity = velocity;
     }
 
     @Override
@@ -26,6 +26,6 @@ public class StartFlywheelCommand extends Command {
 
     @Override
     public boolean isCompleted() {
-        return (shooterSystem.flywheelGetVelocity() > 1150);
+        return (shooterSystem.flywheelGetVelocity() > (velocity-40));
     }
 }
