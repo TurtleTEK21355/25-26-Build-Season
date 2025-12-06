@@ -26,9 +26,11 @@ public abstract class CommandOpMode extends LinearOpMode {
             }
         }
     }
+
     public abstract void initialize();
 
     public void addCommand(Command command) {
         commandList.add(command);
     }
+
 }
