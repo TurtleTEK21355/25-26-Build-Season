@@ -20,8 +20,8 @@ import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.PartnerPark;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
-@TeleOp(name="Main TeleOp", group="Iterative OpModes")
-public class MainTeleOp extends OpMode {
+@TeleOp(name="TeleOpManualOffset", group="Iterative OpModes")
+public class TeleOpManualOffset extends OpMode {
 
     Drivetrain drivetrain;
     OTOSSensor otosSensor;
@@ -61,26 +61,49 @@ public class MainTeleOp extends OpMode {
     @Override
     public void loop() {
         if (blue) {
-
             drivetrain.fcControl(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
         } else {
             drivetrain.fcControl(-gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
         }
-        if (gamepad2.dpad_right) {
-            blue = true;
-        } else if (gamepad2.dpad_left) {
-            blue = false;
-        }
         if (gamepad1.back){
             otosSensor.resetPosition();
-            otosSensor.resetOffset();
         }
+        setOffsetPosition();
+        setAlliance();
         shooterSystem.teleOpControl(otosSensor.getPosition(), gamepad2.left_bumper,gamepad2.right_bumper, gamepad2.left_trigger);
 //        partnerPark.control(gamepad1.right_bumper, gamepad1.left_bumper);
         telemetry.addData("hpos:", otosSensor.getPosition().h);
         drivetrain.powerTelemetry();
         telemetry.update();
 
+    }
+    public void setAlliance() {
+        if (gamepad2.dpad_right) {
+            blue = true;
+        } else if (gamepad2.dpad_left) {
+            blue = false;
+        }
+    }
+    public void setOffsetPosition() {
+        if (gamepad1.dpad_up) {
+            if(blue) {
+                otosSensor.setOffset(new Pose2D(-20, 58, 0));
+            } else {
+                otosSensor.setOffset(new Pose2D(20, 58, 0));
+            }
+        } else if (gamepad1.dpad_down) {
+            if(blue) {
+                otosSensor.setOffset(new Pose2D(-16, -24, 0));
+            } else {
+                otosSensor.setOffset(new Pose2D(16, -24, 0));
+            }
+        } else if (gamepad1.dpad_left) {
+            if(blue) {
+                otosSensor.setOffset(new Pose2D(-15, -61, 0));
+            } else {
+                otosSensor.setOffset(new Pose2D(15, -61, 0));
+            }
+        }
     }
 
 }

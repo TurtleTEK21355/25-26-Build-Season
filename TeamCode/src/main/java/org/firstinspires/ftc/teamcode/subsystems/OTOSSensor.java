@@ -9,10 +9,11 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 public class OTOSSensor {
     private SparkFunOTOS sensor;
     private Pose2D offset;
-    
-    public OTOSSensor(SparkFunOTOS sensor){
+
+    public OTOSSensor(SparkFunOTOS sensor) {
         this.sensor = sensor;
     }
+
     public void configureOtos(double offsetX, double offsetY, double offsetH, DistanceUnit distanceUnit, AngleUnit angleUnit, double linearScalar, double angularScalar) {
         sensor.setLinearUnit(distanceUnit);
         sensor.setAngularUnit(angleUnit);
@@ -23,13 +24,13 @@ public class OTOSSensor {
         sensor.calibrateImu();
         sensor.resetTracking();
 
-        offset = new Pose2D(offsetX, offsetY, offsetH); //this will set the offset of the otossensor for the whole runtime and it will always get and set with this offset added on to it.
+        setOffset(new Pose2D(offsetX, offsetY, offsetH)); //this will set the offset of the otossensor for the whole runtime and it will always get and set with this offset added on to it.
 
-        setPosition(new Pose2D(0, 0,0)); // uses the class setPosition method which applies offset
+        setPosition(new Pose2D(0, 0, 0)); // uses the class setPosition method which applies offset
 
     }
 
-    public void resetPosition(){
+    public void resetPosition() {
         setPosition(new Pose2D(0, 0, 0));
 
     }
@@ -45,8 +46,11 @@ public class OTOSSensor {
 
         sensor.setPosition(offsetPosition.toSparkFunPose2D());
     }
-    public void setOffset(Pose2D setOffset); {
+
+    public void setOffset(Pose2D setOffset) {
         offset = setOffset;
     }
-
+    public void resetOffset() {
+        offset = new Pose2D(0,0,0);
+    }
 }
