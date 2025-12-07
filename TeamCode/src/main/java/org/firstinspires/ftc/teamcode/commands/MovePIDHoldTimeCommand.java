@@ -24,9 +24,11 @@ public class MovePIDHoldTimeCommand extends MovePIDCommand{
             holdTimer.reset();
             holdTimerStartLock = true;
         }
+
         TelemetryPasser.telemetry.addData("at Position", super.isCompleted());
         TelemetryPasser.telemetry.addData("holdTimer", holdTimer.milliseconds());
         TelemetryPasser.telemetry.addData("holdTimerStartLock", holdTimerStartLock);
+
     }
 
     @Override

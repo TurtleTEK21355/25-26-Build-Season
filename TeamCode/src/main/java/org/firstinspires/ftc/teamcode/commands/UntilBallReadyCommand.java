@@ -14,9 +14,12 @@ public class UntilBallReadyCommand extends Command {
         this.invert = invert;
 
     }
+
+    @Override
     public void init(){
         timer = new ElapsedTime();
     }
+
     @Override
     public boolean isCompleted() {
         if (invert) {
