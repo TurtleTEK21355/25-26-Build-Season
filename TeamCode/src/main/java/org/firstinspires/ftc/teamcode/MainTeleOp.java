@@ -20,8 +20,8 @@ import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.PartnerPark;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
-@TeleOp(name="TeleSlop", group="Iterative OpModes")
-public class TeleSlop extends OpMode {
+@TeleOp(name="Main TeleOp", group="Iterative OpModes")
+public class MainTeleOp extends OpMode {
 
     Drivetrain drivetrain;
     OTOSSensor otosSensor;
@@ -29,6 +29,7 @@ public class TeleSlop extends OpMode {
     Pose2D position;
     PartnerPark partnerPark;
     HardwareNames hardwareNames = new HardwareNames();
+    boolean blue = true;
 
     @Override
     public void init() {
@@ -59,8 +60,17 @@ public class TeleSlop extends OpMode {
 
     @Override
     public void loop() {
+        if (blue) {
 
-        drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+            drivetrain.fcControl(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+        } else {
+            drivetrain.fcControl(-gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
+        }
+        if (gamepad2.dpad_right) {
+            blue = true;
+        } else if (gamepad2.dpad_left) {
+            blue = false;
+        }
         if (gamepad1.back){
             otosSensor.resetPosition();
         }

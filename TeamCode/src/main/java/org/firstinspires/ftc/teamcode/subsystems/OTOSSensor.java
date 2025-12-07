@@ -45,5 +45,8 @@ public class OTOSSensor {
 
         sensor.setPosition(offsetPosition.toSparkFunPose2D());
     }
+    public void setOffset(Pose2D setOffset); {
+        offset = setOffset;
+    }
 
 }

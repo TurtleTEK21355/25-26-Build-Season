@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -18,7 +19,8 @@ import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
 import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 
-@Autonomous(name="Command Test", group="Linear OpMode")
+//@Autonomous(name="Command Test", group="Linear OpMode")
+@Disabled
 public class AutoCommands extends CommandOpMode{
     HardwareNames hardwareNames = new HardwareNames();
     Drivetrain drivetrain;
