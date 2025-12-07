@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.opmode.teleop;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.AllianceSide;
+import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
@@ -20,12 +22,13 @@ import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.PartnerPark;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
-@TeleOp(name="Main TeleOp", group="Iterative OpModes")
-public class MainTeleOp extends OpMode {
+@TeleOp(name="TeleOpManualOffset", group="Iterative OpModes")
+public class TeleOpManualOffset extends OpMode {
 
     Drivetrain drivetrain;
     OTOSSensor otosSensor;
     ShooterSystem shooterSystem;
+    AllianceSide side;
     Pose2D position;
     PartnerPark partnerPark;
     HardwareNames hardwareNames = new HardwareNames();
@@ -51,7 +54,7 @@ public class MainTeleOp extends OpMode {
                 new GateSystem(
                         hardwareMap.get(Servo.class, hardwareNames.get(HardwareNames.Name.SHOOTER_GATE)),
                         hardwareMap.get(Ada2167BreakBeam.class, hardwareNames.get(HardwareNames.Name.BALL_READY_SENSOR))),
-                new Intake(hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.INTAKE_MOTOR))));
+                new Intake(hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.INTAKE_MOTOR))), side);
 //        partnerPark = new PartnerPark(
 //                hardwareMap.get(DcMotor.class, "vsr"),
 //                hardwareMap.get(DcMotor.class, "vsl"));
@@ -61,26 +64,49 @@ public class MainTeleOp extends OpMode {
     @Override
     public void loop() {
         if (blue) {
-
             drivetrain.fcControl(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
         } else {
             drivetrain.fcControl(-gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
         }
-        if (gamepad2.dpad_right) {
-            blue = true;
-        } else if (gamepad2.dpad_left) {
-            blue = false;
-        }
         if (gamepad1.back){
             otosSensor.resetPosition();
-            otosSensor.resetOffset();
         }
+        setOffsetPosition();
+        setAlliance();
         shooterSystem.teleOpControl(otosSensor.getPosition(), gamepad2.left_bumper,gamepad2.right_bumper, gamepad2.left_trigger);
 //        partnerPark.control(gamepad1.right_bumper, gamepad1.left_bumper);
         telemetry.addData("hpos:", otosSensor.getPosition().h);
         drivetrain.powerTelemetry();
         telemetry.update();
 
+    }
+    public void setAlliance() {
+        if (gamepad2.dpad_right) {
+            blue = true;
+        } else if (gamepad2.dpad_left) {
+            blue = false;
+        }
+    }
+    public void setOffsetPosition() {
+        if (gamepad1.dpad_up) {
+            if(blue) {
+                otosSensor.setPosition(new Pose2D(-20, 58, 0));
+            } else {
+                otosSensor.setPosition(new Pose2D(20, 58, 0));
+            }
+        } else if (gamepad1.dpad_down) {
+            if(blue) {
+                otosSensor.setPosition(new Pose2D(-16, -24, 0));
+            } else {
+                otosSensor.setPosition(new Pose2D(16, -24, 0));
+            }
+        } else if (gamepad1.dpad_left) {
+            if(blue) {
+                otosSensor.setPosition(new Pose2D(-15, -61, 0));
+            } else {
+                otosSensor.setPosition(new Pose2D(15, -61, 0));
+            }
+        }
     }
 
 }

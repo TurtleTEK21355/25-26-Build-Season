@@ -78,6 +78,7 @@ public class Drivetrain {
         frontLeftMotor.setPower(Range.clip(y + x + h, -1, 1));
         backRightMotor.setPower(Range.clip(y + x - h, -1, 1));
         backLeftMotor.setPower(Range.clip(y - x + h, -1, 1));
+
     }
 
     public void joystickMovement(double ly, double lx, double rx, double ry) {
@@ -119,6 +120,7 @@ public class Drivetrain {
         TelemetryPasser.telemetry.addData("fr Power", frontRightMotor.getPower());
         TelemetryPasser.telemetry.addData("bl Power", backLeftMotor.getPower());
         TelemetryPasser.telemetry.addData("br Power", backRightMotor.getPower());
+
     }
 
     public void PIDTelemetry(Pose2D pos, Pose2D target, boolean xAtTarget, boolean yAtTarget, boolean hAtTarget){
@@ -134,6 +136,7 @@ public class Drivetrain {
         TelemetryPasser.telemetry.addData("At Target Y", yAtTarget);
         TelemetryPasser.telemetry.addData("At Target H", hAtTarget);
         TelemetryPasser.telemetry.addLine();
+
     }
 
     public void setWheelDirection(DcMotorSimple.Direction lf, DcMotorSimple.Direction rf, DcMotorSimple.Direction lb, DcMotorSimple.Direction rb) {
@@ -141,6 +144,7 @@ public class Drivetrain {
         this.frontRightMotor.setDirection(rf);
         this.backLeftMotor.setDirection(lb);
         this.backRightMotor.setDirection(rb);
+
     }
 
     public Pose2D getPosition() {
@@ -158,4 +162,5 @@ public class Drivetrain {
     public Pose2D getTolerance() {
         return tolerance;
     }
+
 }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.opmode.internal;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -22,14 +22,18 @@ public abstract class CommandOpMode extends LinearOpMode {
                 telemetry.update(); //make sure this isnt in any command
                 if (command.isCompleted()) { //this is after the loop so if things get set in the loop that are in iscompleted there will be no issue
                     break;
+
                 }
+
             }
+
         }
+
     }
 
-    public abstract void initialize();
+    protected abstract void initialize();
 
-    public void addCommand(Command command) {
+    protected void addCommand(Command command) {
         commandList.add(command);
     }
 

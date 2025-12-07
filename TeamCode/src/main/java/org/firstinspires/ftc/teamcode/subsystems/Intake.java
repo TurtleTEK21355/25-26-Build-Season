@@ -11,6 +11,7 @@ public class Intake {
         this.intakeMotor = intakeMotor;
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
     }
     void setPower(double power) {
         intakeMotor.setPower(Range.clip(power, -1.0, 1.0));

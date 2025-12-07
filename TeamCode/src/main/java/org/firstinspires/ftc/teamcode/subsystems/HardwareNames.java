@@ -35,6 +35,7 @@ public class HardwareNames {
         nameList.put(Name.APRIL_TAG_CAMERA, "Webcam 1");
 
     }
+
     public String get(Name name){
         return nameList.get(name);
     }

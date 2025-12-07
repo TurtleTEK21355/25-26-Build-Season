@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import com.qualcomm.robotcore.util.ElapsedTime;
+import android.view.WindowInsets;
+
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.AllianceSide;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 
@@ -11,6 +13,10 @@ public class ShooterSystem {
     private GateSystem gateSystem;
     private Intake intake;
 
+    private AllianceSide side;
+
+    private final Pose2D redBasketPosition = new Pose2D(144, 0, 0);
+    private final Pose2D blueBasketPosition = new Pose2D(0, 0, 0);
     private final double GRAVITY = 386.09; //Inches per second squared
     private final double HEIGHT = 40; //inches tall
     private final double THETA = 1.13446401; //Ramp Angle in Radians
@@ -19,11 +25,11 @@ public class ShooterSystem {
     private final double TICKS_PER_ROTATION = 28; //ticks per rotation of 5000 series motor
 
 
-    public ShooterSystem(FlyWheel flyWheel, GateSystem gateSystem, Intake intake){
+    public ShooterSystem(FlyWheel flyWheel, GateSystem gateSystem, Intake intake, AllianceSide side){
         this.flyWheel = flyWheel;
         this.intake = intake;
         this.gateSystem = gateSystem;
-
+        this.side = side;
     }
 
     public void flywheelSetVelocity(double velocity) {
@@ -44,23 +50,31 @@ public class ShooterSystem {
     public boolean ballReady() {return gateSystem.ballReady();}
 
     public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward) {
-        TelemetryPasser.telemetry.addData("shoot", ballReady());
-        double flyWheelTargetSpeed = 1.7*Math.sqrt(6000*getRange(position)); //method for calculating optimal speed doesn't work; it returns near-zero values
+        double range = getDistanceFromGoal(side, position);
+        double flyWheelTargetSpeed = getTicksPerSecondForRange(range);
         flywheelSetVelocity(Range.clip(flyWheelTargetSpeed, -1500, 1500));
-        if (intakeForward) {
-            intake.setPower(0.8);
-        } else if (intakeBackward > 0.1)
-        {intake.setPower(-0.7);} else {
-            intake.setPower(0);
-        }
+
         if (shoot && (flywheelGetVelocity() > (flyWheelTargetSpeed-40))) {
-            gateSystem.openGate();
+            openGate();
+            intakeSetPower(0.8);
+
         } else {
-            gateSystem.closeGate();}
+            closeGate();
+            if (intakeForward) {
+                intakeSetPower(0.8);
+            } else if (intakeBackward > 0.1) {
+                intakeSetPower(-0.7);
+            } else {
+                intakeSetPower(0);
+            }
+
+        }
+
+        TelemetryPasser.telemetry.addData("FlyWheel Velocity in ticks/s", flyWheel.getVelocity());
+        TelemetryPasser.telemetry.addData("shoot", ballReady());
 
     }
     public void teleOpControlConfigurableVelocity(double velocity, boolean intakeForward, boolean shoot, double intakeBackward) {
-        TelemetryPasser.telemetry.addData("shoot", ballReady());
         flyWheel.setVelocity(velocity);
         if (intakeForward) {
             intake.setPower(0.8);
@@ -73,42 +87,61 @@ public class ShooterSystem {
         } else {
             gateSystem.closeGate();}
 
+        TelemetryPasser.telemetry.addData("FlyWheel Velocity in ticks/s", flyWheel.getVelocity());
+        TelemetryPasser.telemetry.addData("shoot", ballReady());
     }
 
-    private double getRange(Pose2D position) {
-        return Math.sqrt(Math.pow(position.x-67.215, 2)+Math.pow(position.y+74.871, 2));
-        //TODO: GET RID OF NUMBERS
+    private double getDistanceFromGoal(AllianceSide side, Pose2D position) {
+        if (side == AllianceSide.RED) {
+            return Math.sqrt(Math.pow(position.x - redBasketPosition.x, 2) + Math.pow(position.y + redBasketPosition.y, 2));
+
+        } else {
+            return Math.sqrt(Math.pow(position.x - blueBasketPosition.x, 2) + Math.pow(position.y + blueBasketPosition.y, 2));
+
+        }
+
     }
 
-    private double getTicksPerSecondForPosition(Pose2D position) {
+    private double getTicksPerSecondForRange(double range) {
 
-        double range = getRange(position);
-        TelemetryPasser.telemetry.addData("range", range);
         double expectedVelocity = (
                 Math.sqrt(
                     (
-                        -GRAVITY*Math.pow(range, 2)
+                        -GRAVITY
+                        *
+                        Math.pow(range, 2)
                     )
                     /
                     (
-                        2*Math.pow(Math.cos(THETA), 2)
+                        2 //this one kinda just exists no idea what it does but it is in the equation
                         *
-                        (HEIGHT - range * Math.tan(THETA))
+                        Math.pow(Math.cos(THETA), 2)
+                        *
+                        (
+                            HEIGHT
+                            -
+                            range
+                            *
+                            Math.tan(THETA)
+                        )
                     )
                 )
             );
+
+        double adjustedForMaxSpeed  = expectedVelocity / MAX_SPEED; //seems weird to divide by the max?
+
+        double rotationsPerMinute = adjustedForMaxSpeed * MAX_RPM; //also weird...
+
+        double ticksPerSecond = (rotationsPerMinute / 60) * TICKS_PER_ROTATION; //conversion from rots per min to ticks per sec
+
+        TelemetryPasser.telemetry.addData("range", range);
         TelemetryPasser.telemetry.addData("CalcRPM before adjusting", expectedVelocity);
-
-        double adjustedForMaxSpeed  = expectedVelocity/MAX_SPEED;
         TelemetryPasser.telemetry.addData("CalcRPM after adjusting", adjustedForMaxSpeed);
-
-        double rotationPerMinute = adjustedForMaxSpeed/MAX_RPM;
         TelemetryPasser.telemetry.addData("CalcRPM/MaxRPM", expectedVelocity);
-
-        double ticksPerSecond = (rotationPerMinute/60)*TICKS_PER_ROTATION;
         TelemetryPasser.telemetry.addData("Tps", ticksPerSecond);
 
         return ticksPerSecond;
+
     }
 
 }

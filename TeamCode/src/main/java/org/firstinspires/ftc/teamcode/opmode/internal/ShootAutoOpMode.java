@@ -1,7 +1,6 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.opmode.internal;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -9,17 +8,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.commands.CloseGateCommand;
-import org.firstinspires.ftc.teamcode.commands.OpenGateCommand;
-import org.firstinspires.ftc.teamcode.commands.MovePIDHoldTimeCommand;
-import org.firstinspires.ftc.teamcode.commands.SimultaneousCommand;
-import org.firstinspires.ftc.teamcode.commands.SetFlywheelCommand;
-import org.firstinspires.ftc.teamcode.commands.StartIntakeCommand;
-import org.firstinspires.ftc.teamcode.commands.StopFlywheelCommand;
-import org.firstinspires.ftc.teamcode.commands.StopIntakeCommand;
-import org.firstinspires.ftc.teamcode.commands.TimerCommand;
+import org.firstinspires.ftc.teamcode.AllianceSide;
+import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
-import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.menu.DoubleMenuItem;
 import org.firstinspires.ftc.teamcode.lib.menu.Menu;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
@@ -32,29 +23,26 @@ import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
-@Autonomous(name="Auto Back Blue", group="Autonomous")
-public class AutoBackBlue extends CommandOpMode{
-    HardwareNames hardwareNames = new HardwareNames();
-    Drivetrain drivetrain;
-    OTOSSensor otosSensor;
-    AprilTagCamera aprilTagCamera;
-    ShooterSystem shooterSystem;
-    public static final Pose2D POSITION = new Pose2D(-15, -61, 0);
-    double kp = 0.06;
-    double ki;
-    double kd;
-    double kpTheta = 0.03;
-    double kiTheta;
-    double kdTheta;
-    double speed = 0.3;
-    double valueChangeAmount = 0.01;
-    int shootWaitTime = 300;
-    int lastShootWaitTime = 400;
-
-    int flyWheelVelocity = 1400;
+public class ShootAutoOpMode extends CommandOpMode{ //the robots name is shoot
+    protected HardwareNames hardwareNames = new HardwareNames();
+    protected Drivetrain drivetrain;
+    protected OTOSSensor otosSensor;
+    protected AprilTagCamera aprilTagCamera;
+    protected ShooterSystem shooterSystem;
+    protected AllianceSide side;
+    private final double valueChangeAmount = 0.01;
+    protected double kp = 0.06;
+    protected double ki;
+    protected double kd;
+    protected double kpTheta = 0.03;
+    protected double kiTheta;
+    protected double kdTheta;
+    protected double speed = 0.3;
+    public static final String POSITION_BLACKBOARD_KEY = "pos";
+    public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
 
     @Override
-    public void initialize() {
+    protected void initialize() {
         TelemetryPasser.telemetry = telemetry;
         aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(HardwareNames.Name.APRIL_TAG_CAMERA)));
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
@@ -70,17 +58,31 @@ public class AutoBackBlue extends CommandOpMode{
                 new GateSystem(
                         hardwareMap.get(Servo.class, hardwareNames.get(HardwareNames.Name.SHOOTER_GATE)),
                         hardwareMap.get(Ada2167BreakBeam.class, hardwareNames.get(HardwareNames.Name.BALL_READY_SENSOR))),
-                new Intake(hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.INTAKE_MOTOR))));
-//        configureVariables();
+                new Intake(hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.INTAKE_MOTOR))), side);
+        //configureVariables();
         drivetrain.configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
 
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(-10, 0, 0),1500, speed, drivetrain));
-        blackboard.put("Position", POSITION);
+        setup();
+        commands();
+        cleanup();
 
+        blackboard.put(POSITION_BLACKBOARD_KEY, otosSensor.getPosition());
+        blackboard.put(ALLIANCE_SIDE_BLACKBOARD_KEY, side);
 
     }
 
-    public void configureVariables(){
+    protected void setup() {}
+
+    protected void commands() {}
+
+    protected void cleanup() {}
+
+    protected void setAllianceSide(AllianceSide side){
+        this.side = side;
+
+    }
+
+    private void configureVariables(){
         DoubleMenuItem speedItem =  new DoubleMenuItem(speed, valueChangeAmount, "Speed");
         DoubleMenuItem kpItem = new DoubleMenuItem(kp, valueChangeAmount, "Kp");
         DoubleMenuItem kiItem = new DoubleMenuItem(ki, valueChangeAmount, "Ki");
