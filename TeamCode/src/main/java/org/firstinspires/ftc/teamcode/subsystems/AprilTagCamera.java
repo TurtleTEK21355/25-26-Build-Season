@@ -1,17 +1,23 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
+import java.util.List;
+
 public class AprilTagCamera {
-    AprilTagProcessor aprilTag;
-    VisionPortal visionPortal;
-    Pose2D detectionPositions = new Pose2D(0,0,0);
-    Boolean isDetected = false;
-    public AprilTagCamera(WebcamName webcamName) {
+
+    private AprilTagProcessor aprilTag;
+    private VisionPortal visionPortal;
+    private List<AprilTagDetection> currentDetections;
+
+
+    public AprilTagCamera(CameraName camera) {
         aprilTag = new AprilTagProcessor.Builder()
 
                 // The following default settings are available to un-comment and edit as needed.
@@ -42,8 +48,8 @@ public class AprilTagCamera {
         // Create the vision portal by using a builder.
         VisionPortal.Builder builder = new VisionPortal.Builder();
 
-        // Set the camera (webcam vs. built-in RC phone camera).
-        builder.setCamera(webcamName);
+        // Set the camera
+        builder.setCamera(camera);
 
         // Choose a camera resolution. Not all cameras support all resolutions.
         //builder.setCameraResolution(new Size(640, 480));
@@ -69,25 +75,30 @@ public class AprilTagCamera {
         //visionPortal.setProcessorEnabled(aprilTag, true);
     }
 
-    public void updateDetections() {
-        isDetected = false;
-        for (AprilTagDetection detection : aprilTag.getDetections()) {
-            if (detection.id == 20) {
-                isDetected = true;
-                detectionPositions.x = detection.ftcPose.x;
-                detectionPositions.y = detection.ftcPose.y;
-                detectionPositions.h = detection.ftcPose.yaw;
+    public String aprilTagTelemetry() {
+        String outputString = "";
+        updateDetections();
+        for (AprilTagDetection detection : currentDetections) {
+            if (detection != null) {
+                outputString.concat("\nID " + detection.id);
+                outputString.concat("\nx " + detection.ftcPose.x + "\ny " + detection.ftcPose.y + "\nz " + detection.ftcPose.z);
+                outputString.concat("\npitch " + detection.ftcPose.pitch + "\nroll " + detection.ftcPose.roll + "\nyaw " + detection.ftcPose.yaw);
+
+            } else {
+                outputString.concat("\nDetection Unknown");
+
             }
         }
+        return outputString;
+
     }
-    public Pose2D getDetections() {
-        updateDetections();
-        return (detectionPositions);
+
+
+    public void updateDetections() {
+        currentDetections = aprilTag.getDetections();
+
     }
-    public boolean isDetected() {
-        updateDetections();
-        return (isDetected);
-    }
+
     public double getRange() {
         for (AprilTagDetection detection : aprilTag.getDetections()) {
             if (detection.id == 20) {
@@ -95,6 +106,8 @@ public class AprilTagCamera {
             }
         }
         return(0.0);
+
     }
+
 }
 
