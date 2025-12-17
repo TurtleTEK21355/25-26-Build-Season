@@ -8,6 +8,8 @@ import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
 public class GateSystem {
     private Servo ballGate;
     private Ada2167BreakBeam breakBeamSensor;
+    private final double CLOSED_POSITION = (double) 1 / 3;
+    private final double OPEN_POSITION = 0;
 
     public GateSystem(Servo ballGate, Ada2167BreakBeam breakBeamSensor) {
         this.ballGate = ballGate;
@@ -17,15 +19,15 @@ public class GateSystem {
     }
 
     void closeGate() {
-        ballGate.setPosition((double)1/3);
-        TelemetryPasser.telemetry.addData("expected position", (double)1/3);
+        ballGate.setPosition(CLOSED_POSITION);
+        TelemetryPasser.telemetry.addData("expected position", CLOSED_POSITION);
         TelemetryPasser.telemetry.addData("position", ballGate.getPosition());
 
     }
 
     void openGate() {
-        ballGate.setPosition(0);
-        TelemetryPasser.telemetry.addData("expected position", 0);
+        ballGate.setPosition(OPEN_POSITION);
+        TelemetryPasser.telemetry.addData("expected position", OPEN_POSITION);
         TelemetryPasser.telemetry.addData("position", ballGate.getPosition());
 
     }

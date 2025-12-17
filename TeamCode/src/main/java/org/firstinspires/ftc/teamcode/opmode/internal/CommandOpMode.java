@@ -15,12 +15,12 @@ public abstract class CommandOpMode extends LinearOpMode {
 
         waitForStart();
 
-        for (Command command : commandList) { //runs through all commands in commandlist
+        for (Command command : commandList) { //runs through all commands in commandList
             command.init();
             while (opModeIsActive()) {
                 command.loop();
-                telemetry.update(); //make sure this isnt in any command
-                if (command.isCompleted()) { //this is after the loop so if things get set in the loop that are in iscompleted there will be no issue
+                telemetry.update(); //make sure this isn't in any command
+                if (command.isCompleted()) { //this is after the loop so if things get set in the loop that are in isCompleted there will be no issue
                     break;
 
                 }
@@ -29,9 +29,13 @@ public abstract class CommandOpMode extends LinearOpMode {
 
         }
 
+        cleanup(); //assign blackboard variables because they were being assigned at initialize before
+
     }
 
     protected abstract void initialize();
+
+    protected abstract void cleanup();
 
     protected void addCommand(Command command) {
         commandList.add(command);

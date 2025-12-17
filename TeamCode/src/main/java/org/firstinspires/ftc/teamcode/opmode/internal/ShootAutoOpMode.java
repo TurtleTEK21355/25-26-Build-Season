@@ -63,19 +63,21 @@ public class ShootAutoOpMode extends CommandOpMode{ //the robots name is shoot
         drivetrain.configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
 
         setup();
-        commands();
-        cleanup();
 
+        commands();
+
+    }
+
+    @Override
+    protected void cleanup() {
         blackboard.put(POSITION_BLACKBOARD_KEY, otosSensor.getPosition());
         blackboard.put(ALLIANCE_SIDE_BLACKBOARD_KEY, side);
-
     }
 
     protected void setup() {}
 
     protected void commands() {}
 
-    protected void cleanup() {}
 
     protected void setAllianceSide(AllianceSide side){
         this.side = side;

@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.util.Range;
 
 public class Intake {
     private DcMotor intakeMotor;
+    private final double MAX_FORWARD_POWER = 1;
+    private final double MAX_REVERSE_POWER = -1;
 
     public Intake(DcMotor intakeMotor){
         this.intakeMotor = intakeMotor;
@@ -14,6 +16,6 @@ public class Intake {
 
     }
     void setPower(double power) {
-        intakeMotor.setPower(Range.clip(power, -1.0, 1.0));
+        intakeMotor.setPower(Range.clip(power, MAX_REVERSE_POWER, MAX_FORWARD_POWER));
     }
 }
