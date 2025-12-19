@@ -61,9 +61,9 @@ public class ShooterSystem {
         } else {
             closeGate();
             if (intakeForward) {
-                intakeSetPower(0.8);
+                intakeSetPower(1);
             } else if (intakeBackward > 0.1) {
-                intakeSetPower(-0.7);
+                intakeSetPower(-0.8);
             } else {
                 intakeSetPower(0);
             }

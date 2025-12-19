@@ -35,16 +35,16 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.subsystems.AprilTagCamera;
 
 @TeleOp(name = "AprilTag Test", group = "test")
-public class SensorTest extends LinearOpMode {
+public class BlackboardTestEmitter extends LinearOpMode {
 
     AprilTagCamera aprilTagCamera;
+    public final String test = "Test";
 
     @Override
     public void runOpMode() {
         waitForStart();
-        while (opModeIsActive()) {
-            aprilTagCamera.aprilTagTelemetry();
-            telemetry.update();
+        if (opModeIsActive()) {
+
         }
     }
 }

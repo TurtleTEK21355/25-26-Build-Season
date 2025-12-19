@@ -1,14 +1,15 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 
 public class PartnerPark {
-    private DcMotor rightViperSlide;
-    private DcMotor leftViperSlide;
-    public PartnerPark(DcMotor rightViperSlide,DcMotor leftViperSlide){
+    private DcMotorEx rightViperSlide;
+    private DcMotorEx leftViperSlide;
+    public PartnerPark(DcMotorEx rightViperSlide,DcMotorEx leftViperSlide){
         this.rightViperSlide = rightViperSlide;
         this.leftViperSlide = leftViperSlide;
         this.rightViperSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -26,6 +27,23 @@ public class PartnerPark {
             }
             rightViperSlide.setPower(0);
             leftViperSlide.setPower(0);
+        } else if (down){
+            rightViperSlide.setPower(-1);
+            leftViperSlide.setPower(-1);
+            while (rightViperSlide.getCurrentPosition() > 5 && leftViperSlide.getCurrentPosition() > 5);
+            rightViperSlide.setPower(0);
+            leftViperSlide.setPower(0);
+        } else {
+            rightViperSlide.setPower(0);
+            leftViperSlide.setPower(0);
+        }
+    }
+    public void manualControl(boolean up, boolean down) {
+        if (up) {
+            rightViperSlide.setPower(1);
+            leftViperSlide.setPower(1);
+            TelemetryPasser.telemetry.addData("Right Viper Slide Velocity", rightViperSlide.getVelocity());
+            TelemetryPasser.telemetry.addData("Left Viper Slide Velocity", leftViperSlide.getVelocity());
         } else if (down){
             rightViperSlide.setPower(-1);
             leftViperSlide.setPower(-1);
