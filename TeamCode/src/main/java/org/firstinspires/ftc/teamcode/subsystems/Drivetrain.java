@@ -16,8 +16,7 @@ public class Drivetrain {
     private OTOSSensor otosSensor;
     private PIDConstants pidConstants;
     private PIDConstants thetaPIDConstants;
-    private final Pose2D tolerance = new Pose2D(2, 2, 2.5);
-
+    private final Pose2D TOLERANCE = new Pose2D(2, 2, 2.5);
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
         this.frontLeftMotor = frontLeft;
@@ -29,7 +28,6 @@ public class Drivetrain {
         this.backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         setWheelDirection(DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE, DcMotorSimple.Direction.FORWARD);
-
 
     }
 
@@ -52,7 +50,6 @@ public class Drivetrain {
         this.thetaPIDConstants = thetaPIDConstants;
 
     }
-
 
     public void fcControl(double y, double x, double h) {
         double r = Math.hypot(y, x);
@@ -160,7 +157,7 @@ public class Drivetrain {
     }
 
     public Pose2D getTolerance() {
-        return tolerance;
+        return TOLERANCE;
     }
 
 }

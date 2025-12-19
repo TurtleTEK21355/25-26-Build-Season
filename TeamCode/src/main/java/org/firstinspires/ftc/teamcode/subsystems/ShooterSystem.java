@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import android.view.WindowInsets;
-
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.AllianceSide;
@@ -14,9 +12,11 @@ public class ShooterSystem {
     private Intake intake;
 
     private AllianceSide side;
-
     private final Pose2D redBasketPosition = new Pose2D(144, 0, 0);
     private final Pose2D blueBasketPosition = new Pose2D(0, 0, 0);
+
+    private final int FLYWHEEL_VELOCITY_TOLERANCE_TPS = 40;
+
     private final double GRAVITY = 386.09; //Inches per second squared
     private final double HEIGHT = 40; //inches tall
     private final double THETA = 1.13446401; //Ramp Angle in Radians
@@ -54,7 +54,7 @@ public class ShooterSystem {
         double flyWheelTargetSpeed = getTicksPerSecondForRange(range);
         flywheelSetVelocity(Range.clip(flyWheelTargetSpeed, -1500, 1500));
 
-        if (shoot && (flywheelGetVelocity() > (flyWheelTargetSpeed-40))) {
+        if (shoot && (flywheelGetVelocity() > (flyWheelTargetSpeed- FLYWHEEL_VELOCITY_TOLERANCE_TPS))) {
             openGate();
             intakeSetPower(0.8);
 
@@ -82,7 +82,7 @@ public class ShooterSystem {
         {intake.setPower(-0.7);} else {
             intake.setPower(0);
         }
-        if (shoot &&(flywheelGetVelocity() > (velocity-80))) {
+        if (shoot &&(flywheelGetVelocity() > (velocity- FLYWHEEL_VELOCITY_TOLERANCE_TPS))) {
             gateSystem.openGate();
         } else {
             gateSystem.closeGate();}

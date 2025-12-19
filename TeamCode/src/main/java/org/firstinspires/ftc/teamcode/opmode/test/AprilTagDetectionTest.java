@@ -20,5 +20,10 @@ public class AprilTagDetectionTest extends OpMode {
     @Override
     public void loop() {
         telemetry.addLine(aprilTagCamera.aprilTagTelemetry());
+        telemetry.addData("range from blue goal", aprilTagCamera.getDetection(20).ftcPose.range);
+        telemetry.addData("range from blue goal", aprilTagCamera.getDetection(24));
+
+        telemetry.update();
     }
+
 }

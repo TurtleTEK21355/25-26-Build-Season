@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.Motif;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -80,7 +81,7 @@ public class AprilTagCamera {
         updateDetections();
         for (AprilTagDetection detection : currentDetections) {
             if (detection != null) {
-                outputString.concat("\nID " + detection.id);
+                outputString.concat("ID " + detection.id);
                 outputString.concat("\nx " + detection.ftcPose.x + "\ny " + detection.ftcPose.y + "\nz " + detection.ftcPose.z);
                 outputString.concat("\npitch " + detection.ftcPose.pitch + "\nroll " + detection.ftcPose.roll + "\nyaw " + detection.ftcPose.yaw);
 
@@ -88,25 +89,48 @@ public class AprilTagCamera {
                 outputString.concat("\nDetection Unknown");
 
             }
+            outputString.concat("\n");
         }
         return outputString;
 
     }
-
 
     public void updateDetections() {
         currentDetections = aprilTag.getDetections();
 
     }
 
-    public double getRange() {
-        for (AprilTagDetection detection : aprilTag.getDetections()) {
-            if (detection.id == 20) {
-                return(detection.ftcPose.range);
+    public AprilTagDetection getDetection(int id) { // gets a detection
+        for (AprilTagDetection detection : currentDetections) {
+            if (detection.id == id) {
+                return detection;
+
+            }
+
+        }
+        return null;
+
+    }
+
+    public Double getRange(int id) { //this function might be useful in the future
+        AprilTagDetection detection = getDetection(id);
+        if (detection != null) {
+            return detection.ftcPose.range;
+        }
+        return null; //since its a double this is the only kinda null thing it can return
+    }
+
+    public Motif getMotifFromID() {
+        for (AprilTagDetection detection : currentDetections) {
+            if (detection.id == Motif.GPP.getID()) {
+                return Motif.GPP;
+            } else if (detection.id == Motif.PGP.getID()) {
+                return Motif.PGP;
+            } else if (detection.id == Motif.PPG.getID()) {
+                return Motif.PPG;
             }
         }
-        return(0.0);
-
+        return null;
     }
 
 }
