@@ -38,13 +38,15 @@ import org.firstinspires.ftc.teamcode.subsystems.AprilTagCamera;
 public class BlackboardTestReciever extends LinearOpMode {
 
     AprilTagCamera aprilTagCamera;
-    
+
     @Override
     public void runOpMode() {
         waitForStart();
         if (opModeIsActive()) {
             telemetry.addData("Value", blackboard.getOrDefault("Test", "none"));
             telemetry.update();
+            sleep(1000);
+            blackboard.put("Test", null);
         }
     }
 }

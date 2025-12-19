@@ -82,8 +82,8 @@ public class MainTeleOp extends OpMode {
             side = AllianceSide.RED;
         }
 
-//        shooterSystem.teleOpControl(otosSensor.getPosition(), gamepad2.left_bumper, gamepad2.right_bumper, gamepad2.left_trigger);
-        partnerPark.manualControl(gamepad1.right_bumper, gamepad1.left_bumper);
+        shooterSystem.teleOpControl(otosSensor.getPosition(), gamepad2.left_bumper, gamepad2.right_bumper, gamepad2.left_trigger, gamepad1.a);
+//        partnerPark.manualControl(gamepad1.right_bumper, gamepad1.left_bumper);
 
         telemetry.addData("hpos:", otosSensor.getPosition().h);
         drivetrain.powerTelemetry();

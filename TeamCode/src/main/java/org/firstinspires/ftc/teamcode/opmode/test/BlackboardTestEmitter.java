@@ -46,9 +46,10 @@ public class BlackboardTestEmitter extends LinearOpMode {
         telemetry.update();
         waitForStart();
         if (opModeIsActive()) {
-            blackboard.put(test, 0);
+            blackboard.put(test, 1);
             telemetry.addData("IsCompleted", true);
             telemetry.update();
+            sleep(1000);
         }
     }
 }

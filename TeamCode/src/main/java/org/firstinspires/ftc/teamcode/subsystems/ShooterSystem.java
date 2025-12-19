@@ -49,7 +49,7 @@ public class ShooterSystem {
     }
     public boolean ballReady() {return gateSystem.ballReady();}
 
-    public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward) {
+    public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean a) {
         double range = getDistanceFromGoal(side, position);
         double flyWheelTargetSpeed = getTicksPerSecondForRange(range);
         flywheelSetVelocity(Range.clip(flyWheelTargetSpeed, -1500, 1500));
