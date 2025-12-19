@@ -18,9 +18,9 @@ public class ShooterSystem {
     private final Pose2D redBasketPosition = new Pose2D(144, 0, 0);
     private final Pose2D blueBasketPosition = new Pose2D(0, 0, 0);
     private final double GRAVITY = 386.09; //Inches per second squared
-    private final double HEIGHT = 40; //inches tall
+    private final double HEIGHT = 45; //inches tall
     private final double THETA = 1.13446401; //Ramp Angle in Radians
-    private final double MAX_SPEED = 386; //inches per second?
+    private final double MAX_SPEED = 424; //inches per second?
     private final double MAX_RPM = 3214; //this ones gotta be rpm hopefully
     private final double TICKS_PER_ROTATION = 28; //ticks per rotation of 5000 series motor
 
@@ -51,6 +51,7 @@ public class ShooterSystem {
 
     public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward) {
         double range = getDistanceFromGoal(side, position);
+        TelemetryPasser.telemetry.addData("Range: ", range);
         double flyWheelTargetSpeed = getTicksPerSecondForRange(range);
         flywheelSetVelocity(Range.clip(flyWheelTargetSpeed, -1500, 1500));
 
@@ -133,7 +134,6 @@ public class ShooterSystem {
         double rotationsPerMinute = adjustedForMaxSpeed * MAX_RPM; //also weird...
 
         double ticksPerSecond = (rotationsPerMinute / 60) * TICKS_PER_ROTATION; //conversion from rots per min to ticks per sec
-
         TelemetryPasser.telemetry.addData("range", range);
         TelemetryPasser.telemetry.addData("CalcRPM before adjusting", expectedVelocity);
         TelemetryPasser.telemetry.addData("CalcRPM after adjusting", adjustedForMaxSpeed);
