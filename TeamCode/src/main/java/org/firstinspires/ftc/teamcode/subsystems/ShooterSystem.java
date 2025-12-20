@@ -70,15 +70,14 @@ public class ShooterSystem {
             //intakeSetPower(0.8);
         //} else {
             //closeGate();
-            //if (intakeForward) {
-                //intakeSetPower(1);
-            //} else if (intakeBackward > 0.1) {
-                //intakeSetPower(-0.8);
-            //} else {
-                //intakeSetPower(0);
-            //}
-
-        //}
+        if (intakeForward) {
+            intakeSetPower(1);
+        }
+        else if (intakeBackward > 0.1) {
+             intakeSetPower(-0.8);
+        } else {
+            intakeSetPower(0);
+        }
 
         TelemetryPasser.telemetry.addData("FlyWheel Velocity in ticks/s", flyWheel.getVelocity());
         TelemetryPasser.telemetry.addData("shoot", ballReady());
