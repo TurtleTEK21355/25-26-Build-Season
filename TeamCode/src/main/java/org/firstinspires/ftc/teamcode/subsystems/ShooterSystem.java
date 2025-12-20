@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.AllianceSide;
@@ -14,6 +15,7 @@ public class ShooterSystem {
     private AllianceSide side;
     private final Pose2D redBasketPosition = new Pose2D(144, 0, 0);
     private final Pose2D blueBasketPosition = new Pose2D(0, 0, 0);
+
 
     private final int FLYWHEEL_VELOCITY_TOLERANCE_TPS = 40;
 
@@ -49,26 +51,34 @@ public class ShooterSystem {
     }
     public boolean ballReady() {return gateSystem.ballReady();}
 
-    public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean a) {
+    public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean a, boolean b, ElapsedTime v) {
         double range = getDistanceFromGoal(side, position);
-        double flyWheelTargetSpeed = getTicksPerSecondForRange(range);
-        flywheelSetVelocity(Range.clip(flyWheelTargetSpeed, -1500, 1500));
-
-        if (shoot && (flywheelGetVelocity() > (flyWheelTargetSpeed- FLYWHEEL_VELOCITY_TOLERANCE_TPS))) {
-            openGate();
-            intakeSetPower(0.8);
-
-        } else {
-            closeGate();
-            if (intakeForward) {
-                intakeSetPower(1);
-            } else if (intakeBackward > 0.1) {
-                intakeSetPower(-0.8);
-            } else {
-                intakeSetPower(0);
-            }
-
+        double editedTicksPerSecond = getTicksPerSecondForRange(range) * 1500;
+        if (a && v.milliseconds()>25) {
+            editedTicksPerSecond += 1;
         }
+        else if (b && v.milliseconds()>25) {
+            editedTicksPerSecond -= 1;
+        }
+        TelemetryPasser.telemetry.addData("Range from Goal:", range);
+        TelemetryPasser.telemetry.addData("Ticks Per second:", getTicksPerSecondForRange(range));
+        TelemetryPasser.telemetry.addData("Edited: ", editedTicksPerSecond);
+        double flyWheelTargetSpeed = getTicksPerSecondForRange(range);
+        flywheelSetVelocity(Range.clip(editedTicksPerSecond, -1500, 1500));
+        //if (shoot && (flywheelGetVelocity() > (flyWheelTargetSpeed- FLYWHEEL_VELOCITY_TOLERANCE_TPS))) {
+            //openGate();
+            //intakeSetPower(0.8);
+        //} else {
+            //closeGate();
+            //if (intakeForward) {
+                //intakeSetPower(1);
+            //} else if (intakeBackward > 0.1) {
+                //intakeSetPower(-0.8);
+            //} else {
+                //intakeSetPower(0);
+            //}
+
+        //}
 
         TelemetryPasser.telemetry.addData("FlyWheel Velocity in ticks/s", flyWheel.getVelocity());
         TelemetryPasser.telemetry.addData("shoot", ballReady());
