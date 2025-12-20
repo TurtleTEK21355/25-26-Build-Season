@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -36,6 +37,7 @@ public class MainTeleOp extends OpMode {
     PartnerPark partnerPark;
 
     HardwareNames hardwareNames = new HardwareNames();
+    ElapsedTime velocityMultiplierTimer = new ElapsedTime();
 
 
     @Override
@@ -63,7 +65,7 @@ public class MainTeleOp extends OpMode {
                         hardwareMap.get(Servo.class, hardwareNames.get(HardwareNames.Name.SHOOTER_GATE)),
                         hardwareMap.get(Ada2167BreakBeam.class, hardwareNames.get(HardwareNames.Name.BALL_READY_SENSOR))),
                 new Intake(hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.INTAKE_MOTOR))), side);
-
+        velocityMultiplierTimer.reset();
 //        partnerPark = new PartnerPark(
 //                hardwareMap.get(DcMotorEx.class, "vsr"),
 //                hardwareMap.get(DcMotorEx.class, "vsl"));
@@ -82,7 +84,7 @@ public class MainTeleOp extends OpMode {
             side = AllianceSide.RED;
         }
 
-        shooterSystem.teleOpControl(otosSensor.getPosition(), gamepad2.left_bumper, gamepad2.right_bumper, gamepad2.left_trigger, gamepad1.a);
+        shooterSystem.teleOpControl(otosSensor.getPosition(), gamepad2.left_bumper, gamepad2.right_bumper, gamepad2.left_trigger, gamepad1.a, gamepad1.b, velocityMultiplierTimer);
 //        partnerPark.manualControl(gamepad1.right_bumper, gamepad1.left_bumper);
 
         telemetry.addData("hpos:", otosSensor.getPosition().h);
