@@ -4,6 +4,7 @@ import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 
 public class OTOSSensor {
@@ -33,7 +34,11 @@ public class OTOSSensor {
     }
 
     public Pose2D getPosition() {
-        return new Pose2D(sensor.getPosition());
+        Pose2D position = new Pose2D(sensor.getPosition());
+        TelemetryPasser.telemetry.addData("Position X: ", position.x);
+        TelemetryPasser.telemetry.addData("Position Y: ", position.y);
+        TelemetryPasser.telemetry.addData("Position H: ", position.h);
+        return position;
 
     }
 
