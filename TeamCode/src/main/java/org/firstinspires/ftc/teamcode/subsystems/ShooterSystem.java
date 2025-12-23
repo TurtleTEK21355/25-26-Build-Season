@@ -58,8 +58,12 @@ public class ShooterSystem {
         TelemetryPasser.telemetry.addData("Range from Goal:", range);
         double flyWheelTargetSpeed = getTicksPerSecondForRange(range);
         TelemetryPasser.telemetry.addData("Calculated Ticks Per second:", flyWheelTargetSpeed);
-        double editedTicksPerSecond = flyWheelTargetSpeed * 1500;
+        double editedTicksPerSecond = Math.sqrt(flyWheelTargetSpeed) * 3.5;
+        if (editedTicksPerSecond > 1500){
+            editedTicksPerSecond = 1500;
+        }
         TelemetryPasser.telemetry.addData("Edited: ", editedTicksPerSecond);
+
         if (a && v.milliseconds()>25) {
             editedTicksPerSecond += 1;
         }
