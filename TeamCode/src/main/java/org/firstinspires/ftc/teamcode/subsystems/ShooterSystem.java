@@ -16,15 +16,17 @@ public class ShooterSystem {
     private final Pose2D redBasketPosition = new Pose2D(56.4, 60, 0);
     private final Pose2D blueBasketPosition = new Pose2D(-56.4, 60, 0);
 
-
+    double tpsChange = 0;
     private final int FLYWHEEL_VELOCITY_TOLERANCE_TPS = 40;
 
     private final double GRAVITY = 386.09; //Inches per second squared
     private final double HEIGHT = 48; //inches tall + ball diameter
     private final double THETA = 1.13446401; //Ramp Angle in Radians
     private final double MAX_SPEED = 386; //inches per second?
+    private final double REGRESSION_VARIABLE = 5.43557;
     private final double MAX_RPM = 3214; //this ones gotta be rpm hopefully
     private final double TICKS_PER_ROTATION = 28; //ticks per rotation of 5000 series motor
+    ElapsedTime velocityChangeTimer = new ElapsedTime();
 
 
     public ShooterSystem(FlyWheel flyWheel, GateSystem gateSystem, Intake intake, AllianceSide side){
@@ -51,20 +53,20 @@ public class ShooterSystem {
     }
     public boolean ballReady() {return gateSystem.ballReady();}
 
-    public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean a, boolean b, ElapsedTime v) {
+    public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean add, boolean minus) {
         double range = getDistanceFromGoal(side, position);
         TelemetryPasser.telemetry.addData("Range from Goal:", range);
         double flyWheelTargetSpeed = getTicksPerSecondForRange(range);
         TelemetryPasser.telemetry.addData("Calculated Ticks Per second:", flyWheelTargetSpeed);
-        double editedTicksPerSecond = flyWheelTargetSpeed * 1500;
-        TelemetryPasser.telemetry.addData("Edited: ", editedTicksPerSecond);
-        if (a && v.milliseconds()>25) {
-            editedTicksPerSecond += 1;
+        if (add && velocityChangeTimer.milliseconds()>25) {
+            tpsChange += 10;
         }
-        else if (b && v.milliseconds()>25) {
-            editedTicksPerSecond -= 1;
+        else if (minus && velocityChangeTimer.milliseconds()>25) {
+            tpsChange -= 10;
         }
+        double editedTicksPerSecond = (flyWheelTargetSpeed)+tpsChange;
         flywheelSetVelocity(Range.clip(editedTicksPerSecond, -1500, 1500));
+        TelemetryPasser.telemetry.addData("Edited: ", editedTicksPerSecond);
         if (shoot && (flywheelGetVelocity() > (editedTicksPerSecond- FLYWHEEL_VELOCITY_TOLERANCE_TPS))) {
             openGate();
         } else {
@@ -81,7 +83,6 @@ public class ShooterSystem {
         }
 
         TelemetryPasser.telemetry.addData("FlyWheel Velocity in ticks/s", flyWheel.getVelocity());
-
     }
     public void teleOpControlConfigurableVelocity(double velocity, boolean intakeForward, boolean shoot, double intakeBackward) {
         flyWheel.setVelocity(velocity);
@@ -102,10 +103,10 @@ public class ShooterSystem {
 
     private double getDistanceFromGoal(AllianceSide side, Pose2D position) {
         if (side == AllianceSide.RED) {
-            return Math.sqrt(Math.pow(position.x - redBasketPosition.x, 2) + Math.pow(position.y + redBasketPosition.y, 2));
+            return Math.sqrt(Math.pow(position.x - redBasketPosition.x, 2) + Math.pow(position.y - redBasketPosition.y, 2));
 
         } else {
-            return Math.sqrt(Math.pow(position.x - blueBasketPosition.x, 2) + Math.pow(position.y + blueBasketPosition.y, 2));
+            return Math.sqrt(Math.pow(position.x - blueBasketPosition.x, 2) + Math.pow(position.y - blueBasketPosition.y, 2));
 
         }
 
@@ -114,11 +115,10 @@ public class ShooterSystem {
     private double getTicksPerSecondForRange(double range) {
 
         double expectedVelocity = (
-            Math.sqrt(
-                (-GRAVITY * Math.pow(range, 2) )
-                /
-                (2 * Math.pow(Math.cos(THETA), 2) ) * (HEIGHT - range * Math.tan(THETA) )
-            )
+            REGRESSION_VARIABLE *
+                    Math.sqrt((-GRAVITY*(Math.pow(range, 2)))
+                            /
+                    ((2*Math.cos(THETA)) * (HEIGHT-(range*Math.tan(THETA)))))
         );
 
         double adjustedForMaxSpeed  = expectedVelocity / MAX_SPEED; //seems weird to divide by the max?
