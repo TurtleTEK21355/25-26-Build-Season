@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.AllianceSide;
+import org.firstinspires.ftc.teamcode.Motif;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 
@@ -15,6 +16,7 @@ public class ShooterSystem {
     private AllianceSide side;
     private final Pose2D redBasketPosition = new Pose2D(56.4, 60, 0);
     private final Pose2D blueBasketPosition = new Pose2D(-56.4, 60, 0);
+    private Motif motif;
 
 
     private final int FLYWHEEL_VELOCITY_TOLERANCE_TPS = 40;
@@ -70,7 +72,7 @@ public class ShooterSystem {
         } else {
             closeGate();
         }
-        TelemetryPasser.telemetry.addData("shoot", ballReady());
+        TelemetryPasser.telemetry.addData("ball ready", ballReady());
         if (intakeForward) {
             intakeSetPower(1);
         }
@@ -128,4 +130,11 @@ public class ShooterSystem {
         return (rotationsPerMinute / 60) * TICKS_PER_ROTATION; //conversion from rots per min to ticks per sec
     }
 
+    public Motif getMotif() {
+        return motif;
+    }
+
+    public void setMotif(Motif motif) {
+        this.motif = motif;
+    }
 }
