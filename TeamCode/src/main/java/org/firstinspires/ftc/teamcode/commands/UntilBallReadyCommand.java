@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 public class UntilBallReadyCommand extends Command {
     private ShooterSystem shooterSystem;
-    private boolean invert;
+    private boolean invert; //TODO inverts are lame just make another command
     private ElapsedTime timer;
 
     public UntilBallReadyCommand(ShooterSystem shooterSystem, boolean invert) {
@@ -23,7 +23,7 @@ public class UntilBallReadyCommand extends Command {
     @Override
     public boolean isCompleted() {
         if (invert) {
-            return (!shooterSystem.ballReady()||timer.seconds()>=3);
+            return (!shooterSystem.ballReady()||timer.seconds()>=3); //TODO might as well use TimerCommand if you're gonna do this
         } else {
             return (shooterSystem.ballReady()||timer.seconds()>=3);
         }

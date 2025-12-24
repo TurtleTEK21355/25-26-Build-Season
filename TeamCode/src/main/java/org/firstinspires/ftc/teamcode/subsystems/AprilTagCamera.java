@@ -1,10 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Motif;
-import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -120,7 +117,7 @@ public class AprilTagCamera {
         return null; //since its a double this is the only kinda null thing it can return
     }
 
-    public Motif getMotifFromID() {
+    public Motif getMotifFromDetections() {
         for (AprilTagDetection detection : currentDetections) {
             if (detection.id == Motif.GPP.getID()) {
                 return Motif.GPP;
