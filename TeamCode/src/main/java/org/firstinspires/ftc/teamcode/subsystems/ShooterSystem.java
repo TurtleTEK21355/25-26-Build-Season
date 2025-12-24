@@ -18,9 +18,6 @@ public class ShooterSystem {
     private final Pose2D blueBasketPosition = new Pose2D(-56.4, 60, 0);
     private Motif motif;
 
-    double tpsChange = 0;
-    private final int FLYWHEEL_VELOCITY_TOLERANCE_TPS = 40;
-
     private final double GRAVITY = 386.09; //Inches per second squared
     private final double HEIGHT = 48; //inches tall + ball diameter
     private final double THETA = 1.13446401; //Ramp Angle in Radians
@@ -29,6 +26,8 @@ public class ShooterSystem {
     private final double MAX_RPM = 3214; //this ones gotta be rpm hopefully
     private final double TICKS_PER_ROTATION = 28; //ticks per rotation of 5000 series motor
     ElapsedTime velocityChangeTimer = new ElapsedTime();
+    double tpsChange = 0;
+    private final int FLYWHEEL_VELOCITY_TOLERANCE_TPS = 40;
 
 
     public ShooterSystem(FlyWheel flyWheel, GateSystem gateSystem, Intake intake, AllianceSide side){
@@ -58,8 +57,10 @@ public class ShooterSystem {
     public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean add, boolean minus) {
         double range = getDistanceFromGoal(side, position);
         TelemetryPasser.telemetry.addData("Range from Goal:", range);
+
         double flyWheelTargetSpeed = getTicksPerSecondForRange(range);
         TelemetryPasser.telemetry.addData("Calculated Ticks Per second:", flyWheelTargetSpeed);
+
         if (add && velocityChangeTimer.milliseconds()>25) {
             tpsChange += 10;
         }
@@ -70,7 +71,7 @@ public class ShooterSystem {
         double editedTicksPerSecond = flyWheelTargetSpeed+tpsChange;
         flywheelSetVelocity(Range.clip(editedTicksPerSecond, -1500, 1500));
         TelemetryPasser.telemetry.addData("Edited: ", editedTicksPerSecond);
-        if (shoot && (flywheelGetVelocity() > (editedTicksPerSecond- FLYWHEEL_VELOCITY_TOLERANCE_TPS))) {
+        if (shoot && (flywheelGetVelocity() > (editedTicksPerSecond - FLYWHEEL_VELOCITY_TOLERANCE_TPS))) {
             openGate();
         } else {
             closeGate();
