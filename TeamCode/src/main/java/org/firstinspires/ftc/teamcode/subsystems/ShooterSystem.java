@@ -62,6 +62,7 @@ public class ShooterSystem {
         TelemetryPasser.telemetry.addData("Calculated Ticks Per second:", flyWheelTargetSpeed);
         if (add && velocityChangeTimer.milliseconds()>25) {
             tpsChange += 10;
+        }
         double editedTicksPerSecond = Math.sqrt(flyWheelTargetSpeed) * 3.5;
         if (editedTicksPerSecond > 1500){
             editedTicksPerSecond = 1500;
@@ -69,7 +70,7 @@ public class ShooterSystem {
         else if (minus && velocityChangeTimer.milliseconds()>25) {
             tpsChange -= 10;
         }
-        double editedTicksPerSecond = (flyWheelTargetSpeed)+tpsChange;
+        editedTicksPerSecond = (flyWheelTargetSpeed)+tpsChange;
         flywheelSetVelocity(Range.clip(editedTicksPerSecond, -1500, 1500));
         TelemetryPasser.telemetry.addData("Edited: ", editedTicksPerSecond);
         if (shoot && (flywheelGetVelocity() > (editedTicksPerSecond- FLYWHEEL_VELOCITY_TOLERANCE_TPS))) {
