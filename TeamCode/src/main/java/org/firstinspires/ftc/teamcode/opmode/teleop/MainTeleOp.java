@@ -42,8 +42,8 @@ public class MainTeleOp extends OpMode {
 
     @Override
     public void init() {
-        Object positionObject = blackboard.getOrDefault(ShootAutoOpMode.POSITION_BLACKBOARD_KEY, new Pose2D());
-        Object sideObject = blackboard.getOrDefault(ShootAutoOpMode.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.RED);
+        Object positionObject = blackboard.getOrDefault(ShootAutoOpMode.POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
+        Object sideObject = blackboard.getOrDefault(ShootAutoOpMode.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         startingPosition = (Pose2D) positionObject;
         side = (AllianceSide) sideObject;
 
@@ -77,17 +77,19 @@ public class MainTeleOp extends OpMode {
         drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
         telemetry.addLine("Alliance Side: " + side.name());
-        telemetry.addLine("use dpad to change alliance side");
+        telemetry.addLine("use dpad to change alliance side (default is blue)");
+        telemetry.addLine("Alliance side blue = right dpad");
+        telemetry.addLine("Alliance side red = left dpad");
         if (gamepad2.dpad_right) {
             side = AllianceSide.BLUE;
         } else if (gamepad2.dpad_left) {
             side = AllianceSide.RED;
         }
 
-        shooterSystem.teleOpControl(otosSensor.getPosition(), gamepad2.left_bumper, gamepad2.right_bumper, gamepad2.left_trigger, gamepad1.a, gamepad1.b);
+        shooterSystem.teleOpControlTest(otosSensor.getPosition(), gamepad2.left_bumper, gamepad2.right_bumper, gamepad2.left_trigger, gamepad1.a, gamepad1.b);
 //        partnerPark.manualControl(gamepad1.right_bumper, gamepad1.left_bumper);
 
-        drivetrain.powerTelemetry();
+//        drivetrain.powerTelemetry();
         telemetry.update();
 
     }

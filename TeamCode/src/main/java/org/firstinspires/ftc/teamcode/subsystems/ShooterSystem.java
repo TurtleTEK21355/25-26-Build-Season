@@ -88,6 +88,13 @@ public class ShooterSystem {
         TelemetryPasser.telemetry.addData("FlyWheel Velocity in ticks/s", flyWheel.getVelocity());
 
     }
+    public void teleOpControlTest(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean add, boolean minus) {
+        double range = getDistanceFromGoal(side, position);
+        TelemetryPasser.telemetry.addData("Range from Goal:", range);
+        double flyWheelTargetSpeed = getTicksPerSecondForRange(range);
+        TelemetryPasser.telemetry.addData("Flywheel Target Speed:", flyWheelTargetSpeed);
+        flywheelSetVelocity(Range.clip(flyWheelTargetSpeed, -1500, 1500));
+    }
     public void teleOpControlConfigurableVelocity(double velocity, boolean intakeForward, boolean shoot, double intakeBackward) {
         flyWheel.setVelocity(velocity);
         if (intakeForward) {
@@ -120,9 +127,11 @@ public class ShooterSystem {
 
         return (
             REGRESSION_VARIABLE *
-                    Math.sqrt((-GRAVITY*(Math.pow(range, 2)))
+                    Math.sqrt(
+                            (-GRAVITY*(Math.pow(range, 2)))
                             /
-                    ((2*Math.cos(THETA)) * (HEIGHT-(range*Math.tan(THETA)))))
+                    ((2*Math.cos(THETA)) * (HEIGHT-(range*Math.tan(THETA))))
+                    )
         );
     }
 
