@@ -11,9 +11,9 @@ Defines how power manipulates each motor/servo on the robot.
 - Positive X = audience right/red goal
 - Positive H = clockwise
 - all units of distance are in inches
-- 0,0 on the field is the red loading zone corner
-- that means blue goal corner = 144, 0
-- red goal corner = 144, 144
+- 0,0 on the field is the center of the field
+- that means blue goal corner =
+- red goal corner = 
 
 ## Shooter System
 ### FlyWheel
