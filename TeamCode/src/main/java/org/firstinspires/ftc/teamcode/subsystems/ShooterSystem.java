@@ -63,14 +63,11 @@ public class ShooterSystem {
         if (add && velocityChangeTimer.milliseconds()>25) {
             tpsChange += 10;
         }
-        double editedTicksPerSecond = Math.sqrt(flyWheelTargetSpeed) * 3.5;
-        if (editedTicksPerSecond > 1500){
-            editedTicksPerSecond = 1500;
-        }
         else if (minus && velocityChangeTimer.milliseconds()>25) {
             tpsChange -= 10;
         }
-        editedTicksPerSecond = (flyWheelTargetSpeed)+tpsChange;
+        //        double editedTicksPerSecond = Math.sqrt(flyWheelTargetSpeed) * 3.5;
+        double editedTicksPerSecond = flyWheelTargetSpeed+tpsChange;
         flywheelSetVelocity(Range.clip(editedTicksPerSecond, -1500, 1500));
         TelemetryPasser.telemetry.addData("Edited: ", editedTicksPerSecond);
         if (shoot && (flywheelGetVelocity() > (editedTicksPerSecond- FLYWHEEL_VELOCITY_TOLERANCE_TPS))) {
@@ -121,18 +118,12 @@ public class ShooterSystem {
 
     private double getTicksPerSecondForRange(double range) {
 
-        double expectedVelocity = (
+        return (
             REGRESSION_VARIABLE *
                     Math.sqrt((-GRAVITY*(Math.pow(range, 2)))
                             /
                     ((2*Math.cos(THETA)) * (HEIGHT-(range*Math.tan(THETA)))))
         );
-
-        double adjustedForMaxSpeed  = expectedVelocity / MAX_SPEED; //seems weird to divide by the max?
-
-        double rotationsPerMinute = adjustedForMaxSpeed * MAX_RPM; //also weird...
-
-        return (rotationsPerMinute / 60) * TICKS_PER_ROTATION; //conversion from rots per min to ticks per sec
     }
 
     public Motif getMotif() {
