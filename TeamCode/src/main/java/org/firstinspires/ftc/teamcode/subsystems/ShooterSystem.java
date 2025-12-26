@@ -88,7 +88,6 @@ public class ShooterSystem {
         TelemetryPasser.telemetry.addData("Range from Goal:", range);
         double flyWheelTargetSpeed = getTicksPerSecondForRange(range);
         TelemetryPasser.telemetry.addData("Flywheel Target Speed:", flyWheelTargetSpeed);
-        TelemetryPasser.telemetry.addData("Calculated Ticks Per second:", flyWheelTargetSpeed);
         flywheelSetVelocity(Range.clip(flyWheelTargetSpeed, -1500, 1500));
     }
     public void teleOpControlConfigurableVelocity(double velocity, boolean intakeForward, boolean shoot, double intakeBackward) {
