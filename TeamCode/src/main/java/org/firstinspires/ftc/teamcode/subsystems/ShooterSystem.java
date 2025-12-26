@@ -12,8 +12,6 @@ public class ShooterSystem {
     private FlyWheel flyWheel;
     private GateSystem gateSystem;
     private Intake intake;
-
-    private AllianceSide side;
     private final Pose2D redBasketPosition = new Pose2D(56.4, 60, 0);
     private final Pose2D blueBasketPosition = new Pose2D(-56.4, 60, 0);
     private Motif motif;
@@ -34,7 +32,6 @@ public class ShooterSystem {
         this.flyWheel = flyWheel;
         this.intake = intake;
         this.gateSystem = gateSystem;
-        this.side = side;
     }
 
     public void flywheelSetVelocity(double velocity) {
@@ -54,7 +51,7 @@ public class ShooterSystem {
     }
     public boolean ballReady() {return gateSystem.ballReady();}
 
-    public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean add, boolean minus) {
+    public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean add, boolean minus, AllianceSide side) {
         double range = getDistanceFromGoal(side, position);
         TelemetryPasser.telemetry.addData("Range from Goal:", range);
 
@@ -89,7 +86,7 @@ public class ShooterSystem {
         TelemetryPasser.telemetry.addData("FlyWheel Velocity in ticks/s", flyWheel.getVelocity());
 
     }
-    public void teleOpControlTest(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean add, boolean minus) {
+    public void teleOpControlTest(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean add, boolean minus, AllianceSide side) {
         double range = getDistanceFromGoal(side, position);
         TelemetryPasser.telemetry.addData("Range from Goal:", range);
         double flyWheelTargetSpeed = getTicksPerSecondForRange(range);
