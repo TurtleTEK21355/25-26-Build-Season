@@ -10,6 +10,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 
 public class ColorSensor {
+    /*
+        Put the following into opMode to initialize a color sensor (replace sensor_color with name for sensor in config, and replace colorSensor with recognizeable name):
+
+        In class: NormalizedColorSensor colorSensor
+        In init: colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
+     */
     NormalizedColorSensor colorSensor;
     public ColorSensor(double gain) {
         // This could've had a float input, but I don't like floats
