@@ -11,8 +11,8 @@ import org.firstinspires.ftc.teamcode.TelemetryPasser;
 
 public class ColorSensor {
     NormalizedColorSensor colorSensor;
-    public ColorSensor(double gain) {
-        // This could've had a float input, but I don't like floats
+    public ColorSensor(double gain, NormalizedColorSensor colorSensor) {
+this.colorSensor = colorSensor;
 
         // You can give the sensor a gain value, will be multiplied by the sensor's raw value before the
         // normalized color values are calculated. Color sensors (especially the REV Color Sensor V3)
