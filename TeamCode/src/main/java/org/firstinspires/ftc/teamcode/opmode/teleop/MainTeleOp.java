@@ -34,10 +34,9 @@ public class MainTeleOp extends OpMode {
     Drivetrain drivetrain;
     OTOSSensor otosSensor;
     ShooterSystem shooterSystem;
-    PartnerPark partnerPark;
+//    PartnerPark partnerPark;
 
     HardwareNames hardwareNames = new HardwareNames();
-    ElapsedTime velocityMultiplierTimer = new ElapsedTime();
 
 
     @Override
@@ -65,7 +64,6 @@ public class MainTeleOp extends OpMode {
                         hardwareMap.get(Servo.class, hardwareNames.get(HardwareNames.Name.SHOOTER_GATE)),
                         hardwareMap.get(Ada2167BreakBeam.class, hardwareNames.get(HardwareNames.Name.BALL_READY_SENSOR))),
                 new Intake(hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.INTAKE_MOTOR))), side);
-        velocityMultiplierTimer.reset();
 //        partnerPark = new PartnerPark(
 //                hardwareMap.get(DcMotorEx.class, "vsr"),
 //                hardwareMap.get(DcMotorEx.class, "vsl"));

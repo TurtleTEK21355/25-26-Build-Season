@@ -32,10 +32,11 @@ public class MovePIDCommand extends Command {
         drivetrain.fcControl(yPID.calculate(position.y), xPID.calculate(position.x), hPID.calculate(position.h));
         drivetrain.PIDTelemetry(position, target, xPID.atTarget(position.x), yPID.atTarget(position.y), hPID.atTarget(position.h));
 
-        TelemetryPasser.telemetry.addData("yPID at Position", yPID.atTarget(position.y));
-        TelemetryPasser.telemetry.addData("xPID at Position", xPID.atTarget(position.x));
-        TelemetryPasser.telemetry.addData("hPID at Position", hPID.atTarget(position.h));
-        TelemetryPasser.telemetry.addData("dt pos", drivetrain.getPosition());
+        TelemetryPasser.telemetry.addLine()
+        .addData("yPID at Position", yPID.atTarget(position.y))
+        .addData("xPID at Position", xPID.atTarget(position.x))
+        .addData("hPID at Position", hPID.atTarget(position.h))
+        .addData("dt pos", drivetrain.getPosition());
 
     }
 

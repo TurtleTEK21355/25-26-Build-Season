@@ -113,27 +113,29 @@ public class Drivetrain {
 
     // Sends power of each motor to telemetry
     public void powerTelemetry(){
-        TelemetryPasser.telemetry.addData("fl Power", frontLeftMotor.getPower());
-        TelemetryPasser.telemetry.addData("fr Power", frontRightMotor.getPower());
-        TelemetryPasser.telemetry.addData("bl Power", backLeftMotor.getPower());
-        TelemetryPasser.telemetry.addData("br Power", backRightMotor.getPower());
+        TelemetryPasser.telemetry.addLine()
+        .addData("fl Power: ", frontLeftMotor.getPower())
+        .addData("fr Power: ", frontRightMotor.getPower())
+        .addData("bl Power: ", backLeftMotor.getPower())
+        .addData("br Power: ", backRightMotor.getPower());
 
     }
 
     public void PIDTelemetry(Pose2D pos, Pose2D target, boolean xAtTarget, boolean yAtTarget, boolean hAtTarget){
-        TelemetryPasser.telemetry.addData("X Position", pos.x);
-        TelemetryPasser.telemetry.addData("Y Position", pos.y);
-        TelemetryPasser.telemetry.addData("Heading", pos.h);
-        TelemetryPasser.telemetry.addLine();
-        TelemetryPasser.telemetry.addData("Target X", target.x);
-        TelemetryPasser.telemetry.addData("Target Y", target.y);
-        TelemetryPasser.telemetry.addData("Target H", target.h);
-        TelemetryPasser.telemetry.addLine();
-        TelemetryPasser.telemetry.addData("At Target X", xAtTarget);
-        TelemetryPasser.telemetry.addData("At Target Y", yAtTarget);
-        TelemetryPasser.telemetry.addData("At Target H", hAtTarget);
-        TelemetryPasser.telemetry.addLine();
+        TelemetryPasser.telemetry.addLine()
+            .addData("X Position: ", pos.x)
+            .addData("Y Position: ", pos.y)
+            .addData("Heading: ", pos.h);
 
+        TelemetryPasser.telemetry.addLine()
+        .addData("Target X: ", target.x)
+        .addData("Target Y: ", target.y)
+        .addData("Target H: ", target.h);
+
+        TelemetryPasser.telemetry.addLine()
+        .addData("At Target X: ", xAtTarget)
+        .addData("At Target Y: ", yAtTarget)
+        .addData("At Target H: ", hAtTarget);
     }
 
     public void setWheelDirection(DcMotorSimple.Direction lf, DcMotorSimple.Direction rf, DcMotorSimple.Direction lb, DcMotorSimple.Direction rb) {
