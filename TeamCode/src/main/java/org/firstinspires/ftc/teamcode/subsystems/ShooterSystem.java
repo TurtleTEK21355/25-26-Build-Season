@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import android.view.WindowInsets;
+
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -15,6 +17,7 @@ public class ShooterSystem {
     private static final Pose2D RED_BASKET_POSITION = new Pose2D(56.4, 60, 0);
     private static final Pose2D BLUE_BASKET_POSITION = new Pose2D(-56.4, 60, 0);
     private Motif motif;
+    private AllianceSide side;
     private final double[] RANGETOVELOCITY = new double[]{1000,1000,1000,1000,1158,1191,1235,1283,1332,1381,1431,1479};
 
     private final double GRAVITY = 386.09; //Inches per second squared
@@ -32,6 +35,7 @@ public class ShooterSystem {
         this.flyWheel = flyWheel;
         this.intake = intake;
         this.gateSystem = gateSystem;
+        this.side = side;
     }
 
     public void flywheelSetVelocity(double velocity) {
@@ -51,7 +55,7 @@ public class ShooterSystem {
     }
     public boolean ballReady() {return gateSystem.ballReady();}
 
-    public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean add, boolean minus, AllianceSide side) {
+    public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean add, boolean minus) {
         double range = getDistanceFromGoal(side, position);
         TelemetryPasser.telemetry.addData("Range from Goal:", range);
         double flyWheelTargetSpeed;

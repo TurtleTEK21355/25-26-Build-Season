@@ -16,7 +16,7 @@ public class GetMotifCommand extends Command {
 
     @Override
     public void loop() {
-        shooterSystem.setMotif(aprilTagCamera.getMotifFromDetections());
+        shooterSystem.setMotif(aprilTagCamera.getMotif());
     }
 
     @Override

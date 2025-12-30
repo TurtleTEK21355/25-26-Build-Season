@@ -30,9 +30,10 @@ public class ShootAutoOpMode extends CommandOpMode{ //the robots name is shoot
     protected OTOSSensor otosSensor;
     protected AprilTagCamera aprilTagCamera;
     protected ShooterSystem shooterSystem;
+
     protected AllianceSide side;
-    private final double valueChangeAmount = 0.01;
-    protected Pose2D startingOffset = new Pose2D(0, 0, 0);
+    protected Pose2D startingPosition = new Pose2D(0, 0, 0);
+
     protected double kp = 0.06;
     protected double ki;
     protected double kd;
@@ -40,16 +41,20 @@ public class ShootAutoOpMode extends CommandOpMode{ //the robots name is shoot
     protected double kiTheta;
     protected double kdTheta;
     protected double speed = 0.3;
+
+    private final double valueChangeAmount = 0.01;
+
     public static final String POSITION_BLACKBOARD_KEY = "pos";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
 
     @Override
     protected void initialize() {
         setup();
+
         TelemetryPasser.telemetry = telemetry;
         aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(HardwareNames.Name.APRIL_TAG_CAMERA)));
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
-        otosSensor.configureOtos(startingOffset.x, startingOffset.y, startingOffset.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
+        otosSensor.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR)),
@@ -79,17 +84,16 @@ public class ShootAutoOpMode extends CommandOpMode{ //the robots name is shoot
 
     protected void commands() {}
 
-
     protected void setAllianceSide(AllianceSide side) {
         this.side = side;
-
     }
 
-    protected void setStartingOffset(Pose2D offset) {
-        startingOffset = offset;
+    protected void setStartingPosition(Pose2D offset) {
+        startingPosition = offset;
     }
-    protected void setStartingOffset(double x, double y, double h) {
-        startingOffset = new Pose2D(x, y, h);
+
+    protected void setStartingPosition(double x, double y, double h) {
+        startingPosition = new Pose2D(x, y, h);
     }
 
     private void configureVariables(){

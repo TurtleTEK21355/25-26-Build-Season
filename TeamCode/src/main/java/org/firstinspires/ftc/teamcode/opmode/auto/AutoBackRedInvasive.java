@@ -26,7 +26,7 @@ public class AutoBackRedInvasive extends ShootAutoOpMode {
     @Override
     protected void setup() {
         setAllianceSide(SIDE);
-        setStartingOffset(15, -61, 0);
+        setStartingPosition(15, -61, 0);
     }
 
     @Override
