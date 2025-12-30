@@ -11,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.AllianceSide;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
+import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.menu.DoubleMenuItem;
 import org.firstinspires.ftc.teamcode.lib.menu.Menu;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
@@ -31,6 +32,7 @@ public class ShootAutoOpMode extends CommandOpMode{ //the robots name is shoot
     protected ShooterSystem shooterSystem;
     protected AllianceSide side;
     private final double valueChangeAmount = 0.01;
+    protected Pose2D startingOffset = new Pose2D(0, 0, 0);
     protected double kp = 0.06;
     protected double ki;
     protected double kd;
@@ -43,10 +45,11 @@ public class ShootAutoOpMode extends CommandOpMode{ //the robots name is shoot
 
     @Override
     protected void initialize() {
+        setup();
         TelemetryPasser.telemetry = telemetry;
         aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(HardwareNames.Name.APRIL_TAG_CAMERA)));
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
-        otosSensor.configureOtos(0, 0, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
+        otosSensor.configureOtos(startingOffset.x, startingOffset.y, startingOffset.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),
                 hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR)),
@@ -61,8 +64,6 @@ public class ShootAutoOpMode extends CommandOpMode{ //the robots name is shoot
                 new Intake(hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.INTAKE_MOTOR))), side);
         //configureVariables();
         drivetrain.configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
-
-        setup();
 
         commands();
 
@@ -79,9 +80,16 @@ public class ShootAutoOpMode extends CommandOpMode{ //the robots name is shoot
     protected void commands() {}
 
 
-    protected void setAllianceSide(AllianceSide side){
+    protected void setAllianceSide(AllianceSide side) {
         this.side = side;
 
+    }
+
+    protected void setStartingOffset(Pose2D offset) {
+        startingOffset = offset;
+    }
+    protected void setStartingOffset(double x, double y, double h) {
+        startingOffset = new Pose2D(x, y, h);
     }
 
     private void configureVariables(){

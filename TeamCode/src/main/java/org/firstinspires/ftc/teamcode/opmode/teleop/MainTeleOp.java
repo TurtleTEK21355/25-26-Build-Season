@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
+import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
+
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -90,6 +92,12 @@ public class MainTeleOp extends OpMode {
 //        drivetrain.powerTelemetry();
         telemetry.update();
 
+    }
+
+    @Override
+    public void stop() {
+        blackboard.put(ShootAutoOpMode.POSITION_BLACKBOARD_KEY, otosSensor.getPosition());
+        blackboard.put(ShootAutoOpMode.ALLIANCE_SIDE_BLACKBOARD_KEY, side);
     }
 
 }
