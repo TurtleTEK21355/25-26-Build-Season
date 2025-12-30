@@ -31,21 +31,19 @@ package org.firstinspires.ftc.teamcode.opmode.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 
 import org.firstinspires.ftc.teamcode.subsystems.AprilTagCamera;
-import org.firstinspires.ftc.teamcode.subsystems.ColorSensor;
 
-@TeleOp(name = "Color Sensor Test", group = "test")
-public class SensorTest extends LinearOpMode {
-    NormalizedColorSensor colorSensorPassIn = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
-    ColorSensor colorSensor = new ColorSensor(5.5, colorSensorPassIn, "sensor_color");
+@TeleOp(name = "April Tag Telemetry", group = "test")
+public class AprilTagTelemetry extends LinearOpMode {
+
+    AprilTagCamera aprilTagCamera;
 
     @Override
     public void runOpMode() {
         waitForStart();
         while (opModeIsActive()) {
-            aprilTagCamera.aprilTagTelemetry();
+            aprilTagCamera.returnAllAprilTagData();
             telemetry.update();
         }
     }
