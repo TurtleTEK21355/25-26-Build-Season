@@ -15,6 +15,7 @@ public class ShooterSystem {
     private final Pose2D redBasketPosition = new Pose2D(56.4, 60, 0);
     private final Pose2D blueBasketPosition = new Pose2D(-56.4, 60, 0);
     private Motif motif;
+    private final double[] RANGETOVELOCITY = new double[]{1000,1000,1000,1000,1158,1191,1235,1283,1332,1381,1431,1479};
 
     private final double GRAVITY = 386.09; //Inches per second squared
     private final double HEIGHT = 48; //inches tall + ball diameter
@@ -53,8 +54,12 @@ public class ShooterSystem {
     public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean add, boolean minus, AllianceSide side) {
         double range = getDistanceFromGoal(side, position);
         TelemetryPasser.telemetry.addData("Range from Goal:", range);
-
-        double flyWheelTargetSpeed = getTicksPerSecondForRange(range);
+        double flyWheelTargetSpeed;
+        if (range >= 100){
+            flyWheelTargetSpeed = 1500;
+        } else {
+            flyWheelTargetSpeed = RANGETOVELOCITY[(int) range / 10];
+        }
         TelemetryPasser.telemetry.addData("Calculated Ticks Per second:", flyWheelTargetSpeed);
 
         if (add && velocityChangeTimer.milliseconds()>250) {
@@ -90,7 +95,7 @@ public class ShooterSystem {
         TelemetryPasser.telemetry.addData("Flywheel Target Speed:", flyWheelTargetSpeed);
         flywheelSetVelocity(Range.clip(flyWheelTargetSpeed, -1500, 1500));
     }
-    public void teleOpControlConfigurableVelocity(double velocity, boolean intakeForward, boolean shoot, double intakeBackward) {
+    public void teleOpControlConfigurableVelocity(double velocity, boolean intakeForward, boolean shoot, double intakeBackward, AllianceSide side, Pose2D position) {
         flyWheel.setVelocity(velocity);
         if (intakeForward) {
             intake.setPower(0.8);
@@ -104,6 +109,7 @@ public class ShooterSystem {
             gateSystem.closeGate();}
 
         TelemetryPasser.telemetry.addData("FlyWheel Velocity in ticks/s", flyWheel.getVelocity());
+        TelemetryPasser.telemetry.addData("Range", getDistanceFromGoal(side, position));
         TelemetryPasser.telemetry.addData("shoot", ballReady());
     }
 

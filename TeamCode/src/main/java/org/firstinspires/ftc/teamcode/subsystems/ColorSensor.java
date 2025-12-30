@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import android.graphics.Color;
 
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -11,15 +13,16 @@ import org.firstinspires.ftc.teamcode.TelemetryPasser;
 
 public class ColorSensor {
     /*
-        Put the following into opMode to initialize a color sensor (replace sensor_color with name for sensor in config, and replace colorSensor with recognizeable name):
+        Put the following into opMode to initialize a color sensor (replace sensor_color with name for sensor in config, and replace colorSensor with recognizable name):
 
-        In class: NormalizedColorSensor colorSensor
-        In init: colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
+        ColorSensor colorSensor = new ColorSensor(5.5, hardwareMap.get(NormalizedColorSensor.class, colorSensorName));
+
      */
+    String colorSensorName;
     NormalizedColorSensor colorSensor;
-    public ColorSensor(double gain, NormalizedColorSensor colorSensor) {
-this.colorSensor = colorSensor;
-
+    public ColorSensor(double gain, NormalizedColorSensor colorSensor, String colorSensorName) {
+        this.colorSensor = colorSensor;
+        this.colorSensorName = colorSensorName;
         // You can give the sensor a gain value, will be multiplied by the sensor's raw value before the
         // normalized color values are calculated. Color sensors (especially the REV Color Sensor V3)
         // can give very low values (depending on the lighting conditions), which only use a small part
@@ -29,14 +32,16 @@ this.colorSensor = colorSensor;
         // actually looking at. For this reason, it's better to err on the side of a lower gain
         // (but always greater than  or equal to 1).
         colorSensor.setGain((float)gain);
+        colorSensor = hardwareMap.get(NormalizedColorSensor.class, colorSensorName);
     }
     public NormalizedRGBA getColorsFloats(){
+        colorSensor = hardwareMap.get(NormalizedColorSensor.class, colorSensorName);
         NormalizedRGBA colors = colorSensor.getNormalizedColors();
         TelemetryPasser.telemetry.addLine()
-                .addData("Red", "%.3f", colors.red)
-                .addData("Green", "%.3f", colors.green)
-                .addData("Blue", "%.3f", colors.blue)
-                .addData("Alpha", "%.3f", colors.alpha);
+                .addData("Red ("+colorSensorName+')', "%.3f", colors.red)
+                .addData("Green ("+colorSensorName+')', "%.3f", colors.green)
+                .addData("Blue ("+colorSensorName+')', "%.3f", colors.blue)
+                .addData("Alpha ("+colorSensorName+')', "%.3f", colors.alpha);
 
         // This returns floats :(
         return colors;
@@ -48,12 +53,13 @@ this.colorSensor = colorSensor;
     }
     public float[] getHSVFloats(){
         // just returns HSV as a list in HSV order
+        colorSensor = hardwareMap.get(NormalizedColorSensor.class, colorSensorName);
         final float[] hsvValues = new float[3];
         Color.colorToHSV((getColorsFloats()).toColor(), hsvValues);
         TelemetryPasser.telemetry.addLine()
-                .addData("Hue", "%.3f", hsvValues[0])
-                .addData("Saturation", "%.3f", hsvValues[1])
-                .addData("Value", "%.3f", hsvValues[2]);
+                .addData("Hue ("+colorSensorName+')', "%.3f", hsvValues[0])
+                .addData("Saturation ("+colorSensorName+')', "%.3f", hsvValues[1])
+                .addData("Value ("+colorSensorName+')', "%.3f", hsvValues[2]);
 
         // This returns floats D:
         return hsvValues;
@@ -64,9 +70,10 @@ this.colorSensor = colorSensor;
         return new double[]{(double)hsvValues[0], (double)hsvValues[1], (double)hsvValues[2]};
     }
     public double getDistance() {
+        colorSensor = hardwareMap.get(NormalizedColorSensor.class, colorSensorName);
         // Returns distance in millimeters
         double distance = ((DistanceSensor) colorSensor).getDistance(DistanceUnit.MM);
-        TelemetryPasser.telemetry.addData("Color Sensor Distance (mm)", "%.3f", distance);
+        TelemetryPasser.telemetry.addData("Color Sensor Distance (mm) ("+colorSensorName+')', "%.3f", distance);
         return distance;
     }
 }

@@ -1,6 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.teleop;
-
-import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
+package org.firstinspires.ftc.teamcode.opmode.test;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -8,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -19,19 +16,19 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.FlyWheel;
-import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
 import org.firstinspires.ftc.teamcode.subsystems.GateSystem;
+import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
-import org.firstinspires.ftc.teamcode.subsystems.PartnerPark;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
 @TeleOp(name="Main TeleOp", group="Iterative OpModes")
-public class MainTeleOp extends OpMode {
+public class ManualVelocityDataCollector extends OpMode {
 
     //blackboard variables
     private Pose2D startingPosition;
     private AllianceSide side;
+    double velocity;
 
     Drivetrain drivetrain;
     OTOSSensor otosSensor;
@@ -47,7 +44,6 @@ public class MainTeleOp extends OpMode {
         Object sideObject = blackboard.getOrDefault(ShootAutoOpMode.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         startingPosition = (Pose2D) positionObject;
         side = (AllianceSide) sideObject;
-
         TelemetryPasser.telemetry = telemetry;
 
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
@@ -85,19 +81,18 @@ public class MainTeleOp extends OpMode {
         } else if (gamepad2.dpad_left) {
             side = AllianceSide.RED;
         }
-
-        shooterSystem.teleOpControl(otosSensor.getPosition(), gamepad2.left_bumper, gamepad2.right_bumper, gamepad2.left_trigger, gamepad1.a, gamepad1.b, side);
-//        partnerPark.manualControl(gamepad1.right_bumper, gamepad1.left_bumper);
-
-//        drivetrain.powerTelemetry();
+        if(gamepad1.a) {
+            velocity = 1500;
+        } else if(gamepad1.b) {
+            velocity = 1400;
+        } else if(gamepad1.x) {
+            velocity = 1300;
+        } else {
+            velocity = 1200;
+        }
+        shooterSystem.teleOpControlConfigurableVelocity(velocity, gamepad1.left_bumper, gamepad1.right_bumper, gamepad1.left_trigger, side, otosSensor.getPosition());
         telemetry.update();
 
-    }
-
-    @Override
-    public void stop() {
-        blackboard.put(ShootAutoOpMode.POSITION_BLACKBOARD_KEY, otosSensor.getPosition());
-        blackboard.put(ShootAutoOpMode.ALLIANCE_SIDE_BLACKBOARD_KEY, side);
     }
 
 }
