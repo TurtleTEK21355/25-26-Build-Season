@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 
+import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
+
 public class Pose2D {
     public double x;
     public double y;
@@ -35,6 +37,12 @@ public class Pose2D {
         this.y = pose2D.y;
         this.h = pose2D.h;
 
+    }
+
+    public Pose2D(AprilTagPoseFtc ftcPose) {
+        this.x = ftcPose.x;
+        this.y = ftcPose.y;
+        this.h = ftcPose.yaw;
     }
 
     public Pose2D(double r, double theta){

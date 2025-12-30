@@ -12,8 +12,8 @@ public class ShooterSystem {
     private FlyWheel flyWheel;
     private GateSystem gateSystem;
     private Intake intake;
-    private final Pose2D redBasketPosition = new Pose2D(56.4, 60, 0);
-    private final Pose2D blueBasketPosition = new Pose2D(-56.4, 60, 0);
+    private static final Pose2D RED_BASKET_POSITION = new Pose2D(56.4, 60, 0);
+    private static final Pose2D BLUE_BASKET_POSITION = new Pose2D(-56.4, 60, 0);
     private Motif motif;
     private final double[] RANGETOVELOCITY = new double[]{1000,1000,1000,1000,1158,1191,1235,1283,1332,1381,1431,1479};
 
@@ -21,7 +21,7 @@ public class ShooterSystem {
     private final double HEIGHT = 48; //inches tall + ball diameter
     private final double THETA = 1.13446401; //Ramp Angle in Radians
     private final double REGRESSION_VARIABLE = 5.43557;
-    private final double MAX_RPM = 3214; //this ones gotta be rpm hopefully
+    private final double MAX_RPM = 3214;
     private final double TICKS_PER_ROTATION = 28; //ticks per rotation of 5000 series motor
     ElapsedTime velocityChangeTimer = new ElapsedTime();
     double tpsChange = 0;
@@ -115,10 +115,10 @@ public class ShooterSystem {
 
     private double getDistanceFromGoal(AllianceSide side, Pose2D position) {
         if (side == AllianceSide.RED) {
-            return Math.sqrt(Math.pow(position.x - redBasketPosition.x, 2) + Math.pow(position.y - redBasketPosition.y, 2));
+            return Math.sqrt(Math.pow(position.x - RED_BASKET_POSITION.x, 2) + Math.pow(position.y - RED_BASKET_POSITION.y, 2));
 
         } else {
-            return Math.sqrt(Math.pow(position.x - blueBasketPosition.x, 2) + Math.pow(position.y - blueBasketPosition.y, 2));
+            return Math.sqrt(Math.pow(position.x - BLUE_BASKET_POSITION.x, 2) + Math.pow(position.y - BLUE_BASKET_POSITION.y, 2));
 
         }
 
