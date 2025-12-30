@@ -20,7 +20,6 @@ public class ShooterSystem {
     private final double GRAVITY = 386.09; //Inches per second squared
     private final double HEIGHT = 48; //inches tall + ball diameter
     private final double THETA = 1.13446401; //Ramp Angle in Radians
-    private final double MAX_SPEED = 386; //inches per second?
     private final double REGRESSION_VARIABLE = 5.43557;
     private final double MAX_RPM = 3214; //this ones gotta be rpm hopefully
     private final double TICKS_PER_ROTATION = 28; //ticks per rotation of 5000 series motor
@@ -63,10 +62,10 @@ public class ShooterSystem {
         }
         TelemetryPasser.telemetry.addData("Calculated Ticks Per second:", flyWheelTargetSpeed);
 
-        if (add && velocityChangeTimer.milliseconds()>25) {
+        if (add && velocityChangeTimer.milliseconds()>250) {
             tpsChange += 10;
         }
-        else if (minus && velocityChangeTimer.milliseconds()>25) {
+        else if (minus && velocityChangeTimer.milliseconds()>250) {
             tpsChange -= 10;
         }
         //        double editedTicksPerSecond = Math.sqrt(flyWheelTargetSpeed) * 3.5;
@@ -87,8 +86,6 @@ public class ShooterSystem {
         } else {
             intakeSetPower(0);
         }
-
-        TelemetryPasser.telemetry.addData("FlyWheel Velocity in ticks/s", flyWheel.getVelocity());
 
     }
     public void teleOpControlTest(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean add, boolean minus, AllianceSide side) {

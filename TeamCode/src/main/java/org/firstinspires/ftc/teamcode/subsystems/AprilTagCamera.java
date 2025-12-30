@@ -1,7 +1,12 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import android.util.Size;
+
+import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Motif;
+import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -13,6 +18,7 @@ public class AprilTagCamera {
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
     private List<AprilTagDetection> currentDetections;
+    private Motif currentMotif = null;
 
 
     public AprilTagCamera(CameraName camera) {
@@ -50,18 +56,18 @@ public class AprilTagCamera {
         builder.setCamera(camera);
 
         // Choose a camera resolution. Not all cameras support all resolutions.
-        //builder.setCameraResolution(new Size(640, 480));
+        builder.setCameraResolution(new Size(640, 480));
 
         // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
-        //builder.enableLiveView(true);
+        builder.enableLiveView(true);
 
         // Set the stream format; MJPEG uses less bandwidth than default YUY2.
-        //builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
+        builder.setStreamFormat(VisionPortal.StreamFormat.MJPEG);
 
         // Choose whether or not LiveView stops if no processors are enabled.
         // If set "true", monitor shows solid orange screen if no processors enabled.
         // If set "false", monitor shows camera view without annotations.
-        //builder.setAutoStopLiveView(false);
+        builder.setAutoStopLiveView(false);
 
         // Set and enable the processor.
         builder.addProcessor(aprilTag);
@@ -70,25 +76,35 @@ public class AprilTagCamera {
         visionPortal = builder.build();
 
         // Disable or re-enable the aprilTag processor at any time.
-        //visionPortal.setProcessorEnabled(aprilTag, true);
+        visionPortal.setProcessorEnabled(aprilTag, true);
     }
 
-    public String aprilTagTelemetry() {
-        String outputString = "";
-        updateDetections();
+    public String returnAllAprilTagData() {
+        StringBuilder outputString = new StringBuilder();
         for (AprilTagDetection detection : currentDetections) {
-            if (detection != null) {
-                outputString.concat("ID " + detection.id);
-                outputString.concat("\nx " + detection.ftcPose.x + "\ny " + detection.ftcPose.y + "\nz " + detection.ftcPose.z);
-                outputString.concat("\npitch " + detection.ftcPose.pitch + "\nroll " + detection.ftcPose.roll + "\nyaw " + detection.ftcPose.yaw);
+            if (detection.metadata != null) {
+                outputString.append("ID ")
+                        .append(detection.id)
+                        .append("\nx ")
+                        .append(detection.ftcPose.x)
+                        .append("\ny ")
+                        .append(detection.ftcPose.y)
+                        .append("\nz ")
+                        .append(detection.ftcPose.z)
+                        .append("\npitch ")
+                        .append(detection.ftcPose.pitch)
+                        .append("\nroll ")
+                        .append(detection.ftcPose.roll)
+                        .append("\nyaw ")
+                        .append(detection.ftcPose.yaw);
 
             } else {
-                outputString.concat("\nDetection Unknown");
+                outputString.append("\nDetection Unknown");
 
             }
-            outputString.concat("\n");
+            outputString.append("\n");
         }
-        return outputString;
+        return outputString.toString();
 
     }
 
@@ -97,11 +113,12 @@ public class AprilTagCamera {
 
     }
 
-    public AprilTagDetection getDetection(int id) { // gets a detection
+    public AprilTagDetection getDetection(int id) {
         for (AprilTagDetection detection : currentDetections) {
-            if (detection.id == id) {
-                return detection;
-
+            if (detection.metadata != null) {
+                if (detection.id == id) {
+                    return detection;
+                }
             }
 
         }
@@ -109,25 +126,29 @@ public class AprilTagCamera {
 
     }
 
-    public Double getRange(int id) { //this function might be useful in the future
-        AprilTagDetection detection = getDetection(id);
-        if (detection != null) {
+    public Double getRange(AprilTagDetection detection) {
+        if (detection != null && detection.metadata != null) {
             return detection.ftcPose.range;
         }
-        return null; //since its a double this is the only kinda null thing it can return
+        return null;
     }
 
-    public Motif getMotifFromDetections() {
+    public Motif getMotif() {
         for (AprilTagDetection detection : currentDetections) {
-            if (detection.id == Motif.GPP.getID()) {
-                return Motif.GPP;
-            } else if (detection.id == Motif.PGP.getID()) {
-                return Motif.PGP;
-            } else if (detection.id == Motif.PPG.getID()) {
-                return Motif.PPG;
+            if (detection.metadata != null) {
+                if (detection.id == Motif.GPP.getID()) {
+                    currentMotif = Motif.GPP;
+                } else if (detection.id == Motif.PGP.getID()) {
+                    currentMotif = Motif.PGP;
+                } else if (detection.id == Motif.PPG.getID()) {
+                    currentMotif = Motif.PPG;
+                }
+
             }
+
         }
-        return null;
+        return currentMotif;
+
     }
 
 }

@@ -45,9 +45,7 @@ public class SensorTest extends LinearOpMode {
     public void runOpMode() {
         waitForStart();
         while (opModeIsActive()) {
-            colorSensor.getColorsDoubles();
-            colorSensor.getHSVDoubles();
-            colorSensor.getDistance();
+            aprilTagCamera.aprilTagTelemetry();
             telemetry.update();
         }
     }
