@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode.test;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,8 +12,8 @@ import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
 import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
-//@Autonomous(name="TestOpMode", group="Linear OpMode")
 @Disabled
+@Autonomous(name="TestOpMode", group="Linear OpMode")
 public class MotorTestOpMode extends LinearOpMode {
     HardwareNames hardwareNames = new HardwareNames();
     private DcMotor frontLeftMotor;
