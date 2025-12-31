@@ -96,20 +96,16 @@ public class AprilTagCamera {
                         .append(detection.ftcPose.roll)
                         .append("\nyaw ")
                         .append(detection.ftcPose.yaw);
-
             } else {
                 outputString.append("\nDetection Unknown");
-
             }
             outputString.append("\n");
         }
         return outputString.toString();
-
     }
 
     public void updateDetections() {
         currentDetections = aprilTag.getDetections();
-
     }
 
     public AprilTagDetection getDetection(int id) {
@@ -122,7 +118,6 @@ public class AprilTagCamera {
 
         }
         return null;
-
     }
 
     public Double getRange(AprilTagDetection detection) {
@@ -142,15 +137,12 @@ public class AprilTagCamera {
                 } else if (detection.id == Motif.PPG.getID()) {
                     currentMotif = Motif.PPG;
                 }
-
             }
-
         }
         return currentMotif;
-
     }
 
-    public Pose2D getPositionFromGoal() {
+    public Pose2D getPositionFromGoalAprilTag(Pose2D currentPosition) { //gotta pass in the current because otherwise it will reset the position every time it doesn't detect a goal
         AprilTagDetection blueGoal = getDetection(20);
         AprilTagDetection redGoal = getDetection(24);
         if (blueGoal != null) {
@@ -160,8 +152,7 @@ public class AprilTagCamera {
             Pose2D redGoalRelativePosition = new Pose2D(redGoal.ftcPose);
             return AllianceSide.RED.getGoalPosition().subtract(redGoalRelativePosition);
         }
-        return new Pose2D(0, 0, 0);
+        return currentPosition;
     }
 
 }
-
