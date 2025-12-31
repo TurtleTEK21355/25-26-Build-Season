@@ -60,6 +60,11 @@ public class Pose2D {
 
     }
 
+    public Pose2D subtract(Pose2D other){
+        return new Pose2D(this.x - other.x, this.y - other.y, this.h - other.h);
+
+    }
+
     public SparkFunOTOS.Pose2D toSparkFunPose2D(){
         return new SparkFunOTOS.Pose2D(x, y, h);
     }

@@ -14,12 +14,9 @@ public class ShooterSystem {
     private FlyWheel flyWheel;
     private GateSystem gateSystem;
     private Intake intake;
-    private static final Pose2D RED_BASKET_POSITION = new Pose2D(56.4, 60, 0);
-    private static final Pose2D BLUE_BASKET_POSITION = new Pose2D(-56.4, 60, 0);
     private Motif motif;
     private AllianceSide side;
     private final double[] RANGETOVELOCITY = new double[]{1000,1000,1000,1000,1158,1191,1235,1283,1332,1381,1431,1479};
-
     private final double GRAVITY = 386.09; //Inches per second squared
     private final double HEIGHT = 48; //inches tall + ball diameter
     private final double THETA = 1.13446401; //Ramp Angle in Radians
@@ -56,7 +53,7 @@ public class ShooterSystem {
     public boolean ballReady() {return gateSystem.ballReady();}
 
     public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean add, boolean minus) {
-        double range = getDistanceFromGoal(side, position);
+        double range = getDistanceFromGoal(position);
         TelemetryPasser.telemetry.addData("Range from Goal:", range);
         double flyWheelTargetSpeed;
         if (range >= 100){
@@ -93,7 +90,7 @@ public class ShooterSystem {
 
     }
     public void teleOpControlTest(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean add, boolean minus, AllianceSide side) {
-        double range = getDistanceFromGoal(side, position);
+        double range = getDistanceFromGoal(position);
         TelemetryPasser.telemetry.addData("Range from Goal:", range);
         double flyWheelTargetSpeed = getTicksPerSecondForRange(range);
         TelemetryPasser.telemetry.addData("Flywheel Target Speed:", flyWheelTargetSpeed);
@@ -113,18 +110,12 @@ public class ShooterSystem {
             gateSystem.closeGate();}
 
         TelemetryPasser.telemetry.addData("FlyWheel Velocity in ticks/s", flyWheel.getVelocity());
-        TelemetryPasser.telemetry.addData("Range", getDistanceFromGoal(side, position));
+        TelemetryPasser.telemetry.addData("Range", getDistanceFromGoal(position));
         TelemetryPasser.telemetry.addData("shoot", ballReady());
     }
 
-    private double getDistanceFromGoal(AllianceSide side, Pose2D position) {
-        if (side == AllianceSide.RED) {
-            return Math.sqrt(Math.pow(position.x - RED_BASKET_POSITION.x, 2) + Math.pow(position.y - RED_BASKET_POSITION.y, 2));
-
-        } else {
-            return Math.sqrt(Math.pow(position.x - BLUE_BASKET_POSITION.x, 2) + Math.pow(position.y - BLUE_BASKET_POSITION.y, 2));
-
-        }
+    private double getDistanceFromGoal(Pose2D position) {
+            return Math.sqrt(Math.pow(position.x - side.getGoalPosition().x, 2) + Math.pow(position.y - side.getGoalPosition().y, 2));
 
     }
 
