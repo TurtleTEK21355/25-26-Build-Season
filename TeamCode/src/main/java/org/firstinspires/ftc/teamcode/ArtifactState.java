@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-public enum BallState {
+public enum ArtifactState {
     PURPLE,
     GREEN,
     EMPTY
