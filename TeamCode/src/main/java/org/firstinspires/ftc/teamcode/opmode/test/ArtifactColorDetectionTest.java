@@ -33,20 +33,36 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 
+import org.firstinspires.ftc.teamcode.ArtifactState;
+import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.subsystems.ColorSensor;
 
-@TeleOp(name = "Color Sensor Test", group = "test")
-public class ColorSensorTest extends LinearOpMode {
-    NormalizedColorSensor colorSensorPassIn = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
-    ColorSensor colorSensor = new ColorSensor(5.5, colorSensorPassIn, "sensor_color");
+@TeleOp(name = "Artifact Color Detection Test", group = "test")
+public class ArtifactColorDetectionTest extends LinearOpMode {
+
+    NormalizedColorSensor colorSensorPassIn;
+    ArtifactState state;
+
 
     @Override
     public void runOpMode() {
+        TelemetryPasser.telemetry = telemetry;
+        colorSensorPassIn = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
+        ColorSensor colorSensor = new ColorSensor(5.5f, colorSensorPassIn, "sensor_color");
         waitForStart();
         while (opModeIsActive()) {
+            state = colorSensor.getArtifactState();
+            if (state == ArtifactState.GREEN) {
+                telemetry.addData("State: ", "Green");
+            } else if (state == ArtifactState.PURPLE) {
+                telemetry.addData("State: ", "Purple");
+            } else  if (state == ArtifactState.EMPTY) {
+                telemetry.addData("State: ", "None");
+            } else {
+                telemetry.addData("State: ", "This Shouldn't Happen");
+            }
             colorSensor.getDistance();
-            colorSensor.getColorsDoubles();
-            colorSensor.getHSVFloats();
+
             telemetry.update();
         }
     }
