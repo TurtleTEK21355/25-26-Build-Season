@@ -14,6 +14,7 @@ public class AutoBackRed extends ShootAutoOpMode {
     @Override
     protected void setup() {
         setAllianceSide(SIDE);
+        setStartingPosition(15, -61, 0);
     }
 
     @Override

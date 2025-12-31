@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
+import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
+
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -84,12 +86,18 @@ public class MainTeleOp extends OpMode {
             side = AllianceSide.RED;
         }
 
-        shooterSystem.teleOpControl(otosSensor.getPosition(), gamepad2.left_bumper, gamepad2.right_bumper, gamepad2.left_trigger, gamepad1.a, gamepad1.b, side);
+        shooterSystem.teleOpControl(otosSensor.getPosition(), gamepad2.left_bumper, gamepad2.right_bumper, gamepad2.left_trigger, gamepad1.a, gamepad1.b);
 //        partnerPark.manualControl(gamepad1.right_bumper, gamepad1.left_bumper);
 
 //        drivetrain.powerTelemetry();
         telemetry.update();
 
+    }
+
+    @Override
+    public void stop() {
+        blackboard.put(ShootAutoOpMode.POSITION_BLACKBOARD_KEY, otosSensor.getPosition());
+        blackboard.put(ShootAutoOpMode.ALLIANCE_SIDE_BLACKBOARD_KEY, side);
     }
 
 }

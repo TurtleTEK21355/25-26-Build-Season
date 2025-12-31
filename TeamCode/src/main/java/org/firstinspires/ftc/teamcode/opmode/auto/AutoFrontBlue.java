@@ -25,6 +25,7 @@ public class AutoFrontBlue extends ShootAutoOpMode {
     @Override
     protected void setup() {
         setAllianceSide(SIDE);
+        setStartingPosition(-20, 58, 0);
     }
 
     @Override

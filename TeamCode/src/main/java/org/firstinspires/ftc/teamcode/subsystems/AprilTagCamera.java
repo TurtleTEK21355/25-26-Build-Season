@@ -2,9 +2,8 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import android.util.Size;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.AllianceSide;
 import org.firstinspires.ftc.teamcode.Motif;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -149,6 +148,19 @@ public class AprilTagCamera {
         }
         return currentMotif;
 
+    }
+
+    public Pose2D getPositionFromGoal() {
+        AprilTagDetection blueGoal = getDetection(20);
+        AprilTagDetection redGoal = getDetection(24);
+        if (blueGoal != null) {
+            Pose2D blueGoalRelativePosition = new Pose2D(blueGoal.ftcPose);
+            return AllianceSide.BLUE.getGoalPosition().subtract(blueGoalRelativePosition);
+        } else if (redGoal != null) {
+            Pose2D redGoalRelativePosition = new Pose2D(redGoal.ftcPose);
+            return AllianceSide.RED.getGoalPosition().subtract(redGoalRelativePosition);
+        }
+        return new Pose2D(0, 0, 0);
     }
 
 }
