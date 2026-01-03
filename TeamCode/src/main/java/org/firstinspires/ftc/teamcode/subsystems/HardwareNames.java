@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import java.util.HashMap;
 
-public class HardwareNames {
+public class HardwareNames { // this should be an enum
 
     public enum Name {
         FRONT_LEFT_MOTOR,
