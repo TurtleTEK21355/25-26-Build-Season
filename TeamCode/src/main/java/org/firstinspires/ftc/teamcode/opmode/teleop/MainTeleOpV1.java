@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
+import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
 import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
@@ -8,7 +9,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -16,18 +16,16 @@ import org.firstinspires.ftc.teamcode.AllianceSide;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
-import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.FlyWheel;
 import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
 import org.firstinspires.ftc.teamcode.subsystems.GateSystem;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
-import org.firstinspires.ftc.teamcode.subsystems.PartnerPark;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
-@TeleOp(name="Main TeleOp", group="Iterative OpModes")
-public class MainTeleOp extends OpMode {
+@TeleOp(name="Main TeleOpV1", group="Iterative OpModes")
+public class MainTeleOpV1 extends OpMode {
 
     //blackboard variables
     private Pose2D startingPosition;
@@ -40,9 +38,9 @@ public class MainTeleOp extends OpMode {
 
     HardwareNames hardwareNames = new HardwareNames();
 
-
     @Override
     public void init() {
+
         Object positionObject = blackboard.getOrDefault(ShootAutoOpMode.POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
         Object sideObject = blackboard.getOrDefault(ShootAutoOpMode.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         startingPosition = (Pose2D) positionObject;
@@ -87,9 +85,12 @@ public class MainTeleOp extends OpMode {
         }
 
         shooterSystem.teleOpControl(otosSensor.getPosition(), gamepad2.left_bumper, gamepad2.right_bumper, gamepad2.left_trigger, gamepad1.a, gamepad1.b);
-//        partnerPark.manualControl(gamepad1.right_bumper, gamepad1.left_bumper);
+        if (gamepad2.right_bumper) {
+            drivetrain.ShootRotationalPID(side);
+        }
+        //        partnerPark.manualControl(gamepad1.right_bumper, gamepad1.left_bumper);
 
-//        drivetrain.powerTelemetry();
+        //        drivetrain.powerTelemetry();
         telemetry.update();
 
     }

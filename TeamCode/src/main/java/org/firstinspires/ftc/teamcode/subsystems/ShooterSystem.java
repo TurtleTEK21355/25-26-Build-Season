@@ -12,6 +12,8 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 
 public class ShooterSystem {
     private FlyWheel flyWheel;
+    private TurretSystem turretSystem;
+    private CarouselSystem carouselSystem;
     private GateSystem gateSystem;
     private Intake intake;
     private Motif motif;
@@ -32,6 +34,12 @@ public class ShooterSystem {
         this.flyWheel = flyWheel;
         this.intake = intake;
         this.gateSystem = gateSystem;
+        this.side = side;
+    }
+    public ShooterSystem(TurretSystem turretSystem, CarouselSystem carouselSystem, Intake intake, AllianceSide side){
+        this.turretSystem = turretSystem;
+        this.intake = intake;
+        this.carouselSystem = carouselSystem;
         this.side = side;
     }
 

@@ -4,9 +4,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.AllianceSide;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
+import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
 
 public class Drivetrain {
     private DcMotor frontLeftMotor;
@@ -17,6 +19,9 @@ public class Drivetrain {
     private PIDConstants pidConstants;
     private PIDConstants thetaPIDConstants;
     private final Pose2D TOLERANCE = new Pose2D(2, 2, 2.5);
+    private final Pose2D BLUE = new Pose2D(56.4, 60, 45);
+    private final Pose2D RED = new Pose2D(-56.4, 60, 45);
+
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
         this.frontLeftMotor = frontLeft;
@@ -109,6 +114,28 @@ public class Drivetrain {
             backLeftMotor.setPower((bl/min)*magnitude);
 
         }
+    }
+
+    // Sets the robot rotation using PID
+    public void ShootRotationalPID(AllianceSide side) {
+        Pose2D position = getPosition();
+        double target = getRotationToGoal(side, position);
+        PIDControllerHeading hPID = new PIDControllerHeading(getThetaPIDConstants(), target, getTolerance().h, 0.5);
+        while(!hPID.atTarget(position.h)) {
+            position = getPosition();
+            fcControl(0, 0, hPID.calculate(position.h));
+            TelemetryPasser.telemetry.addData("Shoot Rotation: ", hPID.atTarget(position.h));
+        }
+    }
+    public double getRotationToGoal(AllianceSide side, Pose2D position) {
+        double distanceY = BLUE.y-position.y;
+        double distanceX;
+        if (side == AllianceSide.BLUE) {
+            distanceX = BLUE.x-position.x;
+        } else {
+            distanceX = RED.x-position.x;
+        }
+        return Math.atan(distanceX/distanceY);
     }
 
     // Sends power of each motor to telemetry
