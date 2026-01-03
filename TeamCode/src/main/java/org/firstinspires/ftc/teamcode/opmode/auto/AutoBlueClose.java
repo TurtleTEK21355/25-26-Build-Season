@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
 
 @Autonomous(name="Auto Front Blue", group="Autonomous")
-public class AutoFrontBlueClose extends ShootAutoOpMode {
+public class AutoBlueClose extends ShootAutoOpMode {
     private final AllianceSide SIDE = AllianceSide.BLUE;
 
     int shootWaitTime = 300;

@@ -15,15 +15,15 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
 
 @Autonomous(name="Auto Front Blue", group="Autonomous")
-public class AutoFrontRedClose extends ShootAutoOpMode {
+public class AutoRedClose extends ShootAutoOpMode {
     private final AllianceSide SIDE = AllianceSide.BLUE;
 
     int shootWaitTime = 300;
     int lastShootWaitTime = 400;
     int flyWheelVelocity = 1150;
-    double intakeColumn = -56;
+    double intakeColumn = 56;
 
-    double moveColumn = -20;
+    double moveColumn = 20;
 
     double topRow = 12;
 
