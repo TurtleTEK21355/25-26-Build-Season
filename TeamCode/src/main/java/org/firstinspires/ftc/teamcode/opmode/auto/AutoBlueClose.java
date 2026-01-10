@@ -22,7 +22,7 @@ public class AutoBlueClose extends ShootAutoOpMode {
     int lastShootWaitTime = 400;
     int flyWheelVelocity = 1150;
     //The column the robot will travel to intake.
-    double intakeColumn = -56;
+    double intakeColumn = -46;
     //The column the robot will move vertically on the field.
     double moveColumn = -20;
     double topRow = 12;
