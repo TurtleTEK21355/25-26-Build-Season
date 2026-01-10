@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
 import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
+import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
 import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
@@ -30,6 +31,13 @@ public class MainTeleOpV1 extends OpMode {
     //blackboard variables
     private Pose2D startingPosition;
     private AllianceSide side;
+
+    protected double kp = 0.06;
+    protected double ki;
+    protected double kd;
+    protected double kpTheta = 0.03;
+    protected double kiTheta;
+    protected double kdTheta;
 
     Drivetrain drivetrain;
     OTOSSensor otosSensor;
@@ -64,6 +72,8 @@ public class MainTeleOpV1 extends OpMode {
                         hardwareMap.get(Servo.class, hardwareNames.get(HardwareNames.Name.SHOOTER_GATE)),
                         hardwareMap.get(Ada2167BreakBeam.class, hardwareNames.get(HardwareNames.Name.BALL_READY_SENSOR))),
                 new Intake(hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.INTAKE_MOTOR))), side);
+
+        drivetrain.configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
 //        partnerPark = new PartnerPark(
 //                hardwareMap.get(DcMotorEx.class, "vsr"),
 //                hardwareMap.get(DcMotorEx.class, "vsl"));
