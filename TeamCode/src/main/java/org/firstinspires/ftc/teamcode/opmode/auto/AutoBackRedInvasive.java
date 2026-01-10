@@ -18,19 +18,21 @@ import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
 public class AutoBackRedInvasive extends ShootAutoOpMode {
 
     private final AllianceSide SIDE = AllianceSide.RED;
+    private final Pose2D STARTING_POSITION = new Pose2D(15, -61, 0);
 
     int shootWaitTime = 300;
     int lastShootWaitTime = 400;
     int flyWheelVelocity = 1150;
 
     @Override
-    protected void setup() {
+    public void initialize() {
         setAllianceSide(SIDE);
-        setStartingPosition(15, -61, 0);
+        setStartingPosition(STARTING_POSITION);
+        super.initialize();
     }
 
     @Override
-    protected void commands() {
+    public void commands() {
         addCommand(new SimultaneousCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(new Pose2D(16, 16, -45),1000, speed, drivetrain))));
         addCommand(new OpenGateCommand(shooterSystem));
         addCommand(new TimerCommand(1000));

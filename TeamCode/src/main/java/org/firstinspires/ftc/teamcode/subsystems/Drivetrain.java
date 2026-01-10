@@ -128,14 +128,8 @@ public class Drivetrain {
         }
     }
     public double getRotationToGoal(AllianceSide side, Pose2D position) {
-        double distanceY = BLUE.y-position.y;
-        double distanceX;
-        if (side == AllianceSide.BLUE) {
-            distanceX = BLUE.x-position.x;
-        } else {
-            distanceX = RED.x-position.x;
-        }
-        return Math.atan(distanceX/distanceY);
+        Pose2D distance = side.getGoalPosition().subtract(position);
+        return Math.toDegrees(distance.getTheta());
     }
 
     // Sends power of each motor to telemetry

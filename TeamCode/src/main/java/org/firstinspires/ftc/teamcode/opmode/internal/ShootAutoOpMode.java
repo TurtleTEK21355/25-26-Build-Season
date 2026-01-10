@@ -24,7 +24,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
-public class ShootAutoOpMode extends CommandOpMode{ //the robots name is shoot
+public abstract class ShootAutoOpMode extends CommandOpMode{ //the robots name is shoot
     protected HardwareNames hardwareNames = new HardwareNames();
     protected Drivetrain drivetrain;
     protected OTOSSensor otosSensor;
@@ -32,7 +32,7 @@ public class ShootAutoOpMode extends CommandOpMode{ //the robots name is shoot
     protected ShooterSystem shooterSystem;
 
     protected AllianceSide side;
-    protected Pose2D startingPosition = new Pose2D(0, 0, 0);
+    protected Pose2D startingPosition;
 
     protected double kp = 0.06;
     protected double ki;
@@ -42,15 +42,11 @@ public class ShootAutoOpMode extends CommandOpMode{ //the robots name is shoot
     protected double kdTheta;
     protected double speed = 0.3;
 
-    private final double valueChangeAmount = 0.01;
-
     public static final String POSITION_BLACKBOARD_KEY = "pos";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
 
     @Override
-    protected void initialize() {
-        setup();
-
+    public void initialize() {
         TelemetryPasser.telemetry = telemetry;
         aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(HardwareNames.Name.APRIL_TAG_CAMERA)));
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
@@ -75,28 +71,29 @@ public class ShootAutoOpMode extends CommandOpMode{ //the robots name is shoot
     }
 
     @Override
-    protected void cleanup() {
+    public void cleanup() {
         blackboard.put(POSITION_BLACKBOARD_KEY, otosSensor.getPosition());
         blackboard.put(ALLIANCE_SIDE_BLACKBOARD_KEY, side);
     }
 
-    protected void setup() {}
+    public abstract void commands();
 
-    protected void commands() {}
-
-    protected void setAllianceSide(AllianceSide side) {
+    public void setAllianceSide(AllianceSide side) {
         this.side = side;
     }
 
-    protected void setStartingPosition(Pose2D offset) {
+    public void setStartingPosition(Pose2D offset) {
         startingPosition = offset;
+        telemetry.addData("Starting Position", startingPosition.x + ", " +  startingPosition.y + ", " + startingPosition.h);
     }
 
-    protected void setStartingPosition(double x, double y, double h) {
+    public void setStartingPosition(double x, double y, double h) {
         startingPosition = new Pose2D(x, y, h);
+        telemetry.addData("Starting Position", startingPosition.x + ", " +  startingPosition.y + ", " + startingPosition.h);
     }
 
-    private void configureVariables(){
+    public void configureVariables(){
+        double valueChangeAmount = 0.01;
         DoubleMenuItem speedItem =  new DoubleMenuItem(speed, valueChangeAmount, "Speed");
         DoubleMenuItem kpItem = new DoubleMenuItem(kp, valueChangeAmount, "Kp");
         DoubleMenuItem kiItem = new DoubleMenuItem(ki, valueChangeAmount, "Ki");

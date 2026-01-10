@@ -33,11 +33,11 @@ public abstract class CommandOpMode extends LinearOpMode {
 
     }
 
-    protected abstract void initialize();
+    public abstract void initialize();
 
-    protected abstract void cleanup();
+    public abstract void cleanup();
 
-    protected void addCommand(Command command) {
+    public void addCommand(Command command) {
         commandList.add(command);
     }
 

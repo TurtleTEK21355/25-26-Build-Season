@@ -143,8 +143,8 @@ public class AprilTagCamera {
     }
 
     public Pose2D getPositionFromGoalAprilTag(Pose2D currentPosition) { //gotta pass in the current because otherwise it will reset the position every time it doesn't detect a goal
-        AprilTagDetection blueGoal = getDetection(20);
-        AprilTagDetection redGoal = getDetection(24);
+        AprilTagDetection blueGoal = getDetection(AllianceSide.BLUE.getGoalID());
+        AprilTagDetection redGoal = getDetection(AllianceSide.RED.getGoalID());
         if (blueGoal != null) {
             Pose2D blueGoalRelativePosition = new Pose2D(blueGoal.ftcPose);
             return AllianceSide.BLUE.getGoalPosition().subtract(blueGoalRelativePosition);

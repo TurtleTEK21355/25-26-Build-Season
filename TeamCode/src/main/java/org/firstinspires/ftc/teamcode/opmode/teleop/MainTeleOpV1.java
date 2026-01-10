@@ -85,9 +85,9 @@ public class MainTeleOpV1 extends OpMode {
         }
 
         shooterSystem.teleOpControl(otosSensor.getPosition(), gamepad2.left_bumper, gamepad2.right_bumper, gamepad2.left_trigger, gamepad1.a, gamepad1.b);
-        if (gamepad2.right_bumper) {
-            drivetrain.ShootRotationalPID(side);
-        }
+//        if (gamepad2.right_bumper) {
+//            drivetrain.ShootRotationalPID(side);
+//        }
         //        partnerPark.manualControl(gamepad1.right_bumper, gamepad1.left_bumper);
 
         //        drivetrain.powerTelemetry();

@@ -17,15 +17,17 @@ import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
 @Autonomous(name="Auto Front Red", group="Autonomous")
 public class AutoFrontRed extends ShootAutoOpMode {
     private final AllianceSide SIDE = AllianceSide.RED;
+    private final Pose2D STARTING_POSITION = new Pose2D(20, 58, 0);
 
     int shootWaitTime = 300;
     int lastShootWaitTime = 400;
     int flyWheelVelocity = 1150;
 
     @Override
-    protected void setup() {
+    public void initialize() {
         setAllianceSide(SIDE);
-        setStartingPosition(20, 58, 0);
+        setStartingPosition(STARTING_POSITION);
+        super.initialize();
     }
 
     @Override

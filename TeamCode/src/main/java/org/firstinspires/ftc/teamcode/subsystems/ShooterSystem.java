@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import android.view.WindowInsets;
-
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -11,6 +9,8 @@ import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 
 public class ShooterSystem {
+    public static final int MAX_RANGE_INCHES = 100;
+    public static final int MAX_VELOCITY_RPM = 1500;
     private FlyWheel flyWheel;
     private TurretSystem turretSystem;
     private CarouselSystem carouselSystem;
@@ -18,7 +18,7 @@ public class ShooterSystem {
     private Intake intake;
     private Motif motif;
     private AllianceSide side;
-    private final double[] RANGETOVELOCITY = new double[]{1000,1000,1000,1000,1158,1191,1235,1283,1332,1381,1431,1479};
+    private final double[] RANGE_TO_VELOCITY = new double[]{1000,1000,1000,1000,1158,1191,1235,1283,1332,1381,1431,1479};
     private final double GRAVITY = 386.09; //Inches per second squared
     private final double HEIGHT = 48; //inches tall + ball diameter
     private final double THETA = 1.13446401; //Ramp Angle in Radians
@@ -64,10 +64,13 @@ public class ShooterSystem {
         double range = getDistanceFromGoal(position);
         TelemetryPasser.telemetry.addData("Range from Goal:", range);
         double flyWheelTargetSpeed;
-        if (range >= 100){
-            flyWheelTargetSpeed = 1500;
+        if (range <= 0) {
+            flyWheelTargetSpeed = RANGE_TO_VELOCITY[0];
+        } else if (range >= MAX_RANGE_INCHES){
+            flyWheelTargetSpeed = MAX_VELOCITY_RPM;
         } else {
-            flyWheelTargetSpeed = RANGETOVELOCITY[(int) range / 10];
+            int rangeSector = (int) range / RANGE_TO_VELOCITY.length;
+            flyWheelTargetSpeed = RANGE_TO_VELOCITY[rangeSector];
         }
         TelemetryPasser.telemetry.addData("Calculated Ticks Per second:", flyWheelTargetSpeed);
 
@@ -104,6 +107,7 @@ public class ShooterSystem {
         TelemetryPasser.telemetry.addData("Flywheel Target Speed:", flyWheelTargetSpeed);
         flywheelSetVelocity(Range.clip(flyWheelTargetSpeed, -1500, 1500));
     }
+
     public void teleOpControlConfigurableVelocity(double velocity, boolean intakeForward, boolean shoot, double intakeBackward, AllianceSide side, Pose2D position) {
         flyWheel.setVelocity(velocity);
         if (intakeForward) {
