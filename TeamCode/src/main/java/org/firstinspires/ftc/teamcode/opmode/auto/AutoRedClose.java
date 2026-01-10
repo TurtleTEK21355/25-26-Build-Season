@@ -23,7 +23,7 @@ public class AutoRedClose extends ShootAutoOpMode {
     int shootWaitTime = 300;
     int lastShootWaitTime = 400;
     int flyWheelVelocity = 1150;
-    double intakeColumn = 50;
+    double intakeColumn = 46;
 
     double moveColumn = 20;
 
