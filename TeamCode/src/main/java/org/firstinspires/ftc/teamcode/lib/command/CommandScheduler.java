@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class CommandScheduler {
+public class CommandScheduler extends Command{
 
     private Queue<Command> commandQueue = new LinkedList<>();
 
@@ -26,13 +26,13 @@ public class CommandScheduler {
 
         }
 
-        if (!initLock) { //terrible way to do this but it works, runs on a lock which is reset when the previous command is completed
-            commandQueue.peek().init();
+        if (!initLock) {
+            commandQueue.peek().init();//ignore warnings they are dumb
             initLock = true;
 
         }
 
-        commandQueue.peek().loop(); //run every time the
+        commandQueue.peek().loop();
 
         if (commandQueue.peek().isCompleted()) {
             commandQueue.remove();
