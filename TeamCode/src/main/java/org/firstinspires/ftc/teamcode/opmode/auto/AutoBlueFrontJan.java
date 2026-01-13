@@ -14,8 +14,8 @@ import org.firstinspires.ftc.teamcode.commands.TimerCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
 
-@Autonomous(name="AutoBlueClose", group="Autonomous")
-public class AutoBlueClose extends ShootAutoOpMode {
+@Autonomous(name="AutoBlueFrontJan", group="Autonomous")
+public class AutoBlueFrontJan extends ShootAutoOpMode {
     private final AllianceSide SIDE = AllianceSide.BLUE;
     private final Pose2D STARTING_POSITION = new Pose2D(0, 0, 0);
 
