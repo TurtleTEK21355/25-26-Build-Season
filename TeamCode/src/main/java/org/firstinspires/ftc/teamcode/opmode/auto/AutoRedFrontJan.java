@@ -16,8 +16,8 @@ import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
 
 @Autonomous(name="AutoRedFrontJan", group="Autonomous")
 public class AutoRedFrontJan extends ShootAutoOpMode {
-    private final AllianceSide SIDE = AllianceSide.BLUE;
-    private final Pose2D STARTING_POSITION = new Pose2D(0, 0, 0);
+    private final AllianceSide SIDE = AllianceSide.RED;
+    private final Pose2D STARTING_POSITION = new Pose2D(20, 0, 0);
 
 
     int shootWaitTime = 300;
@@ -33,7 +33,7 @@ public class AutoRedFrontJan extends ShootAutoOpMode {
 
     double bottomRow = -36;
 
-    private final Pose2D SHOOT_POSITION = new Pose2D(-20,12,45);
+    private final Pose2D SHOOT_POSITION = new Pose2D(20,12,-45);
     @Override
     public void initialize() {
         setAllianceSide(SIDE);
