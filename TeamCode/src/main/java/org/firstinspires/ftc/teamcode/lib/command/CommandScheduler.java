@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.lib.command;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 public class CommandScheduler extends Command{
@@ -16,7 +15,7 @@ public class CommandScheduler extends Command{
 
     }
 
-    public void add(List<Command> commands) {
+    public void addAll(CommandList commands) {
         commandQueue.addAll(commands);
     }
 
