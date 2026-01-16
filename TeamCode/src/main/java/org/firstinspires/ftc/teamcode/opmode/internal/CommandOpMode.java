@@ -1,44 +1,40 @@
 package org.firstinspires.ftc.teamcode.opmode.internal;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.lib.command.CommandList;
+import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
 
-public abstract class CommandOpMode extends LinearOpMode {
-    private CommandList commandList = new CommandList();
+public abstract class CommandOpMode extends OpMode {
+    private CommandScheduler commandScheduler = new CommandScheduler();
 
     @Override
-    public void runOpMode() throws InterruptedException {
-
+    public void init() {
         initialize(); //where you put in commands and configuration
-
-        waitForStart();
-
-        for (Command command : commandList) { //runs through all commands in commandList
-            command.init();
-            while (opModeIsActive()) {
-                command.loop();
-                telemetry.update(); //make sure this isn't in any command
-                if (command.isCompleted()) { //this is after the loop so if things get set in the loop that are in isCompleted there will be no issue
-                    break;
-
-                }
-
-            }
-
-        }
-
-        cleanup(); //assign blackboard variables because they were being assigned at initialize before
 
     }
 
-    public abstract void initialize();
+    @Override
+    public void loop() {
+        commandScheduler.loop();
 
+        if (!commandScheduler.isCompleted()) {
+            stop();
+        }
+    }
+
+    @Override
+    public void stop() {
+        cleanup(); //for blackboard or resetting of odometry
+    }
+
+    public abstract void initialize();
     public abstract void cleanup();
 
     public void addCommand(Command command) {
-        commandList.add(command);
+        commandScheduler.add(command);
     }
 
 }

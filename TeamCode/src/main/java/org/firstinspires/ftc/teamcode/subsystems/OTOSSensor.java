@@ -34,17 +34,20 @@ public class OTOSSensor {
     }
 
     public Pose2D getPosition() {
-        Pose2D position = new Pose2D(sensor.getPosition());
-        TelemetryPasser.telemetry.addData("Position X: ", position.x);
-        TelemetryPasser.telemetry.addData("Position Y: ", position.y);
-        TelemetryPasser.telemetry.addData("Position H: ", position.h);
-        return position;
+        return new Pose2D(sensor.getPosition());
 
     }
 
     public void setPosition(Pose2D position) {
         sensor.setPosition(position.toSparkFunPose2D());
 
+    }
+
+    public void positionTelemetry() {
+        Pose2D position = getPosition();
+        TelemetryPasser.telemetry.addData("Position X: ", position.x);
+        TelemetryPasser.telemetry.addData("Position Y: ", position.y);
+        TelemetryPasser.telemetry.addData("Heading: ", position.h);
     }
 
 }

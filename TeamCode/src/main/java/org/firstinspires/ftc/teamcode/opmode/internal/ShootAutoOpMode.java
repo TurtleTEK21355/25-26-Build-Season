@@ -47,6 +47,7 @@ public abstract class ShootAutoOpMode extends CommandOpMode{ //the robots name i
 
     @Override
     public void initialize() {
+        telemetry.addData("Starting Position", startingPosition.x + ", " +  startingPosition.y + ", " + startingPosition.h);
         TelemetryPasser.telemetry = telemetry;
         aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(HardwareNames.Name.APRIL_TAG_CAMERA)));
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
@@ -84,12 +85,10 @@ public abstract class ShootAutoOpMode extends CommandOpMode{ //the robots name i
 
     public void setStartingPosition(Pose2D offset) {
         startingPosition = offset;
-        telemetry.addData("Starting Position", startingPosition.x + ", " +  startingPosition.y + ", " + startingPosition.h);
     }
 
     public void setStartingPosition(double x, double y, double h) {
         startingPosition = new Pose2D(x, y, h);
-        telemetry.addData("Starting Position", startingPosition.x + ", " +  startingPosition.y + ", " + startingPosition.h);
     }
 
     public void configureVariables(){
@@ -105,7 +104,7 @@ public abstract class ShootAutoOpMode extends CommandOpMode{ //the robots name i
         Menu menu = new Menu();
         menu.add(speedItem, kpItem, kiItem, kdItem, kpThetaItem, kiThetaItem, kdThetaItem);
 
-        while(opModeIsActive() && !gamepad1.start) {
+        while(!gamepad1.start) {
             menu.itemSelection(gamepad1.dpad_up, gamepad1.dpad_down, gamepad1.dpad_right, gamepad1.dpad_left);
 
             telemetry.addLine("Press start to Start");

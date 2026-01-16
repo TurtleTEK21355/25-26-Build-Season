@@ -1,20 +1,22 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import org.firstinspires.ftc.teamcode.lib.command.Command;
+import org.firstinspires.ftc.teamcode.lib.command.CommandList;
 import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
 
 import java.util.Arrays;
 
 public class SequentialCommand extends Command {
-
+    private CommandList commandList = new CommandList();
     private final CommandScheduler commandScheduler = new CommandScheduler();
 
     public SequentialCommand(Command... commands) {
-        commandScheduler.add(Arrays.asList(commands));
+        commandList.addAll(Arrays.asList(commands));
 
     }
 
     public void init() {
+        commandScheduler.addAll(commandList);
 
     }
 

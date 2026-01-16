@@ -9,6 +9,14 @@ import org.firstinspires.ftc.teamcode.TelemetryPasser;
 public class PartnerPark {
     private DcMotorEx rightViperSlide;
     private DcMotorEx leftViperSlide;
+    private final double HOLD_POWER = 0.1;
+    private final double UP_POWER = 1;
+    private final double DOWN_POWER = -1;
+    public enum State {
+        UP,
+        DOWN,
+        STAY
+    }
     public PartnerPark(DcMotorEx rightViperSlide,DcMotorEx leftViperSlide){
         this.rightViperSlide = rightViperSlide;
         this.leftViperSlide = leftViperSlide;
@@ -18,41 +26,35 @@ public class PartnerPark {
         this.leftViperSlide.setDirection(DcMotorSimple.Direction.FORWARD);
 
     }
-    public void control(boolean up, boolean down) {
-        if (up) {
-            rightViperSlide.setPower(1);
-            leftViperSlide.setPower(1);
-            while (rightViperSlide.getCurrentPosition() < 110 && leftViperSlide.getCurrentPosition() < 110) {
-                TelemetryPasser.telemetry.addData("Viper Slide Pos", leftViperSlide.getCurrentPosition());
-            }
-            rightViperSlide.setPower(0);
-            leftViperSlide.setPower(0);
-        } else if (down){
-            rightViperSlide.setPower(-1);
-            leftViperSlide.setPower(-1);
-            while (rightViperSlide.getCurrentPosition() > 5 && leftViperSlide.getCurrentPosition() > 5);
-            rightViperSlide.setPower(0);
-            leftViperSlide.setPower(0);
-        } else {
-            rightViperSlide.setPower(0);
-            leftViperSlide.setPower(0);
+    public void control(State state) {
+        switch(state) {
+            case UP:
+                if (rightViperSlide.getCurrentPosition() < 110) {
+                    rightViperSlide.setPower(UP_POWER);
+                    leftViperSlide.setPower(UP_POWER);
+                }
+                else {
+                    rightViperSlide.setPower(HOLD_POWER);
+                    leftViperSlide.setPower(HOLD_POWER);
+                }
+            case DOWN:
+                if (rightViperSlide.getCurrentPosition() > 0) {
+                    rightViperSlide.setPower(DOWN_POWER);
+                    leftViperSlide.setPower(DOWN_POWER);
+                }
+                else {
+                    rightViperSlide.setPower(HOLD_POWER);
+                    leftViperSlide.setPower(HOLD_POWER);
+                }
+            case STAY:
+                rightViperSlide.setPower(HOLD_POWER);
+                leftViperSlide.setPower(HOLD_POWER);
         }
     }
-    public void manualControl(boolean up, boolean down) {
-        if (up) {
-            rightViperSlide.setPower(1);
-            leftViperSlide.setPower(1);
-            TelemetryPasser.telemetry.addData("Right Viper Slide Velocity", rightViperSlide.getVelocity());
-            TelemetryPasser.telemetry.addData("Left Viper Slide Velocity", leftViperSlide.getVelocity());
-        } else if (down){
-            rightViperSlide.setPower(-1);
-            leftViperSlide.setPower(-1);
-            while (rightViperSlide.getCurrentPosition() > 5 && leftViperSlide.getCurrentPosition() > 5);
-            rightViperSlide.setPower(0);
-            leftViperSlide.setPower(0);
-        } else {
-            rightViperSlide.setPower(0);
-            leftViperSlide.setPower(0);
-        }
+
+    public void positionTelemetry() {
+        TelemetryPasser.telemetry.addData("Right VS Position", rightViperSlide.getCurrentPosition());
+        TelemetryPasser.telemetry.addData("Left VS Position", leftViperSlide.getCurrentPosition());
     }
+
 }
