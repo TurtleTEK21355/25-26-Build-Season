@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
 @Disabled
-@Autonomous(name="TestOpMode", group="Linear OpMode")
+@Autonomous(name="MotorTestOpMode", group="Linear OpMode")
 public class MotorTestOpMode extends LinearOpMode {
     HardwareNames hardwareNames = new HardwareNames();
     private DcMotor frontLeftMotor;

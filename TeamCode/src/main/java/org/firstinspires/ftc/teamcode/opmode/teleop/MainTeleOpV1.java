@@ -23,6 +23,7 @@ import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
 import org.firstinspires.ftc.teamcode.subsystems.GateSystem;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
+import org.firstinspires.ftc.teamcode.subsystems.PartnerPark;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
 @TeleOp(name="Main TeleOpV1", group="Iterative OpModes")
@@ -42,7 +43,7 @@ public class MainTeleOpV1 extends OpMode {
     Drivetrain drivetrain;
     OTOSSensor otosSensor;
     ShooterSystem shooterSystem;
-//    PartnerPark partnerPark;
+    PartnerPark partnerPark;
 
     HardwareNames hardwareNames = new HardwareNames();
 
@@ -74,15 +75,16 @@ public class MainTeleOpV1 extends OpMode {
                 new Intake(hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.INTAKE_MOTOR))), side);
 
         drivetrain.configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
-//        partnerPark = new PartnerPark(
-//                hardwareMap.get(DcMotorEx.class, "vsr"),
-//                hardwareMap.get(DcMotorEx.class, "vsl"));
+        partnerPark = new PartnerPark(
+                hardwareMap.get(DcMotorEx.class, "vsr"),
+                hardwareMap.get(DcMotorEx.class, "vsl"));
 
     }
 
     @Override
     public void loop() {
         drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        otosSensor.positionTelemetry();
 
         telemetry.addLine("Alliance Side: " + side.name());
         telemetry.addLine("use dpad to change alliance side (default is blue)");
@@ -95,12 +97,18 @@ public class MainTeleOpV1 extends OpMode {
         }
 
         shooterSystem.teleOpControl(otosSensor.getPosition(), gamepad2.left_bumper, gamepad2.right_bumper, gamepad2.left_trigger, gamepad1.a, gamepad1.b);
-//        if (gamepad2.right_bumper) {
-//            drivetrain.ShootRotationalPID(side);
-//        }
-        //        partnerPark.manualControl(gamepad1.right_bumper, gamepad1.left_bumper);
 
-        //        drivetrain.powerTelemetry();
+        if (gamepad1.right_bumper) {
+            partnerPark.control(PartnerPark.State.UP);
+        }
+        else if (gamepad1.left_bumper) {
+            partnerPark.control(PartnerPark.State.DOWN);
+        }
+        else {
+            partnerPark.control(PartnerPark.State.STAY);
+        }
+
+
         telemetry.update();
 
     }
