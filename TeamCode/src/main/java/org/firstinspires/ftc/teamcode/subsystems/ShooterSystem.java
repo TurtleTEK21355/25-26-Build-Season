@@ -100,12 +100,19 @@ public class ShooterSystem {
         }
 
     }
-    public void teleOpControlTest(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean add, boolean minus, AllianceSide side) {
-        double range = getDistanceFromGoal(position);
-        TelemetryPasser.telemetry.addData("Range from Goal:", range);
-        double flyWheelTargetSpeed = getTicksPerSecondForRange(range);
-        TelemetryPasser.telemetry.addData("Flywheel Target Speed:", flyWheelTargetSpeed);
-        flywheelSetVelocity(Range.clip(flyWheelTargetSpeed, -1500, 1500));
+    public void teleOpControlTest(boolean intakeForward, boolean shoot, double intakeBackward) {
+        if (intakeForward) {
+            intake.setPower(1);
+        } else if(intakeBackward > 0.2) {
+            intake.setPower(0.8);
+        } else {
+            intake.setPower(0);
+        }
+        if (shoot) {
+            flyWheel.setVelocity(1500);
+        } else {
+            flyWheel.setVelocity(0);
+        }
     }
 
     public void teleOpControlConfigurableVelocity(double velocity, boolean intakeForward, boolean shoot, double intakeBackward, AllianceSide side, Pose2D position) {

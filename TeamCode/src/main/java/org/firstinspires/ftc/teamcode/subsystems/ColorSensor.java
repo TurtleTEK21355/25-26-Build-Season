@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ArtifactState;
+import org.firstinspires.ftc.teamcode.HSV;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 
 public class ColorSensor {
@@ -19,13 +20,16 @@ public class ColorSensor {
      */
     String colorSensorName;
     NormalizedColorSensor colorSensor;
+
+    /**
+     *
+     * @param gain
+     * @param colorSensor
+     * @param colorSensorName
+     */
     public ColorSensor(float gain, NormalizedColorSensor colorSensor, String colorSensorName) {
         this.colorSensor = colorSensor;
-        if (colorSensorName.isEmpty()) {
-            this.colorSensorName = "unspecified";
-        } else {
-            this.colorSensorName = colorSensorName;
-        }
+        this.colorSensorName = colorSensorName;
         // You can give the sensor a gain value, will be multiplied by the sensor's raw value before the
         // normalized color values are calculated. Color sensors (especially the REV Color Sensor V3)
         // can give very low values (depending on the lighting conditions), which only use a small part
@@ -64,10 +68,11 @@ public class ColorSensor {
         // This returns floats D:
         return hsvValues;
     }
-    public double[] getHSVDoubles() {
+    public HSV getHSVDoubles() {
         // This only exists because I don't want to use floats
+        // Index is in HSV order (Hue is index 0, saturation is index 1, and value is index 2)
         float[] hsvValues = getHSVFloats();
-        return new double[]{(double)hsvValues[0], (double)hsvValues[1], (double)hsvValues[2]};
+        return new HSV(hsvValues[0], hsvValues[1], hsvValues[2]);
     }
     public double getDistance() {
         // Returns distance in millimeters
