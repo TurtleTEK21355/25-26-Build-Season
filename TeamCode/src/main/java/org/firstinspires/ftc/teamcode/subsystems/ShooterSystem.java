@@ -84,18 +84,23 @@ public class ShooterSystem {
         double editedTicksPerSecond = flyWheelTargetSpeed+tpsChange;
         flywheelSetVelocity(Range.clip(editedTicksPerSecond, -1500, 1500));
         TelemetryPasser.telemetry.addData("Edited: ", editedTicksPerSecond);
-        if (shoot && (flywheelGetVelocity() > (editedTicksPerSecond - FLYWHEEL_VELOCITY_TOLERANCE_TPS))) {
+        if (shoot) {
             openGate();
         } else {
             closeGate();
         }
+        if (shoot && intakeForward && (flywheelGetVelocity() > (editedTicksPerSecond - FLYWHEEL_VELOCITY_TOLERANCE_TPS))) {
+            intakeSetPower(0.2);
+        } else {
+            intakeSetPower(0);
+        }
         TelemetryPasser.telemetry.addData("ball ready", ballReady());
-        if (intakeForward) {
+        if (intakeForward && !shoot) {
             intakeSetPower(1);
         }
-        else if (intakeBackward > 0.1) {
+        else if (intakeBackward > 0.1 && !shoot) {
              intakeSetPower(-0.8);
-        } else {
+        } else if (!shoot) {
             intakeSetPower(0);
         }
 
