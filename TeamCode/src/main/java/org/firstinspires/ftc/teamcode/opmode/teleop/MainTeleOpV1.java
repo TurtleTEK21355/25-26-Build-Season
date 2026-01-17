@@ -85,6 +85,9 @@ public class MainTeleOpV1 extends OpMode {
     public void loop() {
         drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
         otosSensor.positionTelemetry();
+        if (gamepad1.y) {
+            otosSensor.setPosition(new Pose2D(0, 0, 0));
+        }
 
         telemetry.addLine("Alliance Side: " + side.name());
         telemetry.addLine("use dpad to change alliance side (default is blue)");
@@ -99,15 +102,15 @@ public class MainTeleOpV1 extends OpMode {
         shooterSystem.teleOpControl(otosSensor.getPosition(), gamepad2.left_bumper, gamepad2.right_bumper, gamepad2.left_trigger, gamepad1.a, gamepad1.b);
 
         if (gamepad1.right_bumper) {
-            partnerPark.control(PartnerPark.State.UP);
+            partnerPark.up();
         }
         else if (gamepad1.left_bumper) {
-            partnerPark.control(PartnerPark.State.DOWN);
+            partnerPark.down();
         }
         else {
-            partnerPark.control(PartnerPark.State.STAY);
+            partnerPark.stay();
         }
-
+        partnerPark.positionTelemetry();
 
         telemetry.update();
 
