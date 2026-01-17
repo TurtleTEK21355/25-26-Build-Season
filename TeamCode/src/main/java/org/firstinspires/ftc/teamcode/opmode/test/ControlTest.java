@@ -97,7 +97,7 @@ public class ControlTest extends OpMode {
 //        if (gamepad2.right_bumper) {
 //            drivetrain.ShootRotationalPID(side);
 //        }
-        partnerPark.manualControl(gamepad1.right_bumper, gamepad1.left_bumper);
+//        partnerPark.manualControl(gamepad1.right_bumper, gamepad1.left_bumper);
 
         //        drivetrain.powerTelemetry();
         telemetry.update();
