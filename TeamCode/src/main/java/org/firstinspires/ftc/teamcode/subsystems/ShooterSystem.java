@@ -90,7 +90,7 @@ public class ShooterSystem {
             closeGate();
         }
         if (shoot && intakeForward && (flywheelGetVelocity() > (editedTicksPerSecond - FLYWHEEL_VELOCITY_TOLERANCE_TPS))) {
-            intakeSetPower(0.2);
+            intakeSetPower(0.5);
         } else {
             intakeSetPower(0);
         }
