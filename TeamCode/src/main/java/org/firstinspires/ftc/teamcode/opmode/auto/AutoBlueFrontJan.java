@@ -32,7 +32,8 @@ public class AutoBlueFrontJan extends ShootAutoOpMode {
 
     double bottomRow = -36;
 
-    private final Pose2D SHOOT_POSITION = new Pose2D(-20,12,45);
+    private final Pose2D SHOOT_POSITION = new Pose2D(-38,44,50);
+    final int GATEWAITTIME = 1500;
 
     @Override
     public void initialize() {
@@ -46,7 +47,7 @@ public class AutoBlueFrontJan extends ShootAutoOpMode {
         //Move Robot Out and Ready Shooter
         addCommand(new SimultaneousCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain))));
         addCommand(new OpenGateCommand(shooterSystem));
-        addCommand(new TimerCommand(1000));
+        addCommand(new TimerCommand(GATEWAITTIME));
 
         //Shoot Artifact
         addCommand(new StartIntakeCommand(shooterSystem));

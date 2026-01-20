@@ -34,7 +34,7 @@ public class AutoRedFrontJan extends ShootAutoOpMode {
 
     double bottomRow = -36;
 
-    private final Pose2D SHOOT_POSITION = new Pose2D(20,12,-45);
+    private final Pose2D SHOOT_POSITION = new Pose2D(38,44,-50);
 
     private SequentialCommand shootAllArtifacts = new SequentialCommand(
             new StartIntakeCommand(shooterSystem),
