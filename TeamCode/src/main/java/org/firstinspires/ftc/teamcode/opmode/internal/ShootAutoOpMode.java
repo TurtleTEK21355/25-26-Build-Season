@@ -40,7 +40,7 @@ public abstract class ShootAutoOpMode extends CommandOpMode{ //the robots name i
     protected double kpTheta = 0.03;
     protected double kiTheta;
     protected double kdTheta;
-    protected double speed = 0.3;
+    protected double speed = 0.5;
 
     public static final String POSITION_BLACKBOARD_KEY = "pos";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";

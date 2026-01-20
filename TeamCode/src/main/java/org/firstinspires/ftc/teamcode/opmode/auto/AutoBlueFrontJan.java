@@ -73,7 +73,7 @@ public class AutoBlueFrontJan extends ShootAutoOpMode {
         addCommand(new StopIntakeCommand(shooterSystem));
 
         //Go Back to Launch Zone
-        addCommand(new SimultaneousCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain))));
+        addCommand(new SimultaneousCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain)),new OpenGateCommand(shooterSystem)));
 
         //Shoot First Artifact
         addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
@@ -102,7 +102,7 @@ public class AutoBlueFrontJan extends ShootAutoOpMode {
         addCommand(new StopIntakeCommand(shooterSystem));
 
         //Go back to Launch Zone
-        addCommand(new SimultaneousCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain))));
+        addCommand(new SimultaneousCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain)), new OpenGateCommand(shooterSystem)));
 
         //Shoot First Artifact
         addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
@@ -131,7 +131,7 @@ public class AutoBlueFrontJan extends ShootAutoOpMode {
         addCommand(new StopIntakeCommand(shooterSystem));
 
         //Go back to Launch Zone
-        addCommand(new SimultaneousCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain))));
+        addCommand(new SimultaneousCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain)), new OpenGateCommand(shooterSystem)));
 
         //Shoot First Artifact
         addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
