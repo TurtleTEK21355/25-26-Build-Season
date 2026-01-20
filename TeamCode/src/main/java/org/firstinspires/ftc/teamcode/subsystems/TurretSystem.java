@@ -7,11 +7,13 @@ import com.qualcomm.robotcore.util.Range;
 public class TurretSystem {
     private FlyWheel flyWheel;
     private Servo hoodServo;
+    private Servo ballPusher;
     private final double HOODANGLETOPOSITION = 1; //placeholder value
 
-    public TurretSystem(FlyWheel flyWheel, Servo hoodServo) {
+    public TurretSystem(FlyWheel flyWheel, Servo hoodServo, Servo ballPusher) {
         this.flyWheel = flyWheel;
         this.hoodServo = hoodServo;
+        this.ballPusher = ballPusher;
     }
 
     void setFlyWheelVelocity(double velocity) {

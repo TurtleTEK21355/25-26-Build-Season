@@ -1,29 +1,28 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.ArtifactState;
-import org.firstinspires.ftc.teamcode.Motif;
+import org.firstinspires.ftc.teamcode.ColorSensorPosition;
 
 public class CarouselSystem {
 
     private Servo carouselServo;
-    private ColorSensor colorSensor1;
-    private ColorSensor colorSensor2;
-    private ColorSensor colorSensor3;
-    private Servo thingy;
-    private final double COLOR1POSITION = -1; //placeholder
-    private final double COLOR2POSITION = 0; //placeholder
-    private final double COLOR3POSITION = 1; //placeholder
+    private ColorSensorArray colorSensorArray;
+    private final double SHOOT_SENSOR_POSITION = -1; //placeholder
+    private final double LEFT_SENSOR_POSITION = 0; //placeholder
+    private final double RIGHT_SENSOR_POSITION = 1; //placeholder
     private final double SHOOTERPOSITION = 0; // placeholder
 
 
-    public CarouselSystem(Servo carouselServo, ColorSensor colorSensor1, ColorSensor colorSensor2, ColorSensor colorSensor3, Servo thingy) {
+    public CarouselSystem(Servo carouselServo,
+                          NormalizedColorSensor colorSensorShoot,
+                          NormalizedColorSensor colorSensorLeft,
+                          NormalizedColorSensor colorSensorRight,
+                          Servo thingy) {
         this.carouselServo = carouselServo;
-        this.colorSensor1 = colorSensor1;
-        this.colorSensor2 = colorSensor2;
-        this.colorSensor3 = colorSensor3;
-        this.thingy = thingy;
+        colorSensorArray = new ColorSensorArray(colorSensorShoot, colorSensorLeft, colorSensorRight);
     }
     void setPosition(double position) {
         carouselServo.setPosition(position);
@@ -33,12 +32,12 @@ public class CarouselSystem {
         setPosition(carouselServo.getPosition()+distanceFromNeeded);
     }
     void setArtifact(ArtifactState state) {
-        if (colorSensor1.getArtifactState() == state) {
-            setPositionRelative(SHOOTERPOSITION, COLOR1POSITION);
-        } else if(colorSensor2.getArtifactState() == state) {
-            setPositionRelative(SHOOTERPOSITION, COLOR2POSITION);
-        } else if(colorSensor3.getArtifactState() == state) {
-            setPositionRelative(SHOOTERPOSITION, COLOR3POSITION);
+        if (colorSensorArray.getArtifactState(ColorSensorPosition.SHOOT) == state) {
+            setPositionRelative(SHOOTERPOSITION, SHOOT_SENSOR_POSITION);
+        } else if(colorSensorArray.getArtifactState(ColorSensorPosition.LEFT) == state) {
+            setPositionRelative(SHOOTERPOSITION, LEFT_SENSOR_POSITION);
+        } else if(colorSensorArray.getArtifactState(ColorSensorPosition.LEFT) == state) {
+            setPositionRelative(SHOOTERPOSITION, RIGHT_SENSOR_POSITION);
         }
     }
 }
