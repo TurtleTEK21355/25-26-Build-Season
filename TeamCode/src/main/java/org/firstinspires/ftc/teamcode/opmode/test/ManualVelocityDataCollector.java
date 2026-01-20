@@ -90,6 +90,7 @@ public class ManualVelocityDataCollector extends OpMode {
         } else {
             velocity = 1200;
         }
+        telemetry.addData("Position", drivetrain.getPosition());
         shooterSystem.teleOpControlConfigurableVelocity(velocity, gamepad1.left_bumper, gamepad1.right_bumper, gamepad1.left_trigger, side, otosSensor.getPosition());
         telemetry.update();
 
