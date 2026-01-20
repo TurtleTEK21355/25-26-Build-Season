@@ -34,8 +34,8 @@ public class ColorSensorArray {
         artifacts.put(ColorSensorPosition.RIGHT, colorSensors.get(ColorSensorPosition.RIGHT).getArtifactState());
     }
 
-    public ArtifactState getArtifactState(int index) {
-        return artifacts.get(index);
+    public ArtifactState getArtifactState(ColorSensorPosition sensorPosition) {
+        return artifacts.get(sensorPosition);
     }
 
 //    public Motif getIsMotif() {

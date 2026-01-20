@@ -12,8 +12,6 @@ public class ShooterSystem {
     public static final int MAX_RANGE_INCHES = 100;
     public static final int MAX_VELOCITY_RPM = 1500;
     private FlyWheel flyWheel;
-    private TurretSystem turretSystem;
-    private CarouselSystem carouselSystem;
     private GateSystem gateSystem;
     private Intake intake;
     private Motif motif;
@@ -34,12 +32,6 @@ public class ShooterSystem {
         this.flyWheel = flyWheel;
         this.intake = intake;
         this.gateSystem = gateSystem;
-        this.side = side;
-    }
-    public ShooterSystem(TurretSystem turretSystem, CarouselSystem carouselSystem, Intake intake, AllianceSide side){
-        this.turretSystem = turretSystem;
-        this.intake = intake;
-        this.carouselSystem = carouselSystem;
         this.side = side;
     }
 
@@ -105,6 +97,7 @@ public class ShooterSystem {
         }
 
     }
+
     public void teleOpControlTest(boolean intakeForward, boolean shoot, double intakeBackward) {
         if (intakeForward) {
             intake.setPower(1);
@@ -144,7 +137,6 @@ public class ShooterSystem {
     }
 
     private double getTicksPerSecondForRange(double range) {
-
         return (
             REGRESSION_VARIABLE *
                     Math.sqrt(
@@ -153,6 +145,7 @@ public class ShooterSystem {
                     ((2*Math.cos(THETA)) * (HEIGHT-(range*Math.tan(THETA))))
                     )
         );
+
     }
 
     public Motif getMotif() {
@@ -162,4 +155,5 @@ public class ShooterSystem {
     public void setMotif(Motif motif) {
         this.motif = motif;
     }
+
 }
