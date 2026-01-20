@@ -65,6 +65,10 @@ public class Pose2D {
 
     }
 
+    public double distanceTo(Pose2D other) {
+        return Math.sqrt(Math.pow(other.x - x, 2) + Math.pow(other.y - y, 2));
+    }
+
     public SparkFunOTOS.Pose2D toSparkFunPose2D(){
         return new SparkFunOTOS.Pose2D(x, y, h);
     }
