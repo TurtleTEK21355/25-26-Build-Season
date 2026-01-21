@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
-@TeleOp(name="ManualVelocityDataCollector", group="Iterative OpModes")
+@TeleOp(name="ManualVelocityDataCollector", group = "test")
 public class ManualVelocityDataCollector extends OpMode {
 
     //blackboard variables

@@ -24,7 +24,7 @@ import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.PartnerPark;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
-@TeleOp(name="Control Test", group="Iterative OpModes")
+@TeleOp(name="Control Test", group = "test")
 public class ControlTest extends OpMode {
 
     //blackboard variables

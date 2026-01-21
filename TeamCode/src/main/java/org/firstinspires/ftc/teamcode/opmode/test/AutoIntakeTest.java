@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.commands.StopIntakeCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
 
-@Autonomous(name="Auto Intake Test", group="Autonomous")
+@Autonomous(name="Auto Intake Test", group = "test")
 public class AutoIntakeTest extends ShootAutoOpMode {
     private final AllianceSide SIDE = AllianceSide.BLUE;
 

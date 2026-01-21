@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
 import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 
-@TeleOp(name = "Standard Test", group="Linear OpModes")
+@TeleOp(name = "Standard Test", group = "test")
 public class StandardTest extends LinearOpMode {
     HardwareNames hardwareNames = new HardwareNames();
     @Override
