@@ -13,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
 import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 
-@TeleOp(name = "Shooter Test", group="Linear OpModes")
+@TeleOp(name = "Shooter Test", group = "test")
 public class ShooterTest extends LinearOpMode {
 
     @Override

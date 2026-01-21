@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 
 public class Pose2D {
@@ -39,10 +40,10 @@ public class Pose2D {
 
     }
 
-    public Pose2D(AprilTagPoseFtc ftcPose) {
-        this.x = ftcPose.x;
-        this.y = ftcPose.y;
-        this.h = ftcPose.yaw;
+    public Pose2D(Pose3D pose3D) {
+        this.x = pose3D.getPosition().x;
+        this.y = pose3D.getPosition().y;
+        this.h = pose3D.getOrientation().getYaw();
     }
 
     public Pose2D(double r, double theta){
@@ -63,6 +64,10 @@ public class Pose2D {
     public Pose2D subtract(Pose2D other){
         return new Pose2D(this.x - other.x, this.y - other.y, this.h - other.h);
 
+    }
+
+    public double distanceTo(Pose2D other) {
+        return Math.sqrt(Math.pow(other.x - x, 2) + Math.pow(other.y - y, 2));
     }
 
     public SparkFunOTOS.Pose2D toSparkFunPose2D(){

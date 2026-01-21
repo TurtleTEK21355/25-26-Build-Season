@@ -5,6 +5,7 @@ import android.util.Size;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
 import org.firstinspires.ftc.teamcode.AllianceSide;
 import org.firstinspires.ftc.teamcode.Motif;
+import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -46,7 +47,7 @@ public class AprilTagCamera {
         // Decimation = 3 ..  Detect 2" Tag from 4  feet away at 30 Frames Per Second (default)
         // Decimation = 3 ..  Detect 5" Tag from 10 feet away at 30 Frames Per Second (default)
         // Note: Decimation can be changed on-the-fly to adapt during a match.
-        aprilTag.setDecimation(3);
+        aprilTag.setDecimation(1);
 
         // Create the vision portal by using a builder.
         VisionPortal.Builder builder = new VisionPortal.Builder();
@@ -143,14 +144,26 @@ public class AprilTagCamera {
     }
 
     public Pose2D getPositionFromGoalAprilTag(Pose2D currentPosition) { //gotta pass in the current because otherwise it will reset the position every time it doesn't detect a goal
+        double minDistanceInches = 5;
         AprilTagDetection blueGoal = getDetection(AllianceSide.BLUE.getGoalID());
         AprilTagDetection redGoal = getDetection(AllianceSide.RED.getGoalID());
         if (blueGoal != null) {
-            Pose2D blueGoalRelativePosition = new Pose2D(blueGoal.ftcPose);
-            return AllianceSide.BLUE.getGoalPosition().subtract(blueGoalRelativePosition);
-        } else if (redGoal != null) {
-            Pose2D redGoalRelativePosition = new Pose2D(redGoal.ftcPose);
-            return AllianceSide.RED.getGoalPosition().subtract(redGoalRelativePosition);
+            Pose2D blueGoalRelativePosition = new Pose2D(blueGoal.robotPose);
+            TelemetryPasser.telemetry.addData("blueGoalRelativePos", blueGoalRelativePosition);
+            TelemetryPasser.telemetry.addData("distancetoblue", currentPosition.distanceTo(blueGoalRelativePosition));
+            Pose2D positionOnField = AllianceSide.BLUE.getGoalPosition().subtract(blueGoalRelativePosition);
+            if (currentPosition.distanceTo(positionOnField) >= minDistanceInches) {
+                return positionOnField;
+            }
+        }
+        if (redGoal != null) {
+            Pose2D redGoalRelativePosition = new Pose2D(redGoal.robotPose);
+            TelemetryPasser.telemetry.addData("redGoalRelativePos", redGoalRelativePosition);
+            TelemetryPasser.telemetry.addData("distancetored", currentPosition.distanceTo(redGoalRelativePosition));
+            Pose2D positionOnField = AllianceSide.RED.getGoalPosition().subtract(redGoalRelativePosition);
+            if (currentPosition.distanceTo(positionOnField) >= minDistanceInches) {
+                return positionOnField;
+            }
         }
         return currentPosition;
     }

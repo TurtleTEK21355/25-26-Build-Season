@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
 @Autonomous(name="AutoBlueFrontJan", group="Autonomous")
 public class AutoBlueFrontJan extends ShootAutoOpMode {
     private final AllianceSide SIDE = AllianceSide.BLUE;
-    private final Pose2D STARTING_POSITION = new Pose2D(-39, 50, 45);
+    private final Pose2D STARTING_POSITION = new Pose2D(-52.86852, 50.99152, 54);
 
     int shootWaitTime = 300;
     int lastShootWaitTime = 400;
@@ -32,7 +32,8 @@ public class AutoBlueFrontJan extends ShootAutoOpMode {
 
     double bottomRow = -36;
 
-    private final Pose2D SHOOT_POSITION = new Pose2D(-20,12,45);
+    private final Pose2D SHOOT_POSITION = new Pose2D(-20,12,54);
+    final int GATEWAITTIME = 1500;
 
     @Override
     public void initialize() {
@@ -46,7 +47,7 @@ public class AutoBlueFrontJan extends ShootAutoOpMode {
         //Move Robot Out and Ready Shooter
         addCommand(new SimultaneousCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain))));
         addCommand(new OpenGateCommand(shooterSystem));
-        addCommand(new TimerCommand(1000));
+        addCommand(new TimerCommand(GATEWAITTIME));
 
         //Shoot Artifact
         addCommand(new StartIntakeCommand(shooterSystem));
