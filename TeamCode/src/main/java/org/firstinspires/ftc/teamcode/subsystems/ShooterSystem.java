@@ -18,7 +18,7 @@ public class ShooterSystem {
     private Intake intake;
     private Motif motif;
     private AllianceSide side;
-    private final double[] RANGE_TO_VELOCITY = new double[]{1000,1000,1000,1000,1158,1191,1235,1283,1332,1381,1431,1479};
+    private final double[] RANGE_TO_VELOCITY = new double[]{1000,1050,1100,1150,1180,1213,1258,1307,1357,1407};
     private final double GRAVITY = 386.09; //Inches per second squared
     private final double HEIGHT = 48; //inches tall + ball diameter
     private final double THETA = 1.13446401; //Ramp Angle in Radians
