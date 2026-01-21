@@ -32,7 +32,7 @@ public class AutoBlueBackJan extends ShootAutoOpMode {
 
     double bottomRow = -36;
 
-    private final Pose2D SHOOT_POSITION = new Pose2D(-15,-51,0);
+    private final Pose2D SHOOT_POSITION = new Pose2D(-20,12,54);
 
     @Override
     public void initialize() {
