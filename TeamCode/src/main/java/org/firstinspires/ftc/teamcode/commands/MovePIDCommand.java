@@ -29,7 +29,7 @@ public class MovePIDCommand extends Command {
     @Override
     public void loop() {
         position = drivetrain.getPosition();
-        drivetrain.fcControl(yPID.calculate(position.y), xPID.calculate(position.x), hPID.calculate(position.h));
+        drivetrain.fcControl(yPID.calculate(position.y), xPID.calculate(position.x), hPID.calculate(position.h), 0);
         drivetrain.PIDTelemetry(position, target, xPID.atTarget(position.x), yPID.atTarget(position.y), hPID.atTarget(position.h));
 
         TelemetryPasser.telemetry.addLine()

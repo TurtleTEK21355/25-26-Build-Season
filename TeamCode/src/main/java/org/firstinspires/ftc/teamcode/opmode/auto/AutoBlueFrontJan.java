@@ -17,13 +17,13 @@ import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
 @Autonomous(name="AutoBlueFrontJan", group="Autonomous")
 public class AutoBlueFrontJan extends ShootAutoOpMode {
     private final AllianceSide SIDE = AllianceSide.BLUE;
-    private final Pose2D STARTING_POSITION = new Pose2D(-52.86852, 50.99152, 54);
+    private final Pose2D STARTING_POSITION = new Pose2D(-52.86852, 50.99152, 36);
 
     int shootWaitTime = 300;
     int lastShootWaitTime = 400;
     int flyWheelVelocity = 1150;
     //The column the robot will travel to intake.
-    double intakeColumn = -46;
+    double intakeColumn = -49;
     //The column the robot will move vertically on the field.
     double moveColumn = -20;
     double topRow = 12;
@@ -32,7 +32,7 @@ public class AutoBlueFrontJan extends ShootAutoOpMode {
 
     double bottomRow = -36;
 
-    private final Pose2D SHOOT_POSITION = new Pose2D(-20,12,54);
+    private final Pose2D SHOOT_POSITION = new Pose2D(-20,12,36);
     final int GATEWAITTIME = 1500;
 
     @Override

@@ -83,12 +83,7 @@ public class MainTeleOpV1 extends OpMode {
 
     @Override
     public void loop() {
-        if(side==AllianceSide.BLUE) {
-            drivetrain.fcControl(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
-        } else {
-            drivetrain.fcControl(-gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
-
-        }
+        drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, side.getForwardDirection());
         otosSensor.positionTelemetry();
         if (gamepad1.y) {
             otosSensor.resetPosition();

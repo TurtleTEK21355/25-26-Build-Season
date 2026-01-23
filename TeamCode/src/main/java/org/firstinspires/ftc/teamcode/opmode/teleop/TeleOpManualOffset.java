@@ -65,9 +65,9 @@ public class TeleOpManualOffset extends OpMode {
     @Override
     public void loop() {
         if (blue) {
-            drivetrain.fcControl(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+            drivetrain.fcControl(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x, 0);
         } else {
-            drivetrain.fcControl(-gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
+            drivetrain.fcControl(-gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x, 0);
         }
         if (gamepad1.back){
             otosSensor.resetPosition();
