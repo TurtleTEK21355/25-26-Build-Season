@@ -32,7 +32,7 @@ public class AutoBlueFrontJan extends ShootAutoOpMode {
 
     double bottomRow = -36;
 
-    private final Pose2D SHOOT_POSITION = new Pose2D(-20,12,54);
+    private final Pose2D SHOOT_POSITION = new Pose2D(-20,12,36);
     final int GATEWAITTIME = 1500;
 
     @Override
