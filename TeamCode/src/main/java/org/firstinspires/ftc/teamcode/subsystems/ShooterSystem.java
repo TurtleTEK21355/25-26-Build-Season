@@ -16,9 +16,9 @@ public class ShooterSystem {
     private Intake intake;
     private Motif motif;
     private AllianceSide side;
-    private final double[] RANGE_TO_VELOCITY = new double[]{1000,1050,1100,1150,1180,1213,1258,1307,1357,1407};
+    private final double[] RANGE_TO_VELOCITY = new double[]{1000,1050,1100,1150,1185,1218,1263,1313,1363,1414};
     private final double GRAVITY = 386.09; //Inches per second squared
-    private final double HEIGHT = 48; //inches tall + ball diameter
+    private final double HEIGHT = 40; //inches tall + ball diameter
     private final double THETA = 1.13446401; //Ramp Angle in Radians
     private final double REGRESSION_VARIABLE = 5.43557;
     private final double MAX_RPM = 3214;
@@ -132,7 +132,7 @@ public class ShooterSystem {
     }
 
     private double getDistanceFromGoal(Pose2D position) {
-            return Math.sqrt(Math.pow(position.x - side.getGoalPosition().x, 2) + Math.pow(position.y - side.getGoalPosition().y, 2));
+            return Math.hypot((position.x - side.getGoalPosition().x), (position.y - side.getGoalPosition().y));
 
     }
 

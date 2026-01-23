@@ -91,9 +91,10 @@ public class MainTeleOpV1 extends OpMode {
         }
         otosSensor.positionTelemetry();
         if (gamepad1.y) {
-            otosSensor.setPosition(new Pose2D(0, 0, 0));
+            otosSensor.resetPosition();
         }
 
+        telemetry.addData("Starting Position", startingPosition);
         telemetry.addLine("Alliance Side: " + side.name());
         telemetry.addLine("use dpad to change alliance side (default is blue)");
         telemetry.addLine("Alliance side blue = right dpad");
