@@ -19,9 +19,6 @@ public class Drivetrain {
     private PIDConstants pidConstants;
     private PIDConstants thetaPIDConstants;
     private final Pose2D TOLERANCE = new Pose2D(2, 2, 2.5);
-    private final Pose2D BLUE = new Pose2D(56.4, 60, 45);
-    private final Pose2D RED = new Pose2D(-56.4, 60, 45);
-
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
         this.frontLeftMotor = frontLeft;
@@ -56,11 +53,11 @@ public class Drivetrain {
 
     }
 
-    public void fcControl(double y, double x, double h) {
+    public void fcControl(double y, double x, double h, int forwardDirection) {
         double r = Math.hypot(y, x);
         double theta = Math.atan2(y, x);
 
-        double correctedTheta = theta - Math.toRadians(otosSensor.getPosition().h);
+        double correctedTheta = theta - Math.toRadians(otosSensor.getPosition().h + forwardDirection);
 
         double correctedY = r * Math.sin(correctedTheta);
         double correctedX = r * Math.cos(correctedTheta);
@@ -123,7 +120,7 @@ public class Drivetrain {
         PIDControllerHeading hPID = new PIDControllerHeading(getThetaPIDConstants(), target, getTolerance().h, 0.5);
         while(!hPID.atTarget(position.h)) {
             position = getPosition();
-            fcControl(0, 0, hPID.calculate(position.h));
+            fcControl(0, 0, hPID.calculate(position.h), 0);
             TelemetryPasser.telemetry.addData("Shoot Rotation: ", hPID.atTarget(position.h));
         }
     }

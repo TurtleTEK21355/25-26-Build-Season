@@ -81,7 +81,7 @@ public class ControlTest extends OpMode {
 
     @Override
     public void loop() {
-        drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, side.getForwardDirection());
 
         telemetry.addLine("Alliance Side: " + side.name());
         telemetry.addLine("use dpad to change alliance side (default is blue)");

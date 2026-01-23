@@ -20,9 +20,10 @@ public abstract class CommandOpMode extends OpMode {
     public void loop() {
         commandScheduler.loop();
 
-        if (!commandScheduler.isCompleted()) {
-            stop();
+        if (commandScheduler.isCompleted()) {
+            requestOpModeStop();
         }
+
     }
 
     @Override

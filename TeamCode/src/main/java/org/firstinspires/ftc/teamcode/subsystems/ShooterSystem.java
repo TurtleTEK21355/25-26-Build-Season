@@ -52,8 +52,8 @@ public class ShooterSystem {
     }
     public boolean ballReady() {return gateSystem.ballReady();}
 
-    public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean add, boolean minus) {
-        double range = getDistanceFromGoal(position);
+    public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean tweakUp, boolean tweakDown) {
+        double range = getDistanceFromGoal(position, side);
         TelemetryPasser.telemetry.addData("Range from Goal:", range);
         double flyWheelTargetSpeed;
         if (range <= 0) {
@@ -66,10 +66,10 @@ public class ShooterSystem {
         }
         TelemetryPasser.telemetry.addData("Calculated Ticks Per second:", flyWheelTargetSpeed);
 
-        if (add && velocityChangeTimer.milliseconds()>250) {
+        if (tweakUp && velocityChangeTimer.milliseconds()>250) {
             tpsChange += 10;
         }
-        else if (minus && velocityChangeTimer.milliseconds()>250) {
+        else if (tweakDown && velocityChangeTimer.milliseconds()>250) {
             tpsChange -= 10;
         }
         //        double editedTicksPerSecond = Math.sqrt(flyWheelTargetSpeed) * 3.5;
@@ -127,12 +127,12 @@ public class ShooterSystem {
             gateSystem.closeGate();}
 
         TelemetryPasser.telemetry.addData("FlyWheel Velocity in ticks/s", flyWheel.getVelocity());
-        TelemetryPasser.telemetry.addData("Range", getDistanceFromGoal(position));
+        TelemetryPasser.telemetry.addData("Range", getDistanceFromGoal(position, side));
         TelemetryPasser.telemetry.addData("shoot", ballReady());
     }
 
-    private double getDistanceFromGoal(Pose2D position) {
-            return Math.sqrt(Math.pow(position.x - side.getGoalPosition().x, 2) + Math.pow(position.y - side.getGoalPosition().y, 2));
+    private double getDistanceFromGoal(Pose2D position, AllianceSide side) {
+            return Math.abs(Math.hypot(side.getGoalPosition().x - position.x, side.getGoalPosition().y - position.y));
 
     }
 
