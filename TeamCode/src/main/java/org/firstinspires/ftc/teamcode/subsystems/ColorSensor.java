@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.ArtifactState;
-import org.firstinspires.ftc.teamcode.HSV;
+import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
+import org.firstinspires.ftc.teamcode.physicaldata.HSV;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 
 public class ColorSensor {
@@ -56,31 +56,50 @@ public class ColorSensor {
         NormalizedRGBA colors = getColorsFloats();
         return new double[]{(double)colors.red, (double)colors.green, (double)colors.blue, (double)colors.alpha};
     }
-    public float[] getHSVFloats(){
+
+    /**
+     *
+     * @param telemetry
+     * @return HSV (float array)
+     */
+    public float[] getHSVFloats(boolean telemetry){
         // just returns HSV as a list in HSV order
         final float[] hsvValues = new float[3];
         Color.colorToHSV((getColorsFloats()).toColor(), hsvValues);
-        TelemetryPasser.telemetry.addLine()
-            .addData("Hue ("+colorSensorName+')', "%.3f", hsvValues[0])
-            .addData("Saturation ("+colorSensorName+')', "%.3f", hsvValues[1])
-            .addData("Value ("+colorSensorName+')', "%.3f", hsvValues[2]);
-
-        // This returns floats D:
+        if (telemetry) {
+            TelemetryPasser.telemetry.addLine()
+                    .addData("Hue (" + colorSensorName + ')', "%.3f", hsvValues[0])
+                    .addData("Saturation (" + colorSensorName + ')', "%.3f", hsvValues[1])
+                    .addData("Value (" + colorSensorName + ')', "%.3f", hsvValues[2]);
+        }
         return hsvValues;
     }
-    public HSV getHSVDoubles() {
-        // This only exists because I don't want to use floats
+
+    /**
+     *
+     * @param telemetry
+     * @return HSV object
+     */
+    public HSV getHSVDoubles(boolean telemetry) {
         // Index is in HSV order (Hue is index 0, saturation is index 1, and value is index 2)
-        float[] hsvValues = getHSVFloats();
+        float[] hsvValues = getHSVFloats(telemetry);
         return new HSV(hsvValues[0], hsvValues[1], hsvValues[2]);
     }
-    public double getDistance() {
+
+    /**
+     *
+     * @param telemetry
+     * @return distance (mm)
+     */
+    public double getDistance(boolean telemetry) {
         // Returns distance in millimeters
         double distance = ((DistanceSensor) colorSensor).getDistance(DistanceUnit.MM);
-        TelemetryPasser.telemetry.addData("Color Sensor Distance (mm) ("+colorSensorName+')', "%.3f", distance);
+        if (telemetry) {
+            TelemetryPasser.telemetry.addData("Color Sensor Distance (mm) (" + colorSensorName + ')', "%.3f", distance);
+        }
         return distance;
     }
-    public ArtifactState getArtifactState() {
+    public ArtifactState getArtifactState(boolean telemetry) {
         NormalizedRGBA colors = colorSensor.getNormalizedColors();
         double red = colors.red;
         double green = colors.green;
@@ -90,10 +109,19 @@ public class ColorSensor {
         green /= greatest;
         blue /= greatest;
         if (green == 1 && blue > 0.6 && red < 0.4) {
+            if (telemetry) {
+                TelemetryPasser.telemetry.addData(colorSensorName + "'s artifact state: ", "Green");
+            }
             return ArtifactState.GREEN;
         } else if (red > 0.4 && blue == 1 && green < 0.6) {
+            if (telemetry) {
+                TelemetryPasser.telemetry.addData(colorSensorName + "'s artifact state: ", "Purple");
+            }
             return ArtifactState.PURPLE;
         } else {
+            if (telemetry) {
+                TelemetryPasser.telemetry.addData(colorSensorName + "'s artifact state: ", "Empty");
+            }
             return ArtifactState.EMPTY;
         }
     }

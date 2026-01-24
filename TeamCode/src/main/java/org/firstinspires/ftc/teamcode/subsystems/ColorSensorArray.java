@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 
-import org.firstinspires.ftc.teamcode.ArtifactState;
-import org.firstinspires.ftc.teamcode.ColorSensorPosition;
+import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
+import org.firstinspires.ftc.teamcode.physicaldata.ColorSensorPosition;
 
 import java.util.HashMap;
 
@@ -29,9 +29,9 @@ public class ColorSensorArray {
     }
 
     public void updateBalls() {
-        artifacts.put(ColorSensorPosition.SHOOT, colorSensors.get(ColorSensorPosition.SHOOT).getArtifactState());
-        artifacts.put(ColorSensorPosition.LEFT, colorSensors.get(ColorSensorPosition.LEFT).getArtifactState());
-        artifacts.put(ColorSensorPosition.RIGHT, colorSensors.get(ColorSensorPosition.RIGHT).getArtifactState());
+        artifacts.put(ColorSensorPosition.SHOOT, colorSensors.get(ColorSensorPosition.SHOOT).getArtifactState(true));
+        artifacts.put(ColorSensorPosition.LEFT, colorSensors.get(ColorSensorPosition.LEFT).getArtifactState(true));
+        artifacts.put(ColorSensorPosition.RIGHT, colorSensors.get(ColorSensorPosition.RIGHT).getArtifactState(true));
     }
 
     public ArtifactState getArtifactState(ColorSensorPosition sensorPosition) {

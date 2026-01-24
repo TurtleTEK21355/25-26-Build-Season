@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import org.firstinspires.ftc.teamcode.AllianceSide;
-import org.firstinspires.ftc.teamcode.Motif;
+import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
+import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 
 public class ShooterSystemX {
     private TurretSystem turretSystem;
