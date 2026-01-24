@@ -5,12 +5,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.commands.shoot.CloseGateCommand;
 import org.firstinspires.ftc.teamcode.commands.shoot.OpenGateCommand;
-import org.firstinspires.ftc.teamcode.commands.MovePIDHoldTimeCommand;
-import org.firstinspires.ftc.teamcode.commands.SimultaneousAndCommand;
-import org.firstinspires.ftc.teamcode.commands.SetFlywheelCommand;
-import org.firstinspires.ftc.teamcode.commands.StartIntakeCommand;
-import org.firstinspires.ftc.teamcode.commands.StopIntakeCommand;
-import org.firstinspires.ftc.teamcode.commands.TimerCommand;
+import org.firstinspires.ftc.teamcode.commands.shared.MovePIDHoldTimeCommand;
+import org.firstinspires.ftc.teamcode.commands.logic.SimultaneousAndCommand;
+import org.firstinspires.ftc.teamcode.commands.shoot.SetFlywheelCommand;
+import org.firstinspires.ftc.teamcode.commands.shoot.StartIntakeCommand;
+import org.firstinspires.ftc.teamcode.commands.shoot.StopIntakeCommand;
+import org.firstinspires.ftc.teamcode.commands.logic.TimerCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
 
