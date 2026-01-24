@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.opmode.shoot.auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
-import org.firstinspires.ftc.teamcode.commands.MovePIDHoldTimeCommand;
+import org.firstinspires.ftc.teamcode.commands.shared.MovePIDHoldTimeCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
 

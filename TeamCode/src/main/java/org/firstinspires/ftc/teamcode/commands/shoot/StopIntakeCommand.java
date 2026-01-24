@@ -1,19 +1,19 @@
-package org.firstinspires.ftc.teamcode.commands;
+package org.firstinspires.ftc.teamcode.commands.shoot;
 
 import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
-public class StartIntakeCommand extends Command {
+public class StopIntakeCommand extends Command {
     private ShooterSystem shooterSystem;
 
-    public StartIntakeCommand(ShooterSystem shooterSystem) {
+    public StopIntakeCommand(ShooterSystem shooterSystem) {
         this.shooterSystem = shooterSystem;
 
     }
 
     @Override
     public void init() {
-        shooterSystem.intakeSetPower(0.8);
+        shooterSystem.intakeSetPower(0);
     }
 
     @Override

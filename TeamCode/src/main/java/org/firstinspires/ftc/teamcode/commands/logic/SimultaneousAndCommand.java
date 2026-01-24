@@ -1,15 +1,15 @@
-package org.firstinspires.ftc.teamcode.commands;
+package org.firstinspires.ftc.teamcode.commands.logic;
 
 import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.lib.command.CommandList;
 
 import java.util.Arrays;
 
-public class SimultaneousOrCommand extends Command {
+public class SimultaneousAndCommand extends Command {
 
     private final CommandList commandList;
 
-    public SimultaneousOrCommand(Command... commands) {
+    public SimultaneousAndCommand(Command... commands) {
         commandList = new CommandList();
         commandList.addAll(Arrays.asList(commands));
     }
@@ -31,11 +31,11 @@ public class SimultaneousOrCommand extends Command {
     @Override
     public boolean isCompleted() {
         for (Command command : commandList) {
-            if (command.isCompleted()) {
-                return true;
+            if (!command.isCompleted()) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
 }
