@@ -153,7 +153,7 @@ public class AprilTagCamera {
             TelemetryPasser.telemetry.addData("distancetoblue", currentPosition.distanceTo(blueGoalRelativePosition));
             Pose2D positionOnField = AllianceSide.BLUE.getGoalPosition().subtract(blueGoalRelativePosition);
             if (currentPosition.distanceTo(positionOnField) >= minDistanceInches) {
-                return positionOnField;
+                return new Pose2D(positionOnField.x, positionOnField.y, currentPosition.h);
             }
         }
         if (redGoal != null) {
@@ -162,7 +162,7 @@ public class AprilTagCamera {
             TelemetryPasser.telemetry.addData("distancetored", currentPosition.distanceTo(redGoalRelativePosition));
             Pose2D positionOnField = AllianceSide.RED.getGoalPosition().subtract(redGoalRelativePosition);
             if (currentPosition.distanceTo(positionOnField) >= minDistanceInches) {
-                return positionOnField;
+                return new Pose2D(positionOnField.x, positionOnField.y, currentPosition.h);
             }
         }
         return currentPosition;
