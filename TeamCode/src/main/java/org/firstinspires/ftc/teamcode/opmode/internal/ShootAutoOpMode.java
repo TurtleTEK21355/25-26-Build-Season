@@ -15,17 +15,17 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.menu.DoubleMenuItem;
 import org.firstinspires.ftc.teamcode.lib.menu.Menu;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
-import org.firstinspires.ftc.teamcode.subsystems.AprilTagCamera;
-import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
-import org.firstinspires.ftc.teamcode.subsystems.FlyWheel;
-import org.firstinspires.ftc.teamcode.subsystems.GateSystem;
-import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
-import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
-import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
+import org.firstinspires.ftc.teamcode.subsystems.shared.sensor.AprilTagCamera;
+import org.firstinspires.ftc.teamcode.subsystems.shared.actuator.Drivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.shared.actuator.FlyWheel;
+import org.firstinspires.ftc.teamcode.subsystems.shoot.GateSystem;
+import org.firstinspires.ftc.teamcode.subsystems.shoot.ShootHardwareNames;
+import org.firstinspires.ftc.teamcode.subsystems.shared.actuator.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.shared.sensor.OTOSSensor;
+import org.firstinspires.ftc.teamcode.subsystems.shoot.ShooterSystem;
 
 public abstract class ShootAutoOpMode extends CommandOpMode{ //the robots name is shoot
-    protected HardwareNames hardwareNames = new HardwareNames();
+    protected ShootHardwareNames hardwareNames = new ShootHardwareNames();
     protected Drivetrain drivetrain;
     protected OTOSSensor otosSensor;
     protected AprilTagCamera aprilTagCamera;
@@ -49,21 +49,21 @@ public abstract class ShootAutoOpMode extends CommandOpMode{ //the robots name i
     public void initialize() {
         telemetry.addData("Starting Position", startingPosition.x + ", " +  startingPosition.y + ", " + startingPosition.h);
         TelemetryPasser.telemetry = telemetry;
-        aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(HardwareNames.Name.APRIL_TAG_CAMERA)));
-        otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
+        aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(ShootHardwareNames.Name.APRIL_TAG_CAMERA)));
+        otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(ShootHardwareNames.Name.ODOMETRY_SENSOR)));
         otosSensor.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
         drivetrain = new Drivetrain(
-                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),
-                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR)),
-                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_LEFT_MOTOR)),
-                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_RIGHT_MOTOR)),
+                hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.FRONT_LEFT_MOTOR)),
+                hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.FRONT_RIGHT_MOTOR)),
+                hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.BACK_LEFT_MOTOR)),
+                hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.BACK_RIGHT_MOTOR)),
                 otosSensor);
         shooterSystem = new ShooterSystem(
-                new FlyWheel(hardwareMap.get(DcMotorEx.class, hardwareNames.get(HardwareNames.Name.SHOOTER_FLYWHEEL))),
+                new FlyWheel(hardwareMap.get(DcMotorEx.class, hardwareNames.get(ShootHardwareNames.Name.SHOOTER_FLYWHEEL))),
                 new GateSystem(
-                        hardwareMap.get(Servo.class, hardwareNames.get(HardwareNames.Name.SHOOTER_GATE)),
-                        hardwareMap.get(Ada2167BreakBeam.class, hardwareNames.get(HardwareNames.Name.BALL_READY_SENSOR))),
-                new Intake(hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.INTAKE_MOTOR))), side);
+                        hardwareMap.get(Servo.class, hardwareNames.get(ShootHardwareNames.Name.SHOOTER_GATE)),
+                        hardwareMap.get(Ada2167BreakBeam.class, hardwareNames.get(ShootHardwareNames.Name.BALL_READY_SENSOR))),
+                new Intake(hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.INTAKE_MOTOR))), side);
         //configureVariables();
         drivetrain.configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
 

@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
-import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.shared.actuator.Drivetrain;
 
 public class MovePIDHoldTimeCommand extends MovePIDCommand{
     private ElapsedTime holdTimer = new ElapsedTime();

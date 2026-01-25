@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.commands.shoot;
 
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.command.Command;
-import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
+import org.firstinspires.ftc.teamcode.subsystems.shoot.ShooterSystem;
 
 public class SetFlywheelCommand extends Command {
     private ShooterSystem shooterSystem;

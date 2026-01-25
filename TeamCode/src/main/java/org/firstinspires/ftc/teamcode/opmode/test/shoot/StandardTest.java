@@ -9,23 +9,23 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
-import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
+import org.firstinspires.ftc.teamcode.subsystems.shoot.ShootHardwareNames;
+import org.firstinspires.ftc.teamcode.subsystems.shared.sensor.OTOSSensor;
 
 @TeleOp(name = "Standard Test", group = "test")
 public class StandardTest extends LinearOpMode {
-    HardwareNames hardwareNames = new HardwareNames();
+    ShootHardwareNames hardwareNames = new ShootHardwareNames();
     @Override
     public void runOpMode() {
-        OTOSSensor otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
+        OTOSSensor otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(ShootHardwareNames.Name.ODOMETRY_SENSOR)));
         otosSensor.configureOtos(0, 0, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
-        DcMotor lf = hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR));
-        DcMotor lb = hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_LEFT_MOTOR));
-        DcMotor rf = hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR));
-        DcMotor rb = hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_RIGHT_MOTOR));
-        Servo ballGate = hardwareMap.get(Servo.class, hardwareNames.get(HardwareNames.Name.SHOOTER_GATE));
-        DcMotor flyWheel = hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.SHOOTER_FLYWHEEL));
-        DcMotor intake = hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.INTAKE_MOTOR));
+        DcMotor lf = hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.FRONT_LEFT_MOTOR));
+        DcMotor lb = hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.BACK_LEFT_MOTOR));
+        DcMotor rf = hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.FRONT_RIGHT_MOTOR));
+        DcMotor rb = hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.BACK_RIGHT_MOTOR));
+        Servo ballGate = hardwareMap.get(Servo.class, hardwareNames.get(ShootHardwareNames.Name.SHOOTER_GATE));
+        DcMotor flyWheel = hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.SHOOTER_FLYWHEEL));
+        DcMotor intake = hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.INTAKE_MOTOR));
         flyWheel.setDirection(DcMotorSimple.Direction.REVERSE);
         intake.setDirection(DcMotorSimple.Direction.REVERSE);
         lf.setDirection(DcMotorSimple.Direction.REVERSE);
