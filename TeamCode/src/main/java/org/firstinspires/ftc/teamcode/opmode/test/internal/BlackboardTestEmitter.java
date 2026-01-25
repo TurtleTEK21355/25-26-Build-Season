@@ -29,11 +29,13 @@
 
 package org.firstinspires.ftc.teamcode.opmode.test.internal;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.subsystems.AprilTagCamera;
 
+@Disabled
 @TeleOp(name = "Blackboard Emitter", group = "test")
 public class BlackboardTestEmitter extends LinearOpMode {
 

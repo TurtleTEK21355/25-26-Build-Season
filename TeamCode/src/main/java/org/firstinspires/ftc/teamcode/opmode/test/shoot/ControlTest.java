@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode.test.shoot;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -24,6 +25,7 @@ import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.PartnerPark;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
+@Disabled
 @TeleOp(name="Control Test", group = "test")
 public class ControlTest extends OpMode {
 

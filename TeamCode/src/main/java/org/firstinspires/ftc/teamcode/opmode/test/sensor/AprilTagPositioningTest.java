@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.test.sensor;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -9,6 +10,7 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.subsystems.AprilTagCamera;
 import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
 
+@Disabled
 @TeleOp(name = "April Tag Positioning Test", group = "test")
 public class AprilTagPositioningTest extends OpMode {
     private HardwareNames hardwareNames = new HardwareNames();

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.test.sensor;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -7,6 +8,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.subsystems.AprilTagCamera;
 import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
 
+@Disabled
 @TeleOp(name = "April Tag Detection Test", group = "test")
 public class AprilTagDetectionTest extends OpMode {
 
