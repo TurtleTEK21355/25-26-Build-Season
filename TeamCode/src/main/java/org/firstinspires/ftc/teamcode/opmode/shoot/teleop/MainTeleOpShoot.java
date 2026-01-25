@@ -25,8 +25,8 @@ import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.PartnerPark;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 
-@TeleOp(name="Main TeleOpV1", group="Iterative OpModes")
-public class MainTeleOpV1 extends OpMode {
+@TeleOp(name="Main TeleOp Shoot", group="Iterative OpModes")
+public class MainTeleOpShoot extends OpMode {
 
     //blackboard variables
     private Pose2D startingPosition;
@@ -84,6 +84,9 @@ public class MainTeleOpV1 extends OpMode {
     public void loop() {
         if (gamepad1.y) {
             otosSensor.resetPosition();
+            startingPosition.x = 0;
+            startingPosition.y = 0;
+            startingPosition.h = 0;
         }
         drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, side.getForwardDirection());
         otosSensor.positionTelemetry();
@@ -93,12 +96,11 @@ public class MainTeleOpV1 extends OpMode {
         telemetry.addLine("use dpad to change alliance side (default is blue)");
         telemetry.addLine("Alliance side blue = right dpad");
         telemetry.addLine("Alliance side red = left dpad");
-        if (gamepad2.dpad_right) {
+        if (gamepad1.dpad_right && gamepad1.back) {
             side = AllianceSide.BLUE;
-        } else if (gamepad2.dpad_left) {
+        } else if (gamepad1.dpad_left && gamepad1.back) {
             side = AllianceSide.RED;
         }
-
         shooterSystem.teleOpControl(otosSensor.getPosition(), gamepad2.left_bumper, gamepad2.right_bumper, gamepad2.left_trigger, gamepad1.a, gamepad1.b);
 
         if (gamepad1.right_bumper) {

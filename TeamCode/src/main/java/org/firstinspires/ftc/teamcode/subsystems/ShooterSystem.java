@@ -16,7 +16,7 @@ public class ShooterSystem {
     private Intake intake;
     private Motif motif;
     private AllianceSide side;
-    private final double[] RANGE_TO_VELOCITY = new double[]{1000,1050,1100,1150,1185,1218,1263,1313,1363,1414};
+    private final double[] RANGE_TO_VELOCITY = new double[]{1000,1050,1100,1150,1199,1232,1278,1328,1379,1430};
     private final double GRAVITY = 386.09; //Inches per second squared
     private final double HEIGHT = 40; //inches tall + ball diameter
     private final double THETA = 1.13446401; //Ramp Angle in Radians
@@ -26,6 +26,9 @@ public class ShooterSystem {
     ElapsedTime velocityChangeTimer = new ElapsedTime();
     double tpsChange = 0;
     private final int FLYWHEEL_VELOCITY_TOLERANCE_TPS = 40;
+    private final int GATEWAITTIME = 1250;
+    ElapsedTime gateTimer = new ElapsedTime();
+    boolean gateWait = false;
 
 
     public ShooterSystem(FlyWheel flyWheel, GateSystem gateSystem, Intake intake, AllianceSide side){
@@ -53,6 +56,8 @@ public class ShooterSystem {
     public boolean ballReady() {return gateSystem.ballReady();}
 
     public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean tweakUp, boolean tweakDown) {
+        position.x *= -1; // This is temporary until the odometry is facing the correct direction
+        position.y *= -1; // ^
         double range = getDistanceFromGoal(position, side);
         TelemetryPasser.telemetry.addData("Range from Goal:", range);
         double flyWheelTargetSpeed;
@@ -64,37 +69,51 @@ public class ShooterSystem {
             int rangeSector = (int) range / RANGE_TO_VELOCITY.length;
             flyWheelTargetSpeed = RANGE_TO_VELOCITY[rangeSector];
         }
-        TelemetryPasser.telemetry.addData("Calculated Ticks Per second:", flyWheelTargetSpeed);
+        TelemetryPasser.telemetry.addData("Flywheel Calulated Ticks Per second:", flyWheelTargetSpeed);
+        TelemetryPasser.telemetry.addData("Flywheel Actual Ticks Per second:", flywheelGetVelocity());
 
-        if (tweakUp && velocityChangeTimer.milliseconds()>250) {
-            tpsChange += 10;
-        }
-        else if (tweakDown && velocityChangeTimer.milliseconds()>250) {
-            tpsChange -= 10;
-        }
+
+//        if (tweakUp && velocityChangeTimer.milliseconds()>250) {
+//            tpsChange += 10;
+//        }
+//        else if (tweakDown && velocityChangeTimer.milliseconds()>250) {
+//            tpsChange -= 10;
+//        }
         //        double editedTicksPerSecond = Math.sqrt(flyWheelTargetSpeed) * 3.5;
-        double editedTicksPerSecond = flyWheelTargetSpeed+tpsChange;
-        flywheelSetVelocity(Range.clip(editedTicksPerSecond, -1500, 1500));
-        TelemetryPasser.telemetry.addData("Edited: ", editedTicksPerSecond);
+//        double editedTicksPerSecond = flyWheelTargetSpeed+tpsChange;
+//        flywheelSetVelocity(Range.clip(editedTicksPerSecond, -1500, 1500));
+//        TelemetryPasser.telemetry.addData("Edited: ", editedTicksPerSecond);
+        flywheelSetVelocity(flyWheelTargetSpeed);
         if (shoot) {
             openGate();
+            if (!gateWait) {
+                gateTimer.reset();
+                gateWait = true;
+            } else {
+                if (gateTimer.milliseconds() > GATEWAITTIME) {
+                    intakeSetPower(0.75);
+                }
+            }
         } else {
+            if (intakeForward) {
+                intakeSetPower(1);
+            }
+            else if (intakeBackward > 0.2) {
+                intakeSetPower(-0.6);
+            } else {
+                intakeSetPower(0);
+            }
             closeGate();
+            gateWait = false;
         }
-        if (shoot && intakeForward && (flywheelGetVelocity() > (editedTicksPerSecond - FLYWHEEL_VELOCITY_TOLERANCE_TPS))) {
-            intakeSetPower(0.5);
-        } else {
-            intakeSetPower(0);
-        }
-        TelemetryPasser.telemetry.addData("ball ready", ballReady());
-        if (intakeForward && !shoot) {
-            intakeSetPower(1);
-        }
-        else if (intakeBackward > 0.1 && !shoot) {
-             intakeSetPower(-0.8);
-        } else if (!shoot) {
-            intakeSetPower(0);
-        }
+//        if (shoot && intakeForward && (flywheelGetVelocity() > (editedTicksPerSecond - FLYWHEEL_VELOCITY_TOLERANCE_TPS))) {
+//            intakeSetPower(0.5);
+//        } else {
+//            intakeSetPower(0);
+//        }
+
+//        TelemetryPasser.telemetry.addData("ball ready", ballReady());
+
 
     }
 
@@ -121,8 +140,13 @@ public class ShooterSystem {
         {intake.setPower(-0.7);} else {
             intake.setPower(0);
         }
-        if (shoot &&(flywheelGetVelocity() > (velocity- FLYWHEEL_VELOCITY_TOLERANCE_TPS))) {
-            gateSystem.openGate();
+        if (shoot) {
+                gateSystem.openGate();
+            if (intakeForward && flywheelGetVelocity() > (velocity- FLYWHEEL_VELOCITY_TOLERANCE_TPS)) {
+                intake.setPower(0.8);
+            } else {
+                intake.setPower(0);
+            }
         } else {
             gateSystem.closeGate();}
 
