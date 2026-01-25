@@ -40,13 +40,14 @@ public class BackupTeleOp extends LinearOpMode {
         double rx;
         ballGate.setPosition((double)1/3); // sets to open position
         waitForStart();
+        flyWheel.setVelocity(1250);
         while (opModeIsActive()) {
             rx = gamepad1.right_stick_x;
             ry = gamepad1.right_stick_y;
             lx = gamepad1.left_stick_x;
             ly = -gamepad1.left_stick_y;
             if (rx != 0 || ry != 0) {
-                double magnitude = Math.sqrt((ry*ry)+(rx*rx));
+                double magnitude = Math.hypot(ry, rx);
                 TelemetryPasser.telemetry.addData("magnitude", magnitude);
                 TelemetryPasser.telemetry.update();
                 double fr = (ry + rx) / 2;
@@ -59,7 +60,7 @@ public class BackupTeleOp extends LinearOpMode {
                 lb.setPower((fl/min)*magnitude);
                 lb.setPower((bl/min)*magnitude);
             } else {
-                double magnitude = Math.sqrt((ly*ly)+(lx*lx));
+                double magnitude = Math.hypot(ly, lx);
                 TelemetryPasser.telemetry.addData("magnitude", magnitude);
                 TelemetryPasser.telemetry.update();
                 double fr = (ly - lx) / 2;
@@ -79,18 +80,15 @@ public class BackupTeleOp extends LinearOpMode {
             } else {
                 ballGate.setPosition((double) 1 / 3); //sets to closed position
             }
-            if (gamepad2.right_bumper) {
-                flyWheel.setVelocity(1150);
-            } else {
-                flyWheel.setVelocity(600);
-            }
             if(gamepad2.left_bumper) {
                 intake.setPower(0.8);
-            } else if(gamepad2.left_trigger > 0.1) {
+            } else if(gamepad2.left_trigger > 0.2) {
                 intake.setPower(-0.8);
             } else {
                 intake.setPower(0);
             }
         }
+        flyWheel.setVelocity(0);
+        sleep(750);
     }
 }
