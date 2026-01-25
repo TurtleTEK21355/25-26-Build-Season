@@ -8,13 +8,13 @@ import org.firstinspires.ftc.teamcode.subsystems.shared.actuator.FlyWheel;
 public class TurretSystem {
     private FlyWheel flyWheel;
     private Servo hoodServo;
-    private Servo ballPusher;
+    private Servo artifactPusher;
     private final double HOODANGLETOPOSITION = 1; //placeholder value
 
-    public TurretSystem(FlyWheel flyWheel, Servo hoodServo, Servo ballPusher) {
+    public TurretSystem(FlyWheel flyWheel, Servo hoodServo, Servo artifactPusher) {
         this.flyWheel = flyWheel;
         this.hoodServo = hoodServo;
-        this.ballPusher = ballPusher;
+        this.artifactPusher = artifactPusher;
     }
 
     void setFlyWheelVelocity(double velocity) {
