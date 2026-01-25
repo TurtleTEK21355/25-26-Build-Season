@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.commands.shoot;
 
 import org.firstinspires.ftc.teamcode.lib.command.Command;
-import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
+import org.firstinspires.ftc.teamcode.subsystems.shoot.ShooterSystem;
 
 public class OpenGateCommand extends Command {
     private ShooterSystem shooterSystem;

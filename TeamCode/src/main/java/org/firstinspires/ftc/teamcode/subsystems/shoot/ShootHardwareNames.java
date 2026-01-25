@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.subsystems;
+package org.firstinspires.ftc.teamcode.subsystems.shoot;
 
 import java.util.HashMap;
 
-public class HardwareNames { // this should be an enum
+public class ShootHardwareNames { // this should be an enum
 
     public enum Name {
         FRONT_LEFT_MOTOR,
@@ -21,7 +21,7 @@ public class HardwareNames { // this should be an enum
 
     private HashMap<Name, String> nameList = new HashMap<>();
 
-    public HardwareNames() {
+    public ShootHardwareNames() {
         nameList.put(Name.FRONT_LEFT_MOTOR, "lf");
         nameList.put(Name.FRONT_RIGHT_MOTOR, "rf");
         nameList.put(Name.BACK_LEFT_MOTOR, "lb");

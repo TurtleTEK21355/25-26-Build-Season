@@ -1,11 +1,9 @@
-package org.firstinspires.ftc.teamcode.subsystems;
+package org.firstinspires.ftc.teamcode.subsystems.shared.actuator;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
-
-import org.firstinspires.ftc.teamcode.TelemetryPasser;
 
 public class FlyWheel {
     private DcMotorEx flyWheelMotor;
@@ -17,12 +15,12 @@ public class FlyWheel {
 
     }
 
-    void setVelocity(double velocity) {
+    public void setVelocity(double velocity) {
         flyWheelMotor.setVelocity(Range.clip(velocity, -1500, 1500));
 
     }
 
-    double getVelocity() {
+    public double getVelocity() {
         return flyWheelMotor.getVelocity();
 
     }

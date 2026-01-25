@@ -7,15 +7,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.subsystems.AprilTagCamera;
-import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
-import org.firstinspires.ftc.teamcode.subsystems.OTOSSensor;
-import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
+import org.firstinspires.ftc.teamcode.subsystems.shared.sensor.AprilTagCamera;
+import org.firstinspires.ftc.teamcode.subsystems.shoot.ShootHardwareNames;
+import org.firstinspires.ftc.teamcode.subsystems.shared.sensor.OTOSSensor;
+import org.firstinspires.ftc.teamcode.subsystems.shoot.ShooterSystem;
 
 @Disabled
 @Autonomous(name="MotorTestOpMode", group = "test")
 public class MotorTestOpMode extends LinearOpMode {
-    HardwareNames hardwareNames = new HardwareNames();
+    ShootHardwareNames hardwareNames = new ShootHardwareNames();
     private DcMotor frontLeftMotor;
     private DcMotor frontRightMotor;
     private DcMotor backLeftMotor;
@@ -27,10 +27,10 @@ public class MotorTestOpMode extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        frontLeftMotor = hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR));
-        frontRightMotor = hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR));
-        backLeftMotor = hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_LEFT_MOTOR));
-        backRightMotor = hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_RIGHT_MOTOR));
+        frontLeftMotor = hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.FRONT_LEFT_MOTOR));
+        frontRightMotor = hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.FRONT_RIGHT_MOTOR));
+        backLeftMotor = hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.BACK_LEFT_MOTOR));
+        backRightMotor = hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.BACK_RIGHT_MOTOR));
 
         waitForStart();
 

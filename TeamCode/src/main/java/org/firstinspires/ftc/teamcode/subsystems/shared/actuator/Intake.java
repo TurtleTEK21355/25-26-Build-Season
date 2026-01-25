@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.subsystems;
+package org.firstinspires.ftc.teamcode.subsystems.shared.actuator;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -15,7 +15,7 @@ public class Intake {
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
-    void setPower(double power) {
+    public void setPower(double power) {
         intakeMotor.setPower(Range.clip(power, MAX_REVERSE_POWER, MAX_FORWARD_POWER));
     }
 }

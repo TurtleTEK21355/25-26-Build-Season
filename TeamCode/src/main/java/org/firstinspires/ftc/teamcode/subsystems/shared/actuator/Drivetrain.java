@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.subsystems;
+package org.firstinspires.ftc.teamcode.subsystems.shared.actuator;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
+import org.firstinspires.ftc.teamcode.subsystems.shared.sensor.OTOSSensor;
 
 public class Drivetrain {
     private DcMotor frontLeftMotor;

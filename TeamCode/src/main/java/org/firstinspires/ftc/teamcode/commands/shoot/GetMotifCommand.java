@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.commands.shoot;
 
 import org.firstinspires.ftc.teamcode.lib.command.Command;
-import org.firstinspires.ftc.teamcode.subsystems.AprilTagCamera;
-import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
+import org.firstinspires.ftc.teamcode.subsystems.shared.sensor.AprilTagCamera;
+import org.firstinspires.ftc.teamcode.subsystems.shoot.ShooterSystem;
 
 public class GetMotifCommand extends Command {
     AprilTagCamera aprilTagCamera;

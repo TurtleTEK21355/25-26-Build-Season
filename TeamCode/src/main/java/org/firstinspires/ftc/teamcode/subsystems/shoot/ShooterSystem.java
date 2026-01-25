@@ -1,12 +1,13 @@
-package org.firstinspires.ftc.teamcode.subsystems;
+package org.firstinspires.ftc.teamcode.subsystems.shoot;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
+import org.firstinspires.ftc.teamcode.subsystems.shared.actuator.FlyWheel;
+import org.firstinspires.ftc.teamcode.subsystems.shared.actuator.Intake;
 
 public class ShooterSystem {
     public static final int MAX_RANGE_INCHES = 100;

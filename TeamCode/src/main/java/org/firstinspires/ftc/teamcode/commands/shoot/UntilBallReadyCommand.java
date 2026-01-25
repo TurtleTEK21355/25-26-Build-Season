@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.commands.shoot;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.lib.command.Command;
-import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
+import org.firstinspires.ftc.teamcode.subsystems.shoot.ShooterSystem;
 public class UntilBallReadyCommand extends Command {
     private ShooterSystem shooterSystem;
     private boolean invert; //TODO inverts are lame just make another command
