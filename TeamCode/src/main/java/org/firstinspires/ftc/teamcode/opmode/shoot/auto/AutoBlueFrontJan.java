@@ -47,7 +47,6 @@ public class AutoBlueFrontJan extends ShootAutoOpMode {
         //Move Robot Out and Ready Shooter
         addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain))));
         addCommand(new OpenGateCommand(shooterSystem));
-        addCommand(new TimerCommand(GATEWAITTIME));
 
         //Shoot Artifact
         addCommand(new StartIntakeCommand(shooterSystem));
