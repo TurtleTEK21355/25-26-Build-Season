@@ -19,9 +19,6 @@ public class AutoFrontBlue extends ShootAutoOpMode {
     private final AllianceSide SIDE = AllianceSide.BLUE;
     private final Pose2D STARTING_POSITION = new Pose2D(-20, 58, 0);
 
-    int shootWaitTime = 300;
-    int lastShootWaitTime = 400;
-    int flyWheelVelocity = 1150;
 
     @Override
     public void initialize() {
@@ -32,27 +29,26 @@ public class AutoFrontBlue extends ShootAutoOpMode {
 
     @Override
     public void commands() {
-        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(new Pose2D(-16, 16, 45),1000, speed, drivetrain))));
-        addCommand(new OpenGateCommand(shooterSystem));
-        addCommand(new TimerCommand(1000));
-
-        addCommand(new StartIntakeCommand(shooterSystem));
-        addCommand(new TimerCommand(shootWaitTime));
-//        addCommand(new UntilBallReadyCommand(shooterSystem, false));
-        addCommand(new StopIntakeCommand(shooterSystem));
-
-        addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
-        addCommand(new StartIntakeCommand(shooterSystem));
-        addCommand(new TimerCommand(shootWaitTime));
-//        addCommand(new UntilBallReadyComm447and(shooterSystem, false));
-        addCommand(new StopIntakeCommand(shooterSystem));
-
-        addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
-        addCommand(new StartIntakeCommand(shooterSystem));
-        addCommand(new TimerCommand(lastShootWaitTime));
-        addCommand(new StopIntakeCommand(shooterSystem));
-
-        addCommand(new CloseGateCommand(shooterSystem));
+//        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(new Pose2D(-16, 16, 45),1000, speed, drivetrain))));
+//        addCommand(new OpenGateCommand(shooterSystem));
+//        addCommand(new TimerCommand(1000));
+//
+//        addCommand(new StartIntakeCommand(shooterSystem));
+//        addCommand(new TimerCommand(shootWaitTime));
+//        addCommand(new StopIntakeCommand(shooterSystem));
+//
+//        addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
+//        addCommand(new StartIntakeCommand(shooterSystem));
+//        addCommand(new TimerCommand(shootWaitTime));
+//        addCommand(new StopIntakeCommand(shooterSystem));
+//
+//        addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
+//        addCommand(new StartIntakeCommand(shooterSystem));
+//        addCommand(new TimerCommand(lastShootWaitTime));
+//        addCommand(new StopIntakeCommand(shooterSystem));
+//
+//        addCommand(new CloseGateCommand(shooterSystem));
+        shoot(3); // to be tested
         addCommand(new SetFlywheelCommand(shooterSystem, 0));
         addCommand(new TimerCommand(400));
         addCommand(new MovePIDHoldTimeCommand(new Pose2D(-20, 58, 0),1500, speed, drivetrain));

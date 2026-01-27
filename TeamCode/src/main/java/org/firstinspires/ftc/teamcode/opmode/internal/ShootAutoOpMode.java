@@ -8,6 +8,14 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.commands.logic.SimultaneousAndCommand;
+import org.firstinspires.ftc.teamcode.commands.logic.TimerCommand;
+import org.firstinspires.ftc.teamcode.commands.shared.MovePIDHoldTimeCommand;
+import org.firstinspires.ftc.teamcode.commands.shoot.CloseGateCommand;
+import org.firstinspires.ftc.teamcode.commands.shoot.OpenGateCommand;
+import org.firstinspires.ftc.teamcode.commands.shoot.SetFlywheelCommand;
+import org.firstinspires.ftc.teamcode.commands.shoot.StartIntakeCommand;
+import org.firstinspires.ftc.teamcode.commands.shoot.StopIntakeCommand;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
@@ -44,6 +52,9 @@ public abstract class ShootAutoOpMode extends CommandOpMode{ //the robots name i
 
     public static final String POSITION_BLACKBOARD_KEY = "pos";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
+    public int shootWaitTime = 300;
+    public int lastShootWaitTime = 400;
+    public int flyWheelVelocity = 1150;
 
     @Override
     public void initialize() {
@@ -121,6 +132,43 @@ public abstract class ShootAutoOpMode extends CommandOpMode{ //the robots name i
         kpTheta = kpThetaItem.getValue();
         kiTheta = kiThetaItem.getValue();
         kdTheta = kdThetaItem.getValue();
+
+    }
+
+    /**
+     * Does not stop the flywheel after shooting to maybe save time.
+     * @param amount
+     */
+    public void shoot(int amount){
+        if (amount < 0 || amount > 3) {
+            throw new IllegalArgumentException("Shooting Amount must be between 0 and 3");
+        }
+
+        // This is switch case abuse
+        switch (amount) {
+            case 0:
+                break;
+            case 1:
+                addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(new Pose2D(-16, 16, 45),1000, speed, drivetrain))));
+                addCommand(new OpenGateCommand(shooterSystem));
+                addCommand(new TimerCommand(1000));
+
+                addCommand(new StartIntakeCommand(shooterSystem));
+                addCommand(new TimerCommand(shootWaitTime));
+                addCommand(new StopIntakeCommand(shooterSystem));
+            case 2:
+                addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
+                addCommand(new StartIntakeCommand(shooterSystem));
+                addCommand(new TimerCommand(shootWaitTime));
+                addCommand(new StopIntakeCommand(shooterSystem));
+            case 3:
+                addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
+                addCommand(new StartIntakeCommand(shooterSystem));
+                addCommand(new TimerCommand(lastShootWaitTime));
+                addCommand(new StopIntakeCommand(shooterSystem));
+            default:
+                addCommand(new CloseGateCommand(shooterSystem));
+        }
 
     }
 
