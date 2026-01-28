@@ -5,10 +5,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.commands.shared.MovePIDHoldTimeCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
-import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
+import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpModeLinear;
 
 @Autonomous(name="Auto Back Blue", group="Autonomous")
-public class AutoBackBlue extends ShootAutoOpMode {
+public class AutoBackBlue extends ShootAutoOpModeLinear {
     private final AllianceSide SIDE = AllianceSide.BLUE;
     private final Pose2D STARTING_POSITION = new Pose2D(-15, -61, 0);
 

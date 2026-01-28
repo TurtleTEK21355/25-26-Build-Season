@@ -33,8 +33,13 @@ public class MovePIDHoldTimeCommand extends MovePIDCommand{
 
     @Override
     public boolean isCompleted() {
-        return (super.isCompleted() && holdTimer.milliseconds() >= holdTime);
-
+        if (super.isCompleted() && holdTimer.milliseconds() >= holdTime) {
+            drivetrain.control(0, 0, 0);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 }

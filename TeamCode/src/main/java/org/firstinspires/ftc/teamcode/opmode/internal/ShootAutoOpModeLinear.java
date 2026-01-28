@@ -32,7 +32,7 @@ import org.firstinspires.ftc.teamcode.subsystems.shared.actuator.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.shared.sensor.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.shoot.ShooterSystem;
 
-public abstract class ShootAutoOpMode extends CommandOpMode{ //the robots name is shoot
+public abstract class ShootAutoOpModeLinear extends LinearCommandOpMode { //the robots name is shoot
     protected ShootHardwareNames hardwareNames = new ShootHardwareNames();
     protected Drivetrain drivetrain;
     protected OTOSSensor otosSensor;

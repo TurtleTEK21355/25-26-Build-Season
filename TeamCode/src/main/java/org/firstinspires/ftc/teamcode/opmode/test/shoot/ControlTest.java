@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
-import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
+import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpModeLinear;
 import org.firstinspires.ftc.teamcode.subsystems.shared.actuator.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.shared.actuator.FlyWheel;
 import org.firstinspires.ftc.teamcode.subsystems.shoot.GateSystem;
@@ -50,8 +50,8 @@ public class ControlTest extends OpMode {
     @Override
     public void init() {
 
-        Object positionObject = blackboard.getOrDefault(ShootAutoOpMode.POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
-        Object sideObject = blackboard.getOrDefault(ShootAutoOpMode.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
+        Object positionObject = blackboard.getOrDefault(ShootAutoOpModeLinear.POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
+        Object sideObject = blackboard.getOrDefault(ShootAutoOpModeLinear.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         startingPosition = (Pose2D) positionObject;
         side = (AllianceSide) sideObject;
 
@@ -84,7 +84,7 @@ public class ControlTest extends OpMode {
     @Override
     public void loop() {
         drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, side.getForwardDirection());
-
+        drivetrain.powerTelemetry();
         telemetry.addLine("Alliance Side: " + side.name());
         telemetry.addLine("use dpad to change alliance side (default is blue)");
         telemetry.addLine("Alliance side blue = right dpad");
@@ -108,8 +108,8 @@ public class ControlTest extends OpMode {
 
     @Override
     public void stop() {
-        blackboard.put(ShootAutoOpMode.POSITION_BLACKBOARD_KEY, otosSensor.getPosition());
-        blackboard.put(ShootAutoOpMode.ALLIANCE_SIDE_BLACKBOARD_KEY, side);
+        blackboard.put(ShootAutoOpModeLinear.POSITION_BLACKBOARD_KEY, otosSensor.getPosition());
+        blackboard.put(ShootAutoOpModeLinear.ALLIANCE_SIDE_BLACKBOARD_KEY, side);
     }
 
 }

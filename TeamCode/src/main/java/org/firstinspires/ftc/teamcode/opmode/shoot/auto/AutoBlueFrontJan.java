@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmode.shoot.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpModeLinear;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.commands.shoot.CloseGateCommand;
 import org.firstinspires.ftc.teamcode.commands.shared.MovePIDHoldTimeCommand;
@@ -12,13 +13,11 @@ import org.firstinspires.ftc.teamcode.commands.shoot.StartIntakeCommand;
 import org.firstinspires.ftc.teamcode.commands.shoot.StopIntakeCommand;
 import org.firstinspires.ftc.teamcode.commands.logic.TimerCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
-import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
 
 @Autonomous(name="AutoBlueFrontJan", group="Autonomous")
-public class AutoBlueFrontJan extends ShootAutoOpMode {
+public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
     private final AllianceSide SIDE = AllianceSide.BLUE;
     private final Pose2D STARTING_POSITION = new Pose2D(-52.86852, 50.99152, 36);
-
 
     int shootWaitTime = 300;
     int lastShootWaitTime = 400;
