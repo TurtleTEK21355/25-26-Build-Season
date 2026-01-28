@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode.shoot.teleop;
 
 import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
-import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
+import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpModeLinear;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -49,8 +49,8 @@ public class MainTeleOpShoot extends OpMode {
     @Override
     public void init() {
 
-        Object positionObject = blackboard.getOrDefault(ShootAutoOpMode.POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
-        Object sideObject = blackboard.getOrDefault(ShootAutoOpMode.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
+        Object positionObject = blackboard.getOrDefault(ShootAutoOpModeLinear.POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
+        Object sideObject = blackboard.getOrDefault(ShootAutoOpModeLinear.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         startingPosition = (Pose2D) positionObject;
         side = (AllianceSide) sideObject;
 
@@ -120,8 +120,8 @@ public class MainTeleOpShoot extends OpMode {
 
     @Override
     public void stop() {
-        blackboard.put(ShootAutoOpMode.POSITION_BLACKBOARD_KEY, otosSensor.getPosition());
-        blackboard.put(ShootAutoOpMode.ALLIANCE_SIDE_BLACKBOARD_KEY, side);
+        blackboard.put(ShootAutoOpModeLinear.POSITION_BLACKBOARD_KEY, otosSensor.getPosition());
+        blackboard.put(ShootAutoOpModeLinear.ALLIANCE_SIDE_BLACKBOARD_KEY, side);
     }
 
 }

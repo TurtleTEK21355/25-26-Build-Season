@@ -57,8 +57,6 @@ public class ShooterSystem {
     public boolean ballReady() {return gateSystem.ballReady();}
 
     public void teleOpControl(Pose2D position, boolean intakeForward, boolean shoot, double intakeBackward, boolean tweakUp, boolean tweakDown) {
-        position.x *= -1; // This is temporary until the odometry is facing the correct direction
-        position.y *= -1; // ^
         double range = getDistanceFromGoal(position, side);
         TelemetryPasser.telemetry.addData("Range from Goal:", range);
         double flyWheelTargetSpeed;

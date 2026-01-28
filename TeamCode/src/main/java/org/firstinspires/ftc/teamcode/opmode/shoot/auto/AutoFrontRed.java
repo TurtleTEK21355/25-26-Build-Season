@@ -12,10 +12,10 @@ import org.firstinspires.ftc.teamcode.commands.shoot.StartIntakeCommand;
 import org.firstinspires.ftc.teamcode.commands.shoot.StopIntakeCommand;
 import org.firstinspires.ftc.teamcode.commands.logic.TimerCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
-import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
+import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpModeLinear;
 
 @Autonomous(name="Auto Front Red", group="Autonomous")
-public class AutoFrontRed extends ShootAutoOpMode {
+public class AutoFrontRed extends ShootAutoOpModeLinear {
     private final AllianceSide SIDE = AllianceSide.RED;
     private final Pose2D STARTING_POSITION = new Pose2D(20, 58, 0);
 

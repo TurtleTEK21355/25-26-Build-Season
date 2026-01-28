@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.hardware.Ada2167BreakBeam;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
-import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
+import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpModeLinear;
 import org.firstinspires.ftc.teamcode.subsystems.shared.actuator.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.shared.actuator.FlyWheel;
 import org.firstinspires.ftc.teamcode.subsystems.shoot.GateSystem;
@@ -40,8 +40,8 @@ public class ManualVelocityDataCollector extends OpMode {
 
     @Override
     public void init() {
-        Object positionObject = blackboard.getOrDefault(ShootAutoOpMode.POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
-        Object sideObject = blackboard.getOrDefault(ShootAutoOpMode.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
+        Object positionObject = blackboard.getOrDefault(ShootAutoOpModeLinear.POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
+        Object sideObject = blackboard.getOrDefault(ShootAutoOpModeLinear.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         startingPosition = (Pose2D) positionObject;
         side = (AllianceSide) sideObject;
         TelemetryPasser.telemetry = telemetry;

@@ -8,11 +8,11 @@ import org.firstinspires.ftc.teamcode.commands.shared.MovePIDHoldTimeCommand;
 import org.firstinspires.ftc.teamcode.commands.shoot.StartIntakeCommand;
 import org.firstinspires.ftc.teamcode.commands.shoot.StopIntakeCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
-import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpMode;
+import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpModeLinear;
 
 @Disabled
 @Autonomous(name="Auto Intake Test", group = "test")
-public class AutoIntakeTest extends ShootAutoOpMode {
+public class AutoIntakeTest extends ShootAutoOpModeLinear {
     private final AllianceSide SIDE = AllianceSide.BLUE;
 
     @Override
