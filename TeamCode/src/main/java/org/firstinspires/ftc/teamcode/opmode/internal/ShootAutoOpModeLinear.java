@@ -139,13 +139,6 @@ public abstract class ShootAutoOpModeLinear extends LinearCommandOpMode { //the 
 
     public void shoot(){
 
-        // This is switch case abuse
-        switch (amount) {
-            case 0:
-                break;
-            case 1:
-                addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(new Pose2D(-20, 8, 36),1000, speed, drivetrain, true))));
-
         //  Gets ready to shoot
 
                 addCommand(new OpenGateCommand(shooterSystem));
