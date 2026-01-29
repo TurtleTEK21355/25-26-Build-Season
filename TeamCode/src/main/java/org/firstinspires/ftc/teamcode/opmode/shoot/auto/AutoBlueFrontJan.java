@@ -51,7 +51,7 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
         //Move Robot Out, Ready Shooter, and shoot
         addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain, true))));
         addCommand(new OpenGateCommand(shooterSystem));
-        shoot(3);
+        shoot();
 
         //Move to Top Row
         addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, topRow, 90), 1000, speed, drivetrain, true));
@@ -62,7 +62,7 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
 
         //Go Back to Launch Zone and shoot
         addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain, true))));
-        shoot(3);
+        shoot();
 
         //Move To Middle Row
         addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, middleRow, 90), 1000, speed, drivetrain, true));
@@ -73,7 +73,7 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
 
         //Go back to Launch Zone and shoot
         addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain, true))));
-        shoot(3);
+        shoot();
 
         //Move to Bottom Row
         addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, bottomRow, 90), 50, speed, drivetrain, true));
@@ -84,7 +84,7 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
 
         //Go back to Launch Zone and shoot
         addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain, true))));
-        shoot(3);
+        shoot();
 
         //Move out of Launch Zone
 
