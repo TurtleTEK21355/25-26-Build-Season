@@ -151,7 +151,7 @@ public abstract class ShootAutoOpModeLinear extends LinearCommandOpMode { //the 
             case 0:
                 break;
             case 1:
-                addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(new Pose2D(-16, 16, 45),1000, speed, drivetrain, true))));
+                addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(new Pose2D(-20, 12, 36),1000, speed, drivetrain, true))));
                 addCommand(new OpenGateCommand(shooterSystem));
                 addCommand(new TimerCommand(2000));
 
