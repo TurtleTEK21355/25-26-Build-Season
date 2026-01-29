@@ -138,31 +138,29 @@ public abstract class ShootAutoOpModeLinear extends LinearCommandOpMode { //the 
     }
 
     public void shoot(){
-
         //  Gets ready to shoot
+        addCommand(new OpenGateCommand(shooterSystem));
 
-                addCommand(new OpenGateCommand(shooterSystem));
-                addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new TimerCommand(1500))));
+        // Shoots first artifact
+        addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
+        addCommand(new StartIntakeCommand(shooterSystem));
+        addCommand(new TimerCommand(shootWaitTime));
+        addCommand(new StopIntakeCommand(shooterSystem));
 
-                // Shoots first artifact
-                addCommand(new StartIntakeCommand(shooterSystem));
-                addCommand(new TimerCommand(shootWaitTime));
-                addCommand(new StopIntakeCommand(shooterSystem));
+        // Shoots second artifact
+        addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
+        addCommand(new StartIntakeCommand(shooterSystem));
+        addCommand(new TimerCommand(shootWaitTime));
+        addCommand(new StopIntakeCommand(shooterSystem));
 
-                // Shoots second artifact
-                addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
-                addCommand(new StartIntakeCommand(shooterSystem));
-                addCommand(new TimerCommand(shootWaitTime));
-                addCommand(new StopIntakeCommand(shooterSystem));
+        // Shoots third artifact
+        addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
+        addCommand(new StartIntakeCommand(shooterSystem));
+        addCommand(new TimerCommand(lastShootWaitTime));
+        addCommand(new StopIntakeCommand(shooterSystem));
 
-                // Shoots third artifact
-                addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
-                addCommand(new StartIntakeCommand(shooterSystem));
-                addCommand(new TimerCommand(lastShootWaitTime));
-                addCommand(new StopIntakeCommand(shooterSystem));
-
-                // Closes gate
-                addCommand(new CloseGateCommand(shooterSystem));
+        // Closes gate
+        addCommand(new CloseGateCommand(shooterSystem));
 
     }
 
