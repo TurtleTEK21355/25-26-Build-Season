@@ -20,7 +20,7 @@ public class Shoot1Test extends ShootAutoOpModeLinear {
 
     @Override
     public void commands() {
-    shoot(1);
+        shoot();
     }
 
 }
