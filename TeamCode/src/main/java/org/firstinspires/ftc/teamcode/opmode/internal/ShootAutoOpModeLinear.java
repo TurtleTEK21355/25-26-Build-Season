@@ -48,7 +48,7 @@ public abstract class ShootAutoOpModeLinear extends LinearCommandOpMode { //the 
     protected double kpTheta = 0.03;
     protected double kiTheta;
     protected double kdTheta;
-    protected double speed = 0.6;
+    protected double speed = 0.3;
     protected final Pose2D SHOOT_POSITION = new Pose2D(-20,12,36);
 
 
@@ -137,40 +137,32 @@ public abstract class ShootAutoOpModeLinear extends LinearCommandOpMode { //the 
 
     }
 
-    /**
-     * Does not stop the flywheel after shooting to maybe save time.
-     * @param amount
-     */
-    public void shoot(int amount){
-        if (amount < 0 || amount > 3) {
-            throw new IllegalArgumentException("Shooting Amount must be between 0 and 3");
-        }
+    public void shoot(){
 
-        // This is switch case abuse
-        switch (amount) {
-            case 0:
-                break;
-            case 1:
+        //  Gets ready to shoot
                 addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(new Pose2D(-20, 12, 36),1000, speed, drivetrain, true))));
                 addCommand(new OpenGateCommand(shooterSystem));
-                addCommand(new TimerCommand(2000));
+                addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new TimerCommand(1500))));
 
+                // Shoots first artifact
                 addCommand(new StartIntakeCommand(shooterSystem));
                 addCommand(new TimerCommand(shootWaitTime));
                 addCommand(new StopIntakeCommand(shooterSystem));
-            case 2:
+
+                // Shoots second artifact
                 addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
                 addCommand(new StartIntakeCommand(shooterSystem));
                 addCommand(new TimerCommand(shootWaitTime));
                 addCommand(new StopIntakeCommand(shooterSystem));
-            case 3:
+
+                // Shoots third artifact
                 addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
                 addCommand(new StartIntakeCommand(shooterSystem));
                 addCommand(new TimerCommand(lastShootWaitTime));
                 addCommand(new StopIntakeCommand(shooterSystem));
-            default:
+
+                // Closes gate
                 addCommand(new CloseGateCommand(shooterSystem));
-        }
 
     }
 
