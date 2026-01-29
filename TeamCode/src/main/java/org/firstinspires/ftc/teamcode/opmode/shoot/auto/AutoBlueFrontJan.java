@@ -26,7 +26,7 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
     int lastShootWaitTime = 400;
     int flyWheelVelocity = 1150;
     //The column the robot will travel to intake.
-    double intakeColumn = -45;
+    double intakeColumn = -49;
     //The column the robot will move vertically on the field.
     double moveColumn = -31;
     double topRow = 12;
