@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 
 public class OTOSSensor {
     private SparkFunOTOS sensor;
+    private final double CALIBRATION_FACTOR = 1.296;
 
     public OTOSSensor(SparkFunOTOS sensor) {
         this.sensor = sensor;
@@ -34,7 +35,8 @@ public class OTOSSensor {
     }
 
     public Pose2D getPosition() {
-        return new Pose2D(sensor.getPosition());
+        Pose2D position = new Pose2D(sensor.getPosition());
+        return new Pose2D(position.x*CALIBRATION_FACTOR,position.y*CALIBRATION_FACTOR,position.h);
 
     }
 

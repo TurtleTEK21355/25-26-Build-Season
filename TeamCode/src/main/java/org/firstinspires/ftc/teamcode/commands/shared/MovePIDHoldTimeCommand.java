@@ -10,11 +10,13 @@ public class MovePIDHoldTimeCommand extends MovePIDCommand{
     private ElapsedTime holdTimer = new ElapsedTime();
     private final int holdTime;
     private boolean holdTimerStartLock = false;
+    private boolean telemetry;
 
 
-    public MovePIDHoldTimeCommand(Pose2D target, int holdTime, double speed, Drivetrain drivetrain) {
+    public MovePIDHoldTimeCommand(Pose2D target, int holdTime, double speed, Drivetrain drivetrain, boolean telemetry) {
         super(target, speed, drivetrain);
         this.holdTime = holdTime;
+        this.telemetry = telemetry;
     }
 
     @Override
@@ -25,10 +27,12 @@ public class MovePIDHoldTimeCommand extends MovePIDCommand{
             holdTimerStartLock = true;
         }
 
-        TelemetryPasser.telemetry.addData("at Position", super.isCompleted());
-        TelemetryPasser.telemetry.addData("holdTimer", holdTimer.milliseconds());
-        TelemetryPasser.telemetry.addData("holdTimerStartLock", holdTimerStartLock);
-
+        if (telemetry) {
+            TelemetryPasser.telemetry.addData("Position: ", drivetrain.getPosition());
+            TelemetryPasser.telemetry.addData("at Position", super.isCompleted());
+            TelemetryPasser.telemetry.addData("holdTimer", holdTimer.milliseconds());
+            TelemetryPasser.telemetry.addData("holdTimerStartLock", holdTimerStartLock);
+        }
     }
 
     @Override

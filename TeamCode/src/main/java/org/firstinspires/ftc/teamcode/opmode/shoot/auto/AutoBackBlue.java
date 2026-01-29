@@ -21,7 +21,7 @@ public class AutoBackBlue extends ShootAutoOpModeLinear {
 
     @Override
     public void commands() {
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(-10, 0, 0),1500, speed, drivetrain));
+        addCommand(new MovePIDHoldTimeCommand(new Pose2D(-10, 0, 0),1500, speed, drivetrain, true));
 
     }
 

@@ -41,6 +41,7 @@ public class StandardTest extends LinearOpMode {
             rf.setPower(stick);
             lb.setPower(stick);
             rb.setPower(stick);
+            telemetry.addData("Position: ", otosSensor.getPosition());
             if(gamepad2.a) {                ballGate.setPosition(0); // sets to open position
             } else {
                 ballGate.setPosition((double) 1 / 3); //sets to closed position

@@ -44,7 +44,7 @@ public class AutoBlueBackJan extends ShootAutoOpModeLinear {
     @Override
     public void commands() {
         //Move Robot Out and Ready Shooter
-        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain))));
+        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain, true))));
         addCommand(new OpenGateCommand(shooterSystem));
         addCommand(new TimerCommand(1000));
 
@@ -69,11 +69,11 @@ public class AutoBlueBackJan extends ShootAutoOpModeLinear {
         addCommand(new CloseGateCommand(shooterSystem));
 
         //Intake Artifacts
-        addCommand(new SimultaneousAndCommand((new MovePIDHoldTimeCommand(new Pose2D(intakeColumn,topRow,90), 500, speed, drivetrain)), (new StartIntakeCommand(shooterSystem))));
+        addCommand(new SimultaneousAndCommand((new MovePIDHoldTimeCommand(new Pose2D(intakeColumn,topRow,90), 500, speed, drivetrain, true)), (new StartIntakeCommand(shooterSystem))));
         addCommand(new StopIntakeCommand(shooterSystem));
 
         //Go Back to Launch Zone
-        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain))));
+        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain, true))));
 
         //Shoot First Artifact
         addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
@@ -95,14 +95,14 @@ public class AutoBlueBackJan extends ShootAutoOpModeLinear {
         addCommand(new CloseGateCommand(shooterSystem));
 
         //Move To Middle Row
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, middleRow, 90), 50, speed, drivetrain));
+        addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, middleRow, 90), 50, speed, drivetrain, true));
 
         //Intake Artifacts
-        addCommand(new SimultaneousAndCommand((new MovePIDHoldTimeCommand(new Pose2D(intakeColumn,middleRow,90), 500, speed, drivetrain)), (new StartIntakeCommand(shooterSystem))));
+        addCommand(new SimultaneousAndCommand((new MovePIDHoldTimeCommand(new Pose2D(intakeColumn,middleRow,90), 500, speed, drivetrain, true)), (new StartIntakeCommand(shooterSystem))));
         addCommand(new StopIntakeCommand(shooterSystem));
 
         //Go back to Launch Zone
-        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain))));
+        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain, true))));
 
         //Shoot First Artifact
         addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
@@ -124,14 +124,14 @@ public class AutoBlueBackJan extends ShootAutoOpModeLinear {
         addCommand(new CloseGateCommand(shooterSystem));
 
         //Move to Bottom Row
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, bottomRow, 90), 50, speed, drivetrain));
+        addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, bottomRow, 90), 50, speed, drivetrain, true));
 
         //Intake Artifacts
-        addCommand(new SimultaneousAndCommand((new MovePIDHoldTimeCommand(new Pose2D(intakeColumn,bottomRow,90), 500, speed, drivetrain)), (new StartIntakeCommand(shooterSystem))));
+        addCommand(new SimultaneousAndCommand((new MovePIDHoldTimeCommand(new Pose2D(intakeColumn,bottomRow,90), 500, speed, drivetrain, true)), (new StartIntakeCommand(shooterSystem))));
         addCommand(new StopIntakeCommand(shooterSystem));
 
         //Go back to Launch Zone
-        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain))));
+        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain, true))));
 
         //Shoot First Artifact
         addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
@@ -154,7 +154,7 @@ public class AutoBlueBackJan extends ShootAutoOpModeLinear {
 
         //Move out of Launch Zone
 
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, middleRow, 90), 50, speed, drivetrain));
+        addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, middleRow, 90), 50, speed, drivetrain, true));
 
 
 

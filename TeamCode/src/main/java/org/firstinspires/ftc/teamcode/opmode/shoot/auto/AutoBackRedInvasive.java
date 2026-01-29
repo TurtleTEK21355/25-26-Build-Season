@@ -33,7 +33,7 @@ public class AutoBackRedInvasive extends ShootAutoOpModeLinear {
 
     @Override
     public void commands() {
-        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(new Pose2D(16, 16, -45),1000, speed, drivetrain))));
+        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(new Pose2D(16, 16, -45),1000, speed, drivetrain, true))));
         addCommand(new OpenGateCommand(shooterSystem));
         addCommand(new TimerCommand(1000));
 
@@ -56,7 +56,7 @@ public class AutoBackRedInvasive extends ShootAutoOpModeLinear {
         addCommand(new CloseGateCommand(shooterSystem));
         addCommand(new SetFlywheelCommand(shooterSystem, 0));
         addCommand(new TimerCommand(400));
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(16, -24, 0),1500, speed, drivetrain));
+        addCommand(new MovePIDHoldTimeCommand(new Pose2D(16, -24, 0),1500, speed, drivetrain, true));
 
     }
 

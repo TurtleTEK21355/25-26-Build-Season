@@ -24,9 +24,9 @@ public class AutoIntakeTest extends ShootAutoOpModeLinear {
 
     @Override
     public void commands() {
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(-30, 12, 90),1500, speed, drivetrain));
+        addCommand(new MovePIDHoldTimeCommand(new Pose2D(-30, 12, 90),1500, speed, drivetrain, true));
         addCommand(new StartIntakeCommand(shooterSystem));
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(-54, 12, 90),1500, 0.2, drivetrain));
+        addCommand(new MovePIDHoldTimeCommand(new Pose2D(-54, 12, 90),1500, 0.2, drivetrain, true));
         addCommand(new StopIntakeCommand(shooterSystem));
 
     }
