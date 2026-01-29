@@ -28,7 +28,7 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
     //The column the robot will travel to intake.
     double intakeColumn = -49;
     //The column the robot will move vertically on the field.
-    double moveColumn = -20;
+    double moveColumn = -30;
     double topRow = 8;
 
     double middleRow = -12;
@@ -36,7 +36,7 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
     double bottomRow = -36;
     final double INTAKE_MOVEMENT_SPEED = 0.35;
 
-    private final Pose2D SHOOT_POSITION = new Pose2D(-20,8,36);
+    private final Pose2D SHOOT_POSITION = new Pose2D(-30,8,36);
     final int GATE_WAIT_TIME = 1500;
 
     @Override
