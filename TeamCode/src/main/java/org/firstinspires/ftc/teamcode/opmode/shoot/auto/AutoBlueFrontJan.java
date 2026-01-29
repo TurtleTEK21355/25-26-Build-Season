@@ -19,8 +19,7 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
     private final AllianceSide SIDE = AllianceSide.BLUE;
 //    private final Pose2D STARTING_POSITION = new Pose2D(-52.86852, 50.99152, 54);
-    private final Pose2D STARTING_POSITION = new Pose2D(-39, 39, 54);
-
+    private final Pose2D STARTING_POSITION = new Pose2D(-40, 64, 0);
 
     int shootWaitTime = 300;
     int lastShootWaitTime = 400;
@@ -29,14 +28,14 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
     double intakeColumn = -49;
     //The column the robot will move vertically on the field.
     double moveColumn = -30;
-    double topRow = 8;
+    double topRow = 12;
 
     double middleRow = -12;
 
     double bottomRow = -36;
     final double INTAKE_MOVEMENT_SPEED = 0.35;
 
-    private final Pose2D SHOOT_POSITION = new Pose2D(-30,8,36);
+    private final Pose2D SHOOT_POSITION = new Pose2D(-24,24,36);
     final int GATE_WAIT_TIME = 1500;
 
     @Override
