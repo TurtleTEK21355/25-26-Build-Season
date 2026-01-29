@@ -48,7 +48,9 @@ public abstract class ShootAutoOpModeLinear extends LinearCommandOpMode { //the 
     protected double kpTheta = 0.03;
     protected double kiTheta;
     protected double kdTheta;
-    protected double speed = 0.5;
+    protected double speed = 0.6;
+    protected final Pose2D SHOOT_POSITION = new Pose2D(-20,12,36);
+
 
     public static final String POSITION_BLACKBOARD_KEY = "pos";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
@@ -149,7 +151,7 @@ public abstract class ShootAutoOpModeLinear extends LinearCommandOpMode { //the 
             case 0:
                 break;
             case 1:
-                addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(new Pose2D(-20, 12, 36),1000, speed, drivetrain, true))));
+                addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(new Pose2D(-16, 16, 45),1000, speed, drivetrain, true))));
                 addCommand(new OpenGateCommand(shooterSystem));
                 addCommand(new TimerCommand(2000));
 

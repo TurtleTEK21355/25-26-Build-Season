@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
     private final AllianceSide SIDE = AllianceSide.BLUE;
     private final Pose2D STARTING_POSITION = new Pose2D(-52.86852, 50.99152, 36);
-
+//    private final Pose2D STARTING_POSITION = new Pose2D(-40, 64, 0);
 
 
     int shootWaitTime = 300;
