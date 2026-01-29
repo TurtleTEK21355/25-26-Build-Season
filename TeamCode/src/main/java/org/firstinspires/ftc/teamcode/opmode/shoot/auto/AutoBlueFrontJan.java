@@ -28,7 +28,7 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
     //The column the robot will travel to intake.
     double intakeColumn = -49;
     //The column the robot will move vertically on the field.
-    double moveColumn = -31;
+    double moveColumn = -20;
     double topRow = 12;
 
     double middleRow = -12;
