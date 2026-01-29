@@ -17,8 +17,8 @@ import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpModeLinear;
 @Autonomous(name="Auto Front Blue", group="Autonomous")
 public class AutoFrontBlue extends ShootAutoOpModeLinear {
     private final AllianceSide SIDE = AllianceSide.BLUE;
-//    private final Pose2D STARTING_POSITION = new Pose2D(-40, 64, 0);
-    private final Pose2D STARTING_POSITION = new Pose2D(0, 0, 0);
+    private final Pose2D STARTING_POSITION = new Pose2D(-40, 64, 0);
+//    private final Pose2D STARTING_POSITION = new Pose2D(0, 0, 0);
 
 
 
