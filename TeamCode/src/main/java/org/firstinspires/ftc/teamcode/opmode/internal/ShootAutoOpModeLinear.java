@@ -65,6 +65,7 @@ public abstract class ShootAutoOpModeLinear extends LinearCommandOpMode { //the 
         TelemetryPasser.telemetry = telemetry;
         aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(ShootHardwareNames.Name.APRIL_TAG_CAMERA)));
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(ShootHardwareNames.Name.ODOMETRY_SENSOR)));
+        otosSensor.resetPosition();
         otosSensor.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.FRONT_LEFT_MOTOR)),
@@ -80,7 +81,6 @@ public abstract class ShootAutoOpModeLinear extends LinearCommandOpMode { //the 
                 new Intake(hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.INTAKE_MOTOR))), side);
         //configureVariables();
         drivetrain.configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
-
         commands();
 
     }
@@ -147,6 +147,7 @@ public abstract class ShootAutoOpModeLinear extends LinearCommandOpMode { //the 
         }
         //  Gets ready to shoot
         addCommand(new OpenGateCommand(shooterSystem));
+        addCommand(new TimerCommand(1500));
 
         // Shoots first artifact
         addCommand(new SetFlywheelCommand(shooterSystem, velocity));
