@@ -67,8 +67,7 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
         shoot(false);
 
         //Move To Middle Row
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, middleRow, 90), 100, speed, drivetrain, true));
-
+        addCommand(new SimultaneousOrCommand((new MovePIDHoldTimeCommand(new Pose2D(moveColumn, middleRow-3, 90), 100, speed, drivetrain, true)), new TimerCommand(2000)));
         //Intake Artifacts
         addCommand(new SimultaneousAndCommand((new MovePIDHoldTimeCommand(new Pose2D(intakeColumn,middleRow,90), 100, INTAKE_MOVEMENT_SPEED, drivetrain, true)), (new StartIntakeCommand(shooterSystem))));
         addCommand(new StopIntakeCommand(shooterSystem));
