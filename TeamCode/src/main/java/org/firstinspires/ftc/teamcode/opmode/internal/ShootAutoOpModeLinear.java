@@ -57,6 +57,7 @@ public abstract class ShootAutoOpModeLinear extends LinearCommandOpMode { //the 
     public int shootWaitTime = 300;
     public int lastShootWaitTime = 400;
     public int flyWheelVelocity = 1150;
+    public int backFlyWheelVelocity = 1500;
 
     @Override
     public void initialize() {
@@ -137,24 +138,30 @@ public abstract class ShootAutoOpModeLinear extends LinearCommandOpMode { //the 
 
     }
 
-    public void shoot(){
+    public void shoot(boolean fromBack){
+        int velocity;
+        if (fromBack) {
+            velocity = backFlyWheelVelocity;
+        } else {
+            velocity = flyWheelVelocity;
+        }
         //  Gets ready to shoot
         addCommand(new OpenGateCommand(shooterSystem));
 
         // Shoots first artifact
-        addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
+        addCommand(new SetFlywheelCommand(shooterSystem, velocity));
         addCommand(new StartIntakeCommand(shooterSystem));
         addCommand(new TimerCommand(shootWaitTime));
         addCommand(new StopIntakeCommand(shooterSystem));
 
         // Shoots second artifact
-        addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
+        addCommand(new SetFlywheelCommand(shooterSystem, velocity));
         addCommand(new StartIntakeCommand(shooterSystem));
         addCommand(new TimerCommand(shootWaitTime));
         addCommand(new StopIntakeCommand(shooterSystem));
 
         // Shoots third artifact
-        addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
+        addCommand(new SetFlywheelCommand(shooterSystem, velocity));
         addCommand(new StartIntakeCommand(shooterSystem));
         addCommand(new TimerCommand(lastShootWaitTime));
         addCommand(new StopIntakeCommand(shooterSystem));

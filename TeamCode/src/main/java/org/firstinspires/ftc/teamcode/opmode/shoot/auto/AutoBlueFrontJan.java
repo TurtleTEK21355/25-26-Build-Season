@@ -50,7 +50,7 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
         //Move Robot Out, Ready Shooter, and shoot
         addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,100, speed, drivetrain, true))));
         addCommand(new OpenGateCommand(shooterSystem));
-        shoot();
+        shoot(false);
 
         //Move to Top Row
         addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, topRow, 90), 100, speed, drivetrain, true));
@@ -61,7 +61,7 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
 
         //Go Back to Launch Zone and shoot
         addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,100, speed, drivetrain, true))));
-        shoot();
+        shoot(false);
 
         //Move To Middle Row
         addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, middleRow, 90), 100, speed, drivetrain, true));
@@ -72,7 +72,7 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
 
         //Go back to Launch Zone and shoot
         addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,100, speed, drivetrain, true))));
-        shoot();
+        shoot(false);
 
         //Move to Bottom Row
         addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, bottomRow, 90), 100, speed, drivetrain, true));
@@ -83,7 +83,7 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
 
         //Go back to Launch Zone and shoot
         addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,100, speed, drivetrain, true))));
-        shoot();
+        shoot(false);
 
         //Move out of Launch Zone
 
@@ -93,7 +93,7 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
 
         addCommand(new CloseGateCommand(shooterSystem));
         addCommand(new SetFlywheelCommand(shooterSystem, 0));
-        addCommand(new TimerCommand(100));
+        addCommand(new TimerCommand(1500));
 
 
     }

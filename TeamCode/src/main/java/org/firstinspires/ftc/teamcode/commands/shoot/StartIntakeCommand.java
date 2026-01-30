@@ -20,7 +20,7 @@ public class StartIntakeCommand extends Command {
 
     public StartIntakeCommand(ShooterSystem shooterSystem) {
         this.shooterSystem = shooterSystem;
-        power = 0.8;
+        power = 1;
 
     }
 
