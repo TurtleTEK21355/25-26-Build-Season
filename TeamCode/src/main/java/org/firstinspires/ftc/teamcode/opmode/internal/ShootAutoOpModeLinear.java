@@ -48,7 +48,7 @@ public abstract class ShootAutoOpModeLinear extends LinearCommandOpMode { //the 
     protected double kpTheta = 0.03;
     protected double kiTheta;
     protected double kdTheta;
-    protected double speed = 0.3;
+    protected double speed = 0.5;
     protected final Pose2D SHOOT_POSITION = new Pose2D(-20,12,36);
 
 
