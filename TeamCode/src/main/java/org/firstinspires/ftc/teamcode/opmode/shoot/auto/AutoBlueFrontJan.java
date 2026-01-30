@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmode.shoot.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.commands.logic.SimultaneousOrCommand;
 import org.firstinspires.ftc.teamcode.commands.shared.MovePIDCommand;
 import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpModeLinear;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
@@ -15,6 +16,8 @@ import org.firstinspires.ftc.teamcode.commands.shoot.StopIntakeCommand;
 import org.firstinspires.ftc.teamcode.commands.logic.TimerCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 
+import java.util.Timer;
+
 @Autonomous(name="AutoBlueFrontJan", group="Autonomous")
 public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
     private final AllianceSide SIDE = AllianceSide.BLUE;
@@ -25,9 +28,9 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
     int lastShootWaitTime = 400;
     int flyWheelVelocity = 1150;
     //The column the robot will travel to intake.
-    double intakeColumn = -49;
+    double intakeColumn = -45;
     //The column the robot will move vertically on the field.
-    double moveColumn = -30;
+    double moveColumn = -20;
     double topRow = 12;
 
     double middleRow = -12;
@@ -35,7 +38,7 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
     double bottomRow = -36;
     final double INTAKE_MOVEMENT_SPEED = 0.35;
 
-    private final Pose2D SHOOT_POSITION = new Pose2D(-20,8,36);
+    private final Pose2D SHOOT_POSITION = new Pose2D(-18,12,36);
     final int GATE_WAIT_TIME = 1500;
 
     @Override
@@ -56,11 +59,11 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
         addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, topRow, 90), 100, speed, drivetrain, true));
 
         //Intake Artifacts
-        addCommand(new SimultaneousAndCommand((new MovePIDHoldTimeCommand(new Pose2D(intakeColumn,topRow,90), 100, INTAKE_MOVEMENT_SPEED, drivetrain, true)), (new StartIntakeCommand(shooterSystem))));
+        addCommand(new SimultaneousAndCommand(new SimultaneousOrCommand(new TimerCommand(2000),(new MovePIDHoldTimeCommand(new Pose2D(intakeColumn,topRow,90), 100, INTAKE_MOVEMENT_SPEED, drivetrain, true)), (new StartIntakeCommand(shooterSystem)))));
         addCommand(new StopIntakeCommand(shooterSystem));
 
         //Go Back to Launch Zone and shoot
-        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,100, speed, drivetrain, true))));
+        addCommand(new SimultaneousAndCommand((new SimultaneousOrCommand(new TimerCommand(2000),new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,100, speed, drivetrain, true))));
         shoot(false);
 
         //Move To Middle Row
@@ -87,7 +90,7 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
 
         //Move out of Launch Zone
 
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, middleRow, 90), 100, speed, drivetrain, true));
+        addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, middleRow, 36), 100, speed, drivetrain, true));
 
 
 

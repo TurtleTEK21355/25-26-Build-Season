@@ -31,7 +31,7 @@ public class AutoFrontBlue extends ShootAutoOpModeLinear {
 
     @Override
     public void commands() {
-        shoot(); // to be tested
+        //shoot(); // to be tested
         addCommand(new SetFlywheelCommand(shooterSystem, 0));
         addCommand(new TimerCommand(400));
         addCommand(new MovePIDHoldTimeCommand(new Pose2D(-30, 8, 0),1500, speed, drivetrain, true));
