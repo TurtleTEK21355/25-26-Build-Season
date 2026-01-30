@@ -19,8 +19,7 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
     private final AllianceSide SIDE = AllianceSide.BLUE;
     private final Pose2D STARTING_POSITION = new Pose2D(-52.86852, 50.99152, 54);
-//    private final Pose2D STARTING_POSITION = new Pose2D(-39, 39, 54);
-
+//    private final Pose2D STARTING_POSITION = new Pose2D(-40, 64, 0);
 
     int shootWaitTime = 300;
     int lastShootWaitTime = 400;
@@ -29,7 +28,7 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
     double intakeColumn = -49;
     //The column the robot will move vertically on the field.
     double moveColumn = -30;
-    double topRow = 8;
+    double topRow = 12;
 
     double middleRow = -12;
 
@@ -49,52 +48,52 @@ public class AutoBlueFrontJan extends ShootAutoOpModeLinear {
     @Override
     public void commands() {
         //Move Robot Out, Ready Shooter, and shoot
-        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain, true))));
+        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,100, speed, drivetrain, true))));
         addCommand(new OpenGateCommand(shooterSystem));
         shoot();
 
         //Move to Top Row
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, topRow, 90), 1000, speed, drivetrain, true));
+        addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, topRow, 90), 100, speed, drivetrain, true));
 
         //Intake Artifacts
-        addCommand(new SimultaneousAndCommand((new MovePIDHoldTimeCommand(new Pose2D(intakeColumn,topRow,90), 500, INTAKE_MOVEMENT_SPEED, drivetrain, true)), (new StartIntakeCommand(shooterSystem))));
+        addCommand(new SimultaneousAndCommand((new MovePIDHoldTimeCommand(new Pose2D(intakeColumn,topRow,90), 100, INTAKE_MOVEMENT_SPEED, drivetrain, true)), (new StartIntakeCommand(shooterSystem))));
         addCommand(new StopIntakeCommand(shooterSystem));
 
         //Go Back to Launch Zone and shoot
-        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain, true))));
+        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,100, speed, drivetrain, true))));
         shoot();
 
         //Move To Middle Row
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, middleRow, 90), 1000, speed, drivetrain, true));
+        addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, middleRow, 90), 100, speed, drivetrain, true));
 
         //Intake Artifacts
-        addCommand(new SimultaneousAndCommand((new MovePIDHoldTimeCommand(new Pose2D(intakeColumn,middleRow,90), 500, INTAKE_MOVEMENT_SPEED, drivetrain, true)), (new StartIntakeCommand(shooterSystem))));
+        addCommand(new SimultaneousAndCommand((new MovePIDHoldTimeCommand(new Pose2D(intakeColumn,middleRow,90), 100, INTAKE_MOVEMENT_SPEED, drivetrain, true)), (new StartIntakeCommand(shooterSystem))));
         addCommand(new StopIntakeCommand(shooterSystem));
 
         //Go back to Launch Zone and shoot
-        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain, true))));
+        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,100, speed, drivetrain, true))));
         shoot();
 
         //Move to Bottom Row
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, bottomRow, 90), 50, speed, drivetrain, true));
+        addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, bottomRow, 90), 100, speed, drivetrain, true));
 
         //Intake Artifacts
-        addCommand(new SimultaneousAndCommand((new MovePIDHoldTimeCommand(new Pose2D(intakeColumn,bottomRow,90), 500, speed, drivetrain, true)), (new StartIntakeCommand(shooterSystem))));
+        addCommand(new SimultaneousAndCommand((new MovePIDHoldTimeCommand(new Pose2D(intakeColumn,bottomRow,90), 100, speed, drivetrain, true)), (new StartIntakeCommand(shooterSystem))));
         addCommand(new StopIntakeCommand(shooterSystem));
 
         //Go back to Launch Zone and shoot
-        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,1000, speed, drivetrain, true))));
+        addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(SHOOT_POSITION,100, speed, drivetrain, true))));
         shoot();
 
         //Move out of Launch Zone
 
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, middleRow, 90), 50, speed, drivetrain, true));
+        addCommand(new MovePIDHoldTimeCommand(new Pose2D(moveColumn, middleRow, 90), 100, speed, drivetrain, true));
 
 
 
         addCommand(new CloseGateCommand(shooterSystem));
         addCommand(new SetFlywheelCommand(shooterSystem, 0));
-        addCommand(new TimerCommand(1500));
+        addCommand(new TimerCommand(100));
 
 
     }

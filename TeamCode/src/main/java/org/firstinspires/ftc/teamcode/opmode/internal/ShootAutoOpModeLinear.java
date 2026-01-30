@@ -138,38 +138,29 @@ public abstract class ShootAutoOpModeLinear extends LinearCommandOpMode { //the 
     }
 
     public void shoot(){
-
-        // This is switch case abuse
-        switch (amount) {
-            case 0:
-                break;
-            case 1:
-                addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new MovePIDHoldTimeCommand(new Pose2D(-20, 8, 36),1000, speed, drivetrain, true))));
-
         //  Gets ready to shoot
+        addCommand(new OpenGateCommand(shooterSystem));
 
-                addCommand(new OpenGateCommand(shooterSystem));
-                addCommand(new SimultaneousAndCommand((new SetFlywheelCommand(shooterSystem, flyWheelVelocity)), (new TimerCommand(1500))));
+        // Shoots first artifact
+        addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
+        addCommand(new StartIntakeCommand(shooterSystem));
+        addCommand(new TimerCommand(shootWaitTime));
+        addCommand(new StopIntakeCommand(shooterSystem));
 
-                // Shoots first artifact
-                addCommand(new StartIntakeCommand(shooterSystem));
-                addCommand(new TimerCommand(shootWaitTime));
-                addCommand(new StopIntakeCommand(shooterSystem));
+        // Shoots second artifact
+        addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
+        addCommand(new StartIntakeCommand(shooterSystem));
+        addCommand(new TimerCommand(shootWaitTime));
+        addCommand(new StopIntakeCommand(shooterSystem));
 
-                // Shoots second artifact
-                addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
-                addCommand(new StartIntakeCommand(shooterSystem));
-                addCommand(new TimerCommand(shootWaitTime));
-                addCommand(new StopIntakeCommand(shooterSystem));
+        // Shoots third artifact
+        addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
+        addCommand(new StartIntakeCommand(shooterSystem));
+        addCommand(new TimerCommand(lastShootWaitTime));
+        addCommand(new StopIntakeCommand(shooterSystem));
 
-                // Shoots third artifact
-                addCommand(new SetFlywheelCommand(shooterSystem, flyWheelVelocity));
-                addCommand(new StartIntakeCommand(shooterSystem));
-                addCommand(new TimerCommand(lastShootWaitTime));
-                addCommand(new StopIntakeCommand(shooterSystem));
-
-                // Closes gate
-                addCommand(new CloseGateCommand(shooterSystem));
+        // Closes gate
+        addCommand(new CloseGateCommand(shooterSystem));
 
     }
 
