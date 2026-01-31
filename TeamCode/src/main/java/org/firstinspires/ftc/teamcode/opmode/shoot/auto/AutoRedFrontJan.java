@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode.shoot.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.commands.shoot.CloseGateCommand;
@@ -15,6 +16,7 @@ import org.firstinspires.ftc.teamcode.commands.logic.TimerCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpModeLinear;
 
+@Disabled
 @Autonomous(name="AutoRedFrontJan", group="Autonomous")
 public class AutoRedFrontJan extends ShootAutoOpModeLinear {
     private final AllianceSide SIDE = AllianceSide.RED;

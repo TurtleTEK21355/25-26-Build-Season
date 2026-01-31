@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode.shoot.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.commands.logic.SimultaneousAndCommand;
 import org.firstinspires.ftc.teamcode.commands.shared.MovePIDHoldTimeCommand;
@@ -9,6 +10,7 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.internal.ShootAutoOpModeLinear;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 
+@Disabled
 @Autonomous(name="Auto Blue Back 01/29/2026", group="Autonomous")
 public class AutoBlueBack1_29_26 extends ShootAutoOpModeLinear {
     private final AllianceSide SIDE = AllianceSide.BLUE;
