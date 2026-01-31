@@ -42,13 +42,13 @@ public abstract class ShootAutoOpModeLinear extends LinearCommandOpMode { //the 
     protected AllianceSide side;
     protected Pose2D startingPosition;
 
-    protected double kp = 0.06;
+    protected double kp = 0.1;
     protected double ki;
     protected double kd;
     protected double kpTheta = 0.03;
     protected double kiTheta;
     protected double kdTheta;
-    protected double speed = 0.5;
+    protected double speed = 0.35;
     protected final Pose2D SHOOT_POSITION = new Pose2D(-20,12,36);
 
 
@@ -66,7 +66,9 @@ public abstract class ShootAutoOpModeLinear extends LinearCommandOpMode { //the 
         aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(ShootHardwareNames.Name.APRIL_TAG_CAMERA)));
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(ShootHardwareNames.Name.ODOMETRY_SENSOR)));
         otosSensor.resetPosition();
-        otosSensor.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1.0, 1.0);
+        otosSensor.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 0.998786111);
+//        otosSensor.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 0.891, 1);
+
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.FRONT_LEFT_MOTOR)),
                 hardwareMap.get(DcMotor.class, hardwareNames.get(ShootHardwareNames.Name.FRONT_RIGHT_MOTOR)),
