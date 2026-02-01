@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
+import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
+
 public class Pose2D {
     public double x;
     public double y;
@@ -37,6 +40,12 @@ public class Pose2D {
 
     }
 
+    public Pose2D(Pose3D pose3D) {
+        this.x = pose3D.getPosition().x;
+        this.y = pose3D.getPosition().y;
+        this.h = pose3D.getOrientation().getYaw();
+    }
+
     public Pose2D(double r, double theta){
         this.x = r * Math.cos(theta);
         this.y = r * Math.sin(theta);
@@ -49,6 +58,16 @@ public class Pose2D {
 
     public Pose2D add(Pose2D other){
         return new Pose2D(this.x + other.x, this.y + other.y, this.h + other.h);
+
+    }
+
+    public Pose2D subtract(Pose2D other){
+        return new Pose2D(this.x - other.x, this.y - other.y, this.h - other.h);
+
+    }
+
+    public double distanceTo(Pose2D other) {
+        return Math.abs(Math.hypot(other.x - x, other.y - y));
 
     }
 
