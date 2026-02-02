@@ -1,3 +1,4 @@
+# THIS NEEDS TO BE UPDATED FOR STATE BOT
 # Robot Motor/Servo Control Standards
 Defines how power manipulates each motor/servo on the robot.
 

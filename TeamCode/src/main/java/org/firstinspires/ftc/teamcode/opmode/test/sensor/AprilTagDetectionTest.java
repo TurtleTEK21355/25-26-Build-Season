@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.subsystems.shared.sensor.AprilTagCamera;
+import org.firstinspires.ftc.teamcode.subsystems.sensor.AprilTagCamera;
 import org.firstinspires.ftc.teamcode.subsystems.shoot.ShootHardwareNames;
 
 @Disabled

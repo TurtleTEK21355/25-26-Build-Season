@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/hardware/OTOSSensor.java
 package org.firstinspires.ftc.teamcode.hardware;
-========
-package org.firstinspires.ftc.teamcode.subsystems.shared.sensor;
->>>>>>>> State-Code:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/subsystems/shared/sensor/OTOSSensor.java
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 
