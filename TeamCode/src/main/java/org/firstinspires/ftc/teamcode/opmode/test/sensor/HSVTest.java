@@ -37,7 +37,7 @@ import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 import org.firstinspires.ftc.teamcode.physicaldata.HSV;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
-import org.firstinspires.ftc.teamcode.subsystems.state.ColorSensor;
+import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensor;
 
 @Disabled
 @TeleOp(name = "Artifact Color Detection Test", group = "test")

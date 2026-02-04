@@ -27,31 +27,41 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.opmode.test.internal;
+package org.firstinspires.ftc.teamcode.opmode.test;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 
-import org.firstinspires.ftc.teamcode.subsystems.sensor.AprilTagCamera;
+import org.firstinspires.ftc.teamcode.TelemetryPasser;
+import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
+import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensor;
 
-@Disabled
-@TeleOp(name = "Blackboard Emitter", group = "test")
-public class BlackboardTestEmitter extends LinearOpMode {
+@TeleOp(name = "Carousel Color Test", group = "test")
+public class CarouselColorTest extends LinearOpMode {
 
-    AprilTagCamera aprilTagCamera;
-    public final String test = "Test";
+    NormalizedColorSensor colorSensor1PassIn;
+    NormalizedColorSensor colorSensor2PassIn;
+    NormalizedColorSensor colorSensor3PassIn;
+    ArtifactState state;
+
 
     @Override
     public void runOpMode() {
-        telemetry.addData("IsCompleted", false);
-        telemetry.update();
+        TelemetryPasser.telemetry = telemetry;
+        colorSensor1PassIn = hardwareMap.get(NormalizedColorSensor.class, "sensor_color_1");
+        ColorSensor colorSensor1 = new ColorSensor(5.5f, colorSensor1PassIn, "sensor_color_1");
+        colorSensor2PassIn = hardwareMap.get(NormalizedColorSensor.class, "sensor_color_2");
+        ColorSensor colorSensor2 = new ColorSensor(5.5f, colorSensor2PassIn, "sensor_color_2");
+        colorSensor3PassIn = hardwareMap.get(NormalizedColorSensor.class, "sensor_color_3");
+        ColorSensor colorSensor3 = new ColorSensor(5.5f, colorSensor3PassIn, "sensor_color_3");
         waitForStart();
-        if (opModeIsActive()) {
-            blackboard.put(test, 1);
-            telemetry.addData("IsCompleted", true);
+        while (opModeIsActive()) {
+            colorSensor1.getArtifactState(true);
+            colorSensor2.getArtifactState(true);
+            colorSensor3.getArtifactState(true);
+
             telemetry.update();
-            sleep(1000);
         }
     }
 }

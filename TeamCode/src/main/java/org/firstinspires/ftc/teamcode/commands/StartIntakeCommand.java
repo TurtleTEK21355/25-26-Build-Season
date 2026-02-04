@@ -3,22 +3,24 @@ package org.firstinspires.ftc.teamcode.commands;
 import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.ShooterSystem;
 
-public class SetFlywheelCommand extends Command {
+public class StartIntakeCommand extends Command {
     private ShooterSystem shooterSystem;
-    private double velocity = 0;
+    private double power;
 
-    public SetFlywheelCommand(ShooterSystem shooterSystem, double velocity) {
+    public StartIntakeCommand(ShooterSystem shooterSystem, double power) {
         this.shooterSystem = shooterSystem;
-        this.velocity = velocity;
+        this.power = power;
+
+    }
+
+    public StartIntakeCommand(ShooterSystem shooterSystem) {
+        this.shooterSystem = shooterSystem;
+        power = 1;
+
     }
 
     @Override
     public void init() {
-        shooterSystem.setFlywheelVelocity(velocity);
-
-    }
-
-    public void loop() {
 
     }
 
