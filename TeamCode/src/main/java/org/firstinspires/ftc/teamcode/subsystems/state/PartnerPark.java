@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.subsystems.shoot.actuator;
+package org.firstinspires.ftc.teamcode.subsystems.state;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;

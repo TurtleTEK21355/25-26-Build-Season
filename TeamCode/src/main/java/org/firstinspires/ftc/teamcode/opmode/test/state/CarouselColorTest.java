@@ -29,14 +29,13 @@
 
 package org.firstinspires.ftc.teamcode.opmode.test.state;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
-import org.firstinspires.ftc.teamcode.subsystems.state.sensor.ColorSensor;
+import org.firstinspires.ftc.teamcode.subsystems.state.ColorSensor;
 
 @TeleOp(name = "Carousel Color Test", group = "test")
 public class CarouselColorTest extends LinearOpMode {

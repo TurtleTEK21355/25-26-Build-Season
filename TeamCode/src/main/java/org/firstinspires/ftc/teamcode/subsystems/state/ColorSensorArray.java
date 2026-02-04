@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.subsystems.state.sensor;
+package org.firstinspires.ftc.teamcode.subsystems.state;
 
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 

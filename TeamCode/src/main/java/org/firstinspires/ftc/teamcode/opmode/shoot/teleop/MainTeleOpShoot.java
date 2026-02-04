@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.subsystems.shoot.ShootHardwareNames;
 import org.firstinspires.ftc.teamcode.subsystems.shoot.GateSystem;
 import org.firstinspires.ftc.teamcode.subsystems.shared.actuator.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.shared.sensor.OTOSSensor;
-import org.firstinspires.ftc.teamcode.subsystems.shoot.actuator.PartnerPark;
+import org.firstinspires.ftc.teamcode.subsystems.state.PartnerPark;
 import org.firstinspires.ftc.teamcode.subsystems.shoot.ShooterSystem;
 
 @TeleOp(name="Main TeleOp Shoot", group="Iterative OpModes")

@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 import org.firstinspires.ftc.teamcode.physicaldata.ColorSensorPosition;
-import org.firstinspires.ftc.teamcode.subsystems.state.sensor.ColorSensorArray;
 
 public class CarouselSystem {
 
