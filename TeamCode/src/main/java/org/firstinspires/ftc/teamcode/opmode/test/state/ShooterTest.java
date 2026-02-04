@@ -18,7 +18,7 @@ public class ShooterTest extends LinearOpMode {
         DcMotor motor = hardwareMap.get(DcMotor.class, "motor");
         Servo servo = hardwareMap.get(Servo.class, "servo");
         servo.setDirection(Servo.Direction.REVERSE);
-        motor.setDirection(DcMotor.Direction.REVERSE);
+        motor.setDirection(DcMotor.Direction.FORWARD);
 
         servo.setPosition(0);
         waitForStart();
