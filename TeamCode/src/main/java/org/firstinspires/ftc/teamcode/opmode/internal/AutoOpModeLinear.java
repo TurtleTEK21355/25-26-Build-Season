@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.subsystems.sensor.AprilTagCamera;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 import org.firstinspires.ftc.teamcode.subsystems.CarouselSystem;
-import org.firstinspires.ftc.teamcode.subsystems.HardwareNames;
+import org.firstinspires.ftc.teamcode.hardware.HardwareNames;
 import org.firstinspires.ftc.teamcode.subsystems.TurretSystem;
 
 public abstract class AutoOpModeLinear extends LinearCommandOpMode { //the robots name is shoot
@@ -56,7 +56,7 @@ public abstract class AutoOpModeLinear extends LinearCommandOpMode { //the robot
     public void initialize() {
         telemetry.addData("Starting Position", startingPosition.x + ", " +  startingPosition.y + ", " + startingPosition.h);
         TelemetryPasser.telemetry = telemetry;
-        aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(HardwareNames.Name.VISION_SENSOR)));
+        aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(HardwareNames.Name.WEBCAM_VISION_SENSOR)));
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
         otosSensor.resetPosition();
         otosSensor.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 0.998786111);

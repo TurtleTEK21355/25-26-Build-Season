@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.subsystems;
+package org.firstinspires.ftc.teamcode.hardware;
 
 import java.util.HashMap;
 
@@ -13,7 +13,7 @@ public class HardwareNames { // this should be an enum
         FLYWHEEL_MOTOR,
         INTAKE_MOTOR,
         CAROUSEL_SERVO,
-        VISION_SENSOR,
+        WEBCAM_VISION_SENSOR,
         FRONT_COLOR_SENSOR,
         LEFT_COLOR_SENSOR,
         RIGHT_COLOR_SENSOR,
@@ -32,7 +32,7 @@ public class HardwareNames { // this should be an enum
         nameList.put(Name.ODOMETRY_SENSOR, "otos");
         nameList.put(Name.FLYWHEEL_MOTOR, "flywheel");
         nameList.put(Name.INTAKE_MOTOR, "intake");
-        nameList.put(Name.VISION_SENSOR, "webcam");
+        nameList.put(Name.WEBCAM_VISION_SENSOR, "webcam");
         nameList.put(Name.FRONT_COLOR_SENSOR, "color_front");
         nameList.put(Name.LEFT_COLOR_SENSOR, "color_left");
         nameList.put(Name.RIGHT_COLOR_SENSOR, "color_right");
