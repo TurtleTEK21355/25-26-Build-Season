@@ -3,20 +3,19 @@ package org.firstinspires.ftc.teamcode.commands;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
-import org.firstinspires.ftc.teamcode.TelemetryPasser;
+import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 
 public class MovePIDHoldTimeCommand extends MovePIDCommand{
     private ElapsedTime holdTimer = new ElapsedTime();
     private final int holdTime;
     private boolean holdTimerStartLock = false;
-    private boolean telemetry;
 
 
-    public MovePIDHoldTimeCommand(Pose2D target, int holdTime, double speed, Drivetrain drivetrain, boolean telemetry) {
-        super(target, speed, drivetrain);
+    public MovePIDHoldTimeCommand(Pose2D target, int holdTime, double speed, StateRobot robot) {
+        super(target, speed, robot);
         this.holdTime = holdTime;
-        this.telemetry = telemetry;
     }
 
     @Override
@@ -27,18 +26,11 @@ public class MovePIDHoldTimeCommand extends MovePIDCommand{
             holdTimerStartLock = true;
         }
 
-        if (telemetry) {
-            TelemetryPasser.telemetry.addData("Position: ", drivetrain.getPosition());
-            TelemetryPasser.telemetry.addData("at Position", super.isCompleted());
-            TelemetryPasser.telemetry.addData("holdTimer", holdTimer.milliseconds());
-            TelemetryPasser.telemetry.addData("holdTimerStartLock", holdTimerStartLock);
-        }
     }
 
     @Override
     public boolean isCompleted() {
         if (super.isCompleted() && holdTimer.milliseconds() >= holdTime) {
-            drivetrain.control(0, 0, 0);
             return true;
         }
         else {

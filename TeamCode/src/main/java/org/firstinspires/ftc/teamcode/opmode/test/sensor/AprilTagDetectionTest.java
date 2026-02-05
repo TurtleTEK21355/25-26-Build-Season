@@ -5,20 +5,17 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.hardware.HardwareNames;
+import org.firstinspires.ftc.teamcode.subsystems.StateHardwareName;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.AprilTagCamera;
-import org.firstinspires.ftc.teamcode.hardware.HardwareNames;
 
 @Disabled
 @TeleOp(name = "April Tag Detection Test", group = "test")
 public class AprilTagDetectionTest extends OpMode {
-
-    private HardwareNames hardwareNames = new HardwareNames();
     private AprilTagCamera aprilTagCamera;
 
     @Override
     public void init() {
-        aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(HardwareNames.Name.WEBCAM_VISION_SENSOR)));
+        aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, StateHardwareName.VISION_SENSOR.getName()));
 
     }
 

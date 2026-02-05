@@ -28,6 +28,17 @@ public class SimultaneousAnyCommand extends Command {
         }
     }
 
+    public String telemetry(){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < commandList.size(); i++) {
+            stringBuilder.append(commandList.get(i).telemetry());
+            if (i < commandList.size() - 1) {
+                stringBuilder.append(System.lineSeparator());
+            }
+        }
+        return stringBuilder.toString();
+    }
+
     @Override
     public boolean isCompleted() {
         for (Command command : commandList) {

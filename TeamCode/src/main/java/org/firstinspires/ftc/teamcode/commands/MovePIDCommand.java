@@ -5,41 +5,37 @@ import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerSpeedLimit;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
-import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
-import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
+import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
 public class MovePIDCommand extends Command {
     Pose2D position;
     Pose2D target;
     double speed;
-    Drivetrain drivetrain;
-    OTOSSensor otosSensor;
+    private StateRobot robot;
     PIDControllerSpeedLimit yPID;
     PIDControllerSpeedLimit xPID;
     PIDControllerHeading hPID;
 
 
-    public MovePIDCommand(Pose2D target, double speed, Drivetrain drivetrain, OTOSSensor otosSensor) {
-        this.drivetrain = drivetrain;
-        this.otosSensor = otosSensor;
+    public MovePIDCommand(Pose2D target, double speed, StateRobot robot) {
+        this.robot = robot;
         this.target = target;
         this.speed = speed;
-        yPID = new PIDControllerSpeedLimit(drivetrain.getPIDConstants(), target.y, drivetrain.getTolerance().y, speed);
-        xPID = new PIDControllerSpeedLimit(drivetrain.getPIDConstants(), target.x, drivetrain.getTolerance().x, speed);
-        hPID = new PIDControllerHeading(drivetrain.getThetaPIDConstants(), target.h, drivetrain.getTolerance().h, speed);
+        yPID = new PIDControllerSpeedLimit(robot.getPIDConstants(), target.y, robot.getTolerance().y, speed);
+        xPID = new PIDControllerSpeedLimit(robot.getPIDConstants(), target.x, robot.getTolerance().x, speed);
+        hPID = new PIDControllerHeading(robot.getThetaPIDConstants(), target.h, robot.getTolerance().h, speed);
     }
 
     @Override
     public void loop() {
-        position = otosSensor.getPosition();
-        drivetrain.fcControl(yPID.calculate(position.y), xPID.calculate(position.x), hPID.calculate(position.h), 0, position);
-        drivetrain.PIDTelemetry(position, target, xPID.atTarget(position.x), yPID.atTarget(position.y), hPID.atTarget(position.h));
+        robot.updatePosition();
+        robot.drivetrainFCControl(yPID.calculate(robot.getY()), xPID.calculate(robot.getX()), hPID.calculate(robot.getH()));
 
         TelemetryPasser.telemetry.addLine()
         .addData("yPID at Position", yPID.atTarget(position.y))
         .addData("xPID at Position", xPID.atTarget(position.x))
         .addData("hPID at Position", hPID.atTarget(position.h))
-        .addData("dt pos", otosSensor.getPosition());
+        .addData("dt pos", robot.getPosition());
 
     }
 

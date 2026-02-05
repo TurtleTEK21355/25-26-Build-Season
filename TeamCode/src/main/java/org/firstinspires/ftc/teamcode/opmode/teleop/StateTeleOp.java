@@ -1,0 +1,27 @@
+package org.firstinspires.ftc.teamcode.opmode.teleop;
+
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
+import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
+import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
+import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
+
+public class StateTeleOp extends OpMode {
+    private StateRobot robot;
+
+    @Override
+    public void init() {
+        Pose2D startingPosition = (Pose2D) blackboard.get(StateRobot.POSITION_BLACKBOARD_KEY);
+        AllianceSide side = (AllianceSide) blackboard.get(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY);
+        robot = StateRobot.build();
+        robot.setPosition(startingPosition);
+        robot.setAllianceSide(side);
+    }
+
+    @Override
+    public void loop() {
+        robot.updatePosition();
+        robot.drivetrainFCControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        telemetry.update();
+    }
+}
