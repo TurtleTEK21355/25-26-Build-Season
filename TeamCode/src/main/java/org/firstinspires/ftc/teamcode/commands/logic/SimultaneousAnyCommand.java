@@ -5,11 +5,11 @@ import org.firstinspires.ftc.teamcode.lib.command.CommandList;
 
 import java.util.Arrays;
 
-public class SimultaneousOrCommand extends Command {
+public class SimultaneousAnyCommand extends Command {
 
     private final CommandList commandList;
 
-    public SimultaneousOrCommand(Command... commands) {
+    public SimultaneousAnyCommand(Command... commands) {
         commandList = new CommandList();
         commandList.addAll(Arrays.asList(commands));
     }
