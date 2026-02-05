@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
-@TeleOp()
+@TeleOp(name = "USE THIS FOR STATE MANUAL TESTING!!!!")
 public class StateTeleOp extends OpMode {
     private StateRobot robot;
 
