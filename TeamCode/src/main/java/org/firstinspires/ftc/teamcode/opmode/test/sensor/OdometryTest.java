@@ -24,7 +24,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.AprilTagCamera;
 
 
-@TeleOp(name="Drivetrain + Odometry", group = "a")
+@TeleOp(name="Drivetrain + Odometry")
 public class OdometryTest extends LinearOpMode {
     protected Drivetrain drivetrain;
     protected OTOSSensor otosSensor;
