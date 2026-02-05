@@ -23,8 +23,8 @@ import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.AprilTagCamera;
 
-@Disabled
-@TeleOp(name="State Robot Test USE THIS ONE", group = "a")
+
+@TeleOp(name="Drivetrain + Odometry", group = "a")
 public class OdometryTest extends LinearOpMode {
     protected Drivetrain drivetrain;
     protected OTOSSensor otosSensor;
