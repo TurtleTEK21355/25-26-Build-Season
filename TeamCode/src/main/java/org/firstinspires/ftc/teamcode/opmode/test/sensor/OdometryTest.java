@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.opmode.test.sensor;
 
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.bylazar.gamepad.GamepadManager;
+import com.bylazar.gamepad.PanelsGamepad;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -13,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.hardware.HardwareNames;
-import org.firstinspires.ftc.teamcode.hardware.OTOSSensor;
+import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
@@ -41,7 +43,9 @@ public class OdometryTest extends LinearOpMode {
 
 
     public void runOpMode() {
-        TelemetryPasser.telemetry = new MultipleTelemetry(telemetry, PanelsTelemetry.INSTANCE.getFtcTelemetry());
+        Telemetry combined = new MultipleTelemetry(telemetry, PanelsTelemetry.INSTANCE.getFtcTelemetry());
+        TelemetryPasser.telemetry = combined;
+        PanelsGamepad virtualGamepad = PanelsGamepad.INSTANCE;
         side = (AllianceSide) blackboard.getOrDefault(ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         startingPosition = (Pose2D) blackboard.getOrDefault(POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
         webCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(HardwareNames.Name.WEBCAM_VISION_SENSOR)));
@@ -59,10 +63,12 @@ public class OdometryTest extends LinearOpMode {
         drivetrain.configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
         waitForStart();
         while (opModeIsActive()){
-            drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, 0);
-            telemetry.addData("Position: ", drivetrain.getPosition());
+            GamepadManager virtualGamepad1 = virtualGamepad.getFirstManager();
+            GamepadManager virtualGamepad2 = virtualGamepad.getSecondManager();
+            drivetrain.fcControl(-gamepad1.left_stick_y-virtualGamepad1.getLeftStickY(), gamepad1.left_stick_x+ virtualGamepad1.getLeftStickX(), gamepad1.right_stick_x+ virtualGamepad1.getRightStickX(), 0);
+            combined.addData("Position: ", drivetrain.getPosition());
             drivetrain.powerTelemetry();
-            telemetry.update();
+            combined.update();
         }
     }
 }

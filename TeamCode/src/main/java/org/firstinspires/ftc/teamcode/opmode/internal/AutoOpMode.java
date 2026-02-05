@@ -9,22 +9,23 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.opmode.auto.LinearCommandOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.menu.DoubleMenuItem;
 import org.firstinspires.ftc.teamcode.lib.menu.Menu;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
-import org.firstinspires.ftc.teamcode.hardware.AprilTagCamera;
 import org.firstinspires.ftc.teamcode.subsystems.CarouselSystem;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.FlyWheel;
 import org.firstinspires.ftc.teamcode.hardware.HardwareNames;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.hardware.OTOSSensor;
+import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterSystem;
 import org.firstinspires.ftc.teamcode.subsystems.TurretSystem;
+import org.firstinspires.ftc.teamcode.subsystems.sensor.AprilTagCamera;
 
-public class AutoOpMode extends LinearCommandOpMode{
+public class AutoOpMode extends LinearCommandOpMode {
     protected HardwareNames hardwareNames = new HardwareNames();
     protected Drivetrain drivetrain;
     protected OTOSSensor otosSensor;
