@@ -43,8 +43,8 @@ public class StateRobot {
         this.shooterSystem = shooterSystem;
         this.otosSensor = otosSensor;
         this.aprilTagCamera = aprilTagCamera;
-        this.position = null;
-        this.side = null;
+        this.position = new Pose2D(0,0,0);
+        this.side = AllianceSide.BLUE;
         configureOtos(0, 0, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1); //default
     }
 
