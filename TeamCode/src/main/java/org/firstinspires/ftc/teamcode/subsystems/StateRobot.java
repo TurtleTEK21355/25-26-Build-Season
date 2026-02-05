@@ -52,6 +52,21 @@ public class StateRobot {
         drivetrain.fcControl(y, x, h, side, position);
     }
 
+    /**
+     *
+     * @param intake power
+     * @param shooter power
+     * @param carousel position
+     * @param artifactLifter up/down (up is true)
+     * @param hood position
+     */
+    public void manualControls(double intake, double shooter, double carousel, boolean artifactLifter, double hood) {
+        shooterSystem.setArtifactLiftState(artifactLifter);
+        shooterSystem.setFlywheelPower(shooter);
+        shooterSystem.setIntakePower(intake);
+        shooterSystem.setCarouselPosition(carousel);
+        shooterSystem.setHoodPosition(hood);
+    }
 
 
 

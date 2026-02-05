@@ -14,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
-import org.firstinspires.ftc.teamcode.hardware.HardwareNames;
+import org.firstinspires.ftc.teamcode.subsystems.StateHardwareName;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
@@ -22,9 +22,8 @@ import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.AprilTagCamera;
 
-@TeleOp
+@TeleOp(name="State Robot Test USE THIS ONE", group = "a")
 public class OdometryTest extends LinearOpMode {
-    protected HardwareNames hardwareNames = new HardwareNames();
     protected Drivetrain drivetrain;
     protected OTOSSensor otosSensor;
     protected AprilTagCamera webCamera;
@@ -48,13 +47,13 @@ public class OdometryTest extends LinearOpMode {
         PanelsGamepad virtualGamepad = PanelsGamepad.INSTANCE;
         side = (AllianceSide) blackboard.getOrDefault(ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         startingPosition = (Pose2D) blackboard.getOrDefault(POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
-        webCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, hardwareNames.get(HardwareNames.Name.WEBCAM_VISION_SENSOR)));
-        otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, hardwareNames.get(HardwareNames.Name.ODOMETRY_SENSOR)));
+        webCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, StateHardwareName.VISION_SENSOR.getName()));
+        otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, StateHardwareName.ODOMETRY_SENSOR.getName()));
         drivetrain = new Drivetrain(
-                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_LEFT_MOTOR)),
-                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.FRONT_RIGHT_MOTOR)),
-                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_LEFT_MOTOR)),
-                hardwareMap.get(DcMotor.class, hardwareNames.get(HardwareNames.Name.BACK_RIGHT_MOTOR)),
+                hardwareMap.get(DcMotor.class, StateHardwareName.FRONT_LEFT_MOTOR.getName()),
+                hardwareMap.get(DcMotor.class, StateHardwareName.FRONT_RIGHT_MOTOR.getName()),
+                hardwareMap.get(DcMotor.class, StateHardwareName.BACK_LEFT_MOTOR.getName()),
+                hardwareMap.get(DcMotor.class, StateHardwareName.BACK_RIGHT_MOTOR.getName()),
                 otosSensor);
         otosSensor.resetPosition();
         otosSensor.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1, (double) 3600 /(3600-16.8));

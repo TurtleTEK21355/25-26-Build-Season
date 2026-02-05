@@ -22,10 +22,10 @@ public class ArtifactLift {
         return lift.getPosition();
     }
     public void setLiftUp() {
-
+        setLiftPosition(1);
     }
     public void setLiftDown() {
-
+        setLiftPosition(0);
     }
 
 }

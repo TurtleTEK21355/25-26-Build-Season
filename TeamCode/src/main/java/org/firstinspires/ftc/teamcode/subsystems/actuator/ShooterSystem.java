@@ -26,17 +26,30 @@ public class ShooterSystem {
         //shooting from controllers
     }
 
-    public String teleOpTelemetry() {
-        StringBuilder string = new StringBuilder()
-                .append("this is telemetry\n <-- that is a line break")
-                .append("hello");
-        return string.toString();
-    }
+//    public String teleOpTelemetry() {
+//        StringBuilder string = new StringBuilder()
+//                .append("this is telemetry\n <-- that is a line break")
+//                .append("hello");
+//        return string.toString();
+//    }
 
+    public void setFlywheelPower(double power) {
+        turretSystem.setFlyWheelPower(power);
+    }
     public void setFlywheelVelocity(double velocity) {
         turretSystem.setFlywheelVelocity(velocity);
     }
     public double getFlywheelVelocity(double velocity) {
         return turretSystem.getFlywheelVelocity();
     }
+    public void setIntakePower(double power) {intake.setPower(power);}
+    public void setArtifactLiftState(boolean up) {
+        if (up) {
+            artifactLift.setLiftUp();
+        } else {
+            artifactLift.setLiftDown();
+        }
+    }
+    public void setCarouselPosition(double position) {carouselSystem.setPosition(position);}
+    public void setHoodPosition(double position) {setHoodPosition(position);}
 }

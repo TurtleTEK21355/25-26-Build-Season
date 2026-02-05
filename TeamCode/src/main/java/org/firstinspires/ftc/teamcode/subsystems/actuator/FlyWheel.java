@@ -26,4 +26,8 @@ public class FlyWheel {
 
     }
 
+    public void setPower(double power) {
+        flyWheelMotor.setPower(power);
+    }
+
 }

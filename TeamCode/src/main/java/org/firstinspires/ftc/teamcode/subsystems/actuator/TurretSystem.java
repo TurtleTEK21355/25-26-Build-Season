@@ -22,7 +22,9 @@ public class TurretSystem {
     public double getFlywheelVelocity() {
         return flyWheel.getVelocity();
     }
-
+    public void setFlyWheelPower(double power) {
+        flyWheel.setPower(power);
+    }
     public double getFlywheelTargetVelocity() {
         return targetFlywheelVelocity;
     }
