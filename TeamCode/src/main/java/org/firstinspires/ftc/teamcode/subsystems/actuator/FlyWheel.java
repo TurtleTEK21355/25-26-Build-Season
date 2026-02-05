@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.Range;
 
 public class FlyWheel {
     private DcMotorEx flyWheelMotor;
+    private final double MAX_SPEED = 1500;
 
     public FlyWheel(DcMotorEx flyWheelMotor) {
         this.flyWheelMotor = flyWheelMotor;
@@ -16,7 +17,7 @@ public class FlyWheel {
     }
 
     public void setVelocity(double velocity) {
-        flyWheelMotor.setVelocity(Range.clip(velocity, -1500, 1500));
+        flyWheelMotor.setVelocity(Range.clip(velocity, 0, MAX_SPEED));
 
     }
 

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.lib.command;
 
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Queue;
 
 public class CommandScheduler extends Command{
@@ -25,19 +26,30 @@ public class CommandScheduler extends Command{
 
         }
 
+        Command command = commandQueue.peek();
+
         if (!initLock) {
-            commandQueue.peek().init();//ignore warnings they are dumb
+            command.init();//ignore warnings they are dumb
             initLock = true;
 
         }
 
-        commandQueue.peek().loop();
+        command.loop();
 
-        if (commandQueue.peek().isCompleted()) {
+        if (command.isCompleted()) {
             commandQueue.remove();
             initLock = false;
 
         }
+
+    }
+
+    public String getTelemetry() {
+        String result = "";
+        if (!commandQueue.isEmpty()){
+            result = commandQueue.peek().telemetry();
+        }
+        return result;
 
     }
 

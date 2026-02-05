@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.subsystems.actuator;
 
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
@@ -14,16 +13,12 @@ public class CarouselSystem {
     private final double SHOOT_SENSOR_POSITION = -1; //placeholder
     private final double LEFT_SENSOR_POSITION = 0; //placeholder
     private final double RIGHT_SENSOR_POSITION = 1; //placeholder
-    private final double SHOOTERPOSITION = 0; // placeholder
+    private final double SHOOTER_POSITION = 0; // placeholder
 
 
-    public CarouselSystem(Servo carouselServo,
-                          NormalizedColorSensor colorSensorShoot,
-                          NormalizedColorSensor colorSensorLeft,
-                          NormalizedColorSensor colorSensorRight,
-                          Servo thingy) {
+    public CarouselSystem(Servo carouselServo, ColorSensorArray colorSensorArray) {
         this.carouselServo = carouselServo;
-        colorSensorArray = new ColorSensorArray(colorSensorShoot, colorSensorLeft, colorSensorRight);
+        this.colorSensorArray = colorSensorArray;
     }
     void setPosition(double position) {
         carouselServo.setPosition(position);
@@ -34,11 +29,11 @@ public class CarouselSystem {
     }
     void setArtifact(ArtifactState state) {
         if (colorSensorArray.getArtifactState(ColorSensorPosition.SHOOT) == state) {
-            setPositionRelative(SHOOTERPOSITION, SHOOT_SENSOR_POSITION);
+            setPositionRelative(SHOOTER_POSITION, SHOOT_SENSOR_POSITION);
         } else if(colorSensorArray.getArtifactState(ColorSensorPosition.LEFT) == state) {
-            setPositionRelative(SHOOTERPOSITION, LEFT_SENSOR_POSITION);
+            setPositionRelative(SHOOTER_POSITION, LEFT_SENSOR_POSITION);
         } else if(colorSensorArray.getArtifactState(ColorSensorPosition.LEFT) == state) {
-            setPositionRelative(SHOOTERPOSITION, RIGHT_SENSOR_POSITION);
+            setPositionRelative(SHOOTER_POSITION, RIGHT_SENSOR_POSITION);
         }
     }
 }

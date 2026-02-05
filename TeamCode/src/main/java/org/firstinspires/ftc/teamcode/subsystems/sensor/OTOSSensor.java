@@ -10,7 +10,6 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 public class OTOSSensor {
     private SparkFunOTOS sensor;
 
-
     public OTOSSensor(SparkFunOTOS sensor) {
         this.sensor = sensor;
     }
@@ -35,8 +34,7 @@ public class OTOSSensor {
     }
 
     public Pose2D getPosition() {
-        SparkFunOTOS.Pose2D position = sensor.getPosition();
-        return new Pose2D(position.x, position.y, position.h);
+        return new Pose2D(getPosition());
     }
 
     public void setPosition(Pose2D position) {

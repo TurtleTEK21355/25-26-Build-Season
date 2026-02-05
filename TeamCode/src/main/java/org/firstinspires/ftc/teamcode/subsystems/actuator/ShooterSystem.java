@@ -5,20 +5,20 @@ import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 
 public class ShooterSystem {
     private TurretSystem turretSystem;
+    private ArtifactLift artifactLift;
     private CarouselSystem carouselSystem;
     private Intake intake;
     private Motif motif;
-    private AllianceSide side;
 
-    public ShooterSystem(TurretSystem turretSystem, CarouselSystem carouselSystem, Intake intake, AllianceSide side){
+    public ShooterSystem(TurretSystem turretSystem, ArtifactLift artifactLift, CarouselSystem carouselSystem, Intake intake){
         this.turretSystem = turretSystem;
+        this.artifactLift = artifactLift;
         this.intake = intake;
         this.carouselSystem = carouselSystem;
-        this.side = side;
 
     }
 
-    public void teleOpControl() {
+    public void teleOpControl(AllianceSide side) {
         //color sensor feedback
         //rotation from controllers
         //hood control from calculated distance

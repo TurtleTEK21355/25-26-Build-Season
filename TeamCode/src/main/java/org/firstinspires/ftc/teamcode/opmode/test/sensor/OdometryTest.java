@@ -60,7 +60,6 @@ public class OdometryTest extends LinearOpMode {
         otosSensor.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1, (double) 3600 /(3600-16.8));
 //        otosSensor.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1);
 
-        drivetrain.configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
         waitForStart();
         while (opModeIsActive()){
             GamepadManager virtualGamepad1 = virtualGamepad.getFirstManager();

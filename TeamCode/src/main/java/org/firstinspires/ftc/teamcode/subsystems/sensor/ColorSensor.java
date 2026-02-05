@@ -40,6 +40,7 @@ public class ColorSensor {
         // (but always greater than  or equal to 1).
         colorSensor.setGain(gain);
     }
+
     public NormalizedRGBA getColorsFloats(){
         NormalizedRGBA colors = colorSensor.getNormalizedColors();
         TelemetryPasser.telemetry.addLine()
