@@ -30,7 +30,7 @@ public abstract class StateAutoOpMode extends CommandOpMode {
         telemetry.addData("Starting Position", startingPosition.x + ", " +  startingPosition.y + ", " + startingPosition.h);
         TelemetryPasser.telemetry = telemetry;
 
-        robot = StateRobot.build();
+        robot = StateRobot.build(hardwareMap);
 
         robot.resetPosition();
         robot.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1);

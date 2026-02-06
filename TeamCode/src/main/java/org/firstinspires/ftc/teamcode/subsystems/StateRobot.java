@@ -1,10 +1,9 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -134,32 +133,32 @@ public class StateRobot {
      *
      * @return the robot
      */
-    public static StateRobot build() {
+    public static StateRobot build(HardwareMap hardwareMap) {
         return new StateRobot(
                 new Drivetrain(
-                        hardwareMap.get(DcMotor.class, StateHardwareName.FRONT_LEFT_MOTOR.getName()),
-                        hardwareMap.get(DcMotor.class, StateHardwareName.FRONT_RIGHT_MOTOR.getName()),
-                        hardwareMap.get(DcMotor.class, StateHardwareName.BACK_LEFT_MOTOR.getName()),
-                        hardwareMap.get(DcMotor.class, StateHardwareName.BACK_RIGHT_MOTOR.getName())
+                        hardwareMap.get(DcMotor.class, HardwareName.FRONT_LEFT_MOTOR.getName()),
+                        hardwareMap.get(DcMotor.class, HardwareName.FRONT_RIGHT_MOTOR.getName()),
+                        hardwareMap.get(DcMotor.class, HardwareName.BACK_LEFT_MOTOR.getName()),
+                        hardwareMap.get(DcMotor.class, HardwareName.BACK_RIGHT_MOTOR.getName())
                 ),
                 new ShooterSystem(
                         new TurretSystem(
-                                new FlyWheel(hardwareMap.get(DcMotorEx.class, StateHardwareName.FLYWHEEL_MOTOR.getName())),
-                                hardwareMap.get(Servo.class, StateHardwareName.HOOD_SERVO.getName())
+                                new FlyWheel(hardwareMap.get(DcMotorEx.class, HardwareName.FLYWHEEL_MOTOR.getName())),
+                                hardwareMap.get(Servo.class, HardwareName.HOOD_SERVO.getName())
                         ),
-                        new ArtifactLift(hardwareMap.get(Servo.class, StateHardwareName.ARTIFACT_PUSHER_SERVO.getName())),
+                        new ArtifactLift(hardwareMap.get(Servo.class, HardwareName.ARTIFACT_PUSHER_SERVO.getName())),
                         new CarouselSystem(
-                                hardwareMap.get(Servo.class, StateHardwareName.CAROUSEL_SERVO.getName()),
+                                hardwareMap.get(Servo.class, HardwareName.CAROUSEL_SERVO.getName()),
                                 new ColorSensorArray(
-                                        hardwareMap.get(NormalizedColorSensor.class, StateHardwareName.SHOOT_COLOR_SENSOR.getName()),
-                                        hardwareMap.get(NormalizedColorSensor.class, StateHardwareName.LEFT_COLOR_SENSOR.getName()),
-                                        hardwareMap.get(NormalizedColorSensor.class, StateHardwareName.RIGHT_COLOR_SENSOR.getName())
+                                        hardwareMap.get(NormalizedColorSensor.class, HardwareName.SHOOT_COLOR_SENSOR.getName()),
+                                        hardwareMap.get(NormalizedColorSensor.class, HardwareName.LEFT_COLOR_SENSOR.getName()),
+                                        hardwareMap.get(NormalizedColorSensor.class, HardwareName.RIGHT_COLOR_SENSOR.getName())
                                 )
                         ),
-                        new Intake(hardwareMap.get(DcMotor.class, StateHardwareName.INTAKE_MOTOR.getName()))
+                        new Intake(hardwareMap.get(DcMotor.class, HardwareName.INTAKE_MOTOR.getName()))
                 ),
-                new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, StateHardwareName.ODOMETRY_SENSOR.getName())),
-                new AprilTagCamera(hardwareMap.get(WebcamName.class, StateHardwareName.VISION_SENSOR.getName()))
+                new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, HardwareName.ODOMETRY_SENSOR.getName())),
+                new AprilTagCamera(hardwareMap.get(WebcamName.class, HardwareName.VISION_SENSOR.getName()))
         );
     }
 }

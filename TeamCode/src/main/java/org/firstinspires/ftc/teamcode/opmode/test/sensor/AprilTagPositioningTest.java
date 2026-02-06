@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
-import org.firstinspires.ftc.teamcode.subsystems.StateHardwareName;
+import org.firstinspires.ftc.teamcode.subsystems.HardwareName;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.AprilTagCamera;
 
 @Disabled
@@ -19,7 +19,7 @@ public class AprilTagPositioningTest extends OpMode {
     @Override
     public void init() {
         TelemetryPasser.telemetry = telemetry;
-        aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, StateHardwareName.VISION_SENSOR.getName()));
+        aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, HardwareName.VISION_SENSOR.getName()));
 
     }
 

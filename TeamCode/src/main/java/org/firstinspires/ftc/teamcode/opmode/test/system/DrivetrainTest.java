@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
-import org.firstinspires.ftc.teamcode.subsystems.StateHardwareName;
+import org.firstinspires.ftc.teamcode.subsystems.HardwareName;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 
@@ -16,10 +16,10 @@ public class DrivetrainTest extends OpMode {
     @Override
     public void init() {
         drivetrain = new Drivetrain(
-                hardwareMap.get(DcMotor.class, StateHardwareName.FRONT_LEFT_MOTOR.getName()),
-                hardwareMap.get(DcMotor.class, StateHardwareName.FRONT_RIGHT_MOTOR.getName()),
-                hardwareMap.get(DcMotor.class, StateHardwareName.BACK_LEFT_MOTOR.getName()),
-                hardwareMap.get(DcMotor.class, StateHardwareName.BACK_RIGHT_MOTOR.getName())
+                hardwareMap.get(DcMotor.class, HardwareName.FRONT_LEFT_MOTOR.getName()),
+                hardwareMap.get(DcMotor.class, HardwareName.FRONT_RIGHT_MOTOR.getName()),
+                hardwareMap.get(DcMotor.class, HardwareName.BACK_LEFT_MOTOR.getName()),
+                hardwareMap.get(DcMotor.class, HardwareName.BACK_RIGHT_MOTOR.getName())
         );
     }
 

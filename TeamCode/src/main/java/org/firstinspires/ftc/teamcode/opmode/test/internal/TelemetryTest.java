@@ -5,7 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Disabled
+import org.firstinspires.ftc.teamcode.subsystems.HardwareName;
+
+//@Disabled
 @TeleOp(name = "Telemetry Test", group = "test")
 public class TelemetryTest extends LinearOpMode {
     ElapsedTime timer = new ElapsedTime();
@@ -20,8 +22,8 @@ public class TelemetryTest extends LinearOpMode {
                 timer.reset();
                 testint++;
             }
-            telemetry.addLine("If the following number is increasing, then telemetry is working: ");
-            telemetry.addData("Test Int", testint);
+            telemetry.addLine(HardwareName.FRONT_LEFT_MOTOR.getName());
+            telemetry.update();
         }
     }
 }

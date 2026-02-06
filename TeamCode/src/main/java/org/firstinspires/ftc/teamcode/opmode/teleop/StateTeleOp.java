@@ -15,7 +15,7 @@ public class StateTeleOp extends OpMode {
     public void init() {
         Pose2D startingPosition = (Pose2D) blackboard.get(StateRobot.POSITION_BLACKBOARD_KEY);
         AllianceSide side = (AllianceSide) blackboard.get(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY);
-        robot = StateRobot.build();
+        robot = StateRobot.build(hardwareMap);
         robot.setPosition(startingPosition);
         robot.setAllianceSide(side);
     }

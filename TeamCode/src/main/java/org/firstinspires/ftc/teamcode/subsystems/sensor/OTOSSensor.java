@@ -34,7 +34,7 @@ public class OTOSSensor {
     }
 
     public Pose2D getPosition() {
-        return new Pose2D(getPosition());
+        return new Pose2D(sensor.getPosition());
     }
 
     public void setPosition(Pose2D position) {

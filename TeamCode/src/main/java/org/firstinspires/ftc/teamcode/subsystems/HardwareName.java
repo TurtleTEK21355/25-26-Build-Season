@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-public enum StateHardwareName {
+public enum HardwareName {
     FRONT_LEFT_MOTOR("lf"),
     FRONT_RIGHT_MOTOR("rf"),
     BACK_LEFT_MOTOR("lb"),
@@ -18,7 +18,7 @@ public enum StateHardwareName {
 
     private final String name;
 
-    StateHardwareName(String name) {
+    HardwareName(String name) {
         this.name = name;
     }
     public String getName() {
