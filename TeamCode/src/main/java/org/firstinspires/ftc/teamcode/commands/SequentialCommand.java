@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.commands.logic;
+package org.firstinspires.ftc.teamcode.commands;
 
 import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.lib.command.CommandList;

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.commands.logic;
+package org.firstinspires.ftc.teamcode.commands;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 

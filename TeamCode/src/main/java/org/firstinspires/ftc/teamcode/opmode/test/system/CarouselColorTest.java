@@ -43,7 +43,6 @@ public class CarouselColorTest extends LinearOpMode {
     NormalizedColorSensor colorSensor1PassIn;
     NormalizedColorSensor colorSensor2PassIn;
     NormalizedColorSensor colorSensor3PassIn;
-    ArtifactState state;
 
 
     @Override

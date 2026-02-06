@@ -29,6 +29,10 @@ public class Drivetrain {
     }
 
     public void fcControl(double y, double x, double h, AllianceSide side, Pose2D position) {
+        //this is a little confusing, but this is basically a null checker for side and position
+        //because of the way that the stateRobot class works, if side is null then forward will be
+        //0 degrees so the direction it starts in, and if position is null then it will pass in
+        //position as 0 0 0 basically turning off field centric.
         int forwardDirection = 0;
         if (side != null) {
             forwardDirection = side.getForwardDirection();

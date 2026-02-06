@@ -102,9 +102,13 @@ public class StateRobot {
         return getPosition().h;
     }
 
+
+
     public void setAllianceSide(AllianceSide side) {
         this.side = side;
     }
+
+
 
     public void configurePIDConstants(PIDConstants pidConstants, PIDConstants thetaPIDConstants) {
         this.pidConstants = pidConstants;
@@ -121,6 +125,15 @@ public class StateRobot {
         return PID_TOLERANCE;
     }
 
+
+    /**
+     * this is for building the robot without having to copypaste this around everywhere
+     * use like:
+     * robot = StateRobot.build() in init
+     * if new parts are added then change this
+     *
+     * @return the robot
+     */
     public static StateRobot build() {
         return new StateRobot(
                 new Drivetrain(

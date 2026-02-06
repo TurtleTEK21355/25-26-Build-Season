@@ -9,25 +9,26 @@ import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
 
 public abstract class CommandOpMode extends LinearOpMode {
     private CommandScheduler commandScheduler = new CommandScheduler();
-    private CommandList backgroundCommands = new CommandList();
+    private CommandList backgroundCommands = new CommandList();//these can be for telemetry that runs the whole time, or other stuff
 
     @Override
     public void runOpMode() {
-        initialize(); //where you put in commands and configuration
+        initialize();
         waitForStart();
         while (!commandScheduler.isCompleted() && opModeIsActive()) {
             for (Command command : backgroundCommands) {
                 command.loop();
+                telemetry.addLine(command.telemetry());
             }
+            telemetry.addLine(commandScheduler.getTelemetry());
             commandScheduler.loop();
-
             TelemetryPasser.telemetry.update();
         }
-        cleanup(); //for blackboard or resetting of odometry
+        cleanup(); //for blackboard
     }
 
-    public abstract void initialize();
-    public abstract void cleanup();
+    public abstract void initialize(); //configuration per robot, then commands
+    public abstract void cleanup();//blackboard
 
     public void addCommand(Command command) {
         commandScheduler.add(command);
