@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
 
-public class CommandScheduler extends Command{
+public class CommandScheduler{
 
     private Queue<Command> commandQueue = new LinkedList<>();
 
@@ -13,9 +13,7 @@ public class CommandScheduler extends Command{
 
     public void add(Command command) {
         commandQueue.add(command);
-
     }
-
     public void addAll(CommandList commands) {
         commandQueue.addAll(commands);
     }
@@ -29,7 +27,7 @@ public class CommandScheduler extends Command{
         Command command = commandQueue.peek();
 
         if (!initLock) {
-            command.init();//ignore warnings they are dumb
+            command.init();
             initLock = true;
 
         }
@@ -55,7 +53,6 @@ public class CommandScheduler extends Command{
 
     public boolean isCompleted() {
         return commandQueue.isEmpty();
-
     }
 
 }
