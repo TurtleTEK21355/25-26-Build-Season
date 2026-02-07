@@ -171,7 +171,7 @@ public class StateRobot {
                         ),
                         new Intake(hardwareMap.get(DcMotor.class, HardwareName.INTAKE_MOTOR.getName()))
                 ),
-                new PartnerPark(hardwareMap.get(DcMotorEx.class, HardwareName.PARTNER_PARK_MOTOR.getName())),
+                new PartnerPark(hardwareMap.get(DcMotor.class, HardwareName.PARTNER_PARK_MOTOR.getName())),
                 new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, HardwareName.ODOMETRY_SENSOR.getName())),
                 new AprilTagCamera(hardwareMap.get(WebcamName.class, HardwareName.VISION_SENSOR.getName()))
         );

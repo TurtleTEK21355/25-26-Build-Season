@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode.test.system;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
@@ -8,6 +9,7 @@ import org.firstinspires.ftc.teamcode.subsystems.HardwareName;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 
+@TeleOp(name = "Drivetrain Test", group = "test")
 public class DrivetrainTest extends OpMode {
     private Drivetrain drivetrain;
     private OTOSSensor otosSensor;
