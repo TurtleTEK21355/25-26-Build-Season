@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems.actuator;
 
+import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 
@@ -26,12 +27,11 @@ public class ShooterSystem {
         //shooting from controllers
     }
 
-//    public String teleOpTelemetry() {
-//        StringBuilder string = new StringBuilder()
-//                .append("this is telemetry\n <-- that is a line break")
-//                .append("hello");
-//        return string.toString();
-//    }
+    public String teleOpTelemetry() {
+        TelemetryString string = new TelemetryString();
+        string.addLine("helo");
+        return string.toString();
+    }
 
     public void setFlywheelPower(double power) {
         turretSystem.setFlyWheelPower(power);
