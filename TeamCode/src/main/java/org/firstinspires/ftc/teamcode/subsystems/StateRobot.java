@@ -18,6 +18,7 @@ import org.firstinspires.ftc.teamcode.subsystems.actuator.CarouselSystem;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.FlyWheel;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.actuator.PartnerPark;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.ShooterSystem;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.TurretSystem;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.AprilTagCamera;
@@ -27,6 +28,7 @@ import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 public class StateRobot {
     private Drivetrain drivetrain;
     private ShooterSystem shooterSystem;
+    private PartnerPark partnerPark;
     private OTOSSensor otosSensor;
     private AprilTagCamera aprilTagCamera;
     private PIDConstants pidConstants = new PIDConstants(0.1, 0, 0);
@@ -37,9 +39,10 @@ public class StateRobot {
     public static final String POSITION_BLACKBOARD_KEY = "pos";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
 
-    public StateRobot(Drivetrain drivetrain, ShooterSystem shooterSystem, OTOSSensor otosSensor, AprilTagCamera aprilTagCamera) {
+    public StateRobot(Drivetrain drivetrain, ShooterSystem shooterSystem, PartnerPark partnerPark, OTOSSensor otosSensor, AprilTagCamera aprilTagCamera) {
         this.drivetrain = drivetrain;
         this.shooterSystem = shooterSystem;
+        this.partnerPark = partnerPark;
         this.otosSensor = otosSensor;
         this.aprilTagCamera = aprilTagCamera;
         this.position = new Pose2D(0,0,0);
@@ -67,6 +70,19 @@ public class StateRobot {
         shooterSystem.setIntakePower(intake);
         shooterSystem.setCarouselPosition(carousel);
         shooterSystem.setHoodPosition(hood);
+    }
+
+    public void partnerParkControls(boolean up, boolean down) {
+        if (up) {
+            partnerPark.up();
+        }
+        else if (down) {
+            partnerPark.down();
+        }
+        else {
+            partnerPark.stay();
+        }
+
     }
 
 
@@ -155,6 +171,7 @@ public class StateRobot {
                         ),
                         new Intake(hardwareMap.get(DcMotor.class, HardwareName.INTAKE_MOTOR.getName()))
                 ),
+                new PartnerPark(hardwareMap.get(DcMotorEx.class, HardwareName.PARTNER_PARK_MOTOR.getName())),
                 new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, HardwareName.ODOMETRY_SENSOR.getName())),
                 new AprilTagCamera(hardwareMap.get(WebcamName.class, HardwareName.VISION_SENSOR.getName()))
         );
