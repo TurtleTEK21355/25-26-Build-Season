@@ -43,9 +43,9 @@ public class OdometryTest extends LinearOpMode {
 
 
     public void runOpMode() {
-//        Telemetry combined = new MultipleTelemetry(telemetry, PanelsTelemetry.INSTANCE.getFtcTelemetry());
-//        TelemetryPasser.telemetry = combined;
-//        PanelsGamepad virtualGamepad = PanelsGamepad.INSTANCE;
+        Telemetry combined = new MultipleTelemetry(telemetry, PanelsTelemetry.INSTANCE.getFtcTelemetry());
+        TelemetryPasser.telemetry = combined;
+        PanelsGamepad virtualGamepad = PanelsGamepad.INSTANCE;
         TelemetryPasser.telemetry = telemetry;
         side = (AllianceSide) blackboard.getOrDefault(ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         startingPosition = (Pose2D) blackboard.getOrDefault(POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
@@ -57,23 +57,22 @@ public class OdometryTest extends LinearOpMode {
                 hardwareMap.get(DcMotor.class, HardwareName.BACK_LEFT_MOTOR.getName()),
                 hardwareMap.get(DcMotor.class, HardwareName.BACK_RIGHT_MOTOR.getName()));
         otosSensor.resetPosition();
-//        otosSensor.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1, (double) 3600 /(3600-16.8));
-        otosSensor.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1);
-//        Telemetry combined = new MultipleTelemetry(telemetry, PanelsTelemetry.INSTANCE.getFtcTelemetry());
-//        TelemetryPasser.telemetry = combined;
-//        PanelsGamepad virtualGamepad = PanelsGamepad.INSTANCE;
+        otosSensor.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, (double) 48 /(48-3.5) * (double) 96/(96+4), (double) 3600 /(3600-6.5));
+//        otosSensor.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1);
         side = (AllianceSide) blackboard.getOrDefault(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
 
         waitForStart();
         while (opModeIsActive()){
             Pose2D position = otosSensor.getPosition();
-//            GamepadManager virtualGamepad1 = virtualGamepad.getFirstManager();
-//            GamepadManager virtualGamepad2 = virtualGamepad.getSecondManager();
-//            drivetrain.fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, side, position);
-//            drivetrain.powerTelemetry();
-//            telemetry.addData("Position: ", position);
-//            telemetry.update();
+            GamepadManager virtualGamepad1 = virtualGamepad.getFirstManager();
+            GamepadManager virtualGamepad2 = virtualGamepad.getSecondManager();
+            drivetrain.fcControl(-gamepad1.left_stick_y+(0.5*virtualGamepad1.getLeftStickY()), gamepad1.left_stick_x+(0.5*virtualGamepad1.getLeftStickX()), gamepad1.right_stick_x-(0.5*virtualGamepad1.getRightStickX()), side, new Pose2D(0,0,-90));
+            drivetrain.powerTelemetry();
+            combined.addData("Position X: ", position.x);
+            combined.addData("Position Y: ", position.y);
+            combined.addData("Position H: ", position.h);
+            combined.update();
         }
     }
 }
