@@ -5,6 +5,7 @@ import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerSpeedLimit;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
+import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
 public class MovePIDCommand extends Command {
@@ -35,11 +36,12 @@ public class MovePIDCommand extends Command {
 
     @Override
     public String telemetry() {
-        StringBuilder string = new StringBuilder()
-                .append("yPID at Position ").append(yPID.atTarget(position.y)).append(System.lineSeparator())
-                .append("xPID at Position ").append(xPID.atTarget(position.x)).append(System.lineSeparator())
-                .append("hPID at Position ").append(hPID.atTarget(position.h)).append(System.lineSeparator())
-                .append("Robot Position ").append(robot.getPosition());
+        TelemetryString string = new TelemetryString();
+
+        string.addData("yPID at Position ", yPID.atTarget(position.y));
+        string.addData("xPID at Position ", xPID.atTarget(position.x));
+        string.addData("hPID at Position ", hPID.atTarget(position.h));
+        string.addData("Robot Position ", robot.getPosition());
 
         return string.toString();
     }

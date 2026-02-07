@@ -16,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.subsystems.HardwareName;
+import org.firstinspires.ftc.teamcode.subsystems.ProgrammingRobot;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
@@ -40,6 +41,7 @@ public class OdometryTest extends LinearOpMode {
     protected double speed = 0.5;
     public static final String POSITION_BLACKBOARD_KEY = "pos";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
+    private ProgrammingRobot robot;
 
 
     public void runOpMode() {

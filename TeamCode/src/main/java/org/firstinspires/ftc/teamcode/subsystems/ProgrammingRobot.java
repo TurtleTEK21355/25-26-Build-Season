@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -18,17 +19,14 @@ import org.firstinspires.ftc.teamcode.subsystems.actuator.CarouselSystem;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.FlyWheel;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.actuator.PartnerPark;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.ShooterSystem;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.TurretSystem;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.AprilTagCamera;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensorArray;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 
-public class StateRobot {
+public class ProgrammingRobot {
     private Drivetrain drivetrain;
-    private ShooterSystem shooterSystem;
-    private PartnerPark partnerPark;
     private OTOSSensor otosSensor;
     private AprilTagCamera aprilTagCamera;
     private PIDConstants pidConstants = new PIDConstants(0.1, 0, 0);
@@ -39,10 +37,8 @@ public class StateRobot {
     public static final String POSITION_BLACKBOARD_KEY = "pos";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
 
-    public StateRobot(Drivetrain drivetrain, ShooterSystem shooterSystem, PartnerPark partnerPark, OTOSSensor otosSensor, AprilTagCamera aprilTagCamera) {
+    public ProgrammingRobot(Drivetrain drivetrain, OTOSSensor otosSensor, AprilTagCamera aprilTagCamera) {
         this.drivetrain = drivetrain;
-        this.shooterSystem = shooterSystem;
-        this.partnerPark = partnerPark;
         this.otosSensor = otosSensor;
         this.aprilTagCamera = aprilTagCamera;
         this.position = new Pose2D(0,0,0);
@@ -55,37 +51,6 @@ public class StateRobot {
     public void drivetrainFCControl(double y, double x, double h) {
         drivetrain.fcControl(y, x, h, side, position);
     }
-
-    /**
-     *
-     * @param intake power
-     * @param shooter power
-     * @param carousel position
-     * @param artifactLifter up/down (up is true)
-     * @param hood position
-     */
-    public void manualControls(double intake, double shooter, double carousel, boolean artifactLifter, double hood) {
-        shooterSystem.setArtifactLiftState(artifactLifter);
-        shooterSystem.setFlywheelPower(shooter);
-        shooterSystem.setIntakePower(intake);
-        shooterSystem.setCarouselPosition(carousel);
-        shooterSystem.setHoodPosition(hood);
-    }
-
-    public void partnerParkControls(boolean up, boolean down) {
-        if (up) {
-            partnerPark.up();
-        }
-        else if (down) {
-            partnerPark.down();
-        }
-        else {
-            partnerPark.stay();
-        }
-
-    }
-
-
 
     public void configureOtos(double offsetX, double offsetY, double offsetH, DistanceUnit distanceUnit, AngleUnit angleUnit, double linearScalar, double angularScalar){
         otosSensor.configureOtos(offsetX, offsetY, offsetH, distanceUnit, angleUnit, linearScalar, angularScalar);
@@ -147,31 +112,14 @@ public class StateRobot {
      *
      * @return the robot
      */
-    public static StateRobot build(HardwareMap hardwareMap) {
-        return new StateRobot(
+    public static ProgrammingRobot build() {
+        return new ProgrammingRobot(
                 new Drivetrain(
                         hardwareMap.get(DcMotor.class, HardwareName.FRONT_LEFT_MOTOR.getName()),
                         hardwareMap.get(DcMotor.class, HardwareName.FRONT_RIGHT_MOTOR.getName()),
                         hardwareMap.get(DcMotor.class, HardwareName.BACK_LEFT_MOTOR.getName()),
                         hardwareMap.get(DcMotor.class, HardwareName.BACK_RIGHT_MOTOR.getName())
                 ),
-                new ShooterSystem(
-                        new TurretSystem(
-                                new FlyWheel(hardwareMap.get(DcMotorEx.class, HardwareName.FLYWHEEL_MOTOR.getName())),
-                                hardwareMap.get(Servo.class, HardwareName.HOOD_SERVO.getName())
-                        ),
-                        new ArtifactLift(hardwareMap.get(Servo.class, HardwareName.ARTIFACT_PUSHER_SERVO.getName())),
-                        new CarouselSystem(
-                                hardwareMap.get(Servo.class, HardwareName.CAROUSEL_SERVO.getName()),
-                                new ColorSensorArray(
-                                        hardwareMap.get(NormalizedColorSensor.class, HardwareName.SHOOT_COLOR_SENSOR.getName()),
-                                        hardwareMap.get(NormalizedColorSensor.class, HardwareName.LEFT_COLOR_SENSOR.getName()),
-                                        hardwareMap.get(NormalizedColorSensor.class, HardwareName.RIGHT_COLOR_SENSOR.getName())
-                                )
-                        ),
-                        new Intake(hardwareMap.get(DcMotor.class, HardwareName.INTAKE_MOTOR.getName()))
-                ),
-                new PartnerPark(hardwareMap.get(DcMotorEx.class, HardwareName.PARTNER_PARK_MOTOR.getName())),
                 new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, HardwareName.ODOMETRY_SENSOR.getName())),
                 new AprilTagCamera(hardwareMap.get(WebcamName.class, HardwareName.VISION_SENSOR.getName()))
         );
