@@ -21,9 +21,13 @@ public class ShooterTest extends LinearOpMode {
         servo.setPosition(0);
         waitForStart();
         while (opModeIsActive()) {
-            motor.setPower(gamepad1.right_trigger);
-            servo.setPosition(gamepad1.left_trigger*MAXHOODPOSITION);
+            //motor.setPower(gamepad1.right_trigger);
+            //servo.setPosition(gamepad1.left_trigger*MAXHOODPOSITION);
+            if (gamepad1.a) {
+                motor.setPower(1);
+            }
             telemetry.addData("Servo Position", servo.getPosition());
+            telemetry.addData("MAX", motor.getPower());
             telemetry.update();
         }
     }
