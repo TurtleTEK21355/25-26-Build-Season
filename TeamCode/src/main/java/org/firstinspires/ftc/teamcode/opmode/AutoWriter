@@ -1,4 +1,4 @@
-public class AutoBuilder {
+public class AutoWriter {
 //TODO
 //1. TeleOp Loop
 // - Save data upon trigger(s) and send to writer
