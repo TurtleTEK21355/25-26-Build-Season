@@ -29,7 +29,7 @@ public class ShooterSystem {
 
     public String teleOpTelemetry() {
         TelemetryString string = new TelemetryString();
-        string.addLine("helo");
+        string.addLine("hello");
         return string.toString();
     }
 
@@ -51,5 +51,5 @@ public class ShooterSystem {
         }
     }
     public void setCarouselPosition(double position) {carouselSystem.setPosition(position);}
-    public void setHoodPosition(double position) {setHoodPosition(position);}
+    public void setHoodPosition(double position) {turretSystem.setHoodAngle(position);}
 }

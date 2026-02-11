@@ -9,9 +9,9 @@ import java.util.HashMap;
 
 
 public class ColorSensorArray {
-    private HashMap<ColorSensorPosition, ColorSensor> colorSensors;
+    private HashMap<ColorSensorPosition, ColorSensor> colorSensors = new HashMap<>();
 
-    private HashMap<ColorSensorPosition, ArtifactState> artifacts;
+    private HashMap<ColorSensorPosition, ArtifactState> artifacts = new HashMap<>();
 
     public ColorSensorArray(NormalizedColorSensor shoot, NormalizedColorSensor left, NormalizedColorSensor right) {
         colorSensors.put(
@@ -29,9 +29,9 @@ public class ColorSensorArray {
     }
 
     public void updateBalls() {
-        artifacts.put(ColorSensorPosition.SHOOT, colorSensors.get(ColorSensorPosition.SHOOT).getArtifactState(true));
-        artifacts.put(ColorSensorPosition.LEFT, colorSensors.get(ColorSensorPosition.LEFT).getArtifactState(true));
-        artifacts.put(ColorSensorPosition.RIGHT, colorSensors.get(ColorSensorPosition.RIGHT).getArtifactState(true));
+        artifacts.put(ColorSensorPosition.SHOOT, colorSensors.get(ColorSensorPosition.SHOOT).getArtifactState(false));
+        artifacts.put(ColorSensorPosition.LEFT, colorSensors.get(ColorSensorPosition.LEFT).getArtifactState(false));
+        artifacts.put(ColorSensorPosition.RIGHT, colorSensors.get(ColorSensorPosition.RIGHT).getArtifactState(false));
     }
 
     public ArtifactState getArtifactState(ColorSensorPosition sensorPosition) {
