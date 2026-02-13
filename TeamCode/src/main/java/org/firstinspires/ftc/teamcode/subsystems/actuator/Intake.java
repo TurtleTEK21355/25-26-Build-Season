@@ -11,7 +11,7 @@ public class Intake {
 
     public Intake(DcMotor intakeMotor){
         this.intakeMotor = intakeMotor;
-        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }

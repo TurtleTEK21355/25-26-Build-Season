@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 
 public class PartnerPark {
-    private DcMotorEx viperSlide;
+    private DcMotor viperSlide;
     private final double HOLD_UP_POWER = 0.15;
     private final double UP_POWER = 1;
     private final double HOLD_DOWN_POWER = -0.1;
@@ -17,10 +17,14 @@ public class PartnerPark {
     private final int THRESHOLD = 100;
     private final int MIN = -30;
 
-    public PartnerPark(DcMotorEx viperSlide){
+    public PartnerPark(DcMotor viperSlide){
         this.viperSlide = viperSlide;
         this.viperSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.viperSlide.setDirection(DcMotorSimple.Direction.REVERSE);
+    }
+
+    public void manualControl(double power) {
+        viperSlide.setPower(power);
     }
 
     public void up() {

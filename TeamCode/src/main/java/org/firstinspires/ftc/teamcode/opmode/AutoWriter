@@ -1,0 +1,10 @@
+public class AutoWriter {
+//TODO
+//1. TeleOp Loop
+// - Save data upon trigger(s) and send to writer
+// - Send data to telemetry
+//2. I/O Handler (Probably external class)
+// - Write data to external file in computer readable format
+// - Get data from external file in telemetry format
+// - Get data from external file to make auto commands
+}

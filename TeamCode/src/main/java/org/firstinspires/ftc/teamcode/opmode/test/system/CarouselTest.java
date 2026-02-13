@@ -32,34 +32,32 @@ package org.firstinspires.ftc.teamcode.opmode.test.system;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
-import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
+import org.firstinspires.ftc.teamcode.subsystems.HardwareName;
+import org.firstinspires.ftc.teamcode.subsystems.actuator.CarouselSystem;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensor;
+import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensorArray;
 
-@TeleOp(name = "Carousel Color Test", group = "test")
-public class CarouselColorTest extends LinearOpMode {
-
-    NormalizedColorSensor colorSensor1PassIn;
-    NormalizedColorSensor colorSensor2PassIn;
-    NormalizedColorSensor colorSensor3PassIn;
-
+@TeleOp(name = "Carousel Test", group = "test")
+public class CarouselTest extends LinearOpMode {
+    CarouselSystem carouselSystem;
 
     @Override
     public void runOpMode() {
         TelemetryPasser.telemetry = telemetry;
-        colorSensor1PassIn = hardwareMap.get(NormalizedColorSensor.class, "sensor_color_1");
-        ColorSensor colorSensor1 = new ColorSensor(5.5f, colorSensor1PassIn, "sensor_color_1");
-        colorSensor2PassIn = hardwareMap.get(NormalizedColorSensor.class, "sensor_color_2");
-        ColorSensor colorSensor2 = new ColorSensor(5.5f, colorSensor2PassIn, "sensor_color_2");
-        colorSensor3PassIn = hardwareMap.get(NormalizedColorSensor.class, "sensor_color_3");
-        ColorSensor colorSensor3 = new ColorSensor(5.5f, colorSensor3PassIn, "sensor_color_3");
+        carouselSystem = new CarouselSystem(
+            hardwareMap.get(Servo.class, HardwareName.CAROUSEL_SERVO.getName()),
+            new ColorSensorArray(
+                hardwareMap.get(NormalizedColorSensor.class, HardwareName.SHOOT_COLOR_SENSOR.getName()),
+                hardwareMap.get(NormalizedColorSensor.class, HardwareName.LEFT_COLOR_SENSOR.getName()),
+                hardwareMap.get(NormalizedColorSensor.class, HardwareName.RIGHT_COLOR_SENSOR.getName())
+            )
+        );
+
         waitForStart();
         while (opModeIsActive()) {
-            colorSensor1.getArtifactState(true);
-            colorSensor2.getArtifactState(true);
-            colorSensor3.getArtifactState(true);
-
             telemetry.update();
         }
     }
