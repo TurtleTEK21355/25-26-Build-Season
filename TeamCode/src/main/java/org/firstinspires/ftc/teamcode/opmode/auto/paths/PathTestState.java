@@ -9,12 +9,12 @@ import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.subsystems.ProgrammingRobot;
 
-@Autonomous(name="Path Test")
+@Autonomous(name="BLUE")
 public class PathTestState extends StateAutoOpMode {
     ProgrammingRobot robot;
     Pose2D startingPosition = new Pose2D(-53,51,54);
     AllianceSide side = AllianceSide.BLUE;
-    
+
     double intake = -45;
     double move = -20;
     double top = 12;
