@@ -1,24 +1,23 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.command.Command;
+import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerSpeedLimit;
-import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
-import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
+import org.firstinspires.ftc.teamcode.subsystems.ProgrammingRobot;
 
-public class MovePIDCommand extends Command {
+public class ProgrammingMovePIDCommand extends Command {
     Pose2D position;
     Pose2D target;
     double speed;
-    private StateRobot robot;
+    private ProgrammingRobot robot;
     PIDControllerSpeedLimit yPID;
     PIDControllerSpeedLimit xPID;
     PIDControllerHeading hPID;
 
 
-    public MovePIDCommand(Pose2D target, double speed, StateRobot robot) {
+    public ProgrammingMovePIDCommand(Pose2D target, double speed, ProgrammingRobot robot) {
         this.robot = robot;
         this.target = target;
         this.speed = speed;

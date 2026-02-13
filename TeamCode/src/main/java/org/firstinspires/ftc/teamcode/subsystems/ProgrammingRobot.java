@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -112,7 +112,7 @@ public class ProgrammingRobot {
      *
      * @return the robot
      */
-    public static ProgrammingRobot build() {
+    public static ProgrammingRobot build(HardwareMap hardwareMap) {
         return new ProgrammingRobot(
                 new Drivetrain(
                         hardwareMap.get(DcMotor.class, HardwareName.FRONT_LEFT_MOTOR.getName()),

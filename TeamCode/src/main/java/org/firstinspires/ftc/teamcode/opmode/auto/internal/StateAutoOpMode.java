@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.auto;
+package org.firstinspires.ftc.teamcode.opmode.auto.internal;
 
 import static org.firstinspires.ftc.teamcode.subsystems.StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY;
 import static org.firstinspires.ftc.teamcode.subsystems.StateRobot.POSITION_BLACKBOARD_KEY;
@@ -23,7 +23,7 @@ public abstract class StateAutoOpMode extends CommandOpMode {
     protected double kpTheta = 0.03;
     protected double kiTheta;
     protected double kdTheta;
-    protected double speed = 0.35;
+    protected double speed = 0.5;
 
     @Override
     public void initialize() {
@@ -33,7 +33,7 @@ public abstract class StateAutoOpMode extends CommandOpMode {
         robot = StateRobot.build(hardwareMap);
 
         robot.resetPosition();
-        robot.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1);
+        robot.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, (double) 48 /(48-3.5) * (double) 96/(96+4), (double) 3600 /(3600-6.5));
         robot.configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
 
         commands();
