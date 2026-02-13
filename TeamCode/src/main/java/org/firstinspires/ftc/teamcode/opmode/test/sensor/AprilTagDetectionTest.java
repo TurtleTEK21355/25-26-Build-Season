@@ -15,7 +15,7 @@ public class AprilTagDetectionTest extends OpMode {
 
     @Override
     public void init() {
-        aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, HardwareName.VISION_SENSOR.getName()));
+        aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, "vision"));
 
     }
 

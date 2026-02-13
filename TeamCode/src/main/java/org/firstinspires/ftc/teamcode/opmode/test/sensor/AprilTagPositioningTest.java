@@ -19,7 +19,7 @@ public class AprilTagPositioningTest extends OpMode {
     @Override
     public void init() {
         TelemetryPasser.telemetry = telemetry;
-        aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, HardwareName.VISION_SENSOR.getName()));
+        aprilTagCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, "vision"));
 
     }
 

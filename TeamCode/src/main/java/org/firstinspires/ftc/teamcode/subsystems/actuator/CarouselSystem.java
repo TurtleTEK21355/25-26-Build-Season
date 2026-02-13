@@ -21,6 +21,8 @@ public class CarouselSystem {
     public void setPosition(double position) {
         carouselServo.setPosition(position);
     }
+    public double getPosition() {return carouselServo.getPosition();}
+
     public void setPositionFromSensor(ColorSensorPosition sensor) {
         double distanceFromNeeded = carouselServo.getPosition() - sensor.getRelativePosition();
         setPosition(carouselServo.getPosition()+distanceFromNeeded);

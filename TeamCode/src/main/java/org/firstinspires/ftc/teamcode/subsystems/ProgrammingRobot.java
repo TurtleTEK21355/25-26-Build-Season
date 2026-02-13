@@ -121,7 +121,7 @@ public class ProgrammingRobot {
                         hardwareMap.get(DcMotor.class, HardwareName.BACK_RIGHT_MOTOR.getName())
                 ),
                 new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, HardwareName.ODOMETRY_SENSOR.getName())),
-                new AprilTagCamera(hardwareMap.get(WebcamName.class, HardwareName.VISION_SENSOR.getName()))
+                new AprilTagCamera(hardwareMap.get(WebcamName.class, "vision"))
         );
     }
 }

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -10,9 +12,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
+import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
+import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.ArtifactLift;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.CarouselSystem;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
@@ -30,7 +35,7 @@ public class StateRobot {
     private ShooterSystem shooterSystem;
     private PartnerPark partnerPark;
     private OTOSSensor otosSensor;
-    private AprilTagCamera aprilTagCamera;
+    private Limelight3A limelight;
     private PIDConstants pidConstants = new PIDConstants(0.1, 0, 0);
     private PIDConstants thetaPIDConstants = new PIDConstants(0.03, 0, 0);
     private final Pose2D PID_TOLERANCE = new Pose2D(2, 2, 2.5);
@@ -39,12 +44,12 @@ public class StateRobot {
     public static final String POSITION_BLACKBOARD_KEY = "pos";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
 
-    public StateRobot(Drivetrain drivetrain, ShooterSystem shooterSystem, PartnerPark partnerPark, OTOSSensor otosSensor, AprilTagCamera aprilTagCamera) {
+    public StateRobot(Drivetrain drivetrain, ShooterSystem shooterSystem, PartnerPark partnerPark, OTOSSensor otosSensor, Limelight3A limelight) {
         this.drivetrain = drivetrain;
         this.shooterSystem = shooterSystem;
         this.partnerPark = partnerPark;
         this.otosSensor = otosSensor;
-        this.aprilTagCamera = aprilTagCamera;
+        this.limelight = limelight;
         this.position = new Pose2D(0,0,0);
         this.side = AllianceSide.BLUE;
         configureOtos(0, 0, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1); //default
@@ -70,6 +75,26 @@ public class StateRobot {
         shooterSystem.setIntakePower(intake);
         shooterSystem.setCarouselPosition(carousel);
         shooterSystem.setHoodPosition(hood);
+    }
+    public void sortControl(ArtifactState state) {
+        if (state == ArtifactState.GREEN) {
+            shooterSystem.setArtifactToShoot(state);
+        }
+    }
+    public void startLimelight() {
+        limelight.start();
+    }
+    public void getLimelightData(){
+        limelight.updateRobotOrientation(position.h);
+        LLResult result = limelight.getLatestResult();
+        if (result != null) {
+            if (result.isValid()) {
+                Pose3D botpose = result.getBotpose();
+                TelemetryPasser.telemetry.addData("tx", result.getTx());
+                TelemetryPasser.telemetry.addData("ty", result.getTy());
+                TelemetryPasser.telemetry.addData("Botpose", botpose.toString());
+            }
+        }
     }
 
     public void partnerParkControls(boolean up, boolean down) {
@@ -160,7 +185,7 @@ public class StateRobot {
                                 new FlyWheel(hardwareMap.get(DcMotorEx.class, HardwareName.FLYWHEEL_MOTOR.getName())),
                                 hardwareMap.get(Servo.class, HardwareName.HOOD_SERVO.getName())
                         ),
-                        new ArtifactLift(hardwareMap.get(Servo.class, HardwareName.ARTIFACT_PUSHER_SERVO.getName())),
+                        new ArtifactLift(hardwareMap.get(DcMotorEx.class, HardwareName.ARTIFACT_PUSHER_MOTOR.getName())),
                         new CarouselSystem(
                                 hardwareMap.get(Servo.class, HardwareName.CAROUSEL_SERVO.getName()),
                                 new ColorSensorArray(
@@ -173,7 +198,7 @@ public class StateRobot {
                 ),
                 new PartnerPark(hardwareMap.get(DcMotor.class, HardwareName.PARTNER_PARK_MOTOR.getName())),
                 new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, HardwareName.ODOMETRY_SENSOR.getName())),
-                new AprilTagCamera(hardwareMap.get(WebcamName.class, HardwareName.VISION_SENSOR.getName()))
+                hardwareMap.get(Limelight3A.class, HardwareName.LIMELIGHT.getName())
         );
     }
 }

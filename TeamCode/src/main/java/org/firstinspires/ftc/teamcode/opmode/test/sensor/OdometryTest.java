@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.opmode.test.sensor;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.bylazar.gamepad.GamepadManager;
 import com.bylazar.gamepad.PanelsGamepad;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -29,7 +30,7 @@ import org.firstinspires.ftc.teamcode.subsystems.sensor.AprilTagCamera;
 public class OdometryTest extends LinearOpMode {
     protected Drivetrain drivetrain;
     protected OTOSSensor otosSensor;
-    protected AprilTagCamera webCamera;
+    protected Limelight3A limelight;
     protected AllianceSide side;
     protected Pose2D startingPosition;
     protected double kp = 0.05;
@@ -51,7 +52,7 @@ public class OdometryTest extends LinearOpMode {
         TelemetryPasser.telemetry = telemetry;
         side = (AllianceSide) blackboard.getOrDefault(ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         startingPosition = (Pose2D) blackboard.getOrDefault(POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
-        webCamera = new AprilTagCamera(hardwareMap.get(WebcamName.class, HardwareName.VISION_SENSOR.getName()));
+        limelight = hardwareMap.get(Limelight3A.class, HardwareName.LIMELIGHT.getName());
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, HardwareName.ODOMETRY_SENSOR.getName()));
         drivetrain = new Drivetrain(
                 hardwareMap.get(DcMotor.class, HardwareName.FRONT_LEFT_MOTOR.getName()),

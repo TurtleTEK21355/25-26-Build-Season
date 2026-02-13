@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmode.test.system;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
@@ -13,21 +14,22 @@ public class ShooterTest extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        DcMotor motor = hardwareMap.get(DcMotor.class, "motor");
+        DcMotorEx motor = hardwareMap.get(DcMotorEx.class, "motor");
         Servo servo = hardwareMap.get(Servo.class, "servo");
         servo.setDirection(Servo.Direction.REVERSE);
-        motor.setDirection(DcMotor.Direction.REVERSE);
+        motor.setDirection(DcMotorEx.Direction.REVERSE);
 
         servo.setPosition(0);
         waitForStart();
         while (opModeIsActive()) {
-            //motor.setPower(gamepad1.right_trigger);
-            //servo.setPosition(gamepad1.left_trigger*MAXHOODPOSITION);
+            servo.setPosition(gamepad1.left_trigger*MAXHOODPOSITION);
             if (gamepad1.a) {
                 motor.setPower(1);
+            } else {
+                motor.setPower(gamepad1.right_trigger);
             }
             telemetry.addData("Servo Position", servo.getPosition());
-            telemetry.addData("MAX", motor.getPower());
+            telemetry.addData("Velocity", motor.getVelocity());
             telemetry.update();
         }
     }

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems.actuator;
 
 import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
+import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 
 public class ShooterSystem {
@@ -51,5 +52,10 @@ public class ShooterSystem {
         }
     }
     public void setCarouselPosition(double position) {carouselSystem.setPosition(position);}
+    public double getCarouselPosition() {return carouselSystem.getPosition();}
+
+    public void setArtifactToShoot(ArtifactState state) {
+        carouselSystem.setArtifact(state);
+    }
     public void setHoodPosition(double position) {turretSystem.setHoodAngle(position);}
 }
