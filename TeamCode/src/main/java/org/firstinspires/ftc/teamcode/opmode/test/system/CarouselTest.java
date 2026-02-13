@@ -35,7 +35,11 @@ import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
+import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
+import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
+import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 import org.firstinspires.ftc.teamcode.subsystems.HardwareName;
+import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.CarouselSystem;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensor;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensorArray;
@@ -44,20 +48,26 @@ import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensorArray;
 public class CarouselTest extends LinearOpMode {
     CarouselSystem carouselSystem;
 
+    private StateRobot robot;
+
+    public void initialize() {
+        Pose2D startingPosition = (Pose2D) blackboard.get(StateRobot.POSITION_BLACKBOARD_KEY);
+        AllianceSide side = (AllianceSide) blackboard.get(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY);
+        robot = StateRobot.build(hardwareMap);
+        robot.setPosition(startingPosition);
+        robot.setAllianceSide(side);
+    }
+
     @Override
     public void runOpMode() {
         TelemetryPasser.telemetry = telemetry;
-        carouselSystem = new CarouselSystem(
-            hardwareMap.get(Servo.class, HardwareName.CAROUSEL_SERVO.getName()),
-            new ColorSensorArray(
-                hardwareMap.get(NormalizedColorSensor.class, HardwareName.SHOOT_COLOR_SENSOR.getName()),
-                hardwareMap.get(NormalizedColorSensor.class, HardwareName.LEFT_COLOR_SENSOR.getName()),
-                hardwareMap.get(NormalizedColorSensor.class, HardwareName.RIGHT_COLOR_SENSOR.getName())
-            )
-        );
+        initialize();
+
 
         waitForStart();
         while (opModeIsActive()) {
+            robot.drivetrainFCControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+            robot.manualControls(0,0, gamepad1.left_trigger, false, 0);
             telemetry.update();
         }
     }
