@@ -27,7 +27,7 @@ public abstract class StateAutoOpMode extends CommandOpMode {
 
     @Override
     public void initialize() {
-        telemetry.addData("Starting Position", startingPosition.x + ", " +  startingPosition.y + ", " + startingPosition.h);
+//        telemetry.addData("Starting Position", startingPosition.x + ", " +  startingPosition.y + ", " + startingPosition.h);
         TelemetryPasser.telemetry = telemetry;
 
         robot = StateRobot.build(hardwareMap);
