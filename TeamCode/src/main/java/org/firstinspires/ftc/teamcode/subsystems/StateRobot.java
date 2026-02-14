@@ -74,6 +74,9 @@ public class StateRobot {
         shooterSystem.setFlywheelPower(shooter);
         shooterSystem.setIntakePower(intake);
         shooterSystem.setCarouselPosition(carousel);
+        TelemetryPasser.telemetry.addData("Carousel Control", carousel);
+
+        TelemetryPasser.telemetry.addData("Carousel Position", shooterSystem.getCarouselPosition());
         shooterSystem.setHoodPosition(hood);
     }
     public void sortControl(ArtifactState state) {
@@ -90,9 +93,10 @@ public class StateRobot {
         if (result != null) {
             if (result.isValid()) {
                 Pose3D botpose = result.getBotpose();
-                TelemetryPasser.telemetry.addData("tx", result.getTx());
-                TelemetryPasser.telemetry.addData("ty", result.getTy());
                 TelemetryPasser.telemetry.addData("Botpose", botpose.toString());
+                TelemetryPasser.telemetry.addData("# Tags", result.getBotposeTagCount());
+                TelemetryPasser.telemetry.addData("Results", result.getDetectorResults());
+
             }
         }
     }
@@ -117,6 +121,11 @@ public class StateRobot {
     }
     public void updatePosition(){
         position = otosSensor.getPosition();//TODO add apriltag positioning
+    }
+    public void positionTelemetry(){
+        TelemetryPasser.telemetry.addData("X: ", position.x);
+        TelemetryPasser.telemetry.addData("Y: ", position.y);
+        TelemetryPasser.telemetry.addData("H: ", position.h);
     }
     public void setPosition(Pose2D position) {
         this.position = position;

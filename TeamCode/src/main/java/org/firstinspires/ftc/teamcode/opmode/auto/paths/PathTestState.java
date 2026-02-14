@@ -23,18 +23,17 @@ public class PathTestState extends StateAutoOpMode {
     
     @Override
     public void commands() {
-        addCommand(new ProgrammingMovePIDCommand(new Pose2D(move, top, 54),speed, robot));
-        addCommand(new ProgrammingMovePIDCommand(new Pose2D(intake, top, 90),speed, robot));
-        addCommand(new ProgrammingMovePIDCommand(new Pose2D(move, top, 54),speed, robot));
-        addCommand(new ProgrammingMovePIDCommand(new Pose2D(move, middle, 90),speed, robot));
-        addCommand(new ProgrammingMovePIDCommand(new Pose2D(intake, middle, 90),speed, robot));
-        addCommand(new ProgrammingMovePIDCommand(new Pose2D(move, top, 54),speed, robot));
-        addCommand(new ProgrammingMovePIDCommand(new Pose2D(move, bottom, 90),speed, robot));
-        addCommand(new ProgrammingMovePIDCommand(new Pose2D(intake, bottom, 90),speed, robot));
-        addCommand(new ProgrammingMovePIDCommand(new Pose2D(move, top, 54),speed, robot));
-        addCommand(new ProgrammingMovePIDCommand(new Pose2D(move, middle, 54),speed, robot));
+        addCommand(new ProgrammingMovePIDCommand(new Pose2D(move, top, 54), speed, robot));
+        addCommand(new ProgrammingMovePIDCommand(new Pose2D(intake, top, 90), speed, robot));
+        addCommand(new ProgrammingMovePIDCommand(new Pose2D(move, top, 54), speed, robot));
+        addCommand(new ProgrammingMovePIDCommand(new Pose2D(move, middle, 90), speed, robot));
+        addCommand(new ProgrammingMovePIDCommand(new Pose2D(intake, middle, 90), speed, robot));
+        addCommand(new ProgrammingMovePIDCommand(new Pose2D(move, top, 54), speed, robot));
+        addCommand(new ProgrammingMovePIDCommand(new Pose2D(move, bottom, 90), speed, robot));
+        addCommand(new ProgrammingMovePIDCommand(new Pose2D(intake, bottom, 90), speed, robot));
+        addCommand(new ProgrammingMovePIDCommand(new Pose2D(move, top, 54), speed, robot));
+        addCommand(new ProgrammingMovePIDCommand(new Pose2D(move, middle, 54), speed, robot));
 
 
-
-
+    }
 }
