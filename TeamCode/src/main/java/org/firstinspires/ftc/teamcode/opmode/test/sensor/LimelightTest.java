@@ -23,6 +23,8 @@ public class LimelightTest extends OpMode {
     @Override
     public void loop() {
         robot.updatePosition();
+        robot.positionTelemetry();
+        robot.getLimelightData();
         telemetry.update();
     }
 }

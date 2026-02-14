@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
@@ -36,9 +35,6 @@ public class StateRobot {
     private PartnerPark partnerPark;
     private OTOSSensor otosSensor;
     private Limelight3A limelight;
-    private PIDConstants pidConstants = new PIDConstants(0.1, 0, 0);
-    private PIDConstants thetaPIDConstants = new PIDConstants(0.03, 0, 0);
-    private final Pose2D PID_TOLERANCE = new Pose2D(2, 2, 2.5);
     private Pose2D position;
     private AllianceSide side;
     public static final String POSITION_BLACKBOARD_KEY = "pos";
@@ -55,7 +51,25 @@ public class StateRobot {
         configureOtos(0, 0, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1); //default
     }
 
+    public Drivetrain getDrivetrain() {
+        return drivetrain;
+    }
 
+    public OTOSSensor getOtosSensor() {
+        return otosSensor;
+    }
+
+    public ShooterSystem getShooterSystem() {
+        return shooterSystem;
+    }
+
+    public PartnerPark getPartnerPark() {
+        return partnerPark;
+    }
+
+    public Limelight3A getLimelight() {
+        return limelight;
+    }
 
     public void drivetrainFCControl(double y, double x, double h) {
         drivetrain.fcControl(y, x, h, side, position);
@@ -74,7 +88,11 @@ public class StateRobot {
         shooterSystem.setFlywheelPower(shooter);
         shooterSystem.setIntakePower(intake);
         shooterSystem.setCarouselPosition(carousel);
+        TelemetryPasser.telemetry.addData("Carousel Control", carousel);
+
+        TelemetryPasser.telemetry.addData("Carousel Position", shooterSystem.getCarouselPosition());
         shooterSystem.setHoodPosition(hood);
+        TelemetryPasser.telemetry.addData("Hood Angle:", hood);
     }
     public void sortControl(ArtifactState state) {
         if (state == ArtifactState.GREEN) {
@@ -90,9 +108,10 @@ public class StateRobot {
         if (result != null) {
             if (result.isValid()) {
                 Pose3D botpose = result.getBotpose();
-                TelemetryPasser.telemetry.addData("tx", result.getTx());
-                TelemetryPasser.telemetry.addData("ty", result.getTy());
                 TelemetryPasser.telemetry.addData("Botpose", botpose.toString());
+                TelemetryPasser.telemetry.addData("# Tags", result.getBotposeTagCount());
+                TelemetryPasser.telemetry.addData("Results", result.getDetectorResults());
+
             }
         }
     }
@@ -117,6 +136,11 @@ public class StateRobot {
     }
     public void updatePosition(){
         position = otosSensor.getPosition();//TODO add apriltag positioning
+    }
+    public void positionTelemetry(){
+        TelemetryPasser.telemetry.addData("X: ", position.x);
+        TelemetryPasser.telemetry.addData("Y: ", position.y);
+        TelemetryPasser.telemetry.addData("H: ", position.h);
     }
     public void setPosition(Pose2D position) {
         this.position = position;
@@ -146,22 +170,6 @@ public class StateRobot {
         this.side = side;
     }
 
-
-
-    public void configurePIDConstants(PIDConstants pidConstants, PIDConstants thetaPIDConstants) {
-        this.pidConstants = pidConstants;
-        this.thetaPIDConstants = thetaPIDConstants;
-
-    }
-    public PIDConstants getPIDConstants() {
-        return pidConstants;
-    }
-    public PIDConstants getThetaPIDConstants() {
-        return thetaPIDConstants;
-    }
-    public Pose2D getTolerance() {
-        return PID_TOLERANCE;
-    }
 
 
     /**
