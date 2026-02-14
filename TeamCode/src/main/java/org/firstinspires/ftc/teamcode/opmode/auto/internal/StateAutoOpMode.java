@@ -56,8 +56,4 @@ public abstract class StateAutoOpMode extends CommandOpMode {
         startingPosition = offset;
     }
 
-    public void setStartingPosition(double x, double y, double h) {
-        startingPosition = new Pose2D(x, y, h);
-    }
-
 }

@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.subsystems.ProgrammingRobot;
 public abstract class ProgrammingAutoOpMode extends CommandOpMode {
     protected ProgrammingRobot robot;
     protected AllianceSide side;
-    protected Pose2D startingPosition;
+    protected Pose2D startingPosition = new Pose2D(0,0,0);
     protected double kp = 0.1;
     protected double ki;
     protected double kd;
@@ -45,6 +45,12 @@ public abstract class ProgrammingAutoOpMode extends CommandOpMode {
 
     public abstract void commands();
 
+    public void setAllianceSide(AllianceSide side) {
+        this.side = side;
+    }
 
+    public void setStartingPosition(Pose2D offset) {
+        startingPosition = offset;
+    }
 
 }

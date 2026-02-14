@@ -15,6 +15,10 @@ public class Drivetrain {
     private DcMotor backLeftMotor;
     private DcMotor backRightMotor;
 
+    private PIDConstants pidConstants = new PIDConstants(0.1, 0, 0);
+    private PIDConstants thetaPIDConstants = new PIDConstants(0.03, 0, 0);
+    private final Pose2D PID_TOLERANCE = new Pose2D(2, 2, 2.5);
+
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
         this.frontLeftMotor = frontLeft;
         this.frontRightMotor = frontRight;
@@ -139,6 +143,21 @@ public class Drivetrain {
         this.backLeftMotor.setDirection(lb);
         this.backRightMotor.setDirection(rb);
 
+    }
+
+    public void configurePIDConstants(PIDConstants pidConstants, PIDConstants thetaPIDConstants) {
+        this.pidConstants = pidConstants;
+        this.thetaPIDConstants = thetaPIDConstants;
+
+    }
+    public PIDConstants getPIDConstants() {
+        return pidConstants;
+    }
+    public PIDConstants getThetaPIDConstants() {
+        return thetaPIDConstants;
+    }
+    public Pose2D getTolerance() {
+        return PID_TOLERANCE;
     }
 
 }

@@ -5,12 +5,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.commands.MovePIDHoldTimeCommand;
 import org.firstinspires.ftc.teamcode.commands.ProgrammingMovePIDCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
+import org.firstinspires.ftc.teamcode.opmode.auto.internal.ProgrammingAutoOpMode;
 import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.subsystems.ProgrammingRobot;
 
 @Autonomous(name="BLUE")
-public class PathTestState extends StateAutoOpMode {
+public class PathTestState extends ProgrammingAutoOpMode {
     ProgrammingRobot robot;
     Pose2D startingPosition = new Pose2D(-53, 51, 54);
     AllianceSide side = AllianceSide.BLUE;
@@ -20,6 +21,13 @@ public class PathTestState extends StateAutoOpMode {
     double top = 12;
     double middle = -12;
     double bottom = -36;
+
+    @Override
+    public void initialize() {
+        setAllianceSide(side);
+        setStartingPosition(startingPosition);
+        super.initialize();
+    }
 
     @Override
     public void commands() {
