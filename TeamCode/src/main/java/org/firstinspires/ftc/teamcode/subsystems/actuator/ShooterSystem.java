@@ -20,14 +20,6 @@ public class ShooterSystem {
 
     }
 
-    public void teleOpControl(AllianceSide side) {
-        //color sensor feedback
-        //rotation from controllers
-        //hood control from calculated distance
-        //flywheel power from calculated distance
-        //shooting from controllers
-    }
-
     public String teleOpTelemetry() {
         TelemetryString string = new TelemetryString();
         string.addLine("hello");
@@ -43,7 +35,9 @@ public class ShooterSystem {
     public double getFlywheelVelocity(double velocity) {
         return turretSystem.getFlywheelVelocity();
     }
-    public void setIntakePower(double power) {intake.setPower(power);}
+    public void setIntakePower(double power) {
+        intake.setPower(power);
+    }
     public void setArtifactLiftState(boolean up) {
         if (up) {
             artifactLift.setLiftUp();
@@ -55,7 +49,7 @@ public class ShooterSystem {
     public double getCarouselPosition() {return carouselSystem.getPosition();}
 
     public void setArtifactToShoot(ArtifactState state) {
-        carouselSystem.setArtifact(state);
+        carouselSystem.setArtifactToShoot(state);
     }
     public void setHoodPosition(double position) {turretSystem.setHoodAngle(position);}
 }

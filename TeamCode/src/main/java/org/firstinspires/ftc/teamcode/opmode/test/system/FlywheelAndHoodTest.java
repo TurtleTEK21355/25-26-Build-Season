@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp(name = "Shooter Test", group = "test")
-public class ShooterTest extends LinearOpMode {
+@TeleOp(name = "Flywheel and Hood Test", group = "test")
+public class FlywheelAndHoodTest extends LinearOpMode {
     final double MAXHOODPOSITION = 0.5;
 
 

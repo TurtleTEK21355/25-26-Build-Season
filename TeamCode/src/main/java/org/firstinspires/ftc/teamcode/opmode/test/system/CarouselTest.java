@@ -31,18 +31,12 @@ package org.firstinspires.ftc.teamcode.opmode.test.system;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.Servo;
-
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
-import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
-import org.firstinspires.ftc.teamcode.subsystems.HardwareName;
+import org.firstinspires.ftc.teamcode.physicaldata.ColorSensorPosition;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.CarouselSystem;
-import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensor;
-import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensorArray;
 
 @TeleOp(name = "Carousel Test", group = "test")
 public class CarouselTest extends LinearOpMode {
@@ -66,9 +60,14 @@ public class CarouselTest extends LinearOpMode {
 
         waitForStart();
         while (opModeIsActive()) {
-            robot.drivetrainFCControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+            robot.drivetrainFCControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
             robot.manualControls(0,0, gamepad1.left_trigger, false, 0);
+
+            telemetry.addData("Shoot", carouselSystem.getArtifactState(ColorSensorPosition.SHOOT));
+            telemetry.addData("Left", carouselSystem.getArtifactState(ColorSensorPosition.LEFT));
+            telemetry.addData("Right", carouselSystem.getArtifactState(ColorSensorPosition.RIGHT));
             telemetry.update();
+
         }
     }
 }
