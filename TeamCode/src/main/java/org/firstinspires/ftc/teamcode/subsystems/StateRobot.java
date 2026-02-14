@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
@@ -78,6 +77,7 @@ public class StateRobot {
 
         TelemetryPasser.telemetry.addData("Carousel Position", shooterSystem.getCarouselPosition());
         shooterSystem.setHoodPosition(hood);
+        TelemetryPasser.telemetry.addData("Hood Angle:", hood);
     }
     public void sortControl(ArtifactState state) {
         if (state == ArtifactState.GREEN) {
