@@ -13,8 +13,8 @@ public class MovePIDHoldTimeCommand extends MovePIDCommand{
     private boolean holdTimerStartLock = false;
 
 
-    public MovePIDHoldTimeCommand(Pose2D target, int holdTime, double speed, StateRobot robot) {
-        super(target, speed, robot);
+    public MovePIDHoldTimeCommand(Pose2D target, int holdTime, double speed, Drivetrain drivetrain, OTOSSensor otosSensor) {
+        super(target, speed, drivetrain, otosSensor);
         this.holdTime = holdTime;
     }
 

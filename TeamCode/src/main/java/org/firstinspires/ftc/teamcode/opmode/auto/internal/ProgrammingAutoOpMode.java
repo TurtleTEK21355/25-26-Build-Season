@@ -22,7 +22,6 @@ public abstract class ProgrammingAutoOpMode extends CommandOpMode {
     protected double kpTheta = 0.03;
     protected double kiTheta;
     protected double kdTheta;
-    protected double speed = 0.5;
 
     @Override
     public void initialize() {
@@ -31,7 +30,7 @@ public abstract class ProgrammingAutoOpMode extends CommandOpMode {
         robot = ProgrammingRobot.build(hardwareMap);
 
         robot.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, (double) 48 /(48-3.5) * (double) 96/(96+4), (double) 3600 /(3600-6.5));
-        robot.configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
+        robot.getDrivetrain().configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
 
         commands();
 
