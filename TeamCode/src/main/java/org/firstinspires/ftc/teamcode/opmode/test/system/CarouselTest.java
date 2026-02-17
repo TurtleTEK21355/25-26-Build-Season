@@ -31,9 +31,6 @@ package org.firstinspires.ftc.teamcode.opmode.test.system;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.Servo;
-
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;

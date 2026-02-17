@@ -37,9 +37,6 @@ public class StateRobot {
     private PartnerPark partnerPark;
     private OTOSSensor otosSensor;
     private Limelight3A limelight;
-    private PIDConstants pidConstants = new PIDConstants(0.1, 0, 0);
-    private PIDConstants thetaPIDConstants = new PIDConstants(0.03, 0, 0);
-    private final Pose2D PID_TOLERANCE = new Pose2D(2, 2, 2.5);
     private Pose2D position;
     private AllianceSide side;
     public static final String POSITION_BLACKBOARD_KEY = "pos";
@@ -56,7 +53,25 @@ public class StateRobot {
         configureOtos(0, 0, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1); //default
     }
 
+    public Drivetrain getDrivetrain() {
+        return drivetrain;
+    }
 
+    public OTOSSensor getOtosSensor() {
+        return otosSensor;
+    }
+
+    public ShooterSystem getShooterSystem() {
+        return shooterSystem;
+    }
+
+    public PartnerPark getPartnerPark() {
+        return partnerPark;
+    }
+
+    public Limelight3A getLimelight() {
+        return limelight;
+    }
 
     public void drivetrainFCControl(double y, double x, double h) {
         drivetrain.fcControl(y, x, h, side, position);
@@ -162,22 +177,6 @@ public class StateRobot {
         this.side = side;
     }
 
-
-
-    public void configurePIDConstants(PIDConstants pidConstants, PIDConstants thetaPIDConstants) {
-        this.pidConstants = pidConstants;
-        this.thetaPIDConstants = thetaPIDConstants;
-
-    }
-    public PIDConstants getPIDConstants() {
-        return pidConstants;
-    }
-    public PIDConstants getThetaPIDConstants() {
-        return thetaPIDConstants;
-    }
-    public Pose2D getTolerance() {
-        return PID_TOLERANCE;
-    }
 
 
     /**

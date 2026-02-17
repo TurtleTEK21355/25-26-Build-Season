@@ -17,6 +17,11 @@ public class CarouselSystem {
         this.carouselServo = carouselServo;
         this.colorSensorArray = colorSensorArray;
     }
+
+    public ArtifactState getArtifactState(ColorSensorPosition colorSensorPosition) {
+        return colorSensorArray.getArtifactState(colorSensorPosition);
+    }
+
     public void setPosition(double position) {
         carouselServo.setPosition(Range.clip(position, 0,1));
     }
@@ -27,7 +32,7 @@ public class CarouselSystem {
         double distanceFromPosition = position - sensor.getRelativePosition();
         setPosition(distanceFromPosition);
     }
-    public void setArtifact(ArtifactState state) {
+    public void setArtifactToShoot(ArtifactState state) {
         if (colorSensorArray.getArtifactState(ColorSensorPosition.SHOOT) == state) {
             setPositionFromSensor(ColorSensorPosition.SHOOT);
         } else if (colorSensorArray.getArtifactState(ColorSensorPosition.LEFT) == state) {
