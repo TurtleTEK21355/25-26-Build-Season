@@ -49,7 +49,6 @@ public class OdometryTest extends LinearOpMode {
         Telemetry combined = new MultipleTelemetry(telemetry, PanelsTelemetry.INSTANCE.getFtcTelemetry());
         TelemetryPasser.telemetry = combined;
         PanelsGamepad virtualGamepad = PanelsGamepad.INSTANCE;
-        TelemetryPasser.telemetry = telemetry;
         side = (AllianceSide) blackboard.getOrDefault(ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         startingPosition = (Pose2D) blackboard.getOrDefault(POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
         limelight = hardwareMap.get(Limelight3A.class, HardwareName.LIMELIGHT.getName());

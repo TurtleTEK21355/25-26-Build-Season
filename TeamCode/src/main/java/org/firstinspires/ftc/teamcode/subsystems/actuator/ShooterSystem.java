@@ -32,7 +32,7 @@ public class ShooterSystem {
     public void setFlywheelVelocity(double velocity) {
         turretSystem.setFlywheelVelocity(velocity);
     }
-    public double getFlywheelVelocity(double velocity) {
+    public double getFlywheelVelocity() {
         return turretSystem.getFlywheelVelocity();
     }
     public void setIntakePower(double power) {

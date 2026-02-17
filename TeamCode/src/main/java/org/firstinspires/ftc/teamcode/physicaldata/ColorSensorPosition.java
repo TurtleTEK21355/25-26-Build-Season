@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode.physicaldata;
 
 public enum ColorSensorPosition {
-    SHOOT(1.0/3),
-    LEFT(2.0/3),
-    RIGHT(1.0);
+    SHOOT(0),
+    LEFT(0.4),
+    RIGHT(0.8);
 
     private final double relativePosition;
 

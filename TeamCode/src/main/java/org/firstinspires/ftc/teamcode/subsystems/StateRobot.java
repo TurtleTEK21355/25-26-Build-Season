@@ -41,6 +41,7 @@ public class StateRobot {
     private AllianceSide side;
     public static final String POSITION_BLACKBOARD_KEY = "pos";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
+    public static final double MAXHOODPOSITION = 0.5;
 
     public StateRobot(Drivetrain drivetrain, ShooterSystem shooterSystem, PartnerPark partnerPark, OTOSSensor otosSensor, Limelight3A limelight) {
         this.drivetrain = drivetrain;

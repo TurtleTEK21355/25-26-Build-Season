@@ -21,9 +21,9 @@ public class ProgrammingMovePIDCommand extends Command {
         this.robot = robot;
         this.target = target;
         this.speed = speed;
-        yPID = new PIDControllerSpeedLimit(robot.getPIDConstants(), target.y, robot.getTolerance().y, speed);
-        xPID = new PIDControllerSpeedLimit(robot.getPIDConstants(), target.x, robot.getTolerance().x, speed);
-        hPID = new PIDControllerHeading(robot.getThetaPIDConstants(), target.h, robot.getTolerance().h, speed);
+        yPID = new PIDControllerSpeedLimit(robot.getDrivetrain().getPIDConstants(), target.y, robot.getDrivetrain().getTolerance().y, speed);
+        xPID = new PIDControllerSpeedLimit(robot.getDrivetrain().getPIDConstants(), target.x, robot.getDrivetrain().getTolerance().x, speed);
+        hPID = new PIDControllerHeading(robot.getDrivetrain().getThetaPIDConstants(), target.h, robot.getDrivetrain().getTolerance().h, speed);
     }
     
 
