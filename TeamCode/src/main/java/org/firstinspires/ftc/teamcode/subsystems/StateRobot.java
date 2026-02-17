@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -17,6 +18,8 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
+import org.firstinspires.ftc.teamcode.physicaldata.ColorSensorPosition;
+import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.ArtifactLift;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.CarouselSystem;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
@@ -25,7 +28,6 @@ import org.firstinspires.ftc.teamcode.subsystems.actuator.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.PartnerPark;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.ShooterSystem;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.TurretSystem;
-import org.firstinspires.ftc.teamcode.subsystems.sensor.AprilTagCamera;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensorArray;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 
@@ -80,25 +82,29 @@ public class StateRobot {
         TelemetryPasser.telemetry.addData("Hood Angle:", hood);
     }
     public void sortControl(ArtifactState state) {
-        if (state == ArtifactState.GREEN) {
-            shooterSystem.setArtifactToShoot(state);
-        }
+        shooterSystem.setArtifactToShoot(state);
     }
     public void startLimelight() {
         limelight.start();
     }
-    public void getLimelightData(){
+    public void telemetryLimelightAprilTagData(){
         limelight.updateRobotOrientation(position.h);
-        LLResult result = limelight.getLatestResult();
-        if (result != null) {
-            if (result.isValid()) {
-                Pose3D botpose = result.getBotpose();
-                TelemetryPasser.telemetry.addData("Botpose", botpose.toString());
-                TelemetryPasser.telemetry.addData("# Tags", result.getBotposeTagCount());
-                TelemetryPasser.telemetry.addData("Results", result.getDetectorResults());
-
+        LLResult result =limelight.getLatestResult();
+        for (LLResultTypes.FiducialResult llData : result.getFiducialResults()) {
+            int id = llData.getFiducialId();
+            if(id == Motif.GPP.getID() || id == Motif.PGP.getID() || id == Motif.PPG.getID()) {
+                TelemetryPasser.telemetry.addData("Motif: ", Motif.fromID(id).toString());
             }
         }
+        Pose3D botpose = result.getBotpose_MT2();
+        if (botpose != null) {
+            TelemetryPasser.telemetry.addData("Field Position From AprilTags: ", botpose.toString());
+        } else {
+            TelemetryPasser.telemetry.addData("Field Position From AprilTags: ", "No Active Detections");
+        }
+    }
+    public void setCarouselToShootPosition(ColorSensorPosition position) {
+        shooterSystem.setCarouselPosition(position.getRelativePosition());
     }
 
     public void partnerParkControls(boolean up, boolean down) {
@@ -123,6 +129,7 @@ public class StateRobot {
         position = otosSensor.getPosition();//TODO add apriltag positioning
     }
     public void positionTelemetry(){
+        position = otosSensor.getPosition();
         TelemetryPasser.telemetry.addData("X: ", position.x);
         TelemetryPasser.telemetry.addData("Y: ", position.y);
         TelemetryPasser.telemetry.addData("H: ", position.h);

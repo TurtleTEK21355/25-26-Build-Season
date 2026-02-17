@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmode.test.sensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
@@ -13,6 +14,7 @@ public class LimelightTest extends OpMode {
 
     @Override
     public void init() {
+        TelemetryPasser.telemetry = telemetry;
         Pose2D startingPosition = (Pose2D) blackboard.get(StateRobot.POSITION_BLACKBOARD_KEY);
         AllianceSide side = (AllianceSide) blackboard.get(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY);
         robot = StateRobot.build(hardwareMap);
@@ -22,9 +24,8 @@ public class LimelightTest extends OpMode {
 
     @Override
     public void loop() {
-        robot.updatePosition();
         robot.positionTelemetry();
-        robot.getLimelightData();
+        robot.telemetryLimelightAprilTagData();
         telemetry.update();
     }
 }

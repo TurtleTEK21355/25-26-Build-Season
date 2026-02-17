@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 
 @TeleOp(name = "Shooter Test", group = "test")
@@ -22,7 +23,7 @@ public class ShooterTest extends LinearOpMode {
         servo.setPosition(0);
         waitForStart();
         while (opModeIsActive()) {
-            servo.setPosition(gamepad1.left_trigger*MAXHOODPOSITION);
+            servo.setPosition(Range.clip(gamepad1.left_trigger*MAXHOODPOSITION, 0, 0.5));
             if (gamepad1.a) {
                 motor.setPower(1);
             } else {

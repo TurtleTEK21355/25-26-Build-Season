@@ -1,8 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems.actuator;
 
-import android.graphics.Color;
-
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 import org.firstinspires.ftc.teamcode.physicaldata.ColorSensorPosition;
@@ -19,13 +18,14 @@ public class CarouselSystem {
         this.colorSensorArray = colorSensorArray;
     }
     public void setPosition(double position) {
-        carouselServo.setPosition(position);
+        carouselServo.setPosition(Range.clip(position, 0,1));
     }
     public double getPosition() {return carouselServo.getPosition();}
 
     public void setPositionFromSensor(ColorSensorPosition sensor) {
-        double distanceFromNeeded = carouselServo.getPosition() - sensor.getRelativePosition();
-        setPosition(carouselServo.getPosition()+distanceFromNeeded);
+        double position = carouselServo.getPosition();
+        double distanceFromPosition = position - sensor.getRelativePosition();
+        setPosition(distanceFromPosition);
     }
     public void setArtifact(ArtifactState state) {
         if (colorSensorArray.getArtifactState(ColorSensorPosition.SHOOT) == state) {

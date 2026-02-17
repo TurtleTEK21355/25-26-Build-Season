@@ -38,6 +38,7 @@ import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
+import org.firstinspires.ftc.teamcode.physicaldata.ColorSensorPosition;
 import org.firstinspires.ftc.teamcode.subsystems.HardwareName;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.CarouselSystem;
@@ -67,7 +68,13 @@ public class CarouselTest extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
             robot.drivetrainFCControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
-            robot.manualControls(0,0, gamepad1.left_trigger, false, 0);
+            if(gamepad1.y) {
+                robot.setCarouselToShootPosition(ColorSensorPosition.SHOOT);
+            } else if(gamepad1.b) {
+                robot.setCarouselToShootPosition(ColorSensorPosition.RIGHT);
+            } else if(gamepad1.x) {
+                robot.setCarouselToShootPosition(ColorSensorPosition.LEFT);
+            }
             telemetry.update();
         }
     }
