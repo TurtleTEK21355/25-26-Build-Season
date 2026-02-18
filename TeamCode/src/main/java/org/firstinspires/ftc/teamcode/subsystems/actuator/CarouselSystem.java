@@ -29,7 +29,7 @@ public class CarouselSystem {
 
     public void setPositionFromSensor(ColorSensorPosition sensor) {
         double position = carouselServo.getPosition();
-        double distanceFromPosition = position - sensor.getRelativePosition();
+        double distanceFromPosition = position - sensor.getAbsolutePosition();
         setPosition(distanceFromPosition);
     }
     public void setArtifactToShoot(ArtifactState state) {

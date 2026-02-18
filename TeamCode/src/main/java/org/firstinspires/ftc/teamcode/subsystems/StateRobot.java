@@ -9,13 +9,13 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
-import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 import org.firstinspires.ftc.teamcode.physicaldata.ColorSensorPosition;
@@ -97,6 +97,33 @@ public class StateRobot {
         shooterSystem.setHoodPosition(hood);
         TelemetryPasser.telemetry.addData("Hood Angle:", hood);
     }
+    public void manualControls(double intake, double shooter, double hood) {
+        shooterSystem.setFlywheelPower(shooter);
+        shooterSystem.setIntakePower(intake);
+        TelemetryPasser.telemetry.addData("Carousel Position", shooterSystem.getCarouselPosition());
+        shooterSystem.setHoodPosition(hood);
+        TelemetryPasser.telemetry.addData("Hood Angle:", hood);
+    }
+
+    /**
+     *
+     * @param intake
+     * @param shooter
+     * @param hood
+     * @param carousel
+     * @param artifactLift
+     */
+    public void mainTeleOpWithoutTrajectoryMath(boolean intake, double shooter, double hood, ColorSensorPosition carousel, boolean artifactLift) {
+        shooterSystem.setHoodPosition(Range.clip(hood*0.5, 0, 0.5));
+        if (intake) {
+            shooterSystem.setIntakePower(1);
+        } else {
+            shooterSystem.setIntakePower(0);
+        }
+        shooterSystem.setFlywheelPower(shooter);
+        shooterSystem.setCarouselPosition(carousel.getAbsolutePosition());
+        shooterSystem.setArtifactLiftState(artifactLift);
+    }
     public void sortControl(ArtifactState state) {
         shooterSystem.setArtifactToShoot(state);
     }
@@ -106,13 +133,13 @@ public class StateRobot {
     public void telemetryLimelightAprilTagData(){
         limelight.updateRobotOrientation(position.h);
         LLResult result =limelight.getLatestResult();
+        Pose3D botpose = result.getBotpose_MT2();
         for (LLResultTypes.FiducialResult llData : result.getFiducialResults()) {
             int id = llData.getFiducialId();
             if(id == Motif.GPP.getID() || id == Motif.PGP.getID() || id == Motif.PPG.getID()) {
                 TelemetryPasser.telemetry.addData("Motif: ", Motif.fromID(id).toString());
             }
         }
-        Pose3D botpose = result.getBotpose_MT2();
         if (botpose != null) {
             TelemetryPasser.telemetry.addData("Field Position From AprilTags: ", botpose.toString());
         } else {
@@ -120,7 +147,7 @@ public class StateRobot {
         }
     }
     public void setCarouselToShootPosition(ColorSensorPosition position) {
-        shooterSystem.setCarouselPosition(position.getRelativePosition());
+        shooterSystem.setCarouselPosition(position.getAbsolutePosition());
     }
 
     public void partnerParkControls(boolean up, boolean down) {

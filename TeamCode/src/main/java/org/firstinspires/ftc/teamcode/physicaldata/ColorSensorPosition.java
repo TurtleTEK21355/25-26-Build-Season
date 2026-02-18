@@ -1,17 +1,21 @@
 package org.firstinspires.ftc.teamcode.physicaldata;
 
+import com.qualcomm.robotcore.hardware.Gamepad;
+
+import org.firstinspires.ftc.robotcore.internal.ui.GamepadUser;
+
 public enum ColorSensorPosition {
     SHOOT(0),
-    LEFT(0.4),
-    RIGHT(0.8);
+    LEFT(0.32),
+    RIGHT(0.65);
 
-    private final double relativePosition;
+    private final double absolutePosition;
 
     ColorSensorPosition(double relativePosition) {
-        this.relativePosition = relativePosition;
+        this.absolutePosition = relativePosition;
     }
 
-    public double getRelativePosition() {
-        return relativePosition;
+    public double getAbsolutePosition() {
+        return absolutePosition;
     }
 }
