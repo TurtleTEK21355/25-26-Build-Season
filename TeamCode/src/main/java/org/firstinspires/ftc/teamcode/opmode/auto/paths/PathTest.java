@@ -3,14 +3,13 @@ package org.firstinspires.ftc.teamcode.opmode.auto.paths;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.commands.MovePIDCommand;
-import org.firstinspires.ftc.teamcode.commands.ProgrammingMovePIDCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
+import org.firstinspires.ftc.teamcode.opmode.auto.internal.ProgrammingAutoOpMode;
 import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
-import org.firstinspires.ftc.teamcode.subsystems.ProgrammingRobot;
 
 @Autonomous(name="Path Test")
-public class PathTest extends StateAutoOpMode {
+public class PathTest extends ProgrammingAutoOpMode {
     Pose2D startingPosition = new Pose2D(-40,64,0);
     AllianceSide side = AllianceSide.BLUE;
 

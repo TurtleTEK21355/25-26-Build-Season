@@ -119,9 +119,7 @@ public class StateRobot {
             TelemetryPasser.telemetry.addData("Field Position From AprilTags: ", "No Active Detections");
         }
     }
-    public void setCarouselToShootPosition(ColorSensorPosition position) {
-        shooterSystem.setCarouselPosition(position.getRelativePosition());
-    }
+
 
     public void partnerParkControls(boolean up, boolean down) {
         if (up) {
@@ -141,6 +139,9 @@ public class StateRobot {
     public void configureOtos(double offsetX, double offsetY, double offsetH, DistanceUnit distanceUnit, AngleUnit angleUnit, double linearScalar, double angularScalar){
         otosSensor.configureOtos(offsetX, offsetY, offsetH, distanceUnit, angleUnit, linearScalar, angularScalar);
     }
+
+
+
     public void updatePosition(){
         position = otosSensor.getPosition();//TODO add apriltag positioning
     }
@@ -177,7 +178,6 @@ public class StateRobot {
     public void setAllianceSide(AllianceSide side) {
         this.side = side;
     }
-
 
 
     /**

@@ -44,34 +44,34 @@ import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensorArray;
 
 @TeleOp(name = "Carousel Test", group = "test")
 public class CarouselTest extends LinearOpMode {
-    CarouselSystem carouselSystem;
-
     private StateRobot robot;
 
-    public void initialize() {
+
+    @Override
+    public void runOpMode() {
+        TelemetryPasser.telemetry = telemetry;
         Pose2D startingPosition = (Pose2D) blackboard.get(StateRobot.POSITION_BLACKBOARD_KEY);
         AllianceSide side = (AllianceSide) blackboard.get(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY);
         robot = StateRobot.build(hardwareMap);
         robot.setPosition(startingPosition);
         robot.setAllianceSide(side);
-    }
-
-    @Override
-    public void runOpMode() {
-        TelemetryPasser.telemetry = telemetry;
-        initialize();
-
 
         waitForStart();
         while (opModeIsActive()) {
             robot.drivetrainFCControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
             if(gamepad1.y) {
-                robot.setCarouselToShootPosition(ColorSensorPosition.SHOOT);
+                robot.getShooterSystem().setCarouselPosition(ColorSensorPosition.SHOOT.getRelativePosition());
             } else if(gamepad1.b) {
-                robot.setCarouselToShootPosition(ColorSensorPosition.RIGHT);
+                robot.getShooterSystem().setCarouselPosition(ColorSensorPosition.RIGHT.getRelativePosition());
             } else if(gamepad1.x) {
-                robot.setCarouselToShootPosition(ColorSensorPosition.LEFT);
+                robot.getShooterSystem().setCarouselPosition(ColorSensorPosition.LEFT.getRelativePosition());
             }
+            if (gamepad1.right_bumper) {
+                robot.getShooterSystem().setArtifactToShoot(ArtifactState.PURPLE);
+            } else if (gamepad1.left_bumper) {
+                robot.getShooterSystem().setArtifactToShoot(ArtifactState.GREEN);
+            }
+            telemetry.addData("carouselPosition", robot.getShooterSystem().getCarouselPosition());
             telemetry.update();
         }
     }
