@@ -65,7 +65,6 @@ public class AllControlsTest extends LinearOpMode {
         PanelsGamepad virtualGamepad = PanelsGamepad.INSTANCE;
         initialize();
 
-
         waitForStart();
         while (opModeIsActive()) {
             GamepadManager virtualGamepad1 = virtualGamepad.getFirstManager();
@@ -83,7 +82,11 @@ public class AllControlsTest extends LinearOpMode {
                     Math.max(gamepad2.left_trigger, virtualGamepad2.getL2()),
                     CSPos,
                     gamepad2.right_bumper||virtualGamepad2.getR1());
-            robot.drivetrainFCControl(-gamepad1.left_stick_y+(0.5*virtualGamepad1.getLeftStickY()), gamepad1.left_stick_x+(0.5*virtualGamepad1.getLeftStickX()), gamepad1.right_stick_x-(0.5*virtualGamepad1.getRightStickX()));
+            if (gamepad2.dpad_down) {
+                 robot.rotateToGoal(true);
+            } else {
+                robot.drivetrainFCControl(-gamepad1.left_stick_y+(0.5*virtualGamepad1.getLeftStickY()), gamepad1.left_stick_x+(0.5*virtualGamepad1.getLeftStickX()), gamepad1.right_stick_x-(0.5*virtualGamepad1.getRightStickX()));
+            }
             telemetry.update();
         }
     }

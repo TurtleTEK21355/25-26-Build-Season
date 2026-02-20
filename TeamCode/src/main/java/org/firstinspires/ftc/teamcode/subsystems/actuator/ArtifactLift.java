@@ -16,14 +16,14 @@ public class ArtifactLift {
         this.lift = lift;
     }
 
-    public void setLiftPosition(double position) {
-        lift.setTargetPosition(0);
+    public void setLiftPosition(int position) {
+        lift.setTargetPosition(position);
     }
     public double getLiftPosition() {
         return lift.getCurrentPosition();
     }
     public void setLiftUp() {
-        setLiftPosition(1);
+        setLiftPosition(540);
     }
     public void setLiftDown() {
         setLiftPosition(0);

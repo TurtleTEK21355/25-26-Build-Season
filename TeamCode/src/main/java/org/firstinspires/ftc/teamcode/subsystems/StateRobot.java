@@ -16,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
+import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 import org.firstinspires.ftc.teamcode.physicaldata.ColorSensorPosition;
@@ -32,6 +33,7 @@ import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensorArray;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 
 public class StateRobot {
+    private final double ROTATION_PID_SPEED = 0.4;
     private Drivetrain drivetrain;
     private ShooterSystem shooterSystem;
     private PartnerPark partnerPark;
@@ -127,6 +129,42 @@ public class StateRobot {
     public void sortControl(ArtifactState state) {
         shooterSystem.setArtifactToShoot(state);
     }
+    public boolean rotateToGoal(boolean telemetry){
+        updatePosition();
+        if(side == AllianceSide.BLUE){
+            return rotateToAnglePID(angleToPosition(AllianceSide.BLUE.getGoalPosition()), telemetry);
+        } else {
+            return rotateToAnglePID(angleToPosition(AllianceSide.RED.getGoalPosition()), telemetry);
+        }
+    }
+
+    /**
+     * Sets the robot to a specific angle relative to the origin
+     * @param angle What angle the robot will rotate to.
+     * @param telemetry Set to true for telemetry.
+     */
+    public boolean rotateToAnglePID(double angle, boolean telemetry){
+        PIDControllerHeading hPID = new PIDControllerHeading(drivetrain.getThetaPIDConstants(), angle, drivetrain.getTolerance().h, ROTATION_PID_SPEED);
+        if (!hPID.atTarget(position.h)) {
+            drivetrain.fcControl(0, 0, hPID.calculate(position.h), position);
+            if (telemetry) {
+                TelemetryPasser.telemetry.addData("Rotation Target: ", angle);
+                TelemetryPasser.telemetry.addData("Rotation Distance Left: ", angle - position.h);
+            }
+        }
+        return hPID.atTarget(position.h);
+    }
+
+    public double angleToPosition(Pose2D target) {
+        double xDistance = Math.sqrt(Math.pow(position.x, 2)+Math.pow(target.x, 2));
+        double yDistance = Math.sqrt(Math.pow(position.y, 2)+Math.pow(target.y, 2));
+        double angle = Math.tan(yDistance/xDistance);
+        if (target.x > position.x) {
+            angle *= -1;
+        }
+        return angle;
+    }
+
     public void startLimelight() {
         limelight.start();
     }

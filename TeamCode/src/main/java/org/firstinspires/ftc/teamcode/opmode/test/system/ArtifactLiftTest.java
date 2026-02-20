@@ -17,7 +17,7 @@ public class ArtifactLiftTest extends LinearOpMode {
 
         waitForStart();
         while (opModeIsActive()) {
-            motor.setVelocity(gamepad1.left_stick_y*280);
+            motor.setPower(gamepad1.left_stick_y*0.5);
             telemetry.addData("Velocity", motor.getVelocity());
             telemetry.addData("Position", motor.getCurrentPosition());
             telemetry.update();
