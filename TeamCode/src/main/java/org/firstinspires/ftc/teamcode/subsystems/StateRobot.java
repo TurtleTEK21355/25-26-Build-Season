@@ -244,7 +244,6 @@ public class StateRobot {
     }
 
 
-
     /**
      * this is for building the robot without having to copypaste this around everywhere
      * use like:

@@ -30,12 +30,7 @@ public class MovePIDHoldTimeCommand extends MovePIDCommand{
 
     @Override
     public boolean isCompleted() {
-        if (super.isCompleted() && holdTimer.milliseconds() >= holdTime) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return super.isCompleted() && holdTimerStartLock && holdTimer.milliseconds() >= holdTime;
     }
 
 }

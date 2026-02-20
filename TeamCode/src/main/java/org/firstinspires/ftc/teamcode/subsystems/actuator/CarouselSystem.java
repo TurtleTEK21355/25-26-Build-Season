@@ -11,7 +11,8 @@ public class CarouselSystem {
 
     private Servo carouselServo;
     private ColorSensorArray colorSensorArray;
-
+    private final Double[] slotPositions = {0.0, 0.4, 0.8};
+    private final double servoPositionTolerance = 0.05;
 
     public CarouselSystem(Servo carouselServo, ColorSensorArray colorSensorArray) {
         this.carouselServo = carouselServo;
@@ -27,18 +28,73 @@ public class CarouselSystem {
     }
     public double getPosition() {return carouselServo.getPosition();}
 
-    public void setPositionFromSensor(ColorSensorPosition sensor) {
-        double position = carouselServo.getPosition();
-        double distanceFromPosition = position - sensor.getAbsolutePosition();
-        setPosition(distanceFromPosition);
+    private boolean getSlotIsInShoot(int slot, double position) {
+        //todo add constants And check slot between 0 an 2
+        return (slotPositions[slot] + servoPositionTolerance) > position &&
+                position > (slotPositions[slot] - servoPositionTolerance);
     }
+
+    public int getSlotInShoot() {
+        double position = carouselServo.getPosition();
+        if (getSlotIsInShoot(0, position)) {
+            return 0;
+        }
+        if (getSlotIsInShoot(1, position)) {
+            return 1;
+        }
+        if (getSlotIsInShoot(2, position)) {
+            return 2;
+        }
+        return -1;
+    }
+
+    public void setSlotInShoot(int slot) {
+        setPosition(slotPositions[slot]);
+    }
+
     public void setArtifactToShoot(ArtifactState state) {
-        if (colorSensorArray.getArtifactState(ColorSensorPosition.SHOOT) == state) {
-            setPositionFromSensor(ColorSensorPosition.SHOOT);
-        } else if (colorSensorArray.getArtifactState(ColorSensorPosition.LEFT) == state) {
-            setPositionFromSensor(ColorSensorPosition.LEFT);
-        } else if (colorSensorArray.getArtifactState(ColorSensorPosition.RIGHT) == state) {
-            setPositionFromSensor(ColorSensorPosition.RIGHT);
+        int slot = getSlotInShoot();
+        // don't set to a new position while  servo is in motion
+        if (colorSensorArray.getArtifactState(ColorSensorPosition.SHOOT) != state) {
+            if (slot == 0) {
+                //the artifact in the left color sensor is the same as the color of the artifact we are looking for
+                //and the current slot is 0
+                if (colorSensorArray.getArtifactState(ColorSensorPosition.LEFT) == state) {
+                    // move from slot 0 to slot 1
+                    setSlotInShoot(1);
+                }
+                //the artifact in the right color sensor is the same as the color of the artifact we are looking for
+                //and the current slot is 0
+                else if (colorSensorArray.getArtifactState(ColorSensorPosition.RIGHT) == state) {
+                    // move from slot 0 to slot 1
+                    setSlotInShoot(2);
+                }
+            } else if (slot == 1) {
+                //the artifact in the left color sensor is the same as the color of the artifact we are looking for
+                //and the current slot is 1
+                if (colorSensorArray.getArtifactState(ColorSensorPosition.LEFT) == state) {
+                    // move from slot 1 to slot 0
+                    setSlotInShoot(0);
+                }
+                //the artifact in the right color sensor is the same as the color of the artifact we are looking for
+                //and the current slot is 1
+                if (colorSensorArray.getArtifactState(ColorSensorPosition.RIGHT) == state) {
+                    // move from slot 1 to slot 2
+                    setSlotInShoot(2);
+                }
+            } else if (slot == 2) {
+                //the artifact in the right color sensor is the same as the color of the artifact we are looking for
+                //and the current slot is 2
+                if (colorSensorArray.getArtifactState(ColorSensorPosition.RIGHT) == state) {
+                    // move from slot
+                    setSlotInShoot(1);//one is closer to two then 0 is
+                    //the artifact in the left color sensor is the same as the color of the artifact we are looking for
+                    //and the current slot is 2
+                } else if (colorSensorArray.getArtifactState(ColorSensorPosition.LEFT) == state) {
+                    // move from slot 2 to slot 0
+                    setSlotInShoot(0);
+                }
+            }
         }
     }
 }

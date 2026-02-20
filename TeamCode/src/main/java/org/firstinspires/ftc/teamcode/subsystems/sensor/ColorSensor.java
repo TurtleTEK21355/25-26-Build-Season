@@ -100,6 +100,7 @@ public class ColorSensor {
         }
         return distance;
     }
+    
     public ArtifactState getArtifactState(boolean telemetry) {
         NormalizedRGBA colors = colorSensor.getNormalizedColors();
         double red = colors.red;
