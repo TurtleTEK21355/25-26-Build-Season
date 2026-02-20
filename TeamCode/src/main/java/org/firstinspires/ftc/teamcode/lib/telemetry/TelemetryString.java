@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.lib.telemetry;
 
+import androidx.annotation.NonNull;
+
 public class TelemetryString {
     private StringBuilder stringBuilder = new StringBuilder();
 
@@ -38,6 +40,7 @@ public class TelemetryString {
         stringBuilder.append(System.lineSeparator());
     }
 
+    @NonNull
     public String toString() {
         return stringBuilder.toString();
     }

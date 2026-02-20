@@ -60,8 +60,7 @@ public class AllControlsTest extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        Telemetry combined = new MultipleTelemetry(telemetry, PanelsTelemetry.INSTANCE.getFtcTelemetry());
-        TelemetryPasser.telemetry = combined;
+        TelemetryPasser.telemetry = new MultipleTelemetry(telemetry, PanelsTelemetry.INSTANCE.getFtcTelemetry());
         PanelsGamepad virtualGamepad = PanelsGamepad.INSTANCE;
         initialize();
 
@@ -69,6 +68,7 @@ public class AllControlsTest extends LinearOpMode {
         while (opModeIsActive()) {
             GamepadManager virtualGamepad1 = virtualGamepad.getFirstManager();
             GamepadManager virtualGamepad2 = virtualGamepad.getSecondManager();
+
             if (gamepad2.y || virtualGamepad2.getTriangle()) {
                 CSPos = ColorSensorPosition.SHOOT;
             } else if (gamepad2.x || virtualGamepad2.getSquare()) {
@@ -77,15 +77,16 @@ public class AllControlsTest extends LinearOpMode {
                 CSPos = ColorSensorPosition.RIGHT;
             }
             robot.mainTeleOpWithoutTrajectoryMath(
-                    gamepad2.left_bumper||virtualGamepad2.getL1(),
+                    gamepad2.left_bumper || virtualGamepad2.getL1(),
                     Math.max(gamepad2.right_trigger, virtualGamepad2.getR2()),
                     Math.max(gamepad2.left_trigger, virtualGamepad2.getL2()),
                     CSPos,
-                    gamepad2.right_bumper||virtualGamepad2.getR1());
+                    gamepad2.right_bumper || virtualGamepad2.getR1());
+
             if (gamepad2.dpad_down) {
-                 robot.rotateToGoal(true);
+                robot.rotateToGoal(true);
             } else {
-                robot.drivetrainFCControl(-gamepad1.left_stick_y+(0.5*virtualGamepad1.getLeftStickY()), gamepad1.left_stick_x+(0.5*virtualGamepad1.getLeftStickX()), gamepad1.right_stick_x-(0.5*virtualGamepad1.getRightStickX()));
+                robot.drivetrainFCControl(-gamepad1.left_stick_y + (0.5 * virtualGamepad1.getLeftStickY()), gamepad1.left_stick_x + (0.5 * virtualGamepad1.getLeftStickX()), gamepad1.right_stick_x - (0.5 * virtualGamepad1.getRightStickX()));
             }
             telemetry.update();
         }
