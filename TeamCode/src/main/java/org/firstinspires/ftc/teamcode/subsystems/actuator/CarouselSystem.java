@@ -11,7 +11,7 @@ public class CarouselSystem {
 
     private Servo carouselServo;
     private ColorSensorArray colorSensorArray;
-    private final Double[] slotPositions = {0.0, 0.4, 0.8};
+    private final Double[] slotPositions = {0.0, 0.32, 0.65};
     private final double servoPositionTolerance = 0.05;
 
     public CarouselSystem(Servo carouselServo, ColorSensorArray colorSensorArray) {

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems.actuator;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.PWMOutput;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -9,11 +10,16 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 
 public class ArtifactLift {
     private DcMotorEx lift;
-    private double TOP_LIMIT = 1;
-    private double BOTTOM_LIMIT = -1;
+    private int TOP_LIMIT = 540;
+    private int BOTTOM_LIMIT = 0;
 
     public ArtifactLift(DcMotorEx lift) {
         this.lift = lift;
+        this.lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.lift.setTargetPositionTolerance(10);
+        this.lift.setTargetPosition(0);
+        this.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.lift.setPower(0.8);
     }
 
     public void setLiftPosition(int position) {
@@ -23,10 +29,10 @@ public class ArtifactLift {
         return lift.getCurrentPosition();
     }
     public void setLiftUp() {
-        setLiftPosition(540);
+        setLiftPosition(TOP_LIMIT);
     }
     public void setLiftDown() {
-        setLiftPosition(0);
+        setLiftPosition(BOTTOM_LIMIT);
     }
 
 }
