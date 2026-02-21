@@ -7,7 +7,7 @@ import java.util.Queue;
 public class CommandScheduler{
 
     private Queue<Command> commandQueue = new LinkedList<>();
-
+    private String telemetryString = "";
     private boolean initLock = false;
 
 
@@ -34,6 +34,8 @@ public class CommandScheduler{
 
         command.loop();
 
+        telemetryString = command.telemetry();
+
         if (command.isCompleted()) {
             commandQueue.remove();
             initLock = false;
@@ -43,12 +45,7 @@ public class CommandScheduler{
     }
 
     public String getTelemetry() {
-        String result = "";
-        if (!commandQueue.isEmpty()){
-            result = commandQueue.peek().telemetry();
-        }
-        return result;
-
+        return telemetryString;
     }
 
     public boolean isCompleted() {
