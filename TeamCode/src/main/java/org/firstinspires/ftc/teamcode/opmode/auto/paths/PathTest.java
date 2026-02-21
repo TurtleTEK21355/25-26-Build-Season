@@ -13,7 +13,7 @@ public class PathTest extends ProgrammingAutoOpMode {
     Pose2D startingPosition = new Pose2D(-40,64,0);
     AllianceSide side = AllianceSide.BLUE;
 
-    double speed = 0.2;
+    double speed = 0.5;
 
     @Override
     public void initialize() {
