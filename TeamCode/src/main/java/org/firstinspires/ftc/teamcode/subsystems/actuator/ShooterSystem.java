@@ -10,7 +10,6 @@ public class ShooterSystem {
     private ArtifactLift artifactLift;
     private CarouselSystem carouselSystem;
     private Intake intake;
-    private Motif motif;
 
     public ShooterSystem(TurretSystem turretSystem, ArtifactLift artifactLift, CarouselSystem carouselSystem, Intake intake){
         this.turretSystem = turretSystem;

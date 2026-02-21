@@ -29,7 +29,6 @@ public class ProgrammingRobot {
     private Drivetrain drivetrain;
     private OTOSSensor otosSensor;
     private AprilTagCamera aprilTagCamera;
-    private Pose2D position;
     private AllianceSide side;
     public static final String POSITION_BLACKBOARD_KEY = "pos";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
@@ -38,9 +37,8 @@ public class ProgrammingRobot {
         this.drivetrain = drivetrain;
         this.otosSensor = otosSensor;
         this.aprilTagCamera = aprilTagCamera;
-        this.position = new Pose2D(0,0,0);
         this.side = AllianceSide.BLUE;
-        configureOtos(0, 0, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1); //default
+        otosSensor.configureOtos(0, 0, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1); //default
     }
 
     public Drivetrain getDrivetrain(){
@@ -50,40 +48,6 @@ public class ProgrammingRobot {
     public OTOSSensor getOtosSensor() {
         return otosSensor;
     }
-
-    public void drivetrainFCControl(double y, double x, double h) {
-        drivetrain.fcControl(y, x, h, side, position);
-    }
-
-    public void configureOtos(double offsetX, double offsetY, double offsetH, DistanceUnit distanceUnit, AngleUnit angleUnit, double linearScalar, double angularScalar){
-        otosSensor.configureOtos(offsetX, offsetY, offsetH, distanceUnit, angleUnit, linearScalar, angularScalar);
-    }
-    public void updatePosition(){
-        position = otosSensor.getPosition();//TODO add apriltag positioning
-    }
-    public void setPosition(Pose2D position) {
-        this.position = position;
-    }
-    public void resetPosition() {
-        otosSensor.resetPosition();
-    }
-    public Pose2D getPosition() {
-        if (position == null) {
-            updatePosition();
-        }
-        return position;
-    }
-    public double getX() {
-        return getPosition().x;
-    }
-    public double getY() {
-        return getPosition().y;
-    }
-    public double getH() {
-        return getPosition().h;
-    }
-
-
 
     public void setAllianceSide(AllianceSide side) {
         this.side = side;

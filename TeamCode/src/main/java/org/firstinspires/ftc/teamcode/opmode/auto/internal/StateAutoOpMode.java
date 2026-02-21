@@ -15,8 +15,9 @@ import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
 public abstract class StateAutoOpMode extends CommandOpMode {
     protected StateRobot robot;
+
     protected AllianceSide side;
-    protected Pose2D startingPosition = new Pose2D(0,0,0);
+    protected Pose2D startingPosition;
     protected double kp = 0.1;
     protected double ki;
     protected double kd;

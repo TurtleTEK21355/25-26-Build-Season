@@ -14,12 +14,13 @@ import org.firstinspires.ftc.teamcode.subsystems.ProgrammingRobot;
 
 public abstract class ProgrammingAutoOpMode extends CommandOpMode {
     protected ProgrammingRobot robot;
+
     protected AllianceSide side;
-    protected Pose2D startingPosition = new Pose2D(0,0,0);
-    protected double kp = 0.1;
+    protected Pose2D startingPosition;
+    protected double kp = 0.06;
     protected double ki;
     protected double kd;
-    protected double kpTheta = 0.03;
+    protected double kpTheta = 0.02;
     protected double kiTheta;
     protected double kdTheta;
 
@@ -29,7 +30,10 @@ public abstract class ProgrammingAutoOpMode extends CommandOpMode {
 
         robot = ProgrammingRobot.build(hardwareMap);
 
-        robot.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, (double) 48 /(48-3.5) * (double) 96/(96+4), (double) 3600 /(3600-6.5));
+        //(double) 48 /(48-3.5) * (double) 96/(96+4)
+        //(double) 3600 /(3600-6.5)
+
+        robot.getOtosSensor().configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0);
         robot.getDrivetrain().configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
 
         commands();
@@ -38,7 +42,7 @@ public abstract class ProgrammingAutoOpMode extends CommandOpMode {
 
     @Override
     public void cleanup() {
-        blackboard.put(POSITION_BLACKBOARD_KEY, robot.getPosition());
+        blackboard.put(POSITION_BLACKBOARD_KEY, robot.getOtosSensor().getPosition());
         blackboard.put(ALLIANCE_SIDE_BLACKBOARD_KEY, side);
     }
 

@@ -21,20 +21,20 @@ public class PathTest extends ProgrammingAutoOpMode {
         setStartingPosition(startingPosition);
         super.initialize();
     }
-    
+
     @Override
     public void commands() {
         addCommand(new MovePIDCommand(new Pose2D(-24,24,40), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-        addCommand(new MovePIDCommand(new Pose2D(-24,12,0), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-        addCommand(new MovePIDCommand(new Pose2D(-54,12,0), speed, robot.getDrivetrain(), robot.getOtosSensor()));
+        addCommand(new MovePIDCommand(new Pose2D(-24,20,90), speed, robot.getDrivetrain(), robot.getOtosSensor()));
+        addCommand(new MovePIDCommand(new Pose2D(-54,20,90), speed, robot.getDrivetrain(), robot.getOtosSensor()));
         addCommand(new MovePIDCommand(new Pose2D(-24,24,40), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-        addCommand(new MovePIDCommand(new Pose2D(-24,-12,0), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-        addCommand(new MovePIDCommand(new Pose2D(-54,-12,0), speed, robot.getDrivetrain(), robot.getOtosSensor()));
+        addCommand(new MovePIDCommand(new Pose2D(-24,-20,90), speed, robot.getDrivetrain(), robot.getOtosSensor()));
+        addCommand(new MovePIDCommand(new Pose2D(-54,-20,90), speed, robot.getDrivetrain(), robot.getOtosSensor()));
         addCommand(new MovePIDCommand(new Pose2D(-24,24,40), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-        addCommand(new MovePIDCommand(new Pose2D(-24,-36,0), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-        addCommand(new MovePIDCommand(new Pose2D(-54,-36,0), speed, robot.getDrivetrain(), robot.getOtosSensor()));
+        addCommand(new MovePIDCommand(new Pose2D(-24,-44,90), speed, robot.getDrivetrain(), robot.getOtosSensor()));
+        addCommand(new MovePIDCommand(new Pose2D(-54,-44,90), speed, robot.getDrivetrain(), robot.getOtosSensor()));
         addCommand(new MovePIDCommand(new Pose2D(-24,24,40), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-        addCommand(new MovePIDCommand(new Pose2D(-48,0,0), speed, robot.getDrivetrain(), robot.getOtosSensor()));
+        addCommand(new MovePIDCommand(new Pose2D(-24,0,0), speed, robot.getDrivetrain(), robot.getOtosSensor()));
     }
 
 
