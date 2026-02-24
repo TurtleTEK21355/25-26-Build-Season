@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 
-public class BlueBack extends StateAutoOpMode {
+public class RedBack extends StateAutoOpMode {
     Pose2D startingPosition = new Pose2D(-53, 51, 54);
     AllianceSide side = AllianceSide.BLUE;
 
