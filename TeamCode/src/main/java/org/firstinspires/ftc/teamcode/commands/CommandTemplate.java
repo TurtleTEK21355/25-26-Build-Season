@@ -17,6 +17,10 @@ public class CommandTemplate extends Command {
         // set class variables (construct command)
     }
 
+    @Override
+    public void init() {
+        //init code
+    }
 
     @Override
     public void loop() {

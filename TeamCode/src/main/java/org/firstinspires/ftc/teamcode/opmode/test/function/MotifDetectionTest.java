@@ -36,9 +36,10 @@ public class MotifDetectionTest extends StateAutoOpMode {
     }
 
     public void dataHandler(){
-        if (Objects.equals(commandScheduler.getDataKey(), "GetMotifCommand")) {
-            motif = (Motif) commandScheduler.getData();
+        if (commandScheduler.getData("GetMotifCommand") != null) {
+            motif = (Motif) commandScheduler.getData("GetMotifCommand");
         }
+
         telemetry.addData("Motif", motif.toString());
     }
 

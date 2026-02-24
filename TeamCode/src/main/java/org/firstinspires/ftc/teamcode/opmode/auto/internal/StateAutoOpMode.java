@@ -47,7 +47,6 @@ public abstract class StateAutoOpMode extends CommandOpMode {
     public void cleanup() {
         blackboard.put(POSITION_BLACKBOARD_KEY, robot.getPosition());
         blackboard.put(ALLIANCE_SIDE_BLACKBOARD_KEY, side);
-        blackboard.put(MOTIF_BLACKBOARD_KEY, motif);
 
     }
 

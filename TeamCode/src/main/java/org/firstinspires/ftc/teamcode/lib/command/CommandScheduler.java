@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.lib.command;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
@@ -8,8 +9,7 @@ public class CommandScheduler{
 
     private Queue<Command> commandQueue = new LinkedList<>();
     private String telemetryString = "";
-    private Object dataObject = null;
-    private String dataKey = "";
+    private HashMap<String, Object> dataMap = new HashMap<>();
     private boolean initLock = false;
 
 
@@ -35,12 +35,9 @@ public class CommandScheduler{
         }
 
         command.loop();
+        dataMap.put(command.dataKey, command.data);
 
         telemetryString = command.telemetry();
-        dataObject = command.data;
-        dataKey = command.dataKey;
-
-        dataHandler();
 
         if (command.isCompleted()) {
             commandQueue.remove();
@@ -50,9 +47,6 @@ public class CommandScheduler{
 
     }
 
-    // usage is specific to class
-    public void dataHandler(){}
-
     public String getTelemetry() {
         return telemetryString;
     }
@@ -60,7 +54,11 @@ public class CommandScheduler{
     public boolean isCompleted() {
         return commandQueue.isEmpty();
     }
-    public Object getData(){return dataObject;}
-    public String getDataKey(){return dataKey;}
+    public Object getData(String key){
+        if (dataMap.get(key) != null) {
+            return dataMap.get(key);
+        }
+        return null;
+    }
 
 }

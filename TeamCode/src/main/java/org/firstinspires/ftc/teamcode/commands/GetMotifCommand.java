@@ -24,16 +24,20 @@ public class GetMotifCommand extends Command {
         return string.toString();
     }
 
-
-
     @Override
-    public boolean isCompleted() {
+    public void loop() {
         Motif motif = limelight.getMotif();
         if (limelight.getMotif() != null) {
             data = motif;
             return true;
         }
         return false;
+    }
+
+
+    @Override
+    public boolean isCompleted() {
+
     }
 
 }

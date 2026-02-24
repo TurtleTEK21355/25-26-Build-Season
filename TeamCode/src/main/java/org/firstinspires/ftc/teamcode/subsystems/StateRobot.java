@@ -25,6 +25,7 @@ import org.firstinspires.ftc.teamcode.subsystems.actuator.ArtifactLift;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.CarouselSystem;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.FlyWheel;
+import org.firstinspires.ftc.teamcode.subsystems.actuator.Hood;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.PartnerPark;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.ShooterSystem;
@@ -77,7 +78,6 @@ public class StateRobot {
     public Limelight getLimelight() {
         return limelight;
     }
-
 
 
     public boolean rotateToGoal(boolean telemetry){
@@ -148,7 +148,7 @@ public class StateRobot {
                 new ShooterSystem(
                         new TurretSystem(
                                 new FlyWheel(hardwareMap.get(DcMotorEx.class, HardwareName.FLYWHEEL_MOTOR.getName())),
-                                hardwareMap.get(Servo.class, HardwareName.HOOD_SERVO.getName())
+                                new Hood(hardwareMap.get(Servo.class, HardwareName.HOOD_SERVO.getName()))
                         ),
                         new ArtifactLift(hardwareMap.get(DcMotorEx.class, HardwareName.ARTIFACT_PUSHER_MOTOR.getName())),
                         new CarouselSystem(

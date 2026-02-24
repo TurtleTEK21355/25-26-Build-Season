@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 import org.firstinspires.ftc.teamcode.physicaldata.ColorSensorPosition;
 
+
 public class ShooterSystem {
     private TurretSystem turretSystem;
     private ArtifactLift artifactLift;
@@ -33,7 +34,7 @@ public class ShooterSystem {
         setIntakePower(intake);
         setCarouselPosition(carousel);
         TelemetryPasser.telemetry.addData("Carousel Position:", getCarouselPosition());
-        setHoodPosition(hood);
+        setHoodAngle(hood);
         TelemetryPasser.telemetry.addData("Hood Angle:", hood);
     }
     /**
@@ -45,7 +46,7 @@ public class ShooterSystem {
      * @param artifactLift
      */
     public void mainTeleOpWithoutTrajectoryMath(boolean intake, double shooter, double hood, ColorSensorPosition carousel, boolean artifactLift) {
-        setHoodPosition(Range.clip(hood*0.5, 0, 0.5));
+        setHoodAngle(Range.clip(hood*0.5, 0, 0.5));
         if (intake) {
             setIntakePower(1);
         } else {
@@ -81,5 +82,5 @@ public class ShooterSystem {
     public void setArtifactToShoot(ArtifactState state) {
         carouselSystem.setArtifactToShoot(state);
     }
-    public void setHoodPosition(double position) {turretSystem.setHoodAngle(position);}
+    public void setHoodAngle(double position) {turretSystem.setHoodAngle(position);}
 }
