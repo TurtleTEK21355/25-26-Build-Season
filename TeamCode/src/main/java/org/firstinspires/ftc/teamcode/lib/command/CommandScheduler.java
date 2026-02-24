@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.lib.command;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Objects;
 import java.util.Queue;
 
 public class CommandScheduler{
@@ -38,6 +37,7 @@ public class CommandScheduler{
         dataMap.put(command.dataKey, command.data);
 
         telemetryString = command.telemetry();
+
 
         if (command.isCompleted()) {
             commandQueue.remove();
