@@ -11,5 +11,6 @@ public class ShootMath {
         double velocity = Math.sqrt(2*gravity*height)/Math.sin(theta);
 
         return velocity;
+
     }
 }
