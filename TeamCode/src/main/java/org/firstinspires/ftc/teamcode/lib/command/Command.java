@@ -12,7 +12,9 @@ public abstract class Command {
     //then to finish:
     //return stringBuilder.toString();
 
+    public String dataKey = "";
+    public Object data = null;
+
 
     public abstract boolean isCompleted(); //is checked after every loop, if true then command is finished
-
 }

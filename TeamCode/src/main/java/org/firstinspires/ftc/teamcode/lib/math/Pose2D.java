@@ -71,6 +71,21 @@ public class Pose2D {
 
     }
 
+    /**
+     * Turns a current position and target position into an angle from field centric 0 degrees
+     * @param target
+     * @return
+     */
+    public double positionsToFCAngle(Pose2D target) {
+        double xDistance = Math.sqrt(Math.pow(x, 2)+Math.pow(target.x, 2));
+        double yDistance = Math.sqrt(Math.pow(y, 2)+Math.pow(target.y, 2));
+        double angle = Math.tan(yDistance/xDistance);
+        if (target.x > x) {
+            angle *= -1;
+        }
+        return angle;
+    }
+
     public SparkFunOTOS.Pose2D toSparkFunPose2D(){
         return new SparkFunOTOS.Pose2D(x, y, h);
     }

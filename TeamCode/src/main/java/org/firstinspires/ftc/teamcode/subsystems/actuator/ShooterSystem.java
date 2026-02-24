@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.subsystems.actuator;
 
+import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
-import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
-import org.firstinspires.ftc.teamcode.physicaldata.Motif;
+import org.firstinspires.ftc.teamcode.physicaldata.ColorSensorPosition;
 
 public class ShooterSystem {
     private TurretSystem turretSystem;
@@ -24,6 +26,35 @@ public class ShooterSystem {
         string.addLine("hello");
         return string.toString();
     }
+    public void manualControls(double intake, double shooter, double carousel, boolean artifactLifter, double hood) {
+        setArtifactLiftState(artifactLifter);
+        setFlywheelPower(shooter);
+        TelemetryPasser.telemetry.addData("Flywheel Velocity:", getFlywheelVelocity());
+        setIntakePower(intake);
+        setCarouselPosition(carousel);
+        TelemetryPasser.telemetry.addData("Carousel Position:", getCarouselPosition());
+        setHoodPosition(hood);
+        TelemetryPasser.telemetry.addData("Hood Angle:", hood);
+    }
+    /**
+     *
+     * @param intake
+     * @param shooter
+     * @param hood
+     * @param carousel
+     * @param artifactLift
+     */
+    public void mainTeleOpWithoutTrajectoryMath(boolean intake, double shooter, double hood, ColorSensorPosition carousel, boolean artifactLift) {
+        setHoodPosition(Range.clip(hood*0.5, 0, 0.5));
+        if (intake) {
+            setIntakePower(1);
+        } else {
+            setIntakePower(0);
+        }
+        setFlywheelPower(shooter);
+        setCarouselPosition(carousel.getAbsolutePosition());
+        setArtifactLiftState(artifactLift);
+    }
 
     public void setFlywheelPower(double power) {
         turretSystem.setFlyWheelPower(power);
@@ -39,9 +70,9 @@ public class ShooterSystem {
     }
     public void setArtifactLiftState(boolean up) {
         if (up) {
-            artifactLift.setLiftUp();
+            artifactLift.setLiftUpNoLimit();
         } else {
-            artifactLift.setLiftDown();
+            artifactLift.setLiftDownNoLimit();
         }
     }
     public void setCarouselPosition(double position) {carouselSystem.setPosition(position);}

@@ -30,6 +30,7 @@ import org.firstinspires.ftc.teamcode.subsystems.actuator.PartnerPark;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.ShooterSystem;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.TurretSystem;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensorArray;
+import org.firstinspires.ftc.teamcode.subsystems.sensor.Limelight;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 
 public class StateRobot {
@@ -38,11 +39,12 @@ public class StateRobot {
     private ShooterSystem shooterSystem;
     private PartnerPark partnerPark;
     private OTOSSensor otosSensor;
-    private Limelight3A limelight;
+    private Limelight limelight;
     private Pose2D position;
     private AllianceSide side;
     public static final String POSITION_BLACKBOARD_KEY = "pos";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
+    public static final String MOTIF_BLACKBOARD_KEY = "motif";
     public static final double MAXHOODPOSITION = 0.5;
 
     public StateRobot(Drivetrain drivetrain, ShooterSystem shooterSystem, PartnerPark partnerPark, OTOSSensor otosSensor, Limelight3A limelight) {
@@ -50,10 +52,10 @@ public class StateRobot {
         this.shooterSystem = shooterSystem;
         this.partnerPark = partnerPark;
         this.otosSensor = otosSensor;
-        this.limelight = limelight;
+        this.limelight = new Limelight(limelight);
         this.position = new Pose2D(0,0,0);
         this.side = AllianceSide.BLUE;
-        configureOtos(0, 0, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1); //default
+        otosSensor.configureOtos(0, 0, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1); //default
     }
 
     public Drivetrain getDrivetrain() {
@@ -72,148 +74,29 @@ public class StateRobot {
         return partnerPark;
     }
 
-    public Limelight3A getLimelight() {
+    public Limelight getLimelight() {
         return limelight;
     }
 
-    public void drivetrainFCControl(double y, double x, double h) {
-        drivetrain.fcControl(y, x, h, side, position);
-    }
 
-    /**
-     *
-     * @param intake power
-     * @param shooter power
-     * @param carousel position
-     * @param artifactLifter up/down (up is true)
-     * @param hood position
-     */
-    public void manualControls(double intake, double shooter, double carousel, boolean artifactLifter, double hood) {
-        shooterSystem.setArtifactLiftState(artifactLifter);
-        shooterSystem.setFlywheelPower(shooter);
-        shooterSystem.setIntakePower(intake);
-        shooterSystem.setCarouselPosition(carousel);
-        TelemetryPasser.telemetry.addData("Carousel Control", carousel);
 
-        TelemetryPasser.telemetry.addData("Carousel Position", shooterSystem.getCarouselPosition());
-        shooterSystem.setHoodPosition(hood);
-        TelemetryPasser.telemetry.addData("Hood Angle:", hood);
-    }
-    public void manualControls(double intake, double shooter, double hood) {
-        shooterSystem.setFlywheelPower(shooter);
-        shooterSystem.setIntakePower(intake);
-        TelemetryPasser.telemetry.addData("Carousel Position", shooterSystem.getCarouselPosition());
-        shooterSystem.setHoodPosition(hood);
-        TelemetryPasser.telemetry.addData("Hood Angle:", hood);
-    }
-
-    /**
-     *
-     * @param intake
-     * @param shooter
-     * @param hood
-     * @param carousel
-     * @param artifactLift
-     */
-    public void mainTeleOpWithoutTrajectoryMath(boolean intake, double shooter, double hood, ColorSensorPosition carousel, boolean artifactLift) {
-        shooterSystem.setHoodPosition(Range.clip(hood*0.5, 0, 0.5));
-        if (intake) {
-            shooterSystem.setIntakePower(1);
-        } else {
-            shooterSystem.setIntakePower(0);
-        }
-        shooterSystem.setFlywheelPower(shooter);
-        shooterSystem.setCarouselPosition(carousel.getAbsolutePosition());
-        shooterSystem.setArtifactLiftState(artifactLift);
-    }
-    public void sortControl(ArtifactState state) {
-        shooterSystem.setArtifactToShoot(state);
-    }
     public boolean rotateToGoal(boolean telemetry){
         updatePosition();
-        if(side == AllianceSide.BLUE){
-            return rotateToAnglePID(angleToPosition(AllianceSide.BLUE.getGoalPosition()), telemetry);
-        } else {
-            return rotateToAnglePID(angleToPosition(AllianceSide.RED.getGoalPosition()), telemetry);
-        }
+        return drivetrain.rotateToAnglePID(position, side, telemetry);
     }
-
-    /**
-     * Sets the robot to a specific angle relative to the origin
-     * @param angle What angle the robot will rotate to.
-     * @param telemetry Set to true for telemetry.
-     */
-    public boolean rotateToAnglePID(double angle, boolean telemetry){
-        PIDControllerHeading hPID = new PIDControllerHeading(drivetrain.getThetaPIDConstants(), angle, drivetrain.getTolerance().h, ROTATION_PID_SPEED);
-        if (!hPID.atTarget(position.h)) {
-            drivetrain.fcControl(0, 0, hPID.calculate(position.h), position);
-            if (telemetry) {
-                TelemetryPasser.telemetry.addData("Rotation Target: ", angle);
-                TelemetryPasser.telemetry.addData("Rotation Distance Left: ", angle - position.h);
-            }
-        }
-        return hPID.atTarget(position.h);
-    }
-
-    public double angleToPosition(Pose2D target) {
-        double xDistance = Math.sqrt(Math.pow(position.x, 2)+Math.pow(target.x, 2));
-        double yDistance = Math.sqrt(Math.pow(position.y, 2)+Math.pow(target.y, 2));
-        double angle = Math.tan(yDistance/xDistance);
-        if (target.x > position.x) {
-            angle *= -1;
-        }
-        return angle;
-    }
-
-    public void startLimelight() {
-        limelight.start();
-    }
-    public void telemetryLimelightAprilTagData(){
-        limelight.updateRobotOrientation(position.h);
-        LLResult result =limelight.getLatestResult();
-        Pose3D botpose = result.getBotpose_MT2();
-        for (LLResultTypes.FiducialResult llData : result.getFiducialResults()) {
-            int id = llData.getFiducialId();
-            if(id == Motif.GPP.getID() || id == Motif.PGP.getID() || id == Motif.PPG.getID()) {
-                TelemetryPasser.telemetry.addData("Motif: ", Motif.fromID(id).toString());
-            }
-        }
-        if (botpose != null) {
-            TelemetryPasser.telemetry.addData("Field Position From AprilTags: ", botpose.toString());
-        } else {
-            TelemetryPasser.telemetry.addData("Field Position From AprilTags: ", "No Active Detections");
-        }
-    }
-    public void setCarouselToShootPosition(ColorSensorPosition position) {
-        shooterSystem.setCarouselPosition(position.getAbsolutePosition());
-    }
-
-    public void partnerParkControls(boolean up, boolean down) {
-        if (up) {
-            partnerPark.up();
-        }
-        else if (down) {
-            partnerPark.down();
-        }
-        else {
-            partnerPark.stay();
-        }
-
-    }
-
 
 
     public void configureOtos(double offsetX, double offsetY, double offsetH, DistanceUnit distanceUnit, AngleUnit angleUnit, double linearScalar, double angularScalar){
         otosSensor.configureOtos(offsetX, offsetY, offsetH, distanceUnit, angleUnit, linearScalar, angularScalar);
     }
     public void updatePosition(){
-        position = otosSensor.getPosition();//TODO add apriltag positioning
-    }
-    public void positionTelemetry(){
         position = otosSensor.getPosition();
-        TelemetryPasser.telemetry.addData("X: ", position.x);
-        TelemetryPasser.telemetry.addData("Y: ", position.y);
-        TelemetryPasser.telemetry.addData("H: ", position.h);
+    }
+    public void correctPositionFromLL(){
+        Pose2D position = limelight.getPosition();
+        if (position != null) {
+            otosSensor.setPosition(position);
+        }
     }
     public void setPosition(Pose2D position) {
         this.position = position;
@@ -238,14 +121,16 @@ public class StateRobot {
     }
 
 
-
+    public AllianceSide getAllianceSide(){
+        return side;
+    }
     public void setAllianceSide(AllianceSide side) {
         this.side = side;
     }
 
 
     /**
-     * this is for building the robot without having to copypaste this around everywhere
+     * this is for building the robot without having to copy-paste this around everywhere
      * use like:
      * robot = StateRobot.build() in init
      * if new parts are added then change this

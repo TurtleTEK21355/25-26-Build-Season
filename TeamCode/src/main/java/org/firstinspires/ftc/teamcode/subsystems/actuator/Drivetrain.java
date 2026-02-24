@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
@@ -18,6 +19,7 @@ public class Drivetrain {
     private PIDConstants pidConstants = new PIDConstants(0.1, 0, 0);
     private PIDConstants thetaPIDConstants = new PIDConstants(0.03, 0, 0);
     private final Pose2D PID_TOLERANCE = new Pose2D(2, 2, 2.5);
+    private final double ROTATION_PID_SPEED = 0.75;
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
         this.frontLeftMotor = frontLeft;
@@ -119,6 +121,18 @@ public class Drivetrain {
     public double getRotationToGoal(AllianceSide side, Pose2D position) {
         Pose2D distance = side.getGoalPosition().subtract(position);
         return Math.toDegrees(distance.getTheta());
+    }
+    public boolean rotateToAnglePID(Pose2D position, AllianceSide side, boolean telemetry){
+        double angle = position.positionsToFCAngle(side.getGoalPosition());
+        PIDControllerHeading hPID = new PIDControllerHeading(getThetaPIDConstants(), angle, getTolerance().h, ROTATION_PID_SPEED);
+        if (!hPID.atTarget(position.h)) {
+            fcControl(0, 0, hPID.calculate(position.h), position);
+            if (telemetry) {
+                TelemetryPasser.telemetry.addData("Rotation Target: ", angle);
+                TelemetryPasser.telemetry.addData("Rotation Distance Left: ", angle - position.h);
+            }
+        }
+        return hPID.atTarget(position.h);
     }
 
     // Sends power of each motor to telemetry

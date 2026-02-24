@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.lib.command.CommandList;
 import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
 
 public abstract class CommandOpMode extends LinearOpMode {
-    private CommandScheduler commandScheduler = new CommandScheduler();
+    protected CommandScheduler commandScheduler = new CommandScheduler();
     private CommandList backgroundCommands = new CommandList();//these can be for telemetry that runs the whole time, or other stuff
 
     @Override
