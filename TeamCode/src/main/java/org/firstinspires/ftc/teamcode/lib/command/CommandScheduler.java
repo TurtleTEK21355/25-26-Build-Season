@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.lib.command;
 
+import org.firstinspires.ftc.teamcode.TelemetryPasser;
+
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
@@ -40,7 +42,6 @@ public class CommandScheduler{
         dataObject = command.data;
         dataKey = command.dataKey;
 
-        dataHandler();
 
         if (command.isCompleted()) {
             commandQueue.remove();
@@ -51,7 +52,7 @@ public class CommandScheduler{
     }
 
     // usage is specific to class
-    public void dataHandler(){}
+
 
     public String getTelemetry() {
         return telemetryString;

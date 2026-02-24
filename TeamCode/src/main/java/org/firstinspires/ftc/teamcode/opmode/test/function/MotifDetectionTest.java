@@ -32,14 +32,17 @@ public class MotifDetectionTest extends StateAutoOpMode {
     @Override
     public void commands() {
         addCommand(new SimultaneousAnyCommand(new GetMotifCommand(robot.getLimelight()), new TimerCommand(3000)));
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(0, 0, 0), 2000, SPEED, robot.getDrivetrain(), robot.getOtosSensor()));
+        addCommand(new TimerCommand(10000));
     }
 
     public void dataHandler(){
+        Object object = commandScheduler.getData();
         if (Objects.equals(commandScheduler.getDataKey(), "GetMotifCommand")) {
-            motif = (Motif) commandScheduler.getData();
+            if(object != null){
+                motif = (Motif) object;
+            }
         }
-        telemetry.addData("Motif", motif.toString());
+        telemetry.addData("Motif: ", motif.getID());
     }
 
 

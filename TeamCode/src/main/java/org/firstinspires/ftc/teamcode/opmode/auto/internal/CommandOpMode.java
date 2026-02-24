@@ -22,6 +22,7 @@ public abstract class CommandOpMode extends LinearOpMode {
             }
 
             commandScheduler.loop();
+            dataHandler();
 
             telemetry.addLine(commandScheduler.getTelemetry());
             telemetry.update();
@@ -37,4 +38,5 @@ public abstract class CommandOpMode extends LinearOpMode {
     }
     public void addBackgroundCommand(Command command) {backgroundCommands.add(command);}
 
+    public void dataHandler(){}
 }
