@@ -24,8 +24,8 @@ public class SortingTest extends OpMode {
     @Override
     public void loop() {
         robot.updatePosition();
-        robot.drivetrainFCControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
-        robot.manualControls(gamepad1.left_trigger, gamepad1.right_trigger, gamepad2.left_trigger, gamepad2.left_bumper, gamepad2.right_trigger);
+        robot.getDrivetrain().fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, robot.getAllianceSide(), robot.getPosition());
+//        robot.manualControls(gamepad1.left_trigger, gamepad1.right_trigger, gamepad2.left_trigger, gamepad2.left_bumper, gamepad2.right_trigger);
         if(gamepad1.a) {
             robot.getShooterSystem().setArtifactToShoot(ArtifactState.GREEN);
         } else if (gamepad1.x) {

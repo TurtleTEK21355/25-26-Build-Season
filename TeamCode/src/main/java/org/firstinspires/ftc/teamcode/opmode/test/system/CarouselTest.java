@@ -58,7 +58,7 @@ public class CarouselTest extends LinearOpMode {
 
         waitForStart();
         while (opModeIsActive()) {
-            robot.drivetrainFCControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+            robot.getDrivetrain().fcControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, robot.getAllianceSide(), robot.getPosition());
             if(gamepad1.y) {
                 robot.getShooterSystem().setCarouselPosition(ColorSensorPosition.SHOOT.getAbsolutePosition());
             } else if(gamepad1.b) {

@@ -34,8 +34,8 @@ public class LimelightTest extends OpMode {
     }
     @Override
     public void loop() {
-        robot.positionTelemetry();
-        robot.telemetryLimelightAprilTagData();
+        robot.getOtosSensor().positionTelemetry();
+//        robot.telemetryLimelightAprilTagData();
         combined.update();
     }
 }

@@ -27,6 +27,18 @@ public class PartnerPark {
         viperSlide.setPower(power);
     }
 
+    public void partnerParkControls(boolean up, boolean down) {
+        if (up) {
+            up();
+        }
+        else if (down) {
+            down();
+        }
+        else {
+            stay();
+        }
+
+    }
     public void up() {
         if (viperSlide.getCurrentPosition() < MAX) {
             viperSlide.setPower(UP_POWER);

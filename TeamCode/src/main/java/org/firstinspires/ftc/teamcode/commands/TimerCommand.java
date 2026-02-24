@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.command.Command;
+import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 
 public class TimerCommand extends Command {
     private ElapsedTime timer = new ElapsedTime();
@@ -19,8 +20,10 @@ public class TimerCommand extends Command {
     }
 
     @Override
-    public void loop() {
-        TelemetryPasser.telemetry.addData("Time Left", milliseconds - timer.milliseconds());
+    public String telemetry() {
+        TelemetryString string = new TelemetryString();
+        string.addData("Remaining Timer Time:", milliseconds - timer.milliseconds());
+        return string.toString();
     }
 
     @Override

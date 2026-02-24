@@ -2,16 +2,14 @@ package org.firstinspires.ftc.teamcode.subsystems.actuator;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.PWMOutput;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
-
-import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class ArtifactLift {
     private DcMotorEx lift;
-    private int TOP_LIMIT = 540;
-    private int BOTTOM_LIMIT = 0;
+    private TouchSensor topLimit;
+    private TouchSensor bottomLimit;
+    private final int TOP_LIMIT = 540;
+    private final int BOTTOM_LIMIT = 0;
 
     public ArtifactLift(DcMotorEx lift) {
         this.lift = lift;
@@ -21,6 +19,13 @@ public class ArtifactLift {
         this.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.lift.setPower(0.8);
     }
+    public ArtifactLift(DcMotorEx lift, TouchSensor topLimit, TouchSensor bottomLimit) {
+        this.lift = lift;
+        this.topLimit = topLimit;
+        this.bottomLimit = bottomLimit;
+        this.lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
 
     public void setLiftPosition(int position) {
         lift.setTargetPosition(position);
@@ -28,11 +33,31 @@ public class ArtifactLift {
     public double getLiftPosition() {
         return lift.getCurrentPosition();
     }
-    public void setLiftUp() {
+    public void setLiftUpNoLimit() {
         setLiftPosition(TOP_LIMIT);
     }
-    public void setLiftDown() {
+    public void setLiftDownNoLimit() {
         setLiftPosition(BOTTOM_LIMIT);
+    }
+    public void setLiftUp(){
+        if(!isTouchingTopLimit()) {
+            lift.setPower(0.8);
+        } else {
+            lift.setPower(0);
+        }
+    }
+    public void setLiftDown(){
+        if(!isTouchingBottomLimit()) {
+            lift.setPower(-0.8);
+        } else {
+            lift.setPower(0);
+        }
+    }
+    public boolean isTouchingTopLimit() {
+        return topLimit.isPressed();
+    }
+    public boolean isTouchingBottomLimit() {
+        return bottomLimit.isPressed();
     }
 
 }

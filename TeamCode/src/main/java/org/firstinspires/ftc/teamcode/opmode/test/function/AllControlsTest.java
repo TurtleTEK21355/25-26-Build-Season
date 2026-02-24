@@ -76,7 +76,7 @@ public class AllControlsTest extends LinearOpMode {
             } else if (gamepad2.b || virtualGamepad2.getCircle()) {
                 CSPos = ColorSensorPosition.RIGHT;
             }
-            robot.mainTeleOpWithoutTrajectoryMath(
+            robot.getShooterSystem().mainTeleOpWithoutTrajectoryMath(
                     gamepad2.left_bumper || virtualGamepad2.getL1(),
                     Math.max(gamepad2.right_trigger, virtualGamepad2.getR2()),
                     Math.max(gamepad2.left_trigger, virtualGamepad2.getL2()),
@@ -86,7 +86,7 @@ public class AllControlsTest extends LinearOpMode {
             if (gamepad2.dpad_down) {
                 robot.rotateToGoal(true);
             } else {
-                robot.drivetrainFCControl(-gamepad1.left_stick_y + (0.5 * virtualGamepad1.getLeftStickY()), gamepad1.left_stick_x + (0.5 * virtualGamepad1.getLeftStickX()), gamepad1.right_stick_x - (0.5 * virtualGamepad1.getRightStickX()));
+                robot.getDrivetrain().fcControl(-gamepad1.left_stick_y + (0.5 * virtualGamepad1.getLeftStickY()), gamepad1.left_stick_x + (0.5 * virtualGamepad1.getLeftStickX()), gamepad1.right_stick_x - (0.5 * virtualGamepad1.getRightStickX()), robot.getAllianceSide(), robot.getPosition());
             }
             telemetry.update();
         }
