@@ -62,6 +62,7 @@ public class ShooterSystem {
         setArtifactLiftState(artifactLift);
     }
 
+
     public void setFlywheelPower(double power) {
         turretSystem.setFlyWheelPower(power);
     }
