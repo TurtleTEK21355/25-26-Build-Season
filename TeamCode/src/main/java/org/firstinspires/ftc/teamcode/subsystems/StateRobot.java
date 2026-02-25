@@ -78,8 +78,7 @@ public class StateRobot {
     public Limelight getLimelight() {
         return limelight;
     }
-
-
+    
     public boolean rotateToGoal(boolean telemetry){
         updatePosition();
         return drivetrain.rotateToAnglePID(position, side, telemetry);
