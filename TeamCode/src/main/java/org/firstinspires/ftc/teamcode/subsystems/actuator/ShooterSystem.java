@@ -22,13 +22,17 @@ public class ShooterSystem {
 
     }
 
+    public ArtifactLift getArtifactLift() {
+        return artifactLift;
+    }
+
     public String teleOpTelemetry() {
         TelemetryString string = new TelemetryString();
         string.addLine("hello");
         return string.toString();
     }
-    public void manualControls(double intake, double shooter, double carousel, boolean artifactLifter, double hood) {
-        setArtifactLiftState(artifactLifter);
+
+    public void manualControls(double intake, double shooter, double carousel, double hood) {
         setFlywheelPower(shooter);
         TelemetryPasser.telemetry.addData("Flywheel Velocity:", getFlywheelVelocity());
         setIntakePower(intake);
@@ -37,6 +41,7 @@ public class ShooterSystem {
         setHoodAngle(hood);
         TelemetryPasser.telemetry.addData("Hood Angle:", hood);
     }
+
     /**
      *
      * @param intake

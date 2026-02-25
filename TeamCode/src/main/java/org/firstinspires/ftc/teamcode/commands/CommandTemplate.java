@@ -1,14 +1,7 @@
 package org.firstinspires.ftc.teamcode.commands;
 
-import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.command.Command;
-import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
-import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerSpeedLimit;
-import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
-import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
-import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
-import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 
 public class CommandTemplate extends Command {
     // class variables

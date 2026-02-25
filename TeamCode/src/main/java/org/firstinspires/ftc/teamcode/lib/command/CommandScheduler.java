@@ -11,6 +11,12 @@ public class CommandScheduler{
     private HashMap<String, Object> dataMap = new HashMap<>();
     private boolean initLock = false;
 
+    public CommandScheduler(Command... commands) {
+        for (Command command : commands) {
+            add(command);
+        }
+    }
+
 
     public void add(Command command) {
         commandQueue.add(command);

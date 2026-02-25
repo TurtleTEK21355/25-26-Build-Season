@@ -35,8 +35,8 @@ public abstract class StateAutoOpMode extends CommandOpMode {
 
         robot = StateRobot.build(hardwareMap);
 
-        robot.resetPosition();
-        robot.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, (double) 48 /(48-3.5) * (double) 96/(96+4), (double) 3600 /(3600-6.5));
+
+        robot.getOtosSensor().configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, (double) 48 /(48-3.5) * (double) 96/(96+4), (double) 3600 /(3600-6.5));
         robot.getDrivetrain().configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
 
         commands();
@@ -45,7 +45,7 @@ public abstract class StateAutoOpMode extends CommandOpMode {
 
     @Override
     public void cleanup() {
-        blackboard.put(POSITION_BLACKBOARD_KEY, robot.getPosition());
+        blackboard.put(POSITION_BLACKBOARD_KEY, robot.getOtosSensor().getPosition());
         blackboard.put(ALLIANCE_SIDE_BLACKBOARD_KEY, side);
 
     }

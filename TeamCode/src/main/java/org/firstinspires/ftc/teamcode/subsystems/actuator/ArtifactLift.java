@@ -36,9 +36,16 @@ public class ArtifactLift {
     public void setLiftUpNoLimit() {
         setLiftPosition(TOP_LIMIT);
     }
+    public boolean getLiftUp(){
+        return getLiftPosition() >= TOP_LIMIT - 10;
+    }
     public void setLiftDownNoLimit() {
         setLiftPosition(BOTTOM_LIMIT);
     }
+    public boolean getLiftDown() {
+        return getLiftPosition() <= BOTTOM_LIMIT + 10;
+    }
+
     public void setLiftUp(){
         if(!isTouchingTopLimit()) {
             lift.setPower(0.8);

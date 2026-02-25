@@ -41,7 +41,6 @@ public class StateRobot {
     private PartnerPark partnerPark;
     private OTOSSensor otosSensor;
     private Limelight limelight;
-    private Pose2D position;
     private AllianceSide side;
     public static final String POSITION_BLACKBOARD_KEY = "pos";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
@@ -54,7 +53,6 @@ public class StateRobot {
         this.partnerPark = partnerPark;
         this.otosSensor = otosSensor;
         this.limelight = new Limelight(limelight);
-        this.position = new Pose2D(0,0,0);
         this.side = AllianceSide.BLUE;
         otosSensor.configureOtos(0, 0, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1); //default
     }
@@ -78,47 +76,19 @@ public class StateRobot {
     public Limelight getLimelight() {
         return limelight;
     }
-    
+
+
+
     public boolean rotateToGoal(boolean telemetry){
-        updatePosition();
-        return drivetrain.rotateToAnglePID(position, side, telemetry);
+        return drivetrain.rotateToAnglePID(otosSensor.getPosition(), side, telemetry);
     }
 
-
-    public void configureOtos(double offsetX, double offsetY, double offsetH, DistanceUnit distanceUnit, AngleUnit angleUnit, double linearScalar, double angularScalar){
-        otosSensor.configureOtos(offsetX, offsetY, offsetH, distanceUnit, angleUnit, linearScalar, angularScalar);
-    }
-    public void updatePosition(){
-        position = otosSensor.getPosition();
-    }
     public void correctPositionFromLL(){
         Pose2D position = limelight.getPosition();
         if (position != null) {
             otosSensor.setPosition(position);
         }
     }
-    public void setPosition(Pose2D position) {
-        this.position = position;
-    }
-    public void resetPosition() {
-        otosSensor.resetPosition();
-    }
-    public Pose2D getPosition() {
-        if (position == null) {
-            updatePosition();
-        }
-        return position;
-    }
-    public double getX() {
-        return getPosition().x;
-    }
-    public double getY() {
-        return getPosition().y;
-    }
-    public double getH() {
-        return getPosition().h;
-    }
-
 
     public AllianceSide getAllianceSide(){
         return side;
@@ -126,6 +96,7 @@ public class StateRobot {
     public void setAllianceSide(AllianceSide side) {
         this.side = side;
     }
+
 
 
     /**
