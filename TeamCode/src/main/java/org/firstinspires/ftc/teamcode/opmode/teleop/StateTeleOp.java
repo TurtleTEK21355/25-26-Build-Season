@@ -32,7 +32,11 @@ public class StateTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        robot.getDrivetrain().fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, robot.getAllianceSide(), robot.getOtosSensor().getPosition());
+        if(!gamepad2.right_bumper) {
+            robot.getDrivetrain().fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, robot.getAllianceSide(), robot.getOtosSensor().getPosition());
+        } else {
+            robot.rotateToGoal(true);
+        }
         robot.getShooterSystem().manualControls(gamepad1.left_trigger, gamepad1.right_trigger, gamepad2.left_trigger, gamepad2.right_trigger);
         if (gamepad2.left_bumper && !shooting) {
             shooting = true;

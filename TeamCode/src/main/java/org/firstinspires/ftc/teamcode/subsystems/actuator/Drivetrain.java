@@ -122,7 +122,7 @@ public class Drivetrain {
         Pose2D distance = side.getGoalPosition().subtract(position);
         return Math.toDegrees(distance.getTheta());
     }
-    public boolean rotateToAnglePID(Pose2D position, AllianceSide side, boolean telemetry){
+    public boolean rotateToGoalPID(Pose2D position, AllianceSide side, boolean telemetry){
         double angle = position.positionsToFCAngle(side.getGoalPosition());
         PIDControllerHeading hPID = new PIDControllerHeading(getThetaPIDConstants(), angle, getTolerance().h, ROTATION_PID_SPEED);
         if (!hPID.atTarget(position.h)) {

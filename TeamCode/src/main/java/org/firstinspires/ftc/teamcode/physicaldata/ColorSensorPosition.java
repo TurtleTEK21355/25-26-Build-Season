@@ -6,11 +6,11 @@ import org.firstinspires.ftc.robotcore.internal.ui.GamepadUser;
 
 public enum ColorSensorPosition {
     SHOOT(0),
-    LEFT((1.0)/3),
-    RIGHT((2.0)/3),
+    LEFT((2.0)/3),
+    RIGHT((1.0)/3),
     INTAKESHOOT((1.0)/6),
-    INTAKELEFT(0.5),
-    INTAKERIGHT((5.0)/6);
+    INTAKERIGHT(0.5),
+    INTAKELEFT((5.0)/6);
 
     private final double absolutePosition;
 

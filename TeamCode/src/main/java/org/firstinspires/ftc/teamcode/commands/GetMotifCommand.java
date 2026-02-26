@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.subsystems.sensor.Limelight;
 
 public class GetMotifCommand extends Command {
     Limelight limelight;
+    Motif motif;
     public String dataKey = "GetMotifCommand";
     public GetMotifCommand(Limelight limelight) {
     this.limelight = limelight;
@@ -26,18 +27,17 @@ public class GetMotifCommand extends Command {
 
     @Override
     public void loop() {
-        Motif motif = limelight.getMotif();
-        if (limelight.getMotif() != null) {
-            data = motif;
-            return true;
-        }
-        return false;
+        motif = limelight.getMotif();
+        data = motif;
     }
 
 
     @Override
     public boolean isCompleted() {
-
+        if (motif != null) {
+            return true;
+        }
+        return false;
     }
 
 }
