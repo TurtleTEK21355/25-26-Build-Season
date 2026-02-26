@@ -7,19 +7,18 @@ public class ShootMath {
 
         double height = 27;
         double gravity = 386.09;
-        double theta = Math.atan(2*height / length)+5;
+        double theta = Math.atan(2*height / length);
         double counter = 0;
-        double fixedTheta = 936;
 
         if(theta > 45 || theta < 20) {
-            fixedTheta = ShootMath.fixTheta(length, theta, counter);
-        }
-
-        if (fixedTheta!=936) {
+            double fixedTheta = ShootMath.fixTheta(length, theta, counter);
             theta = fixedTheta;
         }
 
         double velocity = Math.sqrt(2*gravity*height)/Math.sin(theta);
+        if(velocity > 1700 || theta > 45 || theta < 20) {
+
+        }
 
         return velocity;
 
@@ -42,6 +41,17 @@ public class ShootMath {
             fixTheta(length, theta, counter);
         }
         return theta;
+
+    }
+
+    public static double fixVelocity(double velocity, double theta) {
+        double counter = 0;
+
+        if (counter > 10) {
+            return 1500;
+        }
+
+        return counter;
 
     }
 }
