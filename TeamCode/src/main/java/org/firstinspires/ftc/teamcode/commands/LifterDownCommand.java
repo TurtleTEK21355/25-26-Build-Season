@@ -1,24 +1,25 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import org.firstinspires.ftc.teamcode.lib.command.Command;
-import org.firstinspires.ftc.teamcode.subsystems.actuator.ArtifactLift;
+import org.firstinspires.ftc.teamcode.subsystems.actuator.ShooterSystem;
 
 public class LifterDownCommand extends Command {
 
-    private ArtifactLift artifactLift;
+    private ShooterSystem shooterSystem;
 
-    public LifterDownCommand(ArtifactLift artifactLift) {
-        this.artifactLift = artifactLift;
+    public LifterDownCommand(ShooterSystem shooterSystem) {
+        this.shooterSystem = shooterSystem;
 
     }
 
     @Override
     public void init() {
-        artifactLift.setLiftDownNoLimit();
+        shooterSystem.getCarouselSystem().setNearestSlotInShoot();
+        shooterSystem.getArtifactLift().setLiftDownNoLimit();
     }
 
     @Override
     public boolean isCompleted() {
-        return artifactLift.getLiftDown();
+        return shooterSystem.getArtifactLift().getLiftDown();
     }
 }

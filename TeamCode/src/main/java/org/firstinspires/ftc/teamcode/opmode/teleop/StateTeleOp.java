@@ -33,8 +33,8 @@ public class StateTeleOp extends OpMode {
         robot.setAllianceSide(side);
 
         shootCommand = new CommandScheduler(
-                new LifterUpCommand(robot.getShooterSystem().getArtifactLift()),
-                new LifterDownCommand(robot.getShooterSystem().getArtifactLift()));
+                new LifterUpCommand(robot.getShooterSystem()),
+                new LifterDownCommand(robot.getShooterSystem()));
         selectGreenArtifactCommand = new CommandScheduler(
                 new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.GREEN));
         selectPurpleArtifactCommand = new CommandScheduler(

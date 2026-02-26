@@ -38,6 +38,18 @@ public class CarouselSystem {
                 getArtifactState(ColorSensorPosition.RIGHT) == state ||
                 getArtifactState(ColorSensorPosition.LEFT) == state );
     }
+    public void setNearestSlotInShoot() {
+        double position = getPosition();
+
+        double[] minDifference = {position-SLOT_POSITIONS[0], Math.abs(position-SLOT_POSITIONS[1]), Math.abs(position-SLOT_POSITIONS[2])};
+        if (minDifference[0] <= minDifference[1] && minDifference[0] <= minDifference[2]) {
+            setSlotInShoot(0);
+        } else if (minDifference[1] <= minDifference[2]) {
+            setSlotInShoot(1);
+        } else {
+            setSlotInShoot(2);
+        }
+    }
     public int getSlotInShoot() {
         double position = carouselServo.getPosition();
         int slot = -1;
