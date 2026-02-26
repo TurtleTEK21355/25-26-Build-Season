@@ -35,6 +35,7 @@ public class StateTeleOp extends OpMode {
         shootCommand = new CommandScheduler(
                 new LifterUpCommand(robot.getShooterSystem()),
                 new LifterDownCommand(robot.getShooterSystem()));
+        // add rest of shootCommand
         selectGreenArtifactCommand = new CommandScheduler(
                 new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.GREEN));
         selectPurpleArtifactCommand = new CommandScheduler(
