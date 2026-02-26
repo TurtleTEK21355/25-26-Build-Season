@@ -25,6 +25,7 @@ public class ShooterSystem {
     public ArtifactLift getArtifactLift() {
         return artifactLift;
     }
+    public CarouselSystem getCarouselSystem(){return carouselSystem;}
 
     public String teleOpTelemetry() {
         TelemetryString string = new TelemetryString();

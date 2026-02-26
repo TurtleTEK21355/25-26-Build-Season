@@ -5,15 +5,23 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.commands.LifterDownCommand;
 import org.firstinspires.ftc.teamcode.commands.LifterUpCommand;
+import org.firstinspires.ftc.teamcode.commands.SelectArtifactCommand;
+import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
+import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
 @TeleOp(name = "USE THIS FOR STATE MANUAL TESTING!!!!")
 public class StateTeleOp extends OpMode {
     private StateRobot robot;
     private CommandScheduler shootCommand;
+    private CommandScheduler selectGreenArtifactCommand;
+    private CommandScheduler selectPurpleArtifactCommand;
+    private CommandScheduler selectEmptyArtifactCommand;
+
+
     private boolean shooting = false;
 
     @Override
@@ -27,6 +35,12 @@ public class StateTeleOp extends OpMode {
         shootCommand = new CommandScheduler(
                 new LifterUpCommand(robot.getShooterSystem().getArtifactLift()),
                 new LifterDownCommand(robot.getShooterSystem().getArtifactLift()));
+        selectGreenArtifactCommand = new CommandScheduler(
+                new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.GREEN));
+        selectPurpleArtifactCommand = new CommandScheduler(
+                new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.PURPLE));
+        selectEmptyArtifactCommand = new CommandScheduler(
+                new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.EMPTY));
 
     }
 
