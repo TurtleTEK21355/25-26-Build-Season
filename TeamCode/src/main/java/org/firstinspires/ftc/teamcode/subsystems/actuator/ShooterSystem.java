@@ -87,7 +87,7 @@ public class ShooterSystem {
     public double getCarouselPosition() {return carouselSystem.getPosition();}
 
     public void setArtifactToShoot(ArtifactState state) {
-        carouselSystem.setArtifactToShoot(state);
+        carouselSystem.setTargetArtifactToShoot(state);
     }
     public void setHoodAngle(double position) {turretSystem.setHoodAngle(position);}
 }

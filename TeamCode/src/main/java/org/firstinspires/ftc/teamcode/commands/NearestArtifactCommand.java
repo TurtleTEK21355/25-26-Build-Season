@@ -6,18 +6,16 @@ import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 import org.firstinspires.ftc.teamcode.physicaldata.ColorSensorPosition;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.CarouselSystem;
 
-public class SelectArtifactCommand extends Command {
+public class NearestArtifactCommand extends Command {
     CarouselSystem carouselSystem;
-    ArtifactState artifactState;
 
-    public SelectArtifactCommand(CarouselSystem carouselSystem, ArtifactState artifactState) {
+    public NearestArtifactCommand(CarouselSystem carouselSystem) {
         this.carouselSystem = carouselSystem;
-        this.artifactState = artifactState;
     }
 
     @Override
     public void init() {
-        carouselSystem.setTargetArtifactToShoot(artifactState);
+        carouselSystem.setNearestArtifactToShoot();
     }
 
     @Override
@@ -34,11 +32,7 @@ public class SelectArtifactCommand extends Command {
 
     @Override
     public boolean isCompleted() {
-        if(carouselSystem.containsState(artifactState)) {
-            return (carouselSystem.getArtifactState(ColorSensorPosition.SHOOT) == artifactState);
-        } else {
-            return true;
-        }
+        return true;
     }
 
 }

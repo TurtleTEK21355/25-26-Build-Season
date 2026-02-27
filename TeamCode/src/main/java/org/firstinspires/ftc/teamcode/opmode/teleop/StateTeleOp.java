@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.commands.LifterDownCommand;
 import org.firstinspires.ftc.teamcode.commands.LifterUpCommand;
+import org.firstinspires.ftc.teamcode.commands.NearestArtifactCommand;
 import org.firstinspires.ftc.teamcode.commands.SelectArtifactCommand;
 import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
@@ -20,6 +21,8 @@ public class StateTeleOp extends OpMode {
     private CommandScheduler selectGreenArtifactCommand;
     private CommandScheduler selectPurpleArtifactCommand;
     private CommandScheduler selectEmptyArtifactCommand;
+    private CommandScheduler selectNearestArtifactCommand;
+
 
 
     private boolean shooting = false;
@@ -35,14 +38,14 @@ public class StateTeleOp extends OpMode {
         shootCommand = new CommandScheduler(
                 new LifterUpCommand(robot.getShooterSystem()),
                 new LifterDownCommand(robot.getShooterSystem()));
-        // add rest of shootCommand
         selectGreenArtifactCommand = new CommandScheduler(
                 new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.GREEN));
         selectPurpleArtifactCommand = new CommandScheduler(
                 new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.PURPLE));
         selectEmptyArtifactCommand = new CommandScheduler(
                 new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.EMPTY));
-
+        selectNearestArtifactCommand = new CommandScheduler(
+                new NearestArtifactCommand(robot.getShooterSystem().getCarouselSystem()));
     }
 
     @Override
