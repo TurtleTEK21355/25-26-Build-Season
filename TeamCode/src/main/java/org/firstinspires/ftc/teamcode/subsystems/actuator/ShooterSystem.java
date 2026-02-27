@@ -42,6 +42,13 @@ public class ShooterSystem {
         setHoodAngle(hood);
         TelemetryPasser.telemetry.addData("Hood Angle:", hood);
     }
+    public void manualControls(double intake, double shooter, double hood) {
+        setFlywheelPower(shooter);
+        TelemetryPasser.telemetry.addData("Flywheel Velocity:", getFlywheelVelocity());
+        setIntakePower(intake);
+        setHoodAngle(hood);
+        TelemetryPasser.telemetry.addData("Hood Angle:", hood);
+    }
 
     /**
      *
