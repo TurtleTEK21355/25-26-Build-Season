@@ -7,11 +7,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.commands.LifterDownCommand;
 import org.firstinspires.ftc.teamcode.commands.LifterUpCommand;
+import org.firstinspires.ftc.teamcode.commands.MovePIDCommand;
 import org.firstinspires.ftc.teamcode.commands.NearestArtifactCommand;
-import org.firstinspires.ftc.teamcode.commands.RotateToGoalCommand;
 import org.firstinspires.ftc.teamcode.commands.SelectArtifactCommand;
 import org.firstinspires.ftc.teamcode.commands.SequentialCommand;
-import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
@@ -29,7 +28,7 @@ public class StateTeleOp extends OpMode {
     private SequentialCommand selectPurpleArtifactCommand;
     private SequentialCommand selectEmptyArtifactCommand;
     private SequentialCommand selectNearestArtifactCommand;
-    private SequentialCommand rotateToGoal;
+    private SequentialCommand moveToShootingPosition;
 
     private ElapsedTime commandCooldownTimer = new ElapsedTime();
     private final int commandCooldownTime = 500;
@@ -55,8 +54,8 @@ public class StateTeleOp extends OpMode {
                 new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.EMPTY));
         selectNearestArtifactCommand = new SequentialCommand(
                 new NearestArtifactCommand(robot.getShooterSystem().getCarouselSystem()));
-        rotateToGoal = new SequentialCommand(
-                new RotateToGoalCommand(robot));
+        moveToShootingPosition = new SequentialCommand(
+                new MovePIDCommand(new Pose2D(12, -58, 20), 0.6, robot.getDrivetrain(), robot.getOtosSensor()));
     }
 
     @Override
@@ -66,13 +65,15 @@ public class StateTeleOp extends OpMode {
         } else {
             robot.getDrivetrain().rotateToGoal(robot.getOtosSensor().getPosition(), robot.getAllianceSide(), true);
         }
-
+        robot.getShooterSystem().setFlywheelVelocity(1300);
+        robot.getShooterSystem().setHoodAngle(0);
         robot.getShooterSystem().manualControls(gamepad1.left_trigger, gamepad1.right_trigger, gamepad2.left_trigger, gamepad2.right_trigger);
         if(gamepad1.a) preferredArtifactState = ArtifactState.GREEN;
         else if(gamepad1.x) preferredArtifactState = ArtifactState.PURPLE;
         else if(gamepad1.b) preferredArtifactState = ArtifactState.EMPTY;
         else if(gamepad1.y) preferredArtifactState = ArtifactState.ANY;
         if (gamepad2.left_bumper && commandCooldownTimer.milliseconds() > commandCooldownTime) {
+            commandScheduler.add(moveToShootingPosition);
             switch (preferredArtifactState) {
                 case ANY:
                     commandScheduler.add(selectNearestArtifactCommand);
@@ -87,7 +88,6 @@ public class StateTeleOp extends OpMode {
                     commandScheduler.add(selectEmptyArtifactCommand);
                     break;
             }
-            commandScheduler.add(rotateToGoal);
             commandScheduler.add(shootCommand);
             commandCooldownTimer.reset();
         }
