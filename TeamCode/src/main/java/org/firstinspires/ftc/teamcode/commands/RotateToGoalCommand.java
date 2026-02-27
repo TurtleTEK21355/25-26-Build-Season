@@ -22,7 +22,7 @@ public class RotateToGoalCommand extends Command {
 
     @Override
     public void init() {
-        hPID = new PIDControllerHeading(robot.getDrivetrain().getThetaPIDConstants(), robot.getDrivetrain().getRotationToGoal(robot.getAllianceSide(), robot.getOtosSensor().getPosition()), robot.getDrivetrain().getTolerance().h, ROTATION_PID_SPEED);
+        hPID = new PIDControllerHeading(robot.getDrivetrain().getThetaPIDConstants(), robot.getOtosSensor().getPosition().positionsToFCAngle(target)*(90.0/Math.PI), robot.getDrivetrain().getTolerance().h, ROTATION_PID_SPEED);
 
     }
 
