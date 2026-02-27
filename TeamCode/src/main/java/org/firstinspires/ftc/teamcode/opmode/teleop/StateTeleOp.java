@@ -54,7 +54,7 @@ public class StateTeleOp extends OpMode {
         selectNearestArtifactCommand = new SequentialCommand(
                 new NearestArtifactCommand(robot.getShooterSystem().getCarouselSystem()));
         moveToShootingPosition = new SequentialCommand(
-                new MovePIDCommand(new Pose2D(12, -58, 20), 0.6, robot.getDrivetrain(), robot.getOtosSensor()));
+                new MovePIDCommand(new Pose2D(-12, -58, 20), 0.6, robot.getDrivetrain(), robot.getOtosSensor()));
     }
 
     @Override

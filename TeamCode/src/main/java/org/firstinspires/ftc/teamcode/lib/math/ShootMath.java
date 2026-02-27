@@ -2,8 +2,15 @@ package org.firstinspires.ftc.teamcode.lib.math;
 
 public class ShootMath {
 
-    //gravity might be negative.
-    public static double velocity(double length) {
+    public static class ShootResults{
+        double theta;
+        double velocity;
+        ShootResults(double theta, double velocity){
+            this.theta = theta;
+            this.velocity = velocity;
+        }
+    }
+    public static ShootResults velocityHood(double length) {
 
         double height = 27;
         double gravity = 386.09;
@@ -20,8 +27,7 @@ public class ShootMath {
         if (fixedVelocity > 1700 || theta > 45 || theta < 20) {
             fixedVelocity = fixVelocity(theta, velocityCounter);
         }
-
-        return fixedVelocity;
+        return new ShootResults(fixedVelocity, theta);
 
     }
 
