@@ -35,12 +35,12 @@ public class ShooterSystem {
 
     public void manualControls(double intake, double shooter, double carousel, double hood) {
         setFlywheelPower(shooter);
-        TelemetryPasser.telemetry.addData("Flywheel Velocity:", getFlywheelVelocity());
+//        TelemetryPasser.telemetry.addData("Flywheel Velocity:", getFlywheelVelocity());
         setIntakePower(intake);
         setCarouselPosition(carousel);
-        TelemetryPasser.telemetry.addData("Carousel Position:", getCarouselPosition());
+//        TelemetryPasser.telemetry.addData("Carousel Position:", getCarouselPosition());
         setHoodAngle(hood);
-        TelemetryPasser.telemetry.addData("Hood Angle:", hood);
+//        TelemetryPasser.telemetry.addData("Hood Angle:", hood);
     }
     public void manualControls(double intake, double shooter, double hood) {
         setFlywheelPower(shooter);
