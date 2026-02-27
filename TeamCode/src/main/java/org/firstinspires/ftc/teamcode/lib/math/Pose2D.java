@@ -77,8 +77,8 @@ public class Pose2D {
      * @return
      */
     public double positionsToFCAngle(Pose2D target) {
-        double xDistance = Math.sqrt(Math.pow(x, 2)+Math.pow(target.x, 2));
-        double yDistance = Math.sqrt(Math.pow(y, 2)+Math.pow(target.y, 2));
+        double xDistance = Math.abs(x-target.x);
+        double yDistance = Math.abs(y-target.y);
         double angle = Math.tan(yDistance/xDistance);
         if (target.x > x) {
             angle *= -1;

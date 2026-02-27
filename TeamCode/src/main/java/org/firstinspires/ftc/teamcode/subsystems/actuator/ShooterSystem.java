@@ -39,7 +39,7 @@ public class ShooterSystem {
         setIntakePower(intake);
         setCarouselPosition(carousel);
 //        TelemetryPasser.telemetry.addData("Carousel Position:", getCarouselPosition());
-        setHoodAngle(hood);
+//        setHoodAngle(hood);
 //        TelemetryPasser.telemetry.addData("Hood Angle:", hood);
     }
     public void manualControls(double intake, double shooter, double hood) {
