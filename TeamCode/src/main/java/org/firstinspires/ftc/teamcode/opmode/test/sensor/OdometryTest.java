@@ -42,7 +42,6 @@ public class OdometryTest extends LinearOpMode {
     protected double speed = 0.5;
     public static final String POSITION_BLACKBOARD_KEY = "pos";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
-    private ProgrammingRobot robot;
 
 
     public void runOpMode() {
