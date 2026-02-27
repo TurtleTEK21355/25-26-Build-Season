@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 public class StateTeleOp extends OpMode {
     private StateRobot robot;
 
-    private CommandScheduler commandScheduler;
+    private CommandScheduler commandScheduler = new CommandScheduler();
 
     private SequentialCommand shootCommand;
     private SequentialCommand selectGreenArtifactCommand;
