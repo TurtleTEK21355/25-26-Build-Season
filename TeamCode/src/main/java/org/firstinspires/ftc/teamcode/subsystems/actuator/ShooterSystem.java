@@ -33,19 +33,19 @@ public class ShooterSystem {
         string.addLine("hello");
         return string.toString();
     }
-    public void manualControls(double intake, double shooter, double carousel, double hood) {
-        setFlywheelPower(shooter);
+    public void manualControls(double intakePower, double flywheelPower, double carouselPosition, double hood) {
+        setFlywheelPower(flywheelPower);
 //        TelemetryPasser.telemetry.addData("Flywheel Velocity:", getFlywheelVelocity());
-        setIntakePower(intake);
-        setCarouselPosition(carousel);
+        setIntakePower(intakePower);
+        setCarouselPosition(carouselPosition);
 //        TelemetryPasser.telemetry.addData("Carousel Position:", getCarouselPosition());
 //        setHoodAngle(hood);
 //        TelemetryPasser.telemetry.addData("Hood Angle:", hood);
     }
-    public void manualControls(double intake, double shooter, double hood) {
-        setFlywheelPower(shooter);
+    public void manualControls(double intakePower, double flywheelPower, double hood) {
+        setFlywheelPower(flywheelPower);
         TelemetryPasser.telemetry.addData("Flywheel Velocity:", getFlywheelVelocity());
-        setIntakePower(intake);
+        setIntakePower(intakePower);
         setHoodAngle(hood);
         TelemetryPasser.telemetry.addData("Hood Angle:", hood);
     }

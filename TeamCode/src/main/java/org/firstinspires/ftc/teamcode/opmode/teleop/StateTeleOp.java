@@ -31,8 +31,7 @@ public class StateTeleOp extends OpMode {
     private SequentialCommand selectNearestArtifactCommand;
     private SequentialCommand rotateToGoal;
 
-    private ElapsedTime commandCooldownTimer = new ElapsedTime();
-    private final int commandCooldownTime = 500;
+    private boolean shooting = false;
     private ArtifactState preferredArtifactState = ArtifactState.ANY;
 
     @Override
@@ -68,11 +67,13 @@ public class StateTeleOp extends OpMode {
         }
 
         robot.getShooterSystem().manualControls(gamepad1.left_trigger, gamepad1.right_trigger, gamepad2.left_trigger, gamepad2.right_trigger);
+
         if(gamepad1.a) preferredArtifactState = ArtifactState.GREEN;
         else if(gamepad1.x) preferredArtifactState = ArtifactState.PURPLE;
         else if(gamepad1.b) preferredArtifactState = ArtifactState.EMPTY;
         else if(gamepad1.y) preferredArtifactState = ArtifactState.ANY;
-        if (gamepad2.left_bumper && commandCooldownTimer.milliseconds() > commandCooldownTime) {
+
+        if (gamepad2.left_bumper && !shooting) {
             switch (preferredArtifactState) {
                 case ANY:
                     commandScheduler.add(selectNearestArtifactCommand);
@@ -89,10 +90,14 @@ public class StateTeleOp extends OpMode {
             }
             commandScheduler.add(rotateToGoal);
             commandScheduler.add(shootCommand);
-            commandCooldownTimer.reset();
+            shooting = true;
         }
 
         commandScheduler.loop();
+
+        if (commandScheduler.isCompleted()) {
+            shooting = false;
+        }
 
         telemetry.update();
     }
