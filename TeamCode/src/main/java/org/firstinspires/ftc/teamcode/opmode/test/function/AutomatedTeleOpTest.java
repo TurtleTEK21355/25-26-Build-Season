@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.commands.LifterDownCommand;
 import org.firstinspires.ftc.teamcode.commands.LifterUpCommand;
 import org.firstinspires.ftc.teamcode.commands.NearestArtifactCommand;
@@ -31,7 +32,7 @@ public class AutomatedTeleOpTest extends OpMode {
 
     @Override
     public void init() {
-        Telemetry telemetry;
+        TelemetryPasser telemetryPasser;
         Pose2D startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.POSITION_BLACKBOARD_KEY, new Pose2D(0,0, 0));
         AllianceSide side = (AllianceSide) blackboard.get(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY);
         robot = StateRobot.build(hardwareMap);
@@ -54,7 +55,6 @@ public class AutomatedTeleOpTest extends OpMode {
 //        } else robot.rotateToGoal(true);
 
         robot.getShooterSystem().manualControls(gamepad1.left_trigger, gamepad1.right_trigger, gamepad2.right_trigger);
-
 //        if (gamepad2.left_bumper && !shooting) shooting = true;
 //
 //             if(gamepad1.a) preferredArtifactState = ArtifactState.GREEN;
