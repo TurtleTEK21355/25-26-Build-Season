@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.commands.LifterDownCommand;
 import org.firstinspires.ftc.teamcode.commands.LifterUpCommand;
 import org.firstinspires.ftc.teamcode.commands.NearestArtifactCommand;
 import org.firstinspires.ftc.teamcode.commands.SelectArtifactCommand;
+import org.firstinspires.ftc.teamcode.commands.SequentialCommand;
 import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
@@ -19,11 +20,12 @@ import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 @TeleOp(name = "Automated TeleOp Test")
 public class AutomatedTeleOpTest extends OpMode {
     private StateRobot robot;
-    private CommandScheduler shootCommand;
-    private CommandScheduler selectGreenArtifactCommand;
-    private CommandScheduler selectPurpleArtifactCommand;
-    private CommandScheduler selectEmptyArtifactCommand;
-    private CommandScheduler selectNearestArtifactCommand;
+    private CommandScheduler commandScheduler;
+    private SequentialCommand shootCommand;
+    private SequentialCommand selectGreenArtifactCommand;
+    private SequentialCommand selectPurpleArtifactCommand;
+    private SequentialCommand selectEmptyArtifactCommand;
+    private SequentialCommand selectNearestArtifactCommand;
     private ArtifactState preferredArtifactState = ArtifactState.ANY;
 
 
@@ -39,20 +41,20 @@ public class AutomatedTeleOpTest extends OpMode {
         robot.getOtosSensor().setPosition(startingPosition);
         robot.setAllianceSide(side);
 
-        shootCommand = new CommandScheduler(
+        shootCommand = new SequentialCommand(
                 new LifterUpCommand(robot.getShooterSystem()),
                 new LifterDownCommand(robot.getShooterSystem()));
-        selectGreenArtifactCommand = new CommandScheduler(new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.GREEN));
-        selectPurpleArtifactCommand = new CommandScheduler(new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.PURPLE));
-        selectEmptyArtifactCommand = new CommandScheduler(new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.EMPTY));
-        selectNearestArtifactCommand = new CommandScheduler(new NearestArtifactCommand(robot.getShooterSystem().getCarouselSystem()));
+        selectGreenArtifactCommand = new SequentialCommand(new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.GREEN));
+        selectPurpleArtifactCommand = new SequentialCommand(new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.PURPLE));
+        selectEmptyArtifactCommand = new SequentialCommand(new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.EMPTY));
+        selectNearestArtifactCommand = new SequentialCommand(new NearestArtifactCommand(robot.getShooterSystem().getCarouselSystem()));
     }
 
     @Override
     public void loop() {
         if(!gamepad2.right_bumper){
             robot.getDrivetrain().fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, robot.getAllianceSide(), robot.getOtosSensor().getPosition());
-        } else robot.rotateToGoal(true);
+        }
 
         robot.getShooterSystem().manualControls(gamepad1.left_trigger, gamepad1.right_trigger, gamepad2.right_trigger);
         if (gamepad2.left_bumper && !shooting) shooting = true;
@@ -63,22 +65,11 @@ public class AutomatedTeleOpTest extends OpMode {
         else if(gamepad1.y) preferredArtifactState = ArtifactState.ANY;
 
         if (shooting) {
-            switch (preferredArtifactState) {
-                case ANY:
-                    selectNearestArtifactCommand.loop();
-                    break;
-                case GREEN:
-                    selectGreenArtifactCommand.loop();
-                    break;
-                case PURPLE:
-                    selectPurpleArtifactCommand.loop();
-                    break;
-                case EMPTY:
-                    selectEmptyArtifactCommand.loop();
-                    break;
+
+            if(robot.rotateToGoal(true)) shootCommand.loop();
+            if (shootCommand.isCompleted()) {
+                shooting = false;
             }
-            shootCommand.loop();
-            if (shootCommand.isCompleted()) shooting = false;
         }
 
         telemetry.update();

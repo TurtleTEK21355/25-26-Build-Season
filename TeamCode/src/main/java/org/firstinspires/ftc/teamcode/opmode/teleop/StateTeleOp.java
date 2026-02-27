@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.commands.LifterDownCommand;
 import org.firstinspires.ftc.teamcode.commands.LifterUpCommand;
 import org.firstinspires.ftc.teamcode.commands.NearestArtifactCommand;
+import org.firstinspires.ftc.teamcode.commands.RotateToGoalCommand;
 import org.firstinspires.ftc.teamcode.commands.SelectArtifactCommand;
 import org.firstinspires.ftc.teamcode.commands.SequentialCommand;
 import org.firstinspires.ftc.teamcode.lib.command.Command;
@@ -28,9 +29,11 @@ public class StateTeleOp extends OpMode {
     private SequentialCommand selectPurpleArtifactCommand;
     private SequentialCommand selectEmptyArtifactCommand;
     private SequentialCommand selectNearestArtifactCommand;
+    private SequentialCommand rotateToGoal;
 
     private ElapsedTime commandCooldownTimer = new ElapsedTime();
     private final int commandCooldownTime = 500;
+    private ArtifactState preferredArtifactState = ArtifactState.ANY;
 
     @Override
     public void init() {
@@ -52,7 +55,8 @@ public class StateTeleOp extends OpMode {
                 new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.EMPTY));
         selectNearestArtifactCommand = new SequentialCommand(
                 new NearestArtifactCommand(robot.getShooterSystem().getCarouselSystem()));
-
+        rotateToGoal = new SequentialCommand(
+                new RotateToGoalCommand(robot));
     }
 
     @Override
@@ -64,8 +68,26 @@ public class StateTeleOp extends OpMode {
         }
 
         robot.getShooterSystem().manualControls(gamepad1.left_trigger, gamepad1.right_trigger, gamepad2.left_trigger, gamepad2.right_trigger);
-
+        if(gamepad1.a) preferredArtifactState = ArtifactState.GREEN;
+        else if(gamepad1.x) preferredArtifactState = ArtifactState.PURPLE;
+        else if(gamepad1.b) preferredArtifactState = ArtifactState.EMPTY;
+        else if(gamepad1.y) preferredArtifactState = ArtifactState.ANY;
         if (gamepad2.left_bumper && commandCooldownTimer.milliseconds() > commandCooldownTime) {
+            switch (preferredArtifactState) {
+                case ANY:
+                    commandScheduler.add(selectNearestArtifactCommand);
+                    break;
+                case GREEN:
+                    commandScheduler.add(selectGreenArtifactCommand);
+                    break;
+                case PURPLE:
+                    commandScheduler.add(selectPurpleArtifactCommand);
+                    break;
+                case EMPTY:
+                    commandScheduler.add(selectEmptyArtifactCommand);
+                    break;
+            }
+            commandScheduler.add(rotateToGoal);
             commandScheduler.add(shootCommand);
             commandCooldownTimer.reset();
         }

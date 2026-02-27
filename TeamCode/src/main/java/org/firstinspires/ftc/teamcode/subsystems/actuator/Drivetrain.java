@@ -17,7 +17,7 @@ public class Drivetrain {
     private DcMotor backRightMotor;
 
     private PIDConstants pidConstants = new PIDConstants(0.1, 0, 0);
-    private PIDConstants thetaPIDConstants = new PIDConstants(0.03, 0, 0);
+    private PIDConstants thetaPIDConstants = new PIDConstants(0.04, 0, 0);
     private final Pose2D PID_TOLERANCE = new Pose2D(2, 2, 2.5);
     private final double ROTATION_PID_SPEED = 0.75;
 
@@ -132,6 +132,7 @@ public class Drivetrain {
                 TelemetryPasser.telemetry.addData("Rotation Distance Left: ", angle - position.h);
             }
         }
+        TelemetryPasser.telemetry.addData("At H Target: ", hPID.atTarget(position.h));
         return hPID.atTarget(position.h);
     }
 
