@@ -68,12 +68,6 @@ public class StateRobot {
         return limelight;
     }
 
-
-
-    public boolean rotateToGoal(boolean telemetry){
-        return drivetrain.rotateToGoalPID(otosSensor.getPosition(), side, telemetry);
-    }
-
     public void correctPositionFromLL(){
         Pose2D position = limelight.getPosition();
         if (position != null) {
