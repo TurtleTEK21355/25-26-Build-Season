@@ -57,14 +57,15 @@ public class CommandScheduler{
         return telemetryString;
     }
 
-    public boolean isCompleted() {
-        return commandQueue.isEmpty();
-    }
     public Object getData(String key){
         if (dataMap.get(key) != null) {
             return dataMap.get(key);
         }
         return null;
+    }
+
+    public boolean isCompleted() {
+        return commandQueue.isEmpty();
     }
 
 }
