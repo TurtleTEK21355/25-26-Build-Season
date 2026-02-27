@@ -74,6 +74,9 @@ public class StateRobot {
             otosSensor.setPosition(position);
         }
     }
+    public void rotateToGoal(boolean telemetry){
+        drivetrain.rotateToGoal(otosSensor.getPosition(), side, telemetry);
+    }
 
     public AllianceSide getAllianceSide(){
         return side;

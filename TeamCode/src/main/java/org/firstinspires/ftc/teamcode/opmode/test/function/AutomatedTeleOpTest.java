@@ -32,7 +32,7 @@ public class AutomatedTeleOpTest extends OpMode {
 
     @Override
     public void init() {
-        TelemetryPasser telemetryPasser;
+        TelemetryPasser.telemetry = telemetry;
         Pose2D startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.POSITION_BLACKBOARD_KEY, new Pose2D(0,0, 0));
         AllianceSide side = (AllianceSide) blackboard.get(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY);
         robot = StateRobot.build(hardwareMap);
@@ -54,7 +54,7 @@ public class AutomatedTeleOpTest extends OpMode {
 //            robot.getDrivetrain().fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, robot.getAllianceSide(), robot.getOtosSensor().getPosition());
 //        } else robot.rotateToGoal(true);
 
-        robot.getShooterSystem().manualControls(gamepad1.left_trigger, gamepad1.right_trigger, gamepad2.right_trigger);
+        robot.getShooterSystem().manualControls(gamepad1.left_trigger, gamepad1.right_trigger, gamepad2.left_trigger, gamepad2.right_trigger);
 //        if (gamepad2.left_bumper && !shooting) shooting = true;
 //
 //             if(gamepad1.a) preferredArtifactState = ArtifactState.GREEN;
@@ -81,7 +81,7 @@ public class AutomatedTeleOpTest extends OpMode {
 //            if (shootCommand.isCompleted()) shooting = false;
 //        }
 
-        telemetry.update();
+//        telemetry.update();
     }
 
 
