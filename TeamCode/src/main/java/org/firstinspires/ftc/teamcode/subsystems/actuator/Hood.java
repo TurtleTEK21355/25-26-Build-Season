@@ -19,7 +19,7 @@ public class Hood {
     }
 
     public void setToAngleUsingMath(double angle, double length) {
-        ShootMath.velocity(length);
+        ShootMath.velocityHood(length);
     }
 
     public void setPosition(double position) {
