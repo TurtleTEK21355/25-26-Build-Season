@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.commands.LifterDownCommand;
 import org.firstinspires.ftc.teamcode.commands.LifterUpCommand;
@@ -27,7 +28,8 @@ public class StateTeleOp extends OpMode {
     private SequentialCommand selectEmptyArtifactCommand;
     private SequentialCommand selectNearestArtifactCommand;
 
-    private boolean shooting = false;
+    private ElapsedTime commandCooldownTimer = new ElapsedTime();
+    private final int commandCooldownTime = 500;
 
     @Override
     public void init() {
@@ -58,16 +60,15 @@ public class StateTeleOp extends OpMode {
         } else {
             robot.getDrivetrain().rotateToGoal(robot.getOtosSensor().getPosition(), robot.getAllianceSide(), true);
         }
+
         robot.getShooterSystem().manualControls(gamepad1.left_trigger, gamepad1.right_trigger, gamepad2.left_trigger, gamepad2.right_trigger);
-        if (gamepad2.left_bumper && !shooting) {
-            shooting = true;
+
+        if (gamepad2.left_bumper && commandCooldownTimer.milliseconds() > commandCooldownTime) {
             commandScheduler.add(shootCommand);
+            commandCooldownTimer.reset();
         }
-        
+
         commandScheduler.loop();
-        if (commandScheduler.isCompleted()) {
-            shooting = false;
-        }
 
         telemetry.update();
     }

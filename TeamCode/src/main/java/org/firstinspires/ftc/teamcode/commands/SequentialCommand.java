@@ -27,6 +27,11 @@ public class SequentialCommand extends Command {
     }
 
     @Override
+    public String telemetry() {
+        return commandScheduler.getTelemetry();
+    }
+
+    @Override
     public boolean isCompleted() {
         return commandScheduler.isCompleted();
     }
