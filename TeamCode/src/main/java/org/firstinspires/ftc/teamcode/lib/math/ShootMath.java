@@ -14,7 +14,7 @@ public class ShootMath {
             double fixedTheta = ShootMath.fixTheta(length, theta, counter);
             theta = fixedTheta;
         }
-        
+
         double velocityCounter = 0;
         double fixedVelocity = Math.sqrt(2*gravity*height)/Math.sin(theta);
         if (fixedVelocity > 1700 || theta > 45 || theta < 20) {
