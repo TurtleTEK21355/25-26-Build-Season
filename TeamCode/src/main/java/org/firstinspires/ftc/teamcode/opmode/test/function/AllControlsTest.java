@@ -51,10 +51,10 @@ public class AllControlsTest extends LinearOpMode {
 
 
     public void initialize() {
-        Pose2D startingPosition = (Pose2D) blackboard.get(StateRobot.POSITION_BLACKBOARD_KEY);
-        AllianceSide side = (AllianceSide) blackboard.get(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY);
+        Pose2D startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
+        AllianceSide side = (AllianceSide) blackboard.getOrDefault(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         robot = StateRobot.build(hardwareMap);
-        robot.setPosition(startingPosition);
+        robot.getOtosSensor().setPosition(startingPosition);
         robot.setAllianceSide(side);
     }
 
@@ -86,7 +86,7 @@ public class AllControlsTest extends LinearOpMode {
             if (gamepad2.dpad_down) {
                 robot.rotateToGoal(true);
             } else {
-                robot.getDrivetrain().fcControl(-gamepad1.left_stick_y + (0.5 * virtualGamepad1.getLeftStickY()), gamepad1.left_stick_x + (0.5 * virtualGamepad1.getLeftStickX()), gamepad1.right_stick_x - (0.5 * virtualGamepad1.getRightStickX()), robot.getAllianceSide(), robot.getPosition());
+                robot.getDrivetrain().fcControl(-gamepad1.left_stick_y + (0.5 * virtualGamepad1.getLeftStickY()), gamepad1.left_stick_x + (0.5 * virtualGamepad1.getLeftStickX()), gamepad1.right_stick_x - (0.5 * virtualGamepad1.getRightStickX()), robot.getAllianceSide(), robot.getOtosSensor().getPosition());
             }
             telemetry.update();
         }

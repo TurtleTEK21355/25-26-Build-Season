@@ -50,15 +50,15 @@ public class CarouselTest extends LinearOpMode {
     @Override
     public void runOpMode() {
         TelemetryPasser.telemetry = telemetry;
-        Pose2D startingPosition = (Pose2D) blackboard.get(StateRobot.POSITION_BLACKBOARD_KEY);
-        AllianceSide side = (AllianceSide) blackboard.get(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY);
+        Pose2D startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
+        AllianceSide side = (AllianceSide) blackboard.getOrDefault(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         robot = StateRobot.build(hardwareMap);
-        robot.setPosition(startingPosition);
+        robot.getOtosSensor().setPosition(startingPosition);
         robot.setAllianceSide(side);
 
         waitForStart();
         while (opModeIsActive()) {
-            robot.getDrivetrain().fcControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, robot.getAllianceSide(), robot.getPosition());
+            robot.getDrivetrain().fcControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, robot.getAllianceSide(), robot.getOtosSensor().getPosition());
             if(gamepad1.y) {
                 robot.getShooterSystem().setCarouselPosition(ColorSensorPosition.SHOOT.getAbsolutePosition());
             } else if(gamepad1.b) {

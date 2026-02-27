@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.subsystems.HardwareName;
 @TeleOp(name = "Telemetry Test", group = "test")
 public class TelemetryTest extends LinearOpMode {
     ElapsedTime timer = new ElapsedTime();
-    int testint;
+    int testint = 0;
 
     @Override
     public void runOpMode() {
@@ -22,7 +22,7 @@ public class TelemetryTest extends LinearOpMode {
                 timer.reset();
                 testint++;
             }
-            telemetry.addLine(HardwareName.FRONT_LEFT_MOTOR.getName());
+            telemetry.addData("Test: ", testint);
             telemetry.update();
         }
     }
