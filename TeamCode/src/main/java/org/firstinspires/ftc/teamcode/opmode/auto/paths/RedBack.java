@@ -6,13 +6,13 @@ import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 
 public class RedBack extends StateAutoOpMode {
-    Pose2D startingPosition = new Pose2D(-53, 51, 54);
+    Pose2D startingPosition = new Pose2D(51, 51, 54);
     AllianceSide side = AllianceSide.BLUE;
 
     double speed = 0.5;
 
-    double intake = -45;
-    double move = -20;
+    double intake = 52;
+    double move = 20;
     double top = 12;
     double middle = -12;
     double bottom = -36;
