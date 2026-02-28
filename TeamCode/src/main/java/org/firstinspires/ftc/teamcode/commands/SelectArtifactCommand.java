@@ -34,11 +34,7 @@ public class SelectArtifactCommand extends Command {
 
     @Override
     public boolean isCompleted() {
-        if(carouselSystem.containsState(artifactState)) {
-            return (carouselSystem.getArtifactState(ColorSensorPosition.SHOOT) == artifactState);
-        } else {
-            return true;
-        }
+        return carouselSystem.shootSlotIsTarget();
     }
 
 }

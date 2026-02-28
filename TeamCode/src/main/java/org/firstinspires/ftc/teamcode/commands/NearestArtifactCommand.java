@@ -32,7 +32,7 @@ public class NearestArtifactCommand extends Command {
 
     @Override
     public boolean isCompleted() {
-        return true;
+        return carouselSystem.shootSlotIsTarget();
     }
 
 }

@@ -14,7 +14,6 @@ public class LifterDownCommand extends Command {
 
     @Override
     public void init() {
-        shooterSystem.getCarouselSystem().setNearestSlotInShoot();
         shooterSystem.getArtifactLift().setLiftDownNoLimit();
     }
 

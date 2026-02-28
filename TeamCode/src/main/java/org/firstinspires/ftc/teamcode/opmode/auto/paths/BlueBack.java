@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.opmode.auto.paths;
 
+import org.firstinspires.ftc.teamcode.commands.LifterDownCommand;
+import org.firstinspires.ftc.teamcode.commands.LifterUpCommand;
 import org.firstinspires.ftc.teamcode.commands.MovePIDCommand;
+import org.firstinspires.ftc.teamcode.commands.SequentialCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
@@ -11,14 +14,13 @@ public class BlueBack extends StateAutoOpMode {
 
     double speed = 0.5;
 
-    double intake = -45;
+    double intake = -52;
     double move = -20;
     double top = 12;
     double middle = -12;
     double bottom = -36;
 
     double theVoidY = -54;
-
 
     @Override
     public void initialize() {
