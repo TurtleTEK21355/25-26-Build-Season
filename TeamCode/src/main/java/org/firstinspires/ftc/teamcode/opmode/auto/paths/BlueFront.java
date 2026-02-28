@@ -11,7 +11,7 @@ public class BlueFront extends StateAutoOpMode {
 
     double speed = 0.5;
 
-    double intake = -45;
+    double intake = -52;
     double move = -20;
     double top = 12;
     double middle = -12;
