@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
-import org.firstinspires.ftc.teamcode.physicaldata.ColorSensorPosition;
+import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
 
 
 public class ShooterSystem {
@@ -58,7 +58,7 @@ public class ShooterSystem {
      * @param carousel
      * @param artifactLift
      */
-    public void mainTeleOpWithoutTrajectoryMath(boolean intake, double shooter, double hood, ColorSensorPosition carousel, boolean artifactLift) {
+    public void mainTeleOpWithoutTrajectoryMath(boolean intake, double shooter, double hood, CarouselPosition carousel, boolean artifactLift) {
         setHoodAngle(Range.clip(hood*0.5, 0, 0.5));
         if (intake) {
             setIntakePower(1);

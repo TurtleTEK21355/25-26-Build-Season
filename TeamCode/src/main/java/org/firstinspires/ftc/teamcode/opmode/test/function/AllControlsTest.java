@@ -36,18 +36,17 @@ import com.bylazar.telemetry.PanelsTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
-import org.firstinspires.ftc.teamcode.physicaldata.ColorSensorPosition;
+import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
 @TeleOp(name = "All Controls Test", group = "test")
 public class AllControlsTest extends LinearOpMode {
     private StateRobot robot;
-    private final ColorSensorPosition DEFAULT_CAROUSEL_POS = ColorSensorPosition.SHOOT;
-    ColorSensorPosition CSPos = DEFAULT_CAROUSEL_POS;
+    private final CarouselPosition DEFAULT_CAROUSEL_POS = CarouselPosition.CSSHOOT;
+    CarouselPosition CSPos = DEFAULT_CAROUSEL_POS;
 
 
     public void initialize() {
@@ -70,11 +69,11 @@ public class AllControlsTest extends LinearOpMode {
             GamepadManager virtualGamepad2 = virtualGamepad.getSecondManager();
 
             if (gamepad2.y || virtualGamepad2.getTriangle()) {
-                CSPos = ColorSensorPosition.SHOOT;
+                CSPos = CarouselPosition.CSSHOOT;
             } else if (gamepad2.x || virtualGamepad2.getSquare()) {
-                CSPos = ColorSensorPosition.LEFT;
+                CSPos = CarouselPosition.CSLEFT;
             } else if (gamepad2.b || virtualGamepad2.getCircle()) {
-                CSPos = ColorSensorPosition.RIGHT;
+                CSPos = CarouselPosition.CSRIGHT;
             }
             robot.getShooterSystem().mainTeleOpWithoutTrajectoryMath(
                     gamepad2.left_bumper || virtualGamepad2.getL1(),

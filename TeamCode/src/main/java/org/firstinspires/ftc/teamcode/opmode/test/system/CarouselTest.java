@@ -35,12 +35,8 @@ import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
-import org.firstinspires.ftc.teamcode.physicaldata.ColorSensorPosition;
-import org.firstinspires.ftc.teamcode.subsystems.HardwareName;
+import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
-import org.firstinspires.ftc.teamcode.subsystems.actuator.CarouselSystem;
-import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensor;
-import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensorArray;
 
 @TeleOp(name = "Carousel Test", group = "test")
 public class CarouselTest extends LinearOpMode {
@@ -60,11 +56,11 @@ public class CarouselTest extends LinearOpMode {
         while (opModeIsActive()) {
             robot.getDrivetrain().fcControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, robot.getAllianceSide(), robot.getOtosSensor().getPosition());
             if(gamepad1.y) {
-                robot.getShooterSystem().setCarouselPosition(ColorSensorPosition.SHOOT.getAbsolutePosition());
+                robot.getShooterSystem().setCarouselPosition(CarouselPosition.CSSHOOT.getAbsolutePosition());
             } else if(gamepad1.b) {
-                robot.getShooterSystem().setCarouselPosition(ColorSensorPosition.RIGHT.getAbsolutePosition());
+                robot.getShooterSystem().setCarouselPosition(CarouselPosition.CSRIGHT.getAbsolutePosition());
             } else if(gamepad1.x) {
-                robot.getShooterSystem().setCarouselPosition(ColorSensorPosition.LEFT.getAbsolutePosition());
+                robot.getShooterSystem().setCarouselPosition(CarouselPosition.CSLEFT.getAbsolutePosition());
             }
             if (gamepad1.right_bumper) {
                 robot.getShooterSystem().setArtifactToShoot(ArtifactState.PURPLE);
