@@ -19,20 +19,8 @@ public class NearestArtifactCommand extends Command {
     }
 
     @Override
-    public void loop() {
-        //loop code
-    }
-
-    @Override
-    public String telemetry() {
-        TelemetryString string = new TelemetryString();
-        //string.addData("label", var);
-        return string.toString();
-    }
-
-    @Override
     public boolean isCompleted() {
-        return true;
+        return carouselSystem.shootSlotIsTarget();
     }
 
 }

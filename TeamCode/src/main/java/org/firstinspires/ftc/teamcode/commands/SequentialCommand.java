@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
 import java.util.Arrays;
 
 public class SequentialCommand extends Command {
-    private final CommandList commandList = new CommandList();
+    protected final CommandList commandList = new CommandList();
     private final CommandScheduler commandScheduler = new CommandScheduler();
 
     public SequentialCommand(Command... commands) {

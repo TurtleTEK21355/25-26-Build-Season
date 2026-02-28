@@ -18,7 +18,7 @@ public class ShootMath {
         double counter = 0;
 
         if(theta > 45 || theta < 20) {
-            double fixedTheta = ShootMath.fixTheta(length, theta, counter);
+            double fixedTheta = fixTheta(length, theta, counter);
             theta = fixedTheta;
         }
 
