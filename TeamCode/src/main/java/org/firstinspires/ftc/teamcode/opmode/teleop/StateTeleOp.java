@@ -93,6 +93,7 @@ public class StateTeleOp extends OpMode {
         }
 
         commandScheduler.loop();
+        TelemetryPasser.telemetry.addLine(commandScheduler.getTelemetry());
 
         if (commandScheduler.isCompleted()) {
             shooting = false;

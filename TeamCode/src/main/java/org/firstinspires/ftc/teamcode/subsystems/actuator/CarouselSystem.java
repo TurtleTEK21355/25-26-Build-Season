@@ -22,6 +22,9 @@ public class CarouselSystem {
     public ArtifactState getArtifactState(ColorSensorPosition colorSensorPosition) {
         return colorSensorArray.getArtifactState(colorSensorPosition);
     }
+    public void updateArtifactStates(){
+        colorSensorArray.updateBalls();
+    }
 
     public void setPosition(double position) {
         carouselServo.setPosition(Range.clip(position, 0,1));

@@ -22,7 +22,7 @@ public class SelectArtifactCommand extends Command {
 
     @Override
     public void loop() {
-        //loop code
+        carouselSystem.updateArtifactStates();
     }
 
     @Override
