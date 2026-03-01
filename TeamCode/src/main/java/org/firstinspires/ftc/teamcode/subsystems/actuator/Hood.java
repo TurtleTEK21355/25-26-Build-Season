@@ -7,14 +7,14 @@ import org.firstinspires.ftc.teamcode.lib.math.ShootMath;
 public class Hood {
 
     private Servo hoodServo;
-    private final double ANGLE_TO_POSITION = 0.02; //placeholder value
-    private final double OFFSET = 0;
+    private final double ANGLE_TO_POSITION = 0.025; //placeholder value
+    private final double OFFSET = 25;
 
     public Hood(Servo hoodServo) {
         this.hoodServo = hoodServo;
     }
     public void setToAngle(double angle) {
-        setPosition((angle * ANGLE_TO_POSITION) + OFFSET);
+        setPosition((angle-OFFSET) * ANGLE_TO_POSITION);
 
     }
 

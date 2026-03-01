@@ -9,6 +9,8 @@ import java.util.Arrays;
 public class SequentialCommand extends Command {
     protected final CommandList commandList = new CommandList();
     private final CommandScheduler commandScheduler = new CommandScheduler();
+    public String dataKey = "SequentialCommand";
+
 
     public SequentialCommand(Command... commands) {
         commandList.addAll(Arrays.asList(commands));

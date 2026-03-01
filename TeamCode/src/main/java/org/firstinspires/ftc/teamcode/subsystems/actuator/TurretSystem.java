@@ -30,4 +30,5 @@ public class TurretSystem {
     public void setHoodAngle(double angle) {
         hood.setToAngle(angle);
     }
+    public Hood getHood(){return hood;};
 }

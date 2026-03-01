@@ -9,6 +9,8 @@ import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 public class TimerCommand extends Command {
     private ElapsedTime timer = new ElapsedTime();
     private int milliseconds;
+    public String dataKey = "TimerCommand";
+
 
     public TimerCommand(int milliseconds) {
         this.milliseconds = milliseconds;

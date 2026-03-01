@@ -36,7 +36,7 @@ public abstract class StateAutoOpMode extends CommandOpMode {
         robot = StateRobot.build(hardwareMap);
 
 
-        robot.getOtosSensor().configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, (double) 48 /(48-3.5) * (double) 96/(96+4), (double) 3600 /(3600-6.5));
+        robot.getOtosSensor().configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1);
         robot.getDrivetrain().configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
 
         commands();

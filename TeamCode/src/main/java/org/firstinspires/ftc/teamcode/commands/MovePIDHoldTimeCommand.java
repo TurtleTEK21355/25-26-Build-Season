@@ -11,6 +11,8 @@ public class MovePIDHoldTimeCommand extends MovePIDCommand{
     private ElapsedTime holdTimer = new ElapsedTime();
     private final int holdTime;
     private boolean holdTimerStartLock = false;
+    public String dataKey = "MovePIDHoldTimeCommand";
+
 
 
     public MovePIDHoldTimeCommand(Pose2D target, int holdTime, double speed, Drivetrain drivetrain, OTOSSensor otosSensor) {

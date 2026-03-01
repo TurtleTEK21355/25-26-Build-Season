@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import org.firstinspires.ftc.teamcode.lib.command.Command;
+import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
 public class SetFlywheelCommand extends Command {
 StateRobot robot;
+    public String dataKey = "SetFlywheelCommand";
+
 
     final int FLYWHEEL_ON_VELOCITY = 1; //placeholder
     final int FLYWHEEL_OFF_VELOCITY = 0;
@@ -37,12 +40,19 @@ StateRobot robot;
 
     @Override
     public void init() {
-        robot.getShooterSystem().setIntakePower(flywheelVelocity);
+        robot.getShooterSystem().setFlywheelVelocity(flywheelVelocity);
+    }
+
+    @Override
+    public String telemetry() {
+        TelemetryString string = new TelemetryString();
+        string.addData("Flywheel Velocity: ", robot.getShooterSystem().getFlywheelVelocity());
+        return string.toString();
     }
 
     @Override
     public boolean isCompleted() {
-        return (true);
+        return (robot.getShooterSystem().getFlywheelVelocity() > flywheelVelocity-30);
 
     }
 

@@ -4,6 +4,8 @@ import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.ShooterSystem;
 
 public class ShootAllArtifactsCommand extends SequentialCommand {
+    public String dataKey = "ShootAllArtifactsCommand";
+
 
     public ShootAllArtifactsCommand(ShooterSystem shooterSystem) {
         for (int i = 0; i < 3; i++) {

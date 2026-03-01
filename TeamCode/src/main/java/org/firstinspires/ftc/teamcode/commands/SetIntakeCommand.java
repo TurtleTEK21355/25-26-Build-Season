@@ -5,6 +5,8 @@ import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
 public class SetIntakeCommand extends Command {
 StateRobot robot;
+    public String dataKey = "SetIntakeCommand";
+
 
     final double INTAKE_ON_SPEED = 1.0;
     final double INTAKE_OFF_SPEED = 0.0;

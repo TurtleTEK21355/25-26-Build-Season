@@ -15,6 +15,8 @@ public class RotateToGoalCommand extends Command {
     Pose2D target;
     PIDControllerHeading hPID;
     private final double ROTATION_PID_SPEED = 0.75;
+    public String dataKey = "RotateToGoalCommand";
+
     public RotateToGoalCommand(StateRobot robot) {
         this.robot = robot;
         target = robot.getAllianceSide().getGoalPosition();

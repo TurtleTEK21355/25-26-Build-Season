@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.lib.command;
 
+import org.firstinspires.ftc.teamcode.TelemetryPasser;
+import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -10,6 +13,7 @@ public class CommandScheduler{
     private String telemetryString = "";
     private HashMap<String, Object> dataMap = new HashMap<>();
     private boolean initLock = false;
+    private Command command;
 
     public CommandScheduler(Command... commands) {
         for (Command command : commands) {
@@ -31,7 +35,7 @@ public class CommandScheduler{
 
         }
 
-        Command command = commandQueue.peek();
+        command = commandQueue.peek();
 
         if (!initLock) {
             command.init();
@@ -54,6 +58,7 @@ public class CommandScheduler{
     }
 
     public String getTelemetry() {
+        TelemetryPasser.telemetry.addData("Command Running: ", command.dataKey);
         return telemetryString;
     }
 

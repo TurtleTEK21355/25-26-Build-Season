@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 
 @Autonomous(name="Path Test")
-public class PathTest extends ProgrammingAutoOpMode {
+public class PathTest extends StateAutoOpMode {
     Pose2D startingPosition = new Pose2D(-40,64,0);
     AllianceSide side = AllianceSide.BLUE;
 

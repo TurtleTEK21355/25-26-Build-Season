@@ -8,6 +8,8 @@ import org.firstinspires.ftc.teamcode.subsystems.actuator.CarouselSystem;
 public class SelectArtifactCommand extends Command {
     CarouselSystem carouselSystem;
     ArtifactState artifactState;
+    public String dataKey = "SelectArtifactCommand";
+
 
     public SelectArtifactCommand(CarouselSystem carouselSystem, ArtifactState artifactState) {
         this.carouselSystem = carouselSystem;

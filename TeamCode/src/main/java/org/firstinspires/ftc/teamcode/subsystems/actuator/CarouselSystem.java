@@ -18,6 +18,7 @@ public class CarouselSystem {
         this.carouselServo = carouselServo;
         this.colorSensorArray = colorSensorArray;
     }
+    public void setTargetArtifactState(ArtifactState targetArtifactState){this.targetArtifactState = targetArtifactState;}
 
     public void setPosition(double position) {
         carouselServo.setPosition(Range.clip(position, 0,1));
@@ -134,7 +135,11 @@ public class CarouselSystem {
     }
 
     public boolean shootSlotIsTarget() {
-        return getArtifactState(CarouselPosition.CSSHOOT) == targetArtifactState;
+        if (targetArtifactState != ArtifactState.ANY) {
+            return getArtifactState(CarouselPosition.CSSHOOT) == targetArtifactState;
+        } else {
+            return (getArtifactState(CarouselPosition.CSSHOOT) == ArtifactState.GREEN) || (getArtifactState(CarouselPosition.CSSHOOT) == ArtifactState.PURPLE);
+        }
     }
 
 }

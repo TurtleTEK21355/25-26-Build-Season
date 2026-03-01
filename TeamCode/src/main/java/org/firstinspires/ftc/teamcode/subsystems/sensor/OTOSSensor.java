@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 
 public class OTOSSensor {
     private SparkFunOTOS sensor;
+    private final SparkFunOTOS.Pose2D PHYSICAL_OFFSET = new SparkFunOTOS.Pose2D(41.882,0,0);
 
     public OTOSSensor(SparkFunOTOS sensor) {
         this.sensor = sensor;
@@ -23,7 +24,7 @@ public class OTOSSensor {
 
         sensor.calibrateImu();
         sensor.resetTracking();
-
+        sensor.setOffset(PHYSICAL_OFFSET);
         setPosition(new Pose2D(offsetX, offsetY, offsetH));
 
     }

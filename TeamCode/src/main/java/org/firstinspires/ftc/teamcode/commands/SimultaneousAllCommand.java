@@ -8,6 +8,8 @@ import java.util.Arrays;
 public class SimultaneousAllCommand extends Command {
 
     private final CommandList commandList;
+    public String dataKey = "SimultaneousAllCommand";
+
 
     public SimultaneousAllCommand(Command... commands) {
         commandList = new CommandList();

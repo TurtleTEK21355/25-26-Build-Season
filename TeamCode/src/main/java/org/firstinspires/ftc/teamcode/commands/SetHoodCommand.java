@@ -6,6 +6,8 @@ import org.firstinspires.ftc.teamcode.subsystems.actuator.Hood;
 
 public class SetHoodCommand extends Command {
     Hood hood;
+    public String dataKey = "SetHoodCommand";
+
     private double targetAngle; //not really an angle right now because the conversion from angle to hood doesnt do anything
 
     public SetHoodCommand(double targetAngle, Hood hood) {
