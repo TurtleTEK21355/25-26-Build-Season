@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.lib.math;
 public class ShootMath {
 
     public static class ShootResults{
-        double theta;
-        double velocity;
+        public double theta;
+        public double velocity;
         ShootResults(double theta, double velocity){
             this.theta = theta;
             this.velocity = velocity;
