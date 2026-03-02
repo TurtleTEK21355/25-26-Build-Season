@@ -10,14 +10,12 @@ import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 
 public class OTOSSensor {
     private SparkFunOTOS sensor;
-    private final SparkFunOTOS.Pose2D PHYSICAL_OFFSET = new SparkFunOTOS.Pose2D(41.882,0,0);
-    private Pose2D position;
 
     public OTOSSensor(SparkFunOTOS sensor) {
         this.sensor = sensor;
     }
 
-    public void configureOtos(double offsetX, double offsetY, double offsetH, DistanceUnit distanceUnit, AngleUnit angleUnit, double linearScalar, double angularScalar) {
+    public void configureOtos(Pose2D physicalOffset, DistanceUnit distanceUnit, AngleUnit angleUnit, double linearScalar, double angularScalar) {
         sensor.setLinearUnit(distanceUnit);
         sensor.setAngularUnit(angleUnit);
 
@@ -26,9 +24,7 @@ public class OTOSSensor {
 
         sensor.calibrateImu();
         sensor.resetTracking();
-        sensor.setOffset(PHYSICAL_OFFSET);
-        setPosition(new Pose2D(offsetX, offsetY, offsetH));
-        position = new Pose2D(sensor.getPosition());
+        sensor.setOffset(physicalOffset.toSparkFunPose2D());
 
     }
 
@@ -38,8 +34,8 @@ public class OTOSSensor {
     }
 
     public Pose2D getPosition() {
-        position = new Pose2D(sensor.getPosition());
-        return position;
+        return new Pose2D(sensor.getPosition());
+
     }
 
     public void setPosition(Pose2D position) {
@@ -49,13 +45,14 @@ public class OTOSSensor {
     }
 
     public void positionTelemetry() {
-        getPosition();
+        Pose2D position = getPosition();
         TelemetryPasser.telemetry.addData("Position X: ", position.x);
         TelemetryPasser.telemetry.addData("Position Y: ", position.y);
         TelemetryPasser.telemetry.addData("Heading: ", position.h);
     }
+
     public double getRangeFromPosition(AllianceSide side) {
-        getPosition();
+        Pose2D position = getPosition();
         Pose2D goalPos = side.getGoalPosition();
         double xDistance = position.x-goalPos.x;
         double yDistance = position.y-goalPos.y;

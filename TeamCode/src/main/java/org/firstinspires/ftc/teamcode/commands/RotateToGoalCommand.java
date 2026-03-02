@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.commands;
 
 import android.net.sip.SipSession;
 
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
@@ -24,7 +25,7 @@ public class RotateToGoalCommand extends Command {
 
     @Override
     public void init() {
-        hPID = new PIDControllerHeading(robot.getDrivetrain().getThetaPIDConstants(), robot.getOtosSensor().getPosition().positionsToFCAngle(target)*(90.0/Math.PI), robot.getDrivetrain().getTolerance().h, ROTATION_PID_SPEED);
+        hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), robot.getOtosSensor().getPosition().positionsToFCAngle(target)*(90.0/Math.PI), Constants.getPIDTolerance().h, ROTATION_PID_SPEED);
 
     }
 

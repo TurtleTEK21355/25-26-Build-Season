@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.ArtifactLift;
@@ -45,7 +46,7 @@ public class StateRobot {
         this.otosSensor = otosSensor;
         this.limelight = new Limelight(limelight);
         this.side = AllianceSide.BLUE;
-        otosSensor.configureOtos(0, 0, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1); //default
+        otosSensor.configureOtos(Constants.getPhysicalOffset(), DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1); //default
     }
 
     public Drivetrain getDrivetrain() {
@@ -68,12 +69,6 @@ public class StateRobot {
         return limelight;
     }
 
-    public void correctPositionFromLL(){
-        Pose2D position = limelight.getPosition();
-        if (position != null) {
-            otosSensor.setPosition(position);
-        }
-    }
     public boolean rotateToGoal(boolean telemetry){
         return drivetrain.rotateToGoal(otosSensor.getPosition(), side, telemetry);
     }

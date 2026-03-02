@@ -59,18 +59,7 @@ public class StateTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        robot.correctPositionFromLL();
-
-        robot.getDrivetrain().fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, robot.getAllianceSide(), robot.getOtosSensor().getPosition());
-
-        ShootMath.ShootResults shootResults = ShootMath.velocityHood(robot.getOtosSensor().getRangeFromPosition(robot.getAllianceSide()));
-        robot.getShooterSystem().setFlywheelVelocity(shootResults.velocity);
-        robot.getShooterSystem().setHoodAngle(shootResults.theta);
-        robot.getShooterSystem().setIntakePower(gamepad2.left_trigger);
-
-             if(gamepad1.a) preferredArtifactState = ArtifactState.GREEN;
-        else if(gamepad1.x) preferredArtifactState = ArtifactState.PURPLE;
-        else if(gamepad1.y) preferredArtifactState = ArtifactState.ANY;
+        Pose2D position = robot.getOtosSensor().getPosition();
 
         if (gamepad2.right_bumper && !shooting) {
             commandScheduler.add(rotateToGoal);
@@ -89,6 +78,24 @@ public class StateTeleOp extends OpMode {
 
         if (commandScheduler.isCompleted()) {
             shooting = false;
+
+            if (gamepad1.left_stick_button) {
+                robot.getOtosSensor().setPosition(robot.getLimelight().correctPositionFromLL(position));
+            }
+
+            robot.getDrivetrain().fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, robot.getAllianceSide(), position);
+
+            ShootMath.ShootResults shootResults = ShootMath.velocityHood(robot.getOtosSensor().getRangeFromPosition(robot.getAllianceSide()));
+            robot.getShooterSystem().setFlywheelVelocity(shootResults.velocity);
+            robot.getShooterSystem().setHoodAngle(shootResults.theta);
+            robot.getShooterSystem().setIntakePower(gamepad2.left_trigger);
+
+            if(gamepad1.a) preferredArtifactState = ArtifactState.GREEN;
+            else if(gamepad1.x) preferredArtifactState = ArtifactState.PURPLE;
+            else if(gamepad1.y) preferredArtifactState = ArtifactState.ANY;
+
+            robot.getOtosSensor().positionTelemetry();
+
         }
 
         telemetry.update();

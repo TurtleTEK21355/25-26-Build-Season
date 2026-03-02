@@ -3,26 +3,15 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
-import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
-import org.firstinspires.ftc.teamcode.subsystems.actuator.ArtifactLift;
-import org.firstinspires.ftc.teamcode.subsystems.actuator.CarouselSystem;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
-import org.firstinspires.ftc.teamcode.subsystems.actuator.FlyWheel;
-import org.firstinspires.ftc.teamcode.subsystems.actuator.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.actuator.ShooterSystem;
-import org.firstinspires.ftc.teamcode.subsystems.actuator.TurretSystem;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.AprilTagCamera;
-import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensorArray;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 
 public class ProgrammingRobot {
@@ -38,7 +27,7 @@ public class ProgrammingRobot {
         this.otosSensor = otosSensor;
         this.aprilTagCamera = aprilTagCamera;
         this.side = AllianceSide.BLUE;
-        otosSensor.configureOtos(0, 0, 0, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1); //default
+        otosSensor.configureOtos(Constants.getPhysicalOffset(), DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1); //default
     }
 
     public Drivetrain getDrivetrain(){

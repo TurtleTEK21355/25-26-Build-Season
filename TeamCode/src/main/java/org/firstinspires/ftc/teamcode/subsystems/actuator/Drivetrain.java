@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
@@ -16,9 +17,6 @@ public class Drivetrain {
     private DcMotor backLeftMotor;
     private DcMotor backRightMotor;
 
-    private PIDConstants pidConstants = new PIDConstants(0.1, 0, 0);
-    private PIDConstants thetaPIDConstants = new PIDConstants(0.04, 0, 0);
-    private final Pose2D PID_TOLERANCE = new Pose2D(2, 2, 2.5);
     private final double ROTATION_PID_SPEED = 0.75;
 
     public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
@@ -124,7 +122,7 @@ public class Drivetrain {
     }
     public boolean rotateToGoal(Pose2D position, AllianceSide side, boolean telemetry){
         double angle = position.positionsToFCAngle(side.getGoalPosition());
-        PIDControllerHeading hPID = new PIDControllerHeading(getThetaPIDConstants(), angle, getTolerance().h, ROTATION_PID_SPEED);
+        PIDControllerHeading hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), angle, Constants.getPIDTolerance().h, ROTATION_PID_SPEED);
         if (!hPID.atTarget(position.h)) {
             fcControl(0, 0, hPID.calculate(position.h), position);
             if (telemetry) {
@@ -172,19 +170,5 @@ public class Drivetrain {
 
     }
 
-    public void configurePIDConstants(PIDConstants pidConstants, PIDConstants thetaPIDConstants) {
-        this.pidConstants = pidConstants;
-        this.thetaPIDConstants = thetaPIDConstants;
-
-    }
-    public PIDConstants getPIDConstants() {
-        return pidConstants;
-    }
-    public PIDConstants getThetaPIDConstants() {
-        return thetaPIDConstants;
-    }
-    public Pose2D getTolerance() {
-        return PID_TOLERANCE;
-    }
 
 }

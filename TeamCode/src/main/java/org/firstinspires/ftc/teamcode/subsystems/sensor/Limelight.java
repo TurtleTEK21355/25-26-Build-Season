@@ -32,14 +32,29 @@ public class Limelight {
         }
     }
 
-    /**
-     * CAN RETURN NULL IF NO POSITIONING APRILTAGS ARE DETECTED
-     * @return
-     */
+    public Pose2D correctPositionFromLL(Pose2D currentPosition){
+        Pose2D llPosition = getPosition();
+        if (llPosition != null || llPosition.distanceTo(currentPosition) > 10) {
+            return llPosition;
+        }
+        else {
+            return currentPosition;
+        }
+    }
+
     public Pose2D getPosition(){
         LLResult result = limelight.getLatestResult();
-        Pose3D botpose = result.getBotpose();
-        return new Pose2D(botpose);
+        if (result.isValid()) {
+            Pose2D llPosition = new Pose2D(
+                    result.getBotpose().getPosition().x * 39.3700787,
+                    result.getBotpose().getPosition().y * 39.3700787,
+                    result.getBotpose().getOrientation().getYaw()
+            );
+            return llPosition;
+        }
+        else {
+            return null;
+        }
     }
 
     /**
@@ -47,7 +62,7 @@ public class Limelight {
      * @return
      */
     public Motif getMotif(){
-        LLResult result =limelight.getLatestResult();
+        LLResult result = limelight.getLatestResult();
         for (LLResultTypes.FiducialResult llData : result.getFiducialResults()) {
             return Motif.fromID(llData.getFiducialId());
         }

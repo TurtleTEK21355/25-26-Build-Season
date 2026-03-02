@@ -58,7 +58,7 @@ public class OdometryTest extends LinearOpMode {
                 hardwareMap.get(DcMotor.class, HardwareName.BACK_LEFT_MOTOR.getName()),
                 hardwareMap.get(DcMotor.class, HardwareName.BACK_RIGHT_MOTOR.getName()));
         otosSensor.resetPosition();
-        otosSensor.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, (double) 48 /(48-3.5) * (double) 96/(96+4), (double) 3600 /(3600-6.5));
+        otosSensor.configureOtos(startingPosition, DistanceUnit.INCH, AngleUnit.DEGREES, (double) 48 /(48-3.5) * (double) 96/(96+4), (double) 3600 /(3600-6.5));
 //        otosSensor.configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1);
         side = (AllianceSide) blackboard.getOrDefault(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.lib.math;
 
+import android.annotation.SuppressLint;
+
 import androidx.annotation.NonNull;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
@@ -90,9 +92,10 @@ public class Pose2D {
         return new SparkFunOTOS.Pose2D(x, y, h);
     }
 
+    @SuppressLint("DefaultLocale")
     @NonNull
     @Override
     public String toString() {
-        return "(" + x + ", " + y + ", " + h + ")";
+        return String.format("%.2f, %.2f, %.2f", x, y, h);
     }
 }

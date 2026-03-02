@@ -13,7 +13,6 @@ public class CommandScheduler{
     private String telemetryString = "";
     private HashMap<String, Object> dataMap = new HashMap<>();
     private boolean initLock = false;
-    private Command command;
 
     public CommandScheduler(Command... commands) {
         for (Command command : commands) {
@@ -35,7 +34,7 @@ public class CommandScheduler{
 
         }
 
-        command = commandQueue.peek();
+        Command command = commandQueue.peek();
 
         if (!initLock) {
             command.init();
@@ -46,6 +45,7 @@ public class CommandScheduler{
         command.loop();
         dataMap.put(command.dataKey, command.data);
 
+        telemetryString = telemetryString.concat("Command Running: " + command.dataKey);
         telemetryString = command.telemetry();
 
 
@@ -58,7 +58,6 @@ public class CommandScheduler{
     }
 
     public String getTelemetry() {
-        TelemetryPasser.telemetry.addData("Command Running: ", command.dataKey);
         return telemetryString;
     }
 

@@ -17,12 +17,6 @@ public abstract class ProgrammingAutoOpMode extends CommandOpMode {
 
     protected AllianceSide side;
     protected Pose2D startingPosition;
-    protected double kp = 0.06;
-    protected double ki;
-    protected double kd;
-    protected double kpTheta = 0.02;
-    protected double kiTheta;
-    protected double kdTheta;
 
     @Override
     public void initialize() {
@@ -33,8 +27,7 @@ public abstract class ProgrammingAutoOpMode extends CommandOpMode {
         //(double) 48 /(48-3.5) * (double) 96/(96+4)
         //(double) 3600 /(3600-6.5)
 
-        robot.getOtosSensor().configureOtos(startingPosition.x, startingPosition.y, startingPosition.h, DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0);
-        robot.getDrivetrain().configurePIDConstants(new PIDConstants(kp, ki, kd), new PIDConstants(kpTheta, kiTheta, kdTheta));
+        robot.getOtosSensor().configureOtos(startingPosition, DistanceUnit.INCH, AngleUnit.DEGREES, 0, 0);
 
         commands();
 
