@@ -1,110 +1,372 @@
-package org.firstinspires.ftc.teamcode.opmode.test;
+package org.firstinspires.ftc.teamcode.opmode.test.system;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
-import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
-
-import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.function.Supplier;
 
 /**
- * Interactive subsystem test mode.
- * NO FTCLib. NO CommandBase.
+ * Interactive subsystem test harness (Java 8 compatible).
+ *
+ * Controls (gamepad1):
+ *  - Dpad Up/Down: select test
+ *  - A: start selected test
+ *  - Y: run full suite (runs each test in order)
+ *  - B: stop current test and return to menu
+ *  - LB/RB: adjust motorPower (-/+ 0.05)
+ *  - X: toggle includeDriveMotors
+ *
+ * NOTE: Add your real subsystem tests in buildTests().
  */
-@TeleOp(name = "Interactive Subsystem Test", group = "Test")
-public class InteractiveSubsystemTest extends OpMode {
+@TeleOp(name = "Interactive Subsystem Test (Java8)", group = "Test")
+public class InteractiveSubsystemTest extends LinearOpMode {
 
-    private StateRobot robot;
+    // ----------------------------
+    // Types / Interfaces
+    // ----------------------------
 
-    /* ============================
-       Test State Machine
-       ============================ */
+    /** A simple interface your tests implement. */
+    public interface SubsystemTest {
+        /** Called once when test starts. */
+        void start();
 
-    private enum Mode {
-        MENU,
-        RUNNING,
-        FULL_SUITE
+        /** Called repeatedly while the test is active. */
+        void loop();
+
+        /** Called once when the test is stopped (or after done). */
+        void stop();
+
+        /** Return true when the test is complete (for FULL_SUITE). */
+        boolean isDone();
+
+        /** Short status string shown on telemetry. */
+        String status();
     }
+
+    /**
+     * Java 8 replacement for newer patterns (like record).
+     * This is the critical piece: it provides a REAL create() method.
+     */
+    public static class TestEntry {
+        public final String name;
+        private final Supplier<SubsystemTest> factory;
+
+        public TestEntry(String name, Supplier<SubsystemTest> factory) {
+            this.name = name;
+            this.factory = factory;
+        }
+
+        /** The menu calls this: tests.get(selected).create() */
+        public SubsystemTest create() {
+            return factory.get();
+        }
+    }
+
+    /**
+     * Rising-edge button helper (no SDK edge-detection dependency).
+     * Call update() once per loop, then ask up()/a()/etc.
+     */
+    public static class Buttons {
+        private boolean prevUp, prevDown, prevLeft, prevRight;
+        private boolean prevA, prevB, prevX, prevY;
+        private boolean prevLB, prevRB;
+        private final com.qualcomm.robotcore.hardware.Gamepad gp;
+
+        public Buttons(com.qualcomm.robotcore.hardware.Gamepad gp) {
+            this.gp = gp;
+        }
+
+        public void update() {
+            // nothing else needed; we compute edges on demand
+        }
+
+        private boolean edge(boolean now, boolean prev) {
+            return now && !prev;
+        }
+
+        public boolean up() {
+            boolean now = gp.dpad_up;
+            boolean e = edge(now, prevUp);
+            prevUp = now;
+            return e;
+        }
+
+        public boolean down() {
+            boolean now = gp.dpad_down;
+            boolean e = edge(now, prevDown);
+            prevDown = now;
+            return e;
+        }
+
+        public boolean left() {
+            boolean now = gp.dpad_left;
+            boolean e = edge(now, prevLeft);
+            prevLeft = now;
+            return e;
+        }
+
+        public boolean right() {
+            boolean now = gp.dpad_right;
+            boolean e = edge(now, prevRight);
+            prevRight = now;
+            return e;
+        }
+
+        public boolean a() {
+            boolean now = gp.a;
+            boolean e = edge(now, prevA);
+            prevA = now;
+            return e;
+        }
+
+        public boolean b() {
+            boolean now = gp.b;
+            boolean e = edge(now, prevB);
+            prevB = now;
+            return e;
+        }
+
+        public boolean x() {
+            boolean nowpackage org.firstinspires.ftc.teamcode.opmode.test.system;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.function.Supplier;
+
+/**
+ * Interactive subsystem test harness (Java 8 compatible).
+ *
+ * Controls (gamepad1):
+ *  - Dpad Up/Down: select test
+ *  - A: start selected test
+ *  - Y: run full suite (runs each test in order)
+ *  - B: stop current test and return to menu
+ *  - LB/RB: adjust motorPower (-/+ 0.05)
+ *  - X: toggle includeDriveMotors
+ *
+ * NOTE: Add your real subsystem tests in buildTests().
+ */
+@TeleOp(name = "Interactive Subsystem Test (Java8)", group = "Test")
+public class InteractiveSubsystemTest extends LinearOpMode {
+
+    // ----------------------------
+    // Types / Interfaces
+    // ----------------------------
+
+    /** A simple interface your tests implement. */
+    public interface SubsystemTest {
+        /** Called once when test starts. */
+        void start();
+
+        /** Called repeatedly while the test is active. */
+        void loop();
+
+        /** Called once when the test is stopped (or after done). */
+        void stop();
+
+        /** Return true when the test is complete (for FULL_SUITE). */
+        boolean isDone();
+
+        /** Short status string shown on telemetry. */
+        String status();
+    }
+
+    /**
+     * Java 8 replacement for newer patterns (like record).
+     * This is the critical piece: it provides a REAL create() method.
+     */
+    public static class TestEntry {
+        public final String name;
+        private final Supplier<SubsystemTest> factory;
+
+        public TestEntry(String name, Supplier<SubsystemTest> factory) {
+            this.name = name;
+            this.factory = factory;
+        }
+
+        /** The menu calls this: tests.get(selected).create() */
+        public SubsystemTest create() {
+            return factory.get();
+        }
+    }
+
+    /**
+     * Rising-edge button helper (no SDK edge-detection dependency).
+     * Call update() once per loop, then ask up()/a()/etc.
+     */
+    public static class Buttons {
+        private boolean prevUp, prevDown, prevLeft, prevRight;
+        private boolean prevA, prevB, prevX, prevY;
+        private boolean prevLB, prevRB;
+        private final com.qualcomm.robotcore.hardware.Gamepad gp;
+
+        public Buttons(com.qualcomm.robotcore.hardware.Gamepad gp) {
+            this.gp = gp;
+        }
+
+        public void update() {
+            // nothing else needed; we compute edges on demand
+        }
+
+        private boolean edge(boolean now, boolean prev) {
+            return now && !prev;
+        }
+
+        public boolean up() {
+            boolean now = gp.dpad_up;
+            boolean e = edge(now, prevUp);
+            prevUp = now;
+            return e;
+        }
+
+        public boolean down() {
+            boolean now = gp.dpad_down;
+            boolean e = edge(now, prevDown);
+            prevDown = now;
+            return e;
+        }
+
+        public boolean left() {
+            boolean now = gp.dpad_left;
+            boolean e = edge(now, prevLeft);
+            prevLeft = now;
+            return e;
+        }
+
+        public boolean right() {
+            boolean now = gp.dpad_right;
+            boolean e = edge(now, prevRight);
+            prevRight = now;
+            return e;
+        }
+
+        public boolean a() {
+            boolean now = gp.a;
+            boolean e = edge(now, prevA);
+            prevA = now;
+            return e;
+        }
+
+        public boolean b() {
+            boolean now = gp.b;
+            boolean e = edge(now, prevB);
+            prevB = now;
+            return e;
+        }
+
+        public boolean x() {
+            boolean now = gp.x;
+            boolean e = edge(now, prevX);
+            prevX = now;
+            return e;
+        }
+
+        public boolean y() {
+            boolean now = gp.y;
+            boolean e = edge(now, prevY);
+            prevY = now;
+            return e;
+        }
+
+        public boolean lb() {
+            boolean now = gp.left_bumper;
+            boolean e = edge(now, prevLB);
+            prevLB = now;
+            return e;
+        }
+
+        public boolean rb() {
+            boolean now = gp.right_bumper;
+            boolean e = edge(now, prevRB);
+            prevRB = now;
+            return e;
+        }
+    }
+
+    // ----------------------------
+    // State
+    // ----------------------------
+
+    private enum Mode { MENU, RUNNING, FULL_SUITE }
 
     private Mode mode = Mode.MENU;
 
-    /* ============================
-       Devices (reflection)
-       ============================ */
-
-    private final List<DeviceRef<DcMotor>> motors = new ArrayList<>();
-    private final List<DeviceRef<Servo>> servos = new ArrayList<>();
-
-    /* ============================
-       Menu + Test Control
-       ============================ */
-
-    private final List<Test> tests = new ArrayList<>();
+    private final List<TestEntry> tests = new ArrayList<TestEntry>();
     private int selected = 0;
+
+    private double motorPower = 0.25;
+    private boolean includeDriveMotors = true;
+
+    private SubsystemTest activeTest = null;
     private int suiteIndex = 0;
 
-    private Test activeTest = null;
+    private Buttons buttons;
 
-    private double motorPower = 0.20;
-    private boolean includeDriveMotors = false;
-
-    private final EdgeButtons buttons = new EdgeButtons();
-
-    /* ============================
-       OpMode lifecycle
-       ============================ */
+    // ----------------------------
+    // OpMode lifecycle
+    // ----------------------------
 
     @Override
-    public void init() {
-        robot = StateRobot.build(hardwareMap);
+    public void runOpMode() {
+        buttons = new Buttons(gamepad1);
 
-        discoverDevices();
+        // Build the list of tests (YOU customize this)
         buildTests();
 
-        telemetry.addLine("Interactive Subsystem Test READY");
-        telemetry.addLine("Use Dpad to select test");
+        telemetry.addLine("Interactive Subsystem Test (Java8)");
+        telemetry.addLine("Use Dpad Up/Down, A=start, Y=full suite");
+        telemetry.addLine("LB/RB power, X toggle drive motors, B stop");
         telemetry.update();
-    }
 
-    @Override
-    public void loop() {
-        buttons.update(gamepad1);
+        waitForStart();
 
-        Pose2D pose = robot.getOtosSensor().getPosition();
+        while (opModeIsActive()) {
+            buttons.update();
 
-        switch (mode) {
-            case MENU:
-                menuLoop();
-                break;
+            switch (mode) {
+                case MENU:
+                    menuLoop();
+                    renderMenuTelemetry();
+                    break;
 
-            case RUNNING:
-                runTestLoop();
-                break;
+                case RUNNING:
+                    runningLoop();
+                    renderRunningTelemetry();
+                    break;
 
-            case FULL_SUITE:
-                fullSuiteLoop();
-                break;
+                case FULL_SUITE:
+                    fullSuiteLoop();
+                    renderSuiteTelemetry();
+                    break;
+            }
+
+            telemetry.update();
+            idle();
         }
 
-        renderTelemetry(pose);
+        // Safety: ensure test is stopped if opmode ends
+        stopActiveTest();
     }
 
-    @Override
-    public void stop() {
-        stopAllMotors();
-        robot.getDrivetrain().control(0, 0, 0);
-    }
+    // ----------------------------
+    // Menu / Running / Suite logic
+    // ----------------------------
 
-    /* ============================
-       MENU
-       ============================ */
-
+    /**
+     * This is the method you asked about.
+     * In Java 8, create() must be a REAL method on the object in the list.
+     * Our TestEntry class provides that method.
+     */
     private void menuLoop() {
+        if (tests.isEmpty()) return;
+
         if (buttons.up()) selected = (selected - 1 + tests.size()) % tests.size();
         if (buttons.down()) selected = (selected + 1) % tests.size();
 
@@ -113,7 +375,7 @@ public class InteractiveSubsystemTest extends OpMode {
         if (buttons.x()) includeDriveMotors = !includeDriveMotors;
 
         if (buttons.a()) {
-            activeTest = tests.get(selected).create();
+            activeTest = tests.get(selected).create(); // <-- Java8 OK: TestEntry has create()
             activeTest.start();
             mode = Mode.RUNNING;
         }
@@ -124,36 +386,35 @@ public class InteractiveSubsystemTest extends OpMode {
         }
     }
 
-    /* ============================
-       RUNNING
-       ============================ */
-
-    private void runTestLoop() {
-        if (buttons.b()) {
-            cancelTest("Canceled");
+    private void runningLoop() {
+        if (activeTest == null) {
+            mode = Mode.MENU;
             return;
         }
 
-        activeTest.update();
-
-        if (activeTest.isDone()) {
-            activeTest.stop();
-            activeTest = null;
+        if (buttons.b()) {
+            stopActiveTest();
             mode = Mode.MENU;
+            return;
         }
+
+        activeTest.loop();
     }
 
-    /* ============================
-       FULL SUITE
-       ============================ */
-
     private void fullSuiteLoop() {
-        if (buttons.b()) {
-            cancelTest("Canceled");
+        if (tests.isEmpty()) {
             mode = Mode.MENU;
             return;
         }
 
+        // Stop suite early
+        if (buttons.b()) {
+            stopActiveTest();
+            mode = Mode.MENU;
+            return;
+        }
+
+        // If no active test, start the next one
         if (activeTest == null) {
             if (suiteIndex >= tests.size()) {
                 mode = Mode.MENU;
@@ -163,8 +424,10 @@ public class InteractiveSubsystemTest extends OpMode {
             activeTest.start();
         }
 
-        activeTest.update();
+        // Run it
+        activeTest.loop();
 
+        // Advance when done
         if (activeTest.isDone()) {
             activeTest.stop();
             activeTest = null;
@@ -172,280 +435,171 @@ public class InteractiveSubsystemTest extends OpMode {
         }
     }
 
-    /* ============================
-       TEST DEFINITIONS
-       ============================ */
+    private void stopActiveTest() {
+        if (activeTest != null) {
+            try {
+                activeTest.stop();
+            } catch (Exception ignored) {
+                // don't crash the stop path
+            }
+            activeTest = null;
+        }
+    }
 
+    // ----------------------------
+    // Telemetry rendering
+    // ----------------------------
+
+    private void renderMenuTelemetry() {
+        telemetry.clearAll();
+        telemetry.addLine("=== MENU ===");
+        telemetry.addData("MotorPower", format(motorPower));
+        telemetry.addData("Include Drive Motors", includeDriveMotors);
+
+        if (tests.isEmpty()) {
+            telemetry.addLine("No tests registered. Edit buildTests().");
+            return;
+        }
+
+        telemetry.addLine("");
+        telemetry.addLine("Select a test:");
+        for (int i = 0; i < tests.size(); i++) {
+            String prefix = (i == selected) ? " > " : "   ";
+            telemetry.addLine(prefix + tests.get(i).name);
+        }
+
+        telemetry.addLine("");
+        telemetry.addLine("Controls: Dpad Up/Down select | A start | Y suite");
+        telemetry.addLine("LB/RB power | X toggle drive motors | B back/stop");
+    }
+
+    private void renderRunningTelemetry() {
+        telemetry.clearAll();
+        telemetry.addLine("=== RUNNING ===");
+        telemetry.addData("MotorPower", format(motorPower));
+        telemetry.addData("Include Drive Motors", includeDriveMotors);
+
+        telemetry.addLine("");
+
+        if (activeTest == null) {
+            telemetry.addLine("No active test (returning to menu)...");
+        } else {
+            telemetry.addData("Test", safeStatusName());
+            telemetry.addData("Status", safeStatusText());
+            telemetry.addData("Done", activeTest.isDone());
+        }
+
+        telemetry.addLine("");
+        telemetry.addLine("Press B to stop and return to menu");
+    }
+
+    private void renderSuiteTelemetry() {
+        telemetry.clearAll();
+        telemetry.addLine("=== FULL SUITE ===");
+        telemetry.addData("Suite Index", suiteIndex + " / " + tests.size());
+        telemetry.addData("MotorPower", format(motorPower));
+        telemetry.addData("Include Drive Motors", includeDriveMotors);
+
+        telemetry.addLine("");
+        telemetry.addData("Current", (activeTest == null) ? "(starting...)" : safeStatusName());
+        telemetry.addData("Status", (activeTest == null) ? "" : safeStatusText());
+
+        telemetry.addLine("");
+        telemetry.addLine("Press B to abort suite");
+    }
+
+    private String safeStatusName() {
+        // If you want the name of the entry in RUNNING, you can store it separately.
+        // For now, return generic:
+        return "Active Test";
+    }
+
+    private String safeStatusText() {
+        try {
+            return activeTest.status();
+        } catch (Exception e) {
+            return "status() threw: " + e.getClass().getSimpleName();
+        }
+    }
+
+    // ----------------------------
+    // Test registration
+    // ----------------------------
+
+    /**
+     * Add your tests here.
+     *
+     * IMPORTANT: Each entry is (name, factory lambda). Java 8 supports lambdas.
+     * The factory returns a new SubsystemTest instance each time create() is called.
+     */
     private void buildTests() {
         tests.clear();
 
-        tests.add(new TestDef("ALL MOTORS", () ->
-                new AllMotorsTest(motors, motorPower, includeDriveMotors)));
-
-        tests.add(new TestDef("ALL SERVOS", () ->
-                new AllServosTest(servos)));
-
-        tests.add(new TestDef("Limelight → OTOS correction", () ->
-                new LimelightTest(robot)));
-    }
-
-    /* ============================
-       DEVICE DISCOVERY
-       ============================ */
-
-    private void discoverDevices() {
-        motors.clear();
-        servos.clear();
-
-        IdentityHashMap<Object, Boolean> visited = new IdentityHashMap<>();
-        walk(robot, "robot", visited);
-    }
-
-    private void walk(Object obj, String path, IdentityHashMap<Object, Boolean> visited) {
-        if (obj == null || visited.containsKey(obj)) return;
-        visited.put(obj, true);
-
-        if (obj instanceof DcMotor) {
-            motors.add(new DeviceRef<>(path, (DcMotor) obj));
-            return;
-        }
-        if (obj instanceof Servo) {
-            servos.add(new DeviceRef<>(path, (Servo) obj));
-            return;
-        }
-
-        Package p = obj.getClass().getPackage();
-        if (p == null || !p.getName().startsWith("org.firstinspires.ftc.teamcode")) return;
-
-        for (Field f : obj.getClass().getDeclaredFields()) {
-            try {
-                f.setAccessible(true);
-                walk(f.get(obj), path + "." + f.getName(), visited);
-            } catch (Exception ignored) {}
-        }
-    }
-
-    /* ============================
-       UTILITIES
-       ============================ */
-
-    private void cancelTest(String reason) {
-        if (activeTest != null) activeTest.stop();
-        stopAllMotors();
-        robot.getDrivetrain().control(0, 0, 0);
-        activeTest = null;
-        mode = Mode.MENU;
-    }
-
-    private void stopAllMotors() {
-        for (DeviceRef<DcMotor> m : motors) {
-            try { m.device.setPower(0); } catch (Exception ignored) {}
-        }
-    }
-
-    private void renderTelemetry(Pose2D pose) {
-        telemetry.addLine("=== INTERACTIVE TEST MODE ===");
-        telemetry.addData("Mode", mode);
-        telemetry.addData("Pose", "(%.1f, %.1f, %.1f°)", pose.x, pose.y, pose.h);
-
-        if (mode == Mode.MENU) {
-            telemetry.addData("Motor Power", "%.2f", motorPower);
-            telemetry.addData("Include drivetrain", includeDriveMotors);
-
-            for (int i = 0; i < tests.size(); i++) {
-                telemetry.addLine((i == selected ? "👉 " : "   ") + tests.get(i).name);
+        // EXAMPLE TEST #1 (replace with your real subsystems)
+        tests.add(new TestEntry("Example: Timer 2s", new Supplier<SubsystemTest>() {
+            @Override public SubsystemTest get() {
+                return new SubsystemTest() {
+                    private long startMs;
+                    @Override public void start() { startMs = System.currentTimeMillis(); }
+                    @Override public void loop() { /* nothing */ }
+                    @Override public void stop() { /* nothing */ }
+                    @Override public boolean isDone() { return (System.currentTimeMillis() - startMs) > 2000; }
+                    @Override public String status() {
+                        long dt = System.currentTimeMillis() - startMs;
+                        return "t=" + (dt / 1000.0) + "s";
+                    }
+                };
             }
-        } else if (activeTest != null) {
-            telemetry.addData("Running", activeTest.name());
-            telemetry.addData("Status", activeTest.status());
-            telemetry.addLine("Press B to cancel");
-        }
+        }));
 
-        telemetry.update();
-    }
-
-    private static double clamp(double v) {
-        return Math.max(0.05, Math.min(0.7, v));
-    }
-
-    /* ============================
-       SUPPORT CLASSES
-       ============================ */
-
-    private static class DeviceRef<T> {
-        final String path;
-        final T device;
-        DeviceRef(String path, T device) { this.path = path; this.device = device; }
-    }
-
-    private interface Test {
-        void start();
-        void update();
-        boolean isDone();
-        void stop();
-        String name();
-        String status();
-    }
-
-    private interface Factory {
-        Test create();
-    }
-
-    private static class TestDef {
-        final String name;
-        final Factory factory;
-        TestDef(String name, Factory factory) {
-            this.name = name;
-            this.factory = factory;
-        }
-        Test create() { return factory.create(); }
-    }
-
-    /* ============================
-       TEST IMPLEMENTATIONS
-       ============================ */
-
-    private static class AllMotorsTest implements Test {
-        private final List<DeviceRef<DcMotor>> motors;
-        private final double power;
-        private final boolean includeDrive;
-
-        private int index = 0;
-        private int stage = 0;
-        private final ElapsedTime timer = new ElapsedTime();
-
-        AllMotorsTest(List<DeviceRef<DcMotor>> motors, double power, boolean includeDrive) {
-            this.motors = motors;
-            this.power = power;
-            this.includeDrive = includeDrive;
-        }
-
-        @Override public void start() {
-            index = 0;
-            stage = 0;
-            timer.reset();
-        }
-
-        @Override public void update() {
-            if (index >= motors.size()) return;
-
-            DeviceRef<DcMotor> m = motors.get(index);
-            if (!includeDrive && m.path.toLowerCase().contains("drivetrain")) {
-                index++;
-                return;
+        // EXAMPLE TEST #2 (shows motorPower/includeDriveMotors usage pattern)
+        tests.add(new TestEntry("Example: Show Settings", () -> new SubsystemTest() {
+            @Override public void start() { }
+            @Override public void loop() { }
+            @Override public void stop() { }
+            @Override public boolean isDone() { return false; }
+            @Override public String status() {
+                return "motorPower=" + format(motorPower) + ", includeDrive=" + includeDriveMotors;
             }
+        }));
 
-            if (stage == 0) {
-                m.device.setPower(+power);
-                if (timer.milliseconds() > 400) { stage = 1; timer.reset(); }
-            } else if (stage == 1) {
-                m.device.setPower(-power);
-                if (timer.milliseconds() > 400) { stage = 2; timer.reset(); }
-            } else {
-                m.device.setPower(0);
-                index++;
-                stage = 0;
-                timer.reset();
-            }
-        }
-
-        @Override public boolean isDone() { return index >= motors.size(); }
-        @Override public void stop() { for (DeviceRef<DcMotor> m : motors) m.device.setPower(0); }
-        @Override public String name() { return "ALL MOTORS"; }
-        @Override public String status() { return index + "/" + motors.size(); }
+        // TODO: Add your real tests here, e.g.
+        // tests.add(new TestEntry("Drive Motors Spin", () -> new DriveMotorSpinTest(hardwareMap, motorPower, includeDriveMotors)));
+        //
+        // Where DriveMotorSpinTest implements SubsystemTest.
     }
 
-    private static class AllServosTest implements Test {
-        private final List<DeviceRef<Servo>> servos;
-        private int index = 0;
-        private int stage = 0;
-        private final ElapsedTime timer = new ElapsedTime();
+    // ----------------------------
+    // Helpers
+    // ----------------------------
 
-        AllServosTest(List<DeviceRef<Servo>> servos) { this.servos = servos; }
-
-        @Override public void start() {
-            index = 0;
-            stage = 0;
-            timer.reset();
-        }
-
-        @Override public void update() {
-            if (index >= servos.size()) return;
-
-            Servo s = servos.get(index).device;
-
-            if (stage == 0) {
-                s.setPosition(0.2);
-                if (timer.milliseconds() > 300) { stage = 1; timer.reset(); }
-            } else if (stage == 1) {
-                s.setPosition(0.8);
-                if (timer.milliseconds() > 300) { stage = 2; timer.reset(); }
-            } else {
-                s.setPosition(0.5);
-                index++;
-                stage = 0;
-                timer.reset();
-            }
-        }
-
-        @Override public boolean isDone() { return index >= servos.size(); }
-        @Override public void stop() {}
-        @Override public String name() { return "ALL SERVOS"; }
-        @Override public String status() { return index + "/" + servos.size(); }
+    private double clamp(double p) {
+        if (p < 0.0) return 0.0;
+        if (p > 1.0) return 1.0;
+        return p;
     }
 
-    private static class LimelightTest implements Test {
-        private final StateRobot robot;
-        private boolean done = false;
-        private String status = "";
-
-        LimelightTest(StateRobot robot) { this.robot = robot; }
-
-        @Override public void start() {
-            Pose2D before = robot.getOtosSensor().getPosition();
-            robot.correctPositionFromLL();
-            Pose2D after = robot.getOtosSensor().getPosition();
-
-            status = String.format("Δ(%.2f, %.2f, %.1f°)",
-                    after.x - before.x,
-                    after.y - before.y,
-                    after.h - before.h);
-            done = true;
+    private String format(double v) {
+        return String.format(Locale.US, "%.2f", v);
+    }
+} = gp.x;
+            boolean e = edge(now, prevX);
+            prevX = now;
+            return e;
         }
 
-        @Override public void update() {}
-        @Override public boolean isDone() { return done; }
-        @Override public void stop() {}
-        @Override public String name() { return "Limelight correction"; }
-        @Override public String status() { return status; }
-    }
-
-    /* ============================
-       Button edge detector
-       ============================ */
-
-    private static class EdgeButtons {
-        boolean a,b,x,y,up,down,lb,rb;
-        boolean pa,pb,px,py,pup,pdown,plb,prb;
-
-        void update(com.qualcomm.robotcore.hardware.Gamepad g) {
-            a = g.a && !pa; pa = g.a;
-            b = g.b && !pb; pb = g.b;
-            x = g.x && !px; px = g.x;
-            y = g.y && !py; py = g.y;
-            up = g.dpad_up && !pup; pup = g.dpad_up;
-            down = g.dpad_down && !pdown; pdown = g.dpad_down;
-            lb = g.left_bumper && !plb; plb = g.left_bumper;
-            rb = g.right_bumper && !prb; prb = g.right_bumper;
+        public boolean y() {
+            boolean now = gp.y;
+            boolean e = edge(now, prevY);
+            prevY = now;
+            return e;
         }
 
-        boolean a(){return a;}
-        boolean b(){return b;}
-        boolean x(){return x;}
-        boolean y(){return y;}
-        boolean up(){return up;}
-        boolean down(){return down;}
-        boolean lb(){return lb;}
-        boolean rb(){return rb;}
-    }
-}
+        public boolean lb() {
+            boolean now = gp.left_bumper;
+            boolean e = edge(now, prevLB);
+            prevLB = now;
+            return e;
+        }
+
+        public boolean rb() {
