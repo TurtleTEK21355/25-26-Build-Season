@@ -67,7 +67,7 @@ public class ShooterSystem {
             setIntakePower(0);
         }
         setFlywheelPower(shooter);
-        setCarouselPosition(carousel.getAbsolutePosition());
+        setCarouselPosition(carousel.getPosition());
         setArtifactLiftState(artifactLift);
     }
 

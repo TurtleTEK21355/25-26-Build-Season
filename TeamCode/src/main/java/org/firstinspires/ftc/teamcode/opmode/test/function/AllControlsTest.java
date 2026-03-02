@@ -45,7 +45,7 @@ import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 @TeleOp(name = "All Controls Test", group = "test")
 public class AllControlsTest extends LinearOpMode {
     private StateRobot robot;
-    private final CarouselPosition DEFAULT_CAROUSEL_POS = CarouselPosition.CSSHOOT;
+    private final CarouselPosition DEFAULT_CAROUSEL_POS = CarouselPosition.SHOOT_SLOT_0;
     CarouselPosition CSPos = DEFAULT_CAROUSEL_POS;
 
 
@@ -69,11 +69,11 @@ public class AllControlsTest extends LinearOpMode {
             GamepadManager virtualGamepad2 = virtualGamepad.getSecondManager();
 
             if (gamepad2.y || virtualGamepad2.getTriangle()) {
-                CSPos = CarouselPosition.CSSHOOT;
+                CSPos = CarouselPosition.SHOOT_SLOT_0;
             } else if (gamepad2.x || virtualGamepad2.getSquare()) {
-                CSPos = CarouselPosition.CSLEFT;
+                CSPos = CarouselPosition.SHOOT_SLOT_2;
             } else if (gamepad2.b || virtualGamepad2.getCircle()) {
-                CSPos = CarouselPosition.CSRIGHT;
+                CSPos = CarouselPosition.SHOOT_SLOT_1;
             }
             robot.getShooterSystem().mainTeleOpWithoutTrajectoryMath(
                     gamepad2.left_bumper || virtualGamepad2.getL1(),

@@ -18,7 +18,6 @@ public class CarouselSystem {
         this.carouselServo = carouselServo;
         this.colorSensorArray = colorSensorArray;
     }
-    public void setTargetArtifactState(ArtifactState targetArtifactState){this.targetArtifactState = targetArtifactState;}
 
     public void setPosition(double position) {
         carouselServo.setPosition(Range.clip(position, 0,1));
@@ -28,22 +27,6 @@ public class CarouselSystem {
 
     public ArtifactState getArtifactState(CarouselPosition colorSensorPosition) {
         return colorSensorArray.getArtifactState(colorSensorPosition);
-    }
-    public void updateArtifactStates(){
-        colorSensorArray.updateBalls();
-    }
-
-    public void setNearestSlotInShoot() {
-        double position = getPosition();
-
-        double[] minDifference = {position-SLOT_POSITIONS[0], Math.abs(position-SLOT_POSITIONS[1]), Math.abs(position-SLOT_POSITIONS[2])};
-        if (minDifference[0] <= minDifference[1] && minDifference[0] <= minDifference[2]) {
-            setSlotInShoot(0);
-        } else if (minDifference[1] <= minDifference[2]) {
-            setSlotInShoot(1);
-        } else {
-            setSlotInShoot(2);
-        }
     }
 
     /**
@@ -77,23 +60,28 @@ public class CarouselSystem {
      * @param state artifact state wanted in shoot position
      */
     public void setTargetArtifactToShoot(ArtifactState state) {
-        int slot = getSlotInShoot();
+        int currentSlot = getSlotInShoot();
 
-        boolean slot0 = (colorSensorArray.getArtifactState(CarouselPosition.CSSHOOT) == state);
-        boolean slot1 = (colorSensorArray.getArtifactState(CarouselPosition.CSRIGHT) == state);
-        boolean slot2 = (colorSensorArray.getArtifactState(CarouselPosition.CSLEFT) == state);
+        if (state == ArtifactState.ANY) {
+            setNearestArtifactToShoot();
+            return;
+        }
 
-        setSlotToNearestBall(slot, slot0, slot1, slot2);
+        boolean ballInShootSlot = (colorSensorArray.getArtifactState(CarouselPosition.SHOOT_SLOT_0) == state);
+        boolean ballInRightSlot = (colorSensorArray.getArtifactState(CarouselPosition.SHOOT_SLOT_1) == state);
+        boolean ballInLeftSlot = (colorSensorArray.getArtifactState(CarouselPosition.SHOOT_SLOT_2) == state);
+
+        setSlotToNearestBall(currentSlot, ballInShootSlot, ballInRightSlot, ballInLeftSlot);
 
     }
     public void setNearestArtifactToShoot(){
-        int slot = getSlotInShoot();
+        int currentShootSlot = getSlotInShoot();
 
-        boolean slot0 = (colorSensorArray.getArtifactState(CarouselPosition.CSSHOOT) != ArtifactState.EMPTY);
-        boolean slot1 = (colorSensorArray.getArtifactState(CarouselPosition.CSRIGHT) != ArtifactState.EMPTY);
-        boolean slot2 = (colorSensorArray.getArtifactState(CarouselPosition.CSLEFT) != ArtifactState.EMPTY);
+        boolean ballInShootSlot = (colorSensorArray.getArtifactState(CarouselPosition.SHOOT_SLOT_0) != ArtifactState.EMPTY);
+        boolean ballInRightSlot = (colorSensorArray.getArtifactState(CarouselPosition.SHOOT_SLOT_1) != ArtifactState.EMPTY);
+        boolean ballInLeftSlot = (colorSensorArray.getArtifactState(CarouselPosition.SHOOT_SLOT_2) != ArtifactState.EMPTY);
 
-        setSlotToNearestBall(slot, slot0, slot1, slot2);
+        setSlotToNearestBall(currentShootSlot, ballInShootSlot, ballInRightSlot, ballInLeftSlot);
 
     }
 
@@ -102,31 +90,31 @@ public class CarouselSystem {
             switch(slotInShoot){
                 case 0:
                     if (ballInRightSlot){
-                        targetArtifactState = getArtifactState(CarouselPosition.CSRIGHT);
+                        targetArtifactState = getArtifactState(CarouselPosition.SHOOT_SLOT_1);
                         setSlotInShoot(1);
                     }
                     else if (ballInLeftSlot){
-                        targetArtifactState = getArtifactState(CarouselPosition.CSLEFT);
+                        targetArtifactState = getArtifactState(CarouselPosition.SHOOT_SLOT_2);
                         setSlotInShoot(2);
                     }
                     break;
                 case 1:
                     if(ballInLeftSlot){
-                        targetArtifactState = getArtifactState(CarouselPosition.CSLEFT);
+                        targetArtifactState = getArtifactState(CarouselPosition.SHOOT_SLOT_2);
                         setSlotInShoot(0);
                     }
                     else if(ballInRightSlot){
-                        targetArtifactState = getArtifactState(CarouselPosition.CSRIGHT);
+                        targetArtifactState = getArtifactState(CarouselPosition.SHOOT_SLOT_1);
                         setSlotInShoot(2);
                     }
                     break;
                 case 2:
                     if(ballInLeftSlot){
-                        targetArtifactState = getArtifactState(CarouselPosition.CSLEFT);
+                        targetArtifactState = getArtifactState(CarouselPosition.SHOOT_SLOT_2);
                         setSlotInShoot(1);
                     }
                     else if(ballInRightSlot){
-                        targetArtifactState = getArtifactState(CarouselPosition.CSRIGHT);
+                        targetArtifactState = getArtifactState(CarouselPosition.SHOOT_SLOT_1);
                         setSlotInShoot(0);
                     }
                     break;
@@ -136,9 +124,9 @@ public class CarouselSystem {
 
     public boolean shootSlotIsTarget() {
         if (targetArtifactState != ArtifactState.ANY) {
-            return getArtifactState(CarouselPosition.CSSHOOT) == targetArtifactState;
+            return getArtifactState(CarouselPosition.SHOOT_SLOT_0) == targetArtifactState;
         } else {
-            return (getArtifactState(CarouselPosition.CSSHOOT) == ArtifactState.GREEN) || (getArtifactState(CarouselPosition.CSSHOOT) == ArtifactState.PURPLE);
+            return (getArtifactState(CarouselPosition.SHOOT_SLOT_0) == ArtifactState.GREEN) || (getArtifactState(CarouselPosition.SHOOT_SLOT_0) == ArtifactState.PURPLE);
         }
     }
 

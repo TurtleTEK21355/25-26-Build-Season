@@ -17,20 +17,13 @@ public class NearestArtifactCommand extends Command {
 
     @Override
     public void init() {
-        carouselSystem.setTargetArtifactState(ArtifactState.ANY);
-        carouselSystem.updateArtifactStates();
         carouselSystem.setNearestArtifactToShoot();
-    }
-
-    @Override
-    public void loop() {
-        carouselSystem.updateArtifactStates();
     }
 
     @Override
     public String telemetry() {
         TelemetryString string = new TelemetryString();
-        string.addData("Color Sensor Data", carouselSystem.getArtifactState(CarouselPosition.CSSHOOT));
+        string.addData("Color Sensor Data", carouselSystem.getArtifactState(CarouselPosition.SHOOT_SLOT_0));
         return string.toString();
     }
 

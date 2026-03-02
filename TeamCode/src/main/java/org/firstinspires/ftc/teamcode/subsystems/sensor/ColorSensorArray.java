@@ -11,44 +11,21 @@ import java.util.HashMap;
 public class ColorSensorArray {
     private HashMap<CarouselPosition, ColorSensor> colorSensors = new HashMap<>();
 
-    private HashMap<CarouselPosition, ArtifactState> artifacts = new HashMap<>();
-
     public ColorSensorArray(NormalizedColorSensor shoot, NormalizedColorSensor left, NormalizedColorSensor right) {
         colorSensors.put(
-                CarouselPosition.CSSHOOT,
+                CarouselPosition.SHOOT_SLOT_0,
                 new ColorSensor(5.5f, shoot, "shoot"));
         colorSensors.put(
-                CarouselPosition.CSLEFT,
-                new ColorSensor(5.5f, left, "left"));
-        colorSensors.put(
-                CarouselPosition.CSRIGHT,
+                CarouselPosition.SHOOT_SLOT_1,
                 new ColorSensor(5.5f, right, "right"));
+        colorSensors.put(
+                CarouselPosition.SHOOT_SLOT_2,
+                new ColorSensor(5.5f, left, "left"));
 
-        updateBalls();
-
-    }
-
-    public void updateBalls() {
-        artifacts.put(CarouselPosition.CSSHOOT, colorSensors.get(CarouselPosition.CSSHOOT).getArtifactState(false));
-        artifacts.put(CarouselPosition.CSLEFT, colorSensors.get(CarouselPosition.CSLEFT).getArtifactState(false));
-        artifacts.put(CarouselPosition.CSRIGHT, colorSensors.get(CarouselPosition.CSRIGHT).getArtifactState(false));
     }
 
     public ArtifactState getArtifactState(CarouselPosition sensorPosition) {
-        return artifacts.get(sensorPosition);
+        return colorSensors.get(sensorPosition).getArtifactState(false);
     }
-
-//    public Motif getIsMotif() {
-//        int purpleAmount = 0;
-//        int greenAmount = 0;
-//        for (ArtifactState artifact : artifacts) {
-//            if (artifact == ArtifactState.GREEN) {
-//                greenAmount ++;
-//            } else if (artifact == ArtifactState.PURPLE) {
-//                purpleAmount ++;
-//            }
-//        }
-//
-//    }
 
 }

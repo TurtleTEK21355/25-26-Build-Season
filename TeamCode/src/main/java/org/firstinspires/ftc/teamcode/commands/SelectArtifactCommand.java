@@ -22,11 +22,6 @@ public class SelectArtifactCommand extends Command {
     }
 
     @Override
-    public void loop() {
-        carouselSystem.updateArtifactStates();
-    }
-
-    @Override
     public String telemetry() {
         TelemetryString string = new TelemetryString();
         //string.addData("label", var);

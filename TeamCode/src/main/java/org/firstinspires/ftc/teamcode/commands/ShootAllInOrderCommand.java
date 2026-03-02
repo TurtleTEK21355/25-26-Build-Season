@@ -10,19 +10,19 @@ public class ShootAllInOrderCommand extends SequentialCommand {
     final int CAROUSEL_WAIT_TIME = 400;
     final int LAST_CAROUSEL_WAIT_TIME = 500;
     public ShootAllInOrderCommand(ShooterSystem shooterSystem) {
-        commandList.add(new SetCarouselPositionCommand(shooterSystem.getCarouselSystem(), CarouselPosition.CSSHOOT));
+        commandList.add(new SetCarouselPositionCommand(shooterSystem.getCarouselSystem(), CarouselPosition.SHOOT_SLOT_0));
         commandList.add(new TimerCommand(FIRST_CAROUSEL_WAIT_TIME));
         commandList.add(new LifterUpCommand(shooterSystem));
         commandList.add(new LifterDownCommand(shooterSystem));
-        commandList.add(new SetCarouselPositionCommand(shooterSystem.getCarouselSystem(), CarouselPosition.CSRIGHT));
+        commandList.add(new SetCarouselPositionCommand(shooterSystem.getCarouselSystem(), CarouselPosition.SHOOT_SLOT_1));
         commandList.add(new TimerCommand(CAROUSEL_WAIT_TIME));
         commandList.add(new LifterUpCommand(shooterSystem));
         commandList.add(new LifterDownCommand(shooterSystem));
-        commandList.add(new SetCarouselPositionCommand(shooterSystem.getCarouselSystem(), CarouselPosition.CSLEFT));
+        commandList.add(new SetCarouselPositionCommand(shooterSystem.getCarouselSystem(), CarouselPosition.SHOOT_SLOT_2));
         commandList.add(new TimerCommand(CAROUSEL_WAIT_TIME));
         commandList.add(new LifterUpCommand(shooterSystem));
         commandList.add(new LifterDownCommand(shooterSystem));
-        commandList.add(new SetCarouselPositionCommand(shooterSystem.getCarouselSystem(), CarouselPosition.INTAKESHOOT));
+        commandList.add(new SetCarouselPositionCommand(shooterSystem.getCarouselSystem(), CarouselPosition.INTAKE_SLOT_0));
         commandList.add(new TimerCommand(LAST_CAROUSEL_WAIT_TIME));
 
     }

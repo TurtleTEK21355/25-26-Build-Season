@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import org.firstinspires.ftc.teamcode.lib.command.Command;
-import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.CarouselSystem;
 
@@ -19,7 +18,7 @@ public class SetCarouselPositionCommand extends Command {
 
     @Override
     public void init() {
-        carouselSystem.setPosition(carouselPosition.getAbsolutePosition());
+        carouselSystem.setPosition(carouselPosition.getPosition());
     }
 
     @Override
