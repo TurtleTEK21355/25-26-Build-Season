@@ -10,41 +10,46 @@ import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
 import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 
 public class RotateToGoalCommand extends Command {
-    StateRobot robot;
+    Drivetrain drivetrain;
+    OTOSSensor otosSensor;
     Pose2D target;
     PIDControllerHeading hPID;
-    private final double ROTATION_PID_SPEED = 0.75;
+
     public String dataKey = "RotateToGoalCommand";
 
+    private final double ROTATION_PID_SPEED = 0.75;
+
     public RotateToGoalCommand(StateRobot robot) {
-        this.robot = robot;
+        this.drivetrain = robot.getDrivetrain();
+        this.otosSensor = robot.getOtosSensor();
         target = robot.getAllianceSide().getGoalPosition();
     }
 
     @Override
     public void init() {
-        hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), robot.getOtosSensor().getPosition().positionsToFCAngle(target)*(90.0/Math.PI), Constants.getPIDTolerance().h, ROTATION_PID_SPEED);
-
+        hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), otosSensor.getPosition().positionsToFCAngle(target)*(90.0/Math.PI), Constants.getPIDTolerance().h, ROTATION_PID_SPEED);
     }
 
     @Override
     public void loop() {
-        Pose2D position = robot.getOtosSensor().getPosition();
-        robot.getDrivetrain().fcControl(0, 0, hPID.calculate(position.h), position);
+        Pose2D position = otosSensor.getPosition();
+        drivetrain.fcControl(0, 0, hPID.calculate(position.h), position);
+
     }
 
     @Override
     public String telemetry() {
         TelemetryString string = new TelemetryString();
-
+        string.addData("distance to goal", otosSensor.getPosition().positionsToFCAngle(target)*(90.0/Math.PI) - otosSensor.getPosition().h);
         return string.toString();
     }
 
     @Override
     public boolean isCompleted() {
-        return (hPID.atTarget(robot.getOtosSensor().getPosition().h));
+        return (hPID.atTarget(otosSensor.getPosition().h));
     }
 
 }

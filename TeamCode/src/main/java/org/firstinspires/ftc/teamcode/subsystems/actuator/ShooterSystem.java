@@ -81,9 +81,15 @@ public class ShooterSystem {
     public double getFlywheelVelocity() {
         return turretSystem.getFlywheelVelocity();
     }
+
+    public void setHoodAngle(double position) {
+        turretSystem.setHoodAngle(position);
+    }
+
     public void setIntakePower(double power) {
         intake.setPower(power);
     }
+
     public void setArtifactLiftState(boolean up) {
         if (up) {
             artifactLift.setLiftUpNoLimit();
@@ -91,11 +97,18 @@ public class ShooterSystem {
             artifactLift.setLiftDownNoLimit();
         }
     }
-    public void setCarouselPosition(double position) {carouselSystem.setPosition(position);}
-    public double getCarouselPosition() {return carouselSystem.getPosition();}
 
+    public void setCarouselPosition(double position) {
+        carouselSystem.setPosition(position);
+    }
+    public double getCarouselPosition() {
+        return carouselSystem.getPosition();
+    }
+    public void setSlotInShoot(int slot) {
+        carouselSystem.setSlotInShoot(slot);
+    }
     public void setArtifactToShoot(ArtifactState state) {
         carouselSystem.setTargetArtifactToShoot(state);
     }
-    public void setHoodAngle(double position) {turretSystem.setHoodAngle(position);}
+
 }

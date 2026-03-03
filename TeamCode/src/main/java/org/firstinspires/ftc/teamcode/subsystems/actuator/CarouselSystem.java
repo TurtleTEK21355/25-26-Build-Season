@@ -46,11 +46,11 @@ public class CarouselSystem {
     }
 
     public void setSlotInShoot(int slot) {
-        // ensures valid slot position is selected
+        // loops the slot around so you can do cool loopy stuff
         if (slot >2){
-            slot = 2;
-        } if (slot<0){
             slot = 0;
+        } if (slot<0){
+            slot = 2;
         }
         setPosition(SLOT_POSITIONS[slot]);
     }

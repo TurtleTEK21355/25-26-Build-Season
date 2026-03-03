@@ -44,13 +44,6 @@ public class OTOSSensor {
 
     }
 
-    public void positionTelemetry() {
-        Pose2D position = getPosition();
-        TelemetryPasser.telemetry.addData("Position X: ", position.x);
-        TelemetryPasser.telemetry.addData("Position Y: ", position.y);
-        TelemetryPasser.telemetry.addData("Heading: ", position.h);
-    }
-
     public double getRangeFromPosition(AllianceSide side) {
         Pose2D position = getPosition();
         Pose2D goalPos = side.getGoalPosition();

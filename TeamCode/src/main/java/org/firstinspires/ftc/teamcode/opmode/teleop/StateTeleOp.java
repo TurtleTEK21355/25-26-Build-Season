@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 public class StateTeleOp extends OpMode {
     private StateRobot robot;
 
-    private CommandScheduler commandScheduler = new CommandScheduler();
+    private final CommandScheduler commandScheduler = new CommandScheduler();
 
     private SequentialCommand shootCommand;
     private SequentialCommand selectGreenArtifactCommand;
@@ -30,6 +30,8 @@ public class StateTeleOp extends OpMode {
     private SequentialCommand selectNearestArtifactCommand;
     private SequentialCommand rotateToGoal;
 
+    private boolean lock = false;
+    private int intakeSlot = 0;
     private boolean shooting = false;
     private ArtifactState preferredArtifactState = ArtifactState.ANY;
 
@@ -62,6 +64,7 @@ public class StateTeleOp extends OpMode {
         telemetry.addLine("💚 G1 A → Select GREEN artifact");
         telemetry.addLine("💜 G1 X → Select PURPLE artifact");
         telemetry.addLine("🌈 G1 Y → Select ANY artifact");
+        telemetry.addLine("👅 G2 DPAD L & R → Rotate Carousel");
 
 // Position / Sensors
         telemetry.addLine("📡 G1 B → OTOS + Limelight Position Correction");
@@ -70,10 +73,6 @@ public class StateTeleOp extends OpMode {
         telemetry.addLine("🕹️ G1 Left Stick → Drive (forward/back + strafe)");
         telemetry.addLine("🔄 G1 Right Stick X → Rotate");
 
-// Status
-        telemetry.addLine("📦 Preferred Artifact: " + preferredArtifactState);
-        telemetry.addLine("🚀 Shooting Active: " + shooting);
-        telemetry.update();
     }
 
     @Override
@@ -89,15 +88,20 @@ public class StateTeleOp extends OpMode {
 
         //shooting command
         if (gamepad2.right_bumper && !shooting) {
+
             commandScheduler.add(rotateToGoal);
+
             if (preferredArtifactState != ArtifactState.ANY) {
                 switch (preferredArtifactState) {
                     case GREEN:  commandScheduler.add(selectGreenArtifactCommand);  break;
                     case PURPLE: commandScheduler.add(selectPurpleArtifactCommand); break;
                 }
                 commandScheduler.add(shootCommand);
-            } else commandScheduler.add(new ShootAllInOrderCommand(robot.getShooterSystem()));
+            }
+            else commandScheduler.add(new ShootAllInOrderCommand(robot.getShooterSystem()));
+
             shooting = true;
+
         }
 
         commandScheduler.loop();
@@ -116,6 +120,27 @@ public class StateTeleOp extends OpMode {
             if(gamepad1.a) preferredArtifactState = ArtifactState.GREEN;
             else if(gamepad1.x) preferredArtifactState = ArtifactState.PURPLE;
             else if(gamepad1.y) preferredArtifactState = ArtifactState.ANY;
+
+            if (gamepad2.dpad_left&&!lock) {
+                lock = true;
+                intakeSlot--;
+            }
+            else if (gamepad2.dpad_right&&!lock) {
+                lock = true;
+                intakeSlot++;
+            }
+            else {
+                lock = false;
+            }
+
+            if (intakeSlot < 0) {
+                intakeSlot = 2;
+            }
+            if (intakeSlot > 2) {
+                intakeSlot = 0;
+            }
+
+            robot.getShooterSystem().setSlotInShoot(intakeSlot);
 
         }
 

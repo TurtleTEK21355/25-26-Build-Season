@@ -26,7 +26,12 @@ public class ColorSensorArray {
     }
 
     public ArtifactState getArtifactState(ColorSensorPosition colorSensorPosition) {
-        return colorSensors.get(colorSensorPosition).getArtifactState(false);
+        ColorSensor colorSensor = colorSensors.get(colorSensorPosition);
+
+        if (colorSensor != null) {
+            return colorSensor.getArtifactState(false);
+        }
+        return null;
     }
 
 }
