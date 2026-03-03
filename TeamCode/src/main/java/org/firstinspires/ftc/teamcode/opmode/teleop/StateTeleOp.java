@@ -2,12 +2,10 @@ package org.firstinspires.ftc.teamcode.opmode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.commands.LifterDownCommand;
 import org.firstinspires.ftc.teamcode.commands.LifterUpCommand;
-import org.firstinspires.ftc.teamcode.commands.MovePIDCommand;
 import org.firstinspires.ftc.teamcode.commands.NearestArtifactCommand;
 import org.firstinspires.ftc.teamcode.commands.RotateToGoalCommand;
 import org.firstinspires.ftc.teamcode.commands.SelectArtifactCommand;
@@ -55,12 +53,41 @@ public class StateTeleOp extends OpMode {
                 new NearestArtifactCommand(robot.getShooterSystem().getCarouselSystem()));
         rotateToGoal = new SequentialCommand(
                 new RotateToGoalCommand(robot));
+
+// Shooting
+        telemetry.addLine("🔫 G2 Right Bumper → FIRE EVERYTHING (shoot sequence)");
+        telemetry.addLine("⚙️ G1 Left Trigger → Intake Power (nom nom nom)");
+
+// Artifact Selection
+        telemetry.addLine("💚 G1 A → Select GREEN artifact");
+        telemetry.addLine("💜 G1 X → Select PURPLE artifact");
+        telemetry.addLine("🌈 G1 Y → Select ANY artifact");
+
+// Position / Sensors
+        telemetry.addLine("📡 G1 B → OTOS + Limelight Position Correction");
+
+// Driving
+        telemetry.addLine("🕹️ G1 Left Stick → Drive (forward/back + strafe)");
+        telemetry.addLine("🔄 G1 Right Stick X → Rotate");
+
+// Status
+        telemetry.addLine("📦 Preferred Artifact: " + preferredArtifactState);
+        telemetry.addLine("🚀 Shooting Active: " + shooting);
+        telemetry.update();
     }
 
     @Override
     public void loop() {
         Pose2D position = robot.getOtosSensor().getPosition();
+        robot.getLimelight().updateRobotOrientation(position.h); //gets proper position
 
+        //flywheel and hood
+//        ShootMath.ShootResults shootResults = ShootMath.velocityHood(robot.getOtosSensor().getRangeFromPosition(robot.getAllianceSide()));
+        robot.getShooterSystem().setFlywheelVelocity(2200);
+        robot.getShooterSystem().setHoodAngle(65);
+        robot.getShooterSystem().setIntakePower(gamepad1.left_trigger);
+
+        //shooting command
         if (gamepad2.right_bumper && !shooting) {
             commandScheduler.add(rotateToGoal);
             if (preferredArtifactState != ArtifactState.ANY) {
@@ -74,30 +101,25 @@ public class StateTeleOp extends OpMode {
         }
 
         commandScheduler.loop();
-        TelemetryPasser.telemetry.addLine(commandScheduler.getTelemetry());
+        telemetry.addLine(commandScheduler.getTelemetry());
 
+        //not shooting
         if (commandScheduler.isCompleted()) {
             shooting = false;
 
-            if (gamepad1.left_stick_button) {
-                robot.getOtosSensor().setPosition(robot.getLimelight().correctPositionFromLL(position));
+            if (gamepad1.b) {
+                robot.getOtosSensor().setPosition(robot.getLimelight().getCorrectedPositionFromLL(position));
             }
 
             robot.getDrivetrain().fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, robot.getAllianceSide(), position);
-
-            ShootMath.ShootResults shootResults = ShootMath.velocityHood(robot.getOtosSensor().getRangeFromPosition(robot.getAllianceSide()));
-            robot.getShooterSystem().setFlywheelVelocity(shootResults.velocity);
-            robot.getShooterSystem().setHoodAngle(shootResults.theta);
-            robot.getShooterSystem().setIntakePower(gamepad2.left_trigger);
 
             if(gamepad1.a) preferredArtifactState = ArtifactState.GREEN;
             else if(gamepad1.x) preferredArtifactState = ArtifactState.PURPLE;
             else if(gamepad1.y) preferredArtifactState = ArtifactState.ANY;
 
-            robot.getOtosSensor().positionTelemetry();
-
         }
 
+        telemetry.addData("Position", position);
         telemetry.update();
     }
 

@@ -17,7 +17,7 @@ public class Limelight {
     }
     public void telemetryLimelightAprilTagData(Pose2D position){
         limelight.updateRobotOrientation(position.h);
-        LLResult result =limelight.getLatestResult();
+        LLResult result = limelight.getLatestResult();
         Pose3D botpose = result.getBotpose_MT2();
         for (LLResultTypes.FiducialResult llData : result.getFiducialResults()) {
             int id = llData.getFiducialId();
@@ -32,28 +32,22 @@ public class Limelight {
         }
     }
 
-    public Pose2D correctPositionFromLL(Pose2D currentPosition){
-        Pose2D llPosition = getPosition();
-        if (llPosition != null || llPosition.distanceTo(currentPosition) > 10) {
+    public void updateRobotOrientation(double yaw) {
+        limelight.updateRobotOrientation((yaw - 180) % 360);
+    }
+
+    public Pose2D getCorrectedPositionFromLL(Pose2D currentPosition){
+        LLResult result = limelight.getLatestResult();
+        Pose2D llPosition = new Pose2D(
+                result.getBotpose_MT2().getPosition().y * 39.3700787, //magic number
+                -result.getBotpose_MT2().getPosition().x * 39.3700787, //magic number
+                currentPosition.h
+        );
+        if (result.isValid() && llPosition.distanceTo(currentPosition) > 5) { //magic number
             return llPosition;
         }
         else {
             return currentPosition;
-        }
-    }
-
-    public Pose2D getPosition(){
-        LLResult result = limelight.getLatestResult();
-        if (result.isValid()) {
-            Pose2D llPosition = new Pose2D(
-                    result.getBotpose().getPosition().x * 39.3700787,
-                    result.getBotpose().getPosition().y * 39.3700787,
-                    result.getBotpose().getOrientation().getYaw()
-            );
-            return llPosition;
-        }
-        else {
-            return null;
         }
     }
 
