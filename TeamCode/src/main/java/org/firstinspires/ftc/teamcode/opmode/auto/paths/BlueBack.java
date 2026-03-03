@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode.auto.paths;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
 import org.firstinspires.ftc.teamcode.commands.LifterDownCommand;
 import org.firstinspires.ftc.teamcode.commands.LifterUpCommand;
 import org.firstinspires.ftc.teamcode.commands.MovePIDCommand;
@@ -8,6 +10,7 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 
+@Autonomous(name="Blue Back", group = "auto")
 public class BlueBack extends StateAutoOpMode {
     Pose2D startingPosition = new Pose2D(-53, 51, 54);
     AllianceSide side = AllianceSide.BLUE;

@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
-@TeleOp(name = "USE THIS FOR STATE MANUAL TESTING!!!!")
+@TeleOp(name = "TeleOp", group = "teleop")
 public class StateTeleOp extends OpMode {
     private StateRobot robot;
 

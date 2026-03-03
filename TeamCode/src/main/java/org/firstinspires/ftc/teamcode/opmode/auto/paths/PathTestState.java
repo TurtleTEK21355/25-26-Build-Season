@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.auto.internal.ProgrammingAutoOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 
-@Autonomous(name="BLUE")
+@Autonomous(name="Path Test State", group = "test")
 public class PathTestState extends ProgrammingAutoOpMode {
     Pose2D startingPosition = new Pose2D(-53, 51, 54);
     AllianceSide side = AllianceSide.BLUE;

@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
-@TeleOp(name = "Sorting Test")
+@TeleOp(name = "Sorting Test", group = "test")
 public class SortingTest extends OpMode {
     private StateRobot robot;
 

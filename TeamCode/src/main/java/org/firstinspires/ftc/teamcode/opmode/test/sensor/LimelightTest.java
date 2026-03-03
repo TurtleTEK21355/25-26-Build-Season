@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
-@TeleOp(name = "Limelight Test")
+@TeleOp(name = "Limelight Test", group = "test")
 public class LimelightTest extends OpMode {
     private StateRobot robot;
     Telemetry combined;

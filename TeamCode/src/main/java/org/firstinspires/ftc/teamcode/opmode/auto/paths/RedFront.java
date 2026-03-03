@@ -1,9 +1,13 @@
 package org.firstinspires.ftc.teamcode.opmode.auto.paths;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
 import org.firstinspires.ftc.teamcode.commands.MovePIDCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
+
+@Autonomous(name="Red Front", group = "auto")
 
 public class RedFront extends StateAutoOpMode {
     Pose2D startingPosition = new Pose2D(51, 51, 54);

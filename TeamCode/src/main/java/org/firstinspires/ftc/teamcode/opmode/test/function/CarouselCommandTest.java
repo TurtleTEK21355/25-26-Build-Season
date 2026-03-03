@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 
-@Autonomous(name="Carousel Command Test") // Replace name with clear and identifiable name
+@Autonomous(name="Carousel Command Test", group = "test") // Replace name with clear and identifiable name
 public class CarouselCommandTest extends StateAutoOpMode {
     Pose2D startingPosition = new Pose2D(0,0,0); // Replace 0s with starting position
     AllianceSide side = AllianceSide.BLUE; // Replace BLUE with RED if required

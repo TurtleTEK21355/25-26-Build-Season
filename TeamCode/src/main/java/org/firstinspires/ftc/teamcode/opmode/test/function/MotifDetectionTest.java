@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 
 import java.util.Objects;
 
-@Autonomous(name="Motif Detection Test") // Replace name with clear and identifiable name
+@Autonomous(name="Motif Detection Test", group = "test") // Replace name with clear and identifiable name
 public class MotifDetectionTest extends StateAutoOpMode {
     Pose2D startingPosition = new Pose2D(0,0,0); // Replace 0s with starting position
     AllianceSide side = AllianceSide.BLUE; // Replace BLUE with RED if required
