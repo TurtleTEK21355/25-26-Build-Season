@@ -56,11 +56,11 @@ public class CarouselTest extends LinearOpMode {
         while (opModeIsActive()) {
             robot.getDrivetrain().fcControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, robot.getAllianceSide(), robot.getOtosSensor().getPosition());
             if(gamepad1.y) {
-                robot.getShooterSystem().setCarouselPosition(CarouselPosition.SHOOT_SLOT_0.getPosition());
+                robot.getShooterSystem().setCarouselPosition(CarouselPosition.SHOOT_SLOT_0);
             } else if(gamepad1.b) {
-                robot.getShooterSystem().setCarouselPosition(CarouselPosition.SHOOT_SLOT_1.getPosition());
+                robot.getShooterSystem().setCarouselPosition(CarouselPosition.SHOOT_SLOT_1);
             } else if(gamepad1.x) {
-                robot.getShooterSystem().setCarouselPosition(CarouselPosition.SHOOT_SLOT_2.getPosition());
+                robot.getShooterSystem().setCarouselPosition(CarouselPosition.SHOOT_SLOT_2);
             }
             if (gamepad1.right_bumper) {
                 robot.getShooterSystem().setArtifactToShoot(ArtifactState.PURPLE);

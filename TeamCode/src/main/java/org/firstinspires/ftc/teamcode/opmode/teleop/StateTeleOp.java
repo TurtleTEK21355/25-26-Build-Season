@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.commands.ShootAllInOrderCommand;
 import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
+import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
 @TeleOp(name = "TeleOp", group = "teleop")
@@ -20,7 +21,6 @@ public class StateTeleOp extends OpMode {
     private int velocity = 1500;
     private double angle = 25;
     private boolean lock = false;
-    private int intakeSlot = 0;
     private boolean shooting = false;
 
     @Override
@@ -118,26 +118,12 @@ public class StateTeleOp extends OpMode {
             robot.getDrivetrain().control(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
 
-            if (gamepad2.dpad_left&&!lock) {
-                lock = true;
-                intakeSlot--;
+            if (gamepad2.dpadLeftWasPressed()) {
+                robot.getShooterSystem().getCarouselSystem().goToPreviousIntakePosition();
             }
-            else if (gamepad2.dpad_right&&!lock) {
-                lock = true;
-                intakeSlot++;
+            else if (gamepad1.dpadRightWasPressed()) {
+                robot.getShooterSystem().getCarouselSystem().goToNextIntakePosition();
             }
-            else if (!gamepad2.dpad_right && !gamepad2.dpad_left){
-                lock = false;
-            }
-
-            if (intakeSlot < 0) {
-                intakeSlot = 0;
-            }
-            if (intakeSlot > 2) {
-                intakeSlot = 2;
-            }
-
-            robot.getShooterSystem().setSlotInIntake(intakeSlot);
 
         }
         telemetry.addData("Position", position);

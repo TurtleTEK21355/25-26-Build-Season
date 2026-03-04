@@ -18,7 +18,7 @@ public class SetCarouselPositionCommand extends Command {
 
     @Override
     public void init() {
-        carouselSystem.setPosition(carouselPosition.getPosition());
+        carouselSystem.setPosition(carouselPosition);
     }
 
     @Override

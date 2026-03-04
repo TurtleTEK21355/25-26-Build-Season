@@ -13,7 +13,6 @@ public class ShooterSystem {
     private ArtifactLift artifactLift;
     private CarouselSystem carouselSystem;
     private Intake intake;
-    TelemetryPasser telemetryPasser;
 
     public ShooterSystem(TurretSystem turretSystem, ArtifactLift artifactLift, CarouselSystem carouselSystem, Intake intake){
         this.turretSystem = turretSystem;
@@ -34,15 +33,7 @@ public class ShooterSystem {
         string.addLine("hello");
         return string.toString();
     }
-    public void manualControls(double intakePower, double flywheelPower, double carouselPosition, double hood) {
-        setFlywheelPower(flywheelPower);
-//        TelemetryPasser.telemetry.addData("Flywheel Velocity:", getFlywheelVelocity());
-        setIntakePower(intakePower);
-        setCarouselPosition(carouselPosition);
-//        TelemetryPasser.telemetry.addData("Carousel Position:", getCarouselPosition());
-//        setHoodAngle(hood);
-//        TelemetryPasser.telemetry.addData("Hood Angle:", hood);
-    }
+
     public void manualControls(double intakePower, double flywheelPower, double hood) {
         setFlywheelPower(flywheelPower);
         TelemetryPasser.telemetry.addData("Flywheel Velocity:", getFlywheelVelocity());
@@ -56,10 +47,10 @@ public class ShooterSystem {
      * @param intake
      * @param shooter
      * @param hood
-     * @param carousel
+     * @param carouselPosition
      * @param artifactLift
      */
-    public void mainTeleOpWithoutTrajectoryMath(boolean intake, double shooter, double hood, CarouselPosition carousel, boolean artifactLift) {
+    public void mainTeleOpWithoutTrajectoryMath(boolean intake, double shooter, double hood, CarouselPosition carouselPosition, boolean artifactLift) {
         setHoodAngle(Range.clip(hood*0.5, 0, 0.5));
         if (intake) {
             setIntakePower(1);
@@ -67,7 +58,7 @@ public class ShooterSystem {
             setIntakePower(0);
         }
         setFlywheelPower(shooter);
-        setCarouselPosition(carousel.getPosition());
+        setCarouselPosition(carouselPosition);
         setArtifactLiftState(artifactLift);
     }
 
@@ -98,17 +89,11 @@ public class ShooterSystem {
         }
     }
 
-    public void setCarouselPosition(double position) {
-        carouselSystem.setPosition(position);
-    }
-    public double getCarouselPosition() {
+    public CarouselPosition getCarouselPosition() {
         return carouselSystem.getPosition();
     }
-    public void setSlotInShoot(int slot) {
-        carouselSystem.setSlotInShoot(slot);
-    }
-    public void setSlotInIntake(int slot) {
-        carouselSystem.setSlotInIntake(slot);
+    public void setCarouselPosition(CarouselPosition position) {
+        carouselSystem.setPosition(position);
     }
     public void setArtifactToShoot(ArtifactState state) {
         carouselSystem.setTargetArtifactToShoot(state);
