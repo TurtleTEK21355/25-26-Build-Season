@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.subsystems.actuator.ShooterSystem;
 public class ShootAllInOrderCommand extends SequentialCommand {
     public String dataKey = "ShootAllInOrderCommand";
 
-    final int FIRST_CAROUSEL_WAIT_TIME = 800;
+    final int FIRST_CAROUSEL_WAIT_TIME = 1000;
     final int CAROUSEL_WAIT_TIME = 400;
     public ShootAllInOrderCommand(ShooterSystem shooterSystem) {
         commandList.add(new SetCarouselPositionCommand(shooterSystem.getCarouselSystem(), CarouselPosition.SHOOT_SLOT_0));

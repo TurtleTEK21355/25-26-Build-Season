@@ -115,7 +115,7 @@ public class StateTeleOp extends OpMode {
 
         robot.getShooterSystem().setFlywheelVelocity(velocity);
         robot.getShooterSystem().setHoodAngle(angle);
-        if (gamepad2.left_bumper) {
+        if (gamepad2.right_bumper) {
             robot.getShooterSystem().setIntakePower(-1);
         }
         else {
@@ -141,12 +141,10 @@ public class StateTeleOp extends OpMode {
             telemetry.addLine(commandScheduler.getTelemetry());
         }
 
+        //not shooting
         if (commandScheduler.isCompleted()) {
             shooting = false;
-        }
 
-        //not shooting
-        if (shooting == false) {
             robot.getDrivetrain().control(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
 
