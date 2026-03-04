@@ -12,7 +12,6 @@ public class CarouselSystem {
 
     private Servo carouselServo;
     private ColorSensorArray colorSensorArray;
-    private final Double[] SLOT_POSITIONS = {0.0, 0.34, 0.67};
     private ArtifactState targetArtifactState;
 
     public CarouselSystem(Servo carouselServo, ColorSensorArray colorSensorArray) {
@@ -34,12 +33,12 @@ public class CarouselSystem {
      * Returns which slot position the carousel is set to.
      * @return returns -1 when not in a slot position. I don't know a better way to do this.
      */
-    public int getSlotInShoot() {
-        double position = carouselServo.getPosition();
-        int slot = -1;
-        for (int index = 0; index <= 2; index++) {
-            if (position == SLOT_POSITIONS[index]) {
-                slot = index;
+    public CarouselPosition getSlotInShoot() {
+        double currentPosition = carouselServo.getPosition();
+        CarouselPosition slot = null;
+        for (CarouselPosition position : CarouselPosition.values()) {
+            if (currentPosition == position.getPosition()) {
+                slot = position;
                 break;
             }
         }
@@ -75,7 +74,14 @@ public class CarouselSystem {
      * @param state artifact state wanted in shoot position
      */
     public void setTargetArtifactToShoot(ArtifactState state) {
-        int currentSlot = getSlotInShoot();
+        CarouselPosition currentShootSlot = getSlotInShoot();
+
+        if (currentShootSlot == CarouselPosition.INTAKE_SLOT_0 ||
+                currentShootSlot == CarouselPosition.INTAKE_SLOT_1 ||
+                currentShootSlot == CarouselPosition.INTAKE_SLOT_2) {
+            setSlotInShoot(0);
+            setTargetArtifactToShoot(state);
+        }
 
         if (state == ArtifactState.ANY) {
             setAnyArtifactToShoot();
@@ -86,11 +92,18 @@ public class CarouselSystem {
         boolean ballInRightSlot = (getArtifactState(ColorSensorPosition.RIGHT) == state);
         boolean ballInLeftSlot = (getArtifactState(ColorSensorPosition.LEFT) == state);
 
-        setSlotToNearestBall(currentSlot, ballInShootSlot, ballInRightSlot, ballInLeftSlot);
+        setSlotToNearestBall(currentShootSlot, ballInShootSlot, ballInRightSlot, ballInLeftSlot);
 
     }
     public void setAnyArtifactToShoot(){
-        int currentShootSlot = getSlotInShoot();
+        CarouselPosition currentShootSlot = getSlotInShoot();
+
+        if (currentShootSlot == CarouselPosition.INTAKE_SLOT_0 ||
+                currentShootSlot == CarouselPosition.INTAKE_SLOT_1 ||
+                currentShootSlot == CarouselPosition.INTAKE_SLOT_2) {
+            setSlotInShoot(0);
+            setAnyArtifactToShoot();
+        }
 
         boolean ballInShootSlot = (getArtifactState(ColorSensorPosition.SHOOT) != ArtifactState.EMPTY);
         boolean ballInRightSlot = (getArtifactState(ColorSensorPosition.RIGHT) != ArtifactState.EMPTY);
@@ -100,10 +113,10 @@ public class CarouselSystem {
 
     }
 
-    private void setSlotToNearestBall(int slotInShoot, boolean ballInShootSlot, boolean ballInRightSlot, boolean ballInLeftSlot) {
+    private void setSlotToNearestBall(CarouselPosition slotInShoot, boolean ballInShootSlot, boolean ballInRightSlot, boolean ballInLeftSlot) {
         if(!ballInShootSlot){
             switch(slotInShoot){
-                case 0:
+                case SHOOT_SLOT_0:
                     if (ballInRightSlot){
                         targetArtifactState = getArtifactState(ColorSensorPosition.RIGHT);
                         setSlotInShoot(1);
@@ -113,7 +126,7 @@ public class CarouselSystem {
                         setSlotInShoot(2);
                     }
                     break;
-                case 1:
+                case SHOOT_SLOT_1:
                     if(ballInLeftSlot){
                         targetArtifactState = getArtifactState(ColorSensorPosition.LEFT);
                         setSlotInShoot(0);
@@ -123,7 +136,7 @@ public class CarouselSystem {
                         setSlotInShoot(2);
                     }
                     break;
-                case 2:
+                case SHOOT_SLOT_2:
                     if(ballInLeftSlot){
                         targetArtifactState = getArtifactState(ColorSensorPosition.LEFT);
                         setSlotInShoot(1);

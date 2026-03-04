@@ -8,7 +8,6 @@ public class ShootAllInOrderCommand extends SequentialCommand {
 
     final int FIRST_CAROUSEL_WAIT_TIME = 800;
     final int CAROUSEL_WAIT_TIME = 400;
-    final int LAST_CAROUSEL_WAIT_TIME = 500;
     public ShootAllInOrderCommand(ShooterSystem shooterSystem) {
         commandList.add(new SetCarouselPositionCommand(shooterSystem.getCarouselSystem(), CarouselPosition.SHOOT_SLOT_0));
         commandList.add(new TimerCommand(FIRST_CAROUSEL_WAIT_TIME));
@@ -22,8 +21,6 @@ public class ShootAllInOrderCommand extends SequentialCommand {
         commandList.add(new TimerCommand(CAROUSEL_WAIT_TIME));
         commandList.add(new LifterUpCommand(shooterSystem));
         commandList.add(new LifterDownCommand(shooterSystem));
-        commandList.add(new SetCarouselPositionCommand(shooterSystem.getCarouselSystem(), CarouselPosition.INTAKE_SLOT_0));
-        commandList.add(new TimerCommand(LAST_CAROUSEL_WAIT_TIME));
 
     }
 }

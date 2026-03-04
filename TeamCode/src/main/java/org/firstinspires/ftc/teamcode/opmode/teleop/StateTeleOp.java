@@ -94,19 +94,33 @@ public class StateTeleOp extends OpMode {
                 cooldownTimer.reset();
             }
 
-            if(gamepad2.y && angle < 45) {
-                angle += 0.1;
+            if(gamepad2.y) {
+                angle += 1;
                 cooldownTimer.reset();
             }
-            else if (gamepad2.x && angle > 25) {
-                angle -= 0.1;
+            else if (gamepad2.x) {
+                angle -= 1;
                 cooldownTimer.reset();
             }
+        }
+        if (gamepad2.left_bumper) {
+            angle = 32;
+            velocity = 1200;
+        }
+
+        if (gamepad2.right_bumper) {
+            angle = 20;
+            velocity = 1400;
         }
 
         robot.getShooterSystem().setFlywheelVelocity(velocity);
         robot.getShooterSystem().setHoodAngle(angle);
-        robot.getShooterSystem().setIntakePower(gamepad2.left_trigger);
+        if (gamepad2.left_bumper) {
+            robot.getShooterSystem().setIntakePower(-1);
+        }
+        else {
+            robot.getShooterSystem().setIntakePower(gamepad2.left_trigger);
+        }
 
         telemetry.addData("Velocity: ", velocity);
         telemetry.addData("Angle: ", angle);
@@ -117,18 +131,24 @@ public class StateTeleOp extends OpMode {
             shooting = true;
 
         }
-
-        commandScheduler.loop();
-        if (!commandScheduler.isCompleted()) {
-            telemetry.addLine("Shooting!!!");
+        if (gamepad2.back) {
+            commandScheduler.emptyAll();
         }
-        telemetry.addLine(commandScheduler.getTelemetry());
 
-        //not shooting
+        if (!commandScheduler.isCompleted()) {
+            commandScheduler.loop();
+            telemetry.addLine("Shooting!!!");
+            telemetry.addLine(commandScheduler.getTelemetry());
+        }
+
         if (commandScheduler.isCompleted()) {
             shooting = false;
+        }
 
+        //not shooting
+        if (shooting == false) {
             robot.getDrivetrain().control(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+
 
             if (gamepad2.dpad_left&&!lock) {
                 lock = true;
@@ -138,7 +158,7 @@ public class StateTeleOp extends OpMode {
                 lock = true;
                 intakeSlot++;
             }
-            else {
+            else if (!gamepad2.dpad_right && !gamepad2.dpad_left){
                 lock = false;
             }
 

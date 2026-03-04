@@ -72,4 +72,8 @@ public class CommandScheduler{
         return commandQueue.isEmpty();
     }
 
+    public void emptyAll() {
+        commandQueue.clear();
+    }
+
 }
