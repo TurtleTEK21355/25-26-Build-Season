@@ -5,19 +5,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
-import org.firstinspires.ftc.teamcode.commands.LifterDownCommand;
-import org.firstinspires.ftc.teamcode.commands.LifterUpCommand;
-import org.firstinspires.ftc.teamcode.commands.NearestArtifactCommand;
-import org.firstinspires.ftc.teamcode.commands.RotateToGoalCommand;
-import org.firstinspires.ftc.teamcode.commands.SelectArtifactCommand;
-import org.firstinspires.ftc.teamcode.commands.SequentialCommand;
 import org.firstinspires.ftc.teamcode.commands.ShootAllInOrderCommand;
-import org.firstinspires.ftc.teamcode.commands.TimerCommand;
 import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
-import org.firstinspires.ftc.teamcode.lib.math.ShootMath;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
-import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
 @TeleOp(name = "TeleOp", group = "teleop")
@@ -25,16 +16,9 @@ public class StateTeleOp extends OpMode {
     private StateRobot robot;
 
     private final CommandScheduler commandScheduler = new CommandScheduler();
-    private ElapsedTime cooldownTimer = new ElapsedTime();
+    private final ElapsedTime cooldownTimer = new ElapsedTime();
     private int velocity = 1500;
     private double angle = 25;
-
-    private SequentialCommand shootCommand;
-    private SequentialCommand selectGreenArtifactCommand;
-    private SequentialCommand selectPurpleArtifactCommand;
-    private SequentialCommand selectNearestArtifactCommand;
-    private SequentialCommand rotateToGoal;
-
     private boolean lock = false;
     private int intakeSlot = 0;
     private boolean shooting = false;
@@ -47,20 +31,6 @@ public class StateTeleOp extends OpMode {
         robot = StateRobot.build(hardwareMap);
         robot.getOtosSensor().setPosition(startingPosition);
         robot.setAllianceSide(side);
-
-        shootCommand = new SequentialCommand(
-                new LifterUpCommand(robot.getShooterSystem()),
-                new LifterDownCommand(robot.getShooterSystem()));
-        selectGreenArtifactCommand = new SequentialCommand(
-                new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.GREEN),
-                new TimerCommand(600));
-        selectPurpleArtifactCommand = new SequentialCommand(
-                new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.PURPLE),
-                new TimerCommand(600));
-        selectNearestArtifactCommand = new SequentialCommand(
-                new NearestArtifactCommand(robot.getShooterSystem().getCarouselSystem()));
-        rotateToGoal = new SequentialCommand(
-                new RotateToGoalCommand(robot));
 
 // Shooting
         telemetry.addLine("🔫 G2 Right Trigger → FIRE ONE");

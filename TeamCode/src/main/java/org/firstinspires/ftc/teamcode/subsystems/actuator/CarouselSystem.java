@@ -10,9 +10,10 @@ import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensorArray;
 
 public class CarouselSystem {
 
-    private Servo carouselServo;
-    private ColorSensorArray colorSensorArray;
+    private final Servo carouselServo;
+    private final ColorSensorArray colorSensorArray;
     private ArtifactState targetArtifactState;
+    private CarouselPosition currentPosition;
 
     public CarouselSystem(Servo carouselServo, ColorSensorArray colorSensorArray) {
         this.carouselServo = carouselServo;
@@ -34,15 +35,15 @@ public class CarouselSystem {
      * @return returns -1 when not in a slot position. I don't know a better way to do this.
      */
     public CarouselPosition getSlotInShoot() {
-        double currentPosition = carouselServo.getPosition();
-        CarouselPosition slot = null;
-        for (CarouselPosition position : CarouselPosition.values()) {
-            if (currentPosition == position.getPosition()) {
-                slot = position;
-                break;
+            double currentPosition = carouselServo.getPosition();
+            CarouselPosition slot = null;
+            for (CarouselPosition position : CarouselPosition.values()) {
+                if (currentPosition == position.getPosition()) {
+                    slot = position;
+                    break;
+                }
             }
-        }
-        return slot;
+            return slot;
     }
     public void setSlotInShootFromIntakeSlot(CarouselPosition position) {
         if (position == CarouselPosition.INTAKE_SLOT_0) {
