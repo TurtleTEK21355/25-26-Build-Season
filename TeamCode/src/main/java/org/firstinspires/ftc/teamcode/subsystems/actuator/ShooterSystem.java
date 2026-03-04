@@ -107,6 +107,9 @@ public class ShooterSystem {
     public void setSlotInShoot(int slot) {
         carouselSystem.setSlotInShoot(slot);
     }
+    public void setSlotInIntake(int slot) {
+        carouselSystem.setSlotInIntake(slot);
+    }
     public void setArtifactToShoot(ArtifactState state) {
         carouselSystem.setTargetArtifactToShoot(state);
     }

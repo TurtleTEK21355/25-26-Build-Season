@@ -30,7 +30,7 @@ public class RotateToGoalCommand extends Command {
 
     @Override
     public void init() {
-        hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), otosSensor.getPosition().positionsToFCAngle(target)*(90.0/Math.PI), Constants.getPIDTolerance().h, ROTATION_PID_SPEED);
+        hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), Math.toDegrees(target.subtract(otosSensor.getPosition()).getTheta()), Constants.getPIDTolerance().h, ROTATION_PID_SPEED);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class RotateToGoalCommand extends Command {
     @Override
     public String telemetry() {
         TelemetryString string = new TelemetryString();
-        string.addData("distance to goal", otosSensor.getPosition().positionsToFCAngle(target)*(90.0/Math.PI) - otosSensor.getPosition().h);
+        string.addData("distance to goal", otosSensor.getPosition().positionsToFCAngle(target)*(180.0/Math.PI) - otosSensor.getPosition().h);
         return string.toString();
     }
 

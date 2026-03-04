@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
+import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
 import org.firstinspires.ftc.teamcode.physicaldata.ColorSensorPosition;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensorArray;
 
@@ -11,7 +12,7 @@ public class CarouselSystem {
 
     private Servo carouselServo;
     private ColorSensorArray colorSensorArray;
-    private final Double[] SLOT_POSITIONS = {0.0, (1.0)/3, (2.0)/3};
+    private final Double[] SLOT_POSITIONS = {0.0, 0.34, 0.67};
     private ArtifactState targetArtifactState;
 
     public CarouselSystem(Servo carouselServo, ColorSensorArray colorSensorArray) {
@@ -46,13 +47,27 @@ public class CarouselSystem {
     }
 
     public void setSlotInShoot(int slot) {
-        // loops the slot around so you can do cool loopy stuff
-        if (slot >2){
-            slot = 0;
-        } if (slot<0){
-            slot = 2;
+        if (slot == 0) {
+            setPosition(CarouselPosition.SHOOT_SLOT_0.getPosition());
         }
-        setPosition(SLOT_POSITIONS[slot]);
+        else if (slot == 1) {
+            setPosition(CarouselPosition.SHOOT_SLOT_1.getPosition());
+        }
+        else if (slot == 2) {
+            setPosition(CarouselPosition.SHOOT_SLOT_2.getPosition());
+        }
+    }
+
+    public void setSlotInIntake(int slot) {
+        if (slot == 0) {
+            setPosition(CarouselPosition.INTAKE_SLOT_0.getPosition());
+        }
+        else if (slot == 1) {
+            setPosition(CarouselPosition.INTAKE_SLOT_1.getPosition());
+        }
+        else if (slot == 2) {
+            setPosition(CarouselPosition.INTAKE_SLOT_2.getPosition());
+        }
     }
 
     /**

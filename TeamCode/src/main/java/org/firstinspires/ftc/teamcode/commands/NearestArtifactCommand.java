@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.commands;
 
 import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
-import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
 import org.firstinspires.ftc.teamcode.physicaldata.ColorSensorPosition;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.CarouselSystem;
 

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.commands.LifterDownCommand;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.commands.RotateToGoalCommand;
 import org.firstinspires.ftc.teamcode.commands.SelectArtifactCommand;
 import org.firstinspires.ftc.teamcode.commands.SequentialCommand;
 import org.firstinspires.ftc.teamcode.commands.ShootAllInOrderCommand;
+import org.firstinspires.ftc.teamcode.commands.TimerCommand;
 import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.math.ShootMath;
@@ -23,6 +25,9 @@ public class StateTeleOp extends OpMode {
     private StateRobot robot;
 
     private final CommandScheduler commandScheduler = new CommandScheduler();
+    private ElapsedTime cooldownTimer = new ElapsedTime();
+    private int velocity = 1500;
+    private double angle = 25;
 
     private SequentialCommand shootCommand;
     private SequentialCommand selectGreenArtifactCommand;
@@ -33,7 +38,6 @@ public class StateTeleOp extends OpMode {
     private boolean lock = false;
     private int intakeSlot = 0;
     private boolean shooting = false;
-    private ArtifactState preferredArtifactState = ArtifactState.ANY;
 
     @Override
     public void init() {
@@ -48,26 +52,22 @@ public class StateTeleOp extends OpMode {
                 new LifterUpCommand(robot.getShooterSystem()),
                 new LifterDownCommand(robot.getShooterSystem()));
         selectGreenArtifactCommand = new SequentialCommand(
-                new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.GREEN));
+                new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.GREEN),
+                new TimerCommand(600));
         selectPurpleArtifactCommand = new SequentialCommand(
-                new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.PURPLE));
+                new SelectArtifactCommand(robot.getShooterSystem().getCarouselSystem(), ArtifactState.PURPLE),
+                new TimerCommand(600));
         selectNearestArtifactCommand = new SequentialCommand(
                 new NearestArtifactCommand(robot.getShooterSystem().getCarouselSystem()));
         rotateToGoal = new SequentialCommand(
                 new RotateToGoalCommand(robot));
 
 // Shooting
-        telemetry.addLine("🔫 G2 Right Bumper → FIRE EVERYTHING (shoot sequence)");
-        telemetry.addLine("⚙️ G1 Left Trigger → Intake Power (nom nom nom)");
+        telemetry.addLine("🔫 G2 Right Trigger → FIRE ONE");
+        telemetry.addLine("⚙️ G1 Right Trigger → Intake Power");
 
 // Artifact Selection
-        telemetry.addLine("💚 G1 A → Select GREEN artifact");
-        telemetry.addLine("💜 G1 X → Select PURPLE artifact");
-        telemetry.addLine("🌈 G1 Y → Select ANY artifact");
         telemetry.addLine("👅 G2 DPAD L & R → Rotate Carousel");
-
-// Position / Sensors
-        telemetry.addLine("📡 G1 B → OTOS + Limelight Position Correction");
 
 // Driving
         telemetry.addLine("🕹️ G1 Left Stick → Drive (forward/back + strafe)");
@@ -77,49 +77,58 @@ public class StateTeleOp extends OpMode {
 
     @Override
     public void loop() {
+        if (gamepad1.back) {
+            robot.getOtosSensor().resetPosition();
+        }
         Pose2D position = robot.getOtosSensor().getPosition();
         robot.getLimelight().updateRobotOrientation(position.h); //gets proper position
+        robot.getOtosSensor().setPosition(robot.getLimelight().getCorrectedPositionFromLL(position));
 
-        //flywheel and hood
-//        ShootMath.ShootResults shootResults = ShootMath.velocityHood(robot.getOtosSensor().getRangeFromPosition(robot.getAllianceSide()));
-        robot.getShooterSystem().setFlywheelVelocity(2200);
-        robot.getShooterSystem().setHoodAngle(65);
-        robot.getShooterSystem().setIntakePower(gamepad1.left_trigger);
+        if (cooldownTimer.milliseconds() > 333) {
+            if(gamepad2.b && velocity < 1700) {
+                velocity += 10;
+                cooldownTimer.reset();
+            }
+            else if (gamepad2.a && velocity > 0) {
+                velocity -= 10;
+                cooldownTimer.reset();
+            }
+
+            if(gamepad2.y && angle < 45) {
+                angle += 0.1;
+                cooldownTimer.reset();
+            }
+            else if (gamepad2.x && angle > 25) {
+                angle -= 0.1;
+                cooldownTimer.reset();
+            }
+        }
+
+        robot.getShooterSystem().setFlywheelVelocity(velocity);
+        robot.getShooterSystem().setHoodAngle(angle);
+        robot.getShooterSystem().setIntakePower(gamepad2.left_trigger);
+
+        telemetry.addData("Velocity: ", velocity);
+        telemetry.addData("Angle: ", angle);
 
         //shooting command
-        if (gamepad2.right_bumper && !shooting) {
-
-            commandScheduler.add(rotateToGoal);
-
-            if (preferredArtifactState != ArtifactState.ANY) {
-                switch (preferredArtifactState) {
-                    case GREEN:  commandScheduler.add(selectGreenArtifactCommand);  break;
-                    case PURPLE: commandScheduler.add(selectPurpleArtifactCommand); break;
-                }
-                commandScheduler.add(shootCommand);
-            }
-            else commandScheduler.add(new ShootAllInOrderCommand(robot.getShooterSystem()));
-
+        if (gamepad2.right_trigger > 0.1 && !shooting) {
+            commandScheduler.add(new ShootAllInOrderCommand(robot.getShooterSystem()));
             shooting = true;
 
         }
 
         commandScheduler.loop();
+        if (!commandScheduler.isCompleted()) {
+            telemetry.addLine("Shooting!!!");
+        }
         telemetry.addLine(commandScheduler.getTelemetry());
 
         //not shooting
         if (commandScheduler.isCompleted()) {
             shooting = false;
 
-            if (gamepad1.b) {
-                robot.getOtosSensor().setPosition(robot.getLimelight().getCorrectedPositionFromLL(position));
-            }
-
-            robot.getDrivetrain().fcControl(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, robot.getAllianceSide(), position);
-
-            if(gamepad1.a) preferredArtifactState = ArtifactState.GREEN;
-            else if(gamepad1.x) preferredArtifactState = ArtifactState.PURPLE;
-            else if(gamepad1.y) preferredArtifactState = ArtifactState.ANY;
+            robot.getDrivetrain().control(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
             if (gamepad2.dpad_left&&!lock) {
                 lock = true;
@@ -134,13 +143,13 @@ public class StateTeleOp extends OpMode {
             }
 
             if (intakeSlot < 0) {
-                intakeSlot = 2;
-            }
-            if (intakeSlot > 2) {
                 intakeSlot = 0;
             }
+            if (intakeSlot > 2) {
+                intakeSlot = 2;
+            }
 
-            robot.getShooterSystem().setSlotInShoot(intakeSlot);
+            robot.getShooterSystem().setSlotInIntake(intakeSlot);
 
         }
 

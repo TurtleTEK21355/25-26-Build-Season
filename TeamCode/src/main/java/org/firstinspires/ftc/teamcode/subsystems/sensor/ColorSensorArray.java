@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.subsystems.sensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
-import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
 import org.firstinspires.ftc.teamcode.physicaldata.ColorSensorPosition;
 
 import java.util.HashMap;
