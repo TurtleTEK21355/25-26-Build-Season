@@ -7,6 +7,14 @@ import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
 
 @Configurable
 public class Constants {
+    public static double shootSlot0 = 0.02;
+    public static double shootSlot1 = 0.34;
+    public static double shootSlot2 = 0.67;
+
+    public static double intakeSlot0 = 0.17;
+    public static double intakeSlot1 = 0.5;
+    public static double intakeSlot2 = 0.83;
+
     public static double angularScalar = 0.997;
 
     public static double otosPhysicalOffsetInchesX = -1.57;

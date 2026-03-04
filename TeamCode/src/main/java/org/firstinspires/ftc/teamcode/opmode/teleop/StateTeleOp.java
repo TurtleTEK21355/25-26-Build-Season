@@ -135,11 +135,11 @@ public class StateTeleOp extends OpMode {
             commandScheduler.emptyAll();
         }
 
+        commandScheduler.loop();
         if (!commandScheduler.isCompleted()) {
-            commandScheduler.loop();
             telemetry.addLine("Shooting!!!");
-            telemetry.addLine(commandScheduler.getTelemetry());
         }
+        telemetry.addLine(commandScheduler.getTelemetry());
 
         //not shooting
         if (commandScheduler.isCompleted()) {
@@ -170,7 +170,6 @@ public class StateTeleOp extends OpMode {
             robot.getShooterSystem().setSlotInIntake(intakeSlot);
 
         }
-
         telemetry.addData("Position", position);
         telemetry.update();
     }

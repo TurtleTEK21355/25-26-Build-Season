@@ -44,6 +44,17 @@ public class CarouselSystem {
         }
         return slot;
     }
+    public void setSlotInShootFromIntakeSlot(CarouselPosition position) {
+        if (position == CarouselPosition.INTAKE_SLOT_0) {
+            setPosition(CarouselPosition.SHOOT_SLOT_0.getPosition());
+        }
+        else if (position == CarouselPosition.INTAKE_SLOT_1) {
+            setPosition(CarouselPosition.SHOOT_SLOT_1.getPosition());
+        }
+        else if (position == CarouselPosition.INTAKE_SLOT_2) {
+            setPosition(CarouselPosition.SHOOT_SLOT_2.getPosition());
+        }
+    }
 
     public void setSlotInShoot(int slot) {
         if (slot == 0) {
