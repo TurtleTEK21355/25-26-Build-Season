@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.commands.NextShootCommand;
 import org.firstinspires.ftc.teamcode.commands.PreviousShootCommand;
@@ -62,11 +63,13 @@ public class StateTeleOp extends OpMode {
     public void loop() {
         if (gamepad1.back) {
             robot.getOtosSensor().resetPosition();
+            robot.getIMU().resetYaw();
         }
         Pose2D position = robot.getOtosSensor().getPosition();
         robot.getLimelight().updateRobotOrientation(position.h); //gets proper position
         robot.getOtosSensor().setPosition(robot.getLimelight().getCorrectedPositionFromLL(position));
         telemetry.addData("Position", position);
+        telemetry.addData("IMU Yaw: ", robot.getIMU().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
 
         velocity -= (int) (gamepad2.left_stick_y*delta.seconds()*300); //inverted bc of gamepad
         angle -= gamepad2.right_stick_y*delta.seconds()*3;
