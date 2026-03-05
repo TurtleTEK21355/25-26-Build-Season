@@ -3,15 +3,15 @@ package org.firstinspires.ftc.teamcode.lib.command;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class CommandScheduler{
-
-    private Queue<Command> commandQueue = new LinkedList<>();
+    private final Queue<Command> commandQueue = new LinkedList<>();
     private String telemetryString = "";
-    private HashMap<String, Object> dataMap = new HashMap<>();
+    private final HashMap<String, Object> dataMap = new HashMap<>();
     private boolean initLock = false;
 
     public CommandScheduler(Command... commands) {
@@ -24,7 +24,7 @@ public class CommandScheduler{
     public void add(Command command) {
         commandQueue.add(command);
     }
-    public void addAll(CommandList commands) {
+    public void addAll(Collection<Command> commands) {
         commandQueue.addAll(commands);
     }
 
@@ -74,6 +74,10 @@ public class CommandScheduler{
 
     public void emptyAll() {
         commandQueue.clear();
+    }
+
+    public int getQueueAmount() {
+        return commandQueue.size();
     }
 
 }

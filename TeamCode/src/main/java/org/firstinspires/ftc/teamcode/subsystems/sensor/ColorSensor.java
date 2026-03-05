@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems.sensor;
 
 import android.graphics.Color;
 
+import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 import org.firstinspires.ftc.teamcode.physicaldata.HSV;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 
+@Configurable
 public class ColorSensor {
     /*
         Put the following into opMode to initialize a color sensor (replace sensor_color with name for sensor in config, and replace colorSensor with recognizable name):
@@ -20,6 +22,11 @@ public class ColorSensor {
      */
     String colorSensorName;
     NormalizedColorSensor colorSensor;
+
+    public static double redColorForGreenMax = 0.4;
+    public static double blueColorForGreenMin = 0.6;
+    public static double redColorForPurpleMin = 0.4;
+    public static double greenColorForPurpleMax = 0.6;
 
     /**
      *
@@ -100,31 +107,29 @@ public class ColorSensor {
         }
         return distance;
     }
-    
+
     public ArtifactState getArtifactState(boolean telemetry) {
         NormalizedRGBA colors = colorSensor.getNormalizedColors();
         double red = colors.red;
         double green = colors.green;
         double blue = colors.blue;
-        double greatest = Math.max(Math.max(red, green),blue);
-        red /= greatest;
-        green /= greatest;
-        blue /= greatest;
-        if (green == 1 && blue > 0.6 && red < 0.4) {
-            if (telemetry) {
-                TelemetryPasser.telemetry.addData(colorSensorName + "'s artifact state: ", "Green");
-            }
-            return ArtifactState.GREEN;
-        } else if (red > 0.4 && blue == 1 && green < 0.6) {
-            if (telemetry) {
-                TelemetryPasser.telemetry.addData(colorSensorName + "'s artifact state: ", "Purple");
-            }
-            return ArtifactState.PURPLE;
-        } else {
-            if (telemetry) {
-                TelemetryPasser.telemetry.addData(colorSensorName + "'s artifact state: ", "Empty");
-            }
-            return ArtifactState.EMPTY;
+        double max = Math.max(red, Math.max(green, blue));
+
+        red /= max;
+        green /= max;
+        blue /= max;
+
+        boolean blueMax = blue >= green && blue >= red;
+        boolean greenMax = green >= blue && green >= red;
+
+        ArtifactState result = ArtifactState.EMPTY;
+        if (greenMax && blue > blueColorForGreenMin && red < redColorForGreenMax) {
+            result = ArtifactState.GREEN;
         }
+        else if (green < greenColorForPurpleMax && blueMax && red > redColorForPurpleMin) {
+            result = ArtifactState.PURPLE;
+        }
+        return result;
     }
+
 }

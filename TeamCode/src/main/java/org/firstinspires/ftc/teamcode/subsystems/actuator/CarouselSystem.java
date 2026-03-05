@@ -37,7 +37,11 @@ public class CarouselSystem {
         setServoPosition(position.getServoPosition());
     }
 
-     public void goToNextShootPosition(){
+     public void goToNextShootPosition() {
+        setPosition(CarouselPosition.nextShootPosition(currentPosition));
+     }
+
+     public void goToPreviousShootPosition() {
         setPosition(CarouselPosition.nextShootPosition(currentPosition));
      }
 

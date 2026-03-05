@@ -7,6 +7,8 @@ import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
 
 @Configurable
 public class Constants {
+    public static int carouselMoveOneTimer = 1000;
+
     public static double shootSlot0 = 0.02;
     public static double shootSlot1 = 0.34;
     public static double shootSlot2 = 0.67;

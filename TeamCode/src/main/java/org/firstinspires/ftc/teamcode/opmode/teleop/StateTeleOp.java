@@ -5,7 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
-import org.firstinspires.ftc.teamcode.commands.ShootAllInOrderCommand;
+import org.firstinspires.ftc.teamcode.commands.NextShootCommand;
+import org.firstinspires.ftc.teamcode.commands.PreviousShootCommand;
 import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
@@ -17,11 +18,11 @@ public class StateTeleOp extends OpMode {
     private StateRobot robot;
 
     private final CommandScheduler commandScheduler = new CommandScheduler();
-    private final ElapsedTime cooldownTimer = new ElapsedTime();
+    private final ElapsedTime delta = new ElapsedTime();
     private int velocity = 1500;
     private double angle = 25;
-    private boolean lock = false;
-    private boolean shooting = false;
+    private CarouselPosition firstShot = CarouselPosition.UNSET;
+    private int shotCount = 0;
 
     @Override
     public void init() {
@@ -32,17 +33,19 @@ public class StateTeleOp extends OpMode {
         robot.getOtosSensor().setPosition(startingPosition);
         robot.setAllianceSide(side);
 
-// Shooting
-        telemetry.addLine("🔫 G2 Right Trigger → FIRE ONE");
-        telemetry.addLine("⚙️ G1 Right Trigger → Intake Power");
-
-// Artifact Selection
-        telemetry.addLine("👅 G2 DPAD L & R → Rotate Carousel");
-
-// Driving
-        telemetry.addLine("🕹️ G1 Left Stick → Drive (forward/back + strafe)");
-        telemetry.addLine("🔄 G1 Right Stick X → Rotate");
-
+        telemetry.addLine("G1 Left Stick → Drive & Strafe");
+        telemetry.addLine("G1 Right Stick X → Rotate");
+        telemetry.addLine("G1 Back Button → Reset Position");
+        telemetry.addLine();
+        telemetry.addLine("G2 Left Trigger → Intake Power");
+        telemetry.addLine("G2 DPAD L & R → Rotate Carousel");
+        telemetry.addLine();
+        telemetry.addLine("G2 A → Select Close Shoot Preset");
+        telemetry.addLine("G2 B → Select Far Shoot Preset");
+        telemetry.addLine("G2 Left Stick Y → Adjust Velocity");
+        telemetry.addLine("G2 Left Stick X → Adjust Angle");
+        telemetry.addLine("G2 Right Trigger → FIRE");
+        telemetry.addLine("G2 Back + Start → Cancel Firing");
     }
 
     @Override
@@ -53,80 +56,75 @@ public class StateTeleOp extends OpMode {
         Pose2D position = robot.getOtosSensor().getPosition();
         robot.getLimelight().updateRobotOrientation(position.h); //gets proper position
         robot.getOtosSensor().setPosition(robot.getLimelight().getCorrectedPositionFromLL(position));
+        telemetry.addData("Position", position);
 
-        if (cooldownTimer.milliseconds() > 333) {
-            if(gamepad2.b && velocity < 1700) {
-                velocity += 10;
-                cooldownTimer.reset();
-            }
-            else if (gamepad2.a && velocity > 0) {
-                velocity -= 10;
-                cooldownTimer.reset();
-            }
+        velocity -= (int) (gamepad2.left_stick_y*delta.seconds()*300); //inverted bc of gamepad
+        angle -= gamepad2.right_stick_y*delta.seconds()*3;
+        delta.reset(); //I hope this works I don't know why it wouldn't tho
 
-            if(gamepad2.y) {
-                angle += 1;
-                cooldownTimer.reset();
-            }
-            else if (gamepad2.x) {
-                angle -= 1;
-                cooldownTimer.reset();
-            }
-        }
-        if (gamepad2.left_bumper) {
+        if (gamepad2.a) {
             angle = 32;
             velocity = 1200;
         }
-
-        if (gamepad2.right_bumper) {
+        if (gamepad2.b) {
             angle = 20;
             velocity = 1400;
         }
 
         robot.getShooterSystem().setFlywheelVelocity(velocity);
         robot.getShooterSystem().setHoodAngle(angle);
-        if (gamepad2.right_bumper) {
-            robot.getShooterSystem().setIntakePower(-1);
-        }
-        else {
-            robot.getShooterSystem().setIntakePower(gamepad2.left_trigger);
-        }
-
         telemetry.addData("Velocity: ", velocity);
         telemetry.addData("Angle: ", angle);
 
-        //shooting command
-        if (gamepad2.right_trigger > 0.1 && !shooting) {
-            commandScheduler.add(new ShootAllInOrderCommand(robot.getShooterSystem()));
-            shooting = true;
+        robot.getShooterSystem().setIntakePower(gamepad2.right_trigger - gamepad2.left_trigger);
 
+        robot.getDrivetrain().control(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+
+        if (gamepad2.rightBumperWasPressed()) {
+            if (commandScheduler.isCompleted()) {
+                firstShot = robot.getShooterSystem().getCarouselPosition();
+            }
+
+            if (firstShot == CarouselPosition.INTAKE_SLOT_0 && shotCount <= 2) {
+                commandScheduler.add(new NextShootCommand(robot.getShooterSystem()));
+                shotCount++;
+            }
+            else if (firstShot == CarouselPosition.INTAKE_SLOT_1 && shotCount <=1) {
+                commandScheduler.add(new PreviousShootCommand(robot.getShooterSystem()));
+                shotCount++;
+            }
+            else if (firstShot == CarouselPosition.INTAKE_SLOT_2 && shotCount <= 2){
+                commandScheduler.add(new PreviousShootCommand(robot.getShooterSystem()));
+                shotCount++;
+            }
         }
-        if (gamepad2.back) {
+
+        if (gamepad2.back && gamepad2.start) {
             commandScheduler.emptyAll();
         }
 
         commandScheduler.loop();
         if (!commandScheduler.isCompleted()) {
             telemetry.addLine("Shooting!!!");
+            telemetry.addData("Shots Queued", shotCount);
         }
         telemetry.addLine(commandScheduler.getTelemetry());
 
-        //not shooting
-        if (commandScheduler.isCompleted()) {
-            shooting = false;
 
-            robot.getDrivetrain().control(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
-
+        if (commandScheduler.isCompleted()) { //these things only run while the robot is not shooting
+            if (shotCount != 0) {
+                robot.getShooterSystem().getCarouselSystem().goToNextIntakePosition();
+            }
+            shotCount = 0;
 
             if (gamepad2.dpadLeftWasPressed()) {
                 robot.getShooterSystem().getCarouselSystem().goToPreviousIntakePosition();
             }
-            else if (gamepad1.dpadRightWasPressed()) {
+            else if (gamepad2.dpadRightWasPressed()) {
                 robot.getShooterSystem().getCarouselSystem().goToNextIntakePosition();
             }
-
         }
-        telemetry.addData("Position", position);
+
         telemetry.update();
     }
 

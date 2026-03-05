@@ -51,6 +51,23 @@ public enum CarouselPosition {
         }
     }
 
+    public static CarouselPosition previousShootPosition(CarouselPosition position) {
+        switch(position) {
+            case UNSET:
+            case SHOOT_SLOT_0:
+            case SHOOT_SLOT_1:
+            case INTAKE_SLOT_0:
+                return SHOOT_SLOT_0;
+            case SHOOT_SLOT_2:
+            case INTAKE_SLOT_1:
+                return SHOOT_SLOT_1;
+            case INTAKE_SLOT_2:
+                return SHOOT_SLOT_2;
+            default:
+                return UNSET;
+        }
+    }
+
     public static CarouselPosition nextIntakePosition(CarouselPosition position) {
         switch(position) {
             case UNSET:
