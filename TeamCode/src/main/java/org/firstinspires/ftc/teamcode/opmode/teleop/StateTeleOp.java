@@ -53,7 +53,8 @@ public class StateTeleOp extends OpMode {
         telemetry.addLine("G2 Left Stick Y → Adjust Velocity");
         telemetry.addLine("G2 Left Stick X → Adjust Angle");
         telemetry.addLine();
-        telemetry.addLine("G2 Right Trigger → FIRE");
+        telemetry.addLine("G2 Right Bumper → FIRE");
+        telemetry.addLine("G2 Left Bumper → Fire 3 In Motif");
         telemetry.addLine("G2 Back + Start → Cancel Firing");
     }
 
