@@ -30,6 +30,6 @@ public enum Motif {
                 return motif;
             }
         }
-        return null;
+        return NONE;
     }
 }

@@ -58,8 +58,11 @@ public class Limelight {
     public Motif getMotif(){
         LLResult result = limelight.getLatestResult();
         for (LLResultTypes.FiducialResult llData : result.getFiducialResults()) {
-            return Motif.fromID(llData.getFiducialId());
+            Motif motif = Motif.fromID(llData.getFiducialId());
+            if (motif != Motif.NONE) {
+                return motif;
+            }
         }
-        return null;
+        return Motif.NONE;
     }
 }

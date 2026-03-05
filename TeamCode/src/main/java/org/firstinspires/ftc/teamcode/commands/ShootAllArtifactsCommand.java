@@ -13,7 +13,7 @@ public class ShootAllArtifactsCommand extends SequentialCommand {
     public ShootAllArtifactsCommand(ShooterSystem shooterSystem, Motif motif) {
         commandScheduler.add(new SetCarouselPositionCommand(shooterSystem.getCarouselSystem(), CarouselPosition.nextShootPosition(shooterSystem.getCarouselPosition())));
         commandScheduler.add(new TimerCommand(Constants.carouselMoveOneTimer));
-        if (motif == null) {
+        if (motif == Motif.NONE) {
             for (int i = 0; i < 3; i++) {
                 commandScheduler.add(new NearestArtifactCommand(shooterSystem.getCarouselSystem()));
                 commandScheduler.add(new LifterUpCommand(shooterSystem));

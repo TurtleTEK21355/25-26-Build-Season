@@ -30,7 +30,7 @@ public class StateTeleOp extends OpMode {
     private CarouselPosition firstShot = CarouselPosition.UNSET;
     private int shotCount = 0;
 
-    private Motif motif;
+    private Motif motif = Motif.NONE;
 
     @Override
     public void init() {
@@ -84,15 +84,14 @@ public class StateTeleOp extends OpMode {
             velocity = 1400;
         }
 
-        Motif motif = robot.getLimelight().getMotif();
-        if (motif != Motif.NONE) {
-            this.motif = motif;
+        if (motif == Motif.NONE) {
+            motif = robot.getLimelight().getMotif();
         }
         telemetry.addData("Motif", motif.toString());
 
         robot.getShooterSystem().setFlywheelVelocity(velocity);
         robot.getShooterSystem().setHoodAngle(angle);
-        telemetry.addData("Velocity", "%.2f %.2f", velocity, robot.getShooterSystem().getFlywheelVelocity());
+        telemetry.addData("Velocity", "%d %.2f", velocity, robot.getShooterSystem().getFlywheelVelocity());
         telemetry.addData("Angle", angle);
         telemetry.addData("Lifter Position", robot.getShooterSystem().getArtifactLift().getLiftPosition());
         telemetry.addData("Carousel Position", robot.getShooterSystem().getCarouselPosition().name());

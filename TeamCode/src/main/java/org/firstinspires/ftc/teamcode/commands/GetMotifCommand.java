@@ -32,7 +32,7 @@ public class GetMotifCommand extends Command {
 
     @Override
     public boolean isCompleted() {
-        return motif != null;
+        return motif != Motif.NONE;
     }
 
 }
