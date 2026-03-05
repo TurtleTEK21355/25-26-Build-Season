@@ -15,7 +15,7 @@ public enum HardwareName {
     RIGHT_COLOR_SENSOR("color_right"),
     ARTIFACT_PUSHER_MOTOR("pusher"),
     HOOD_SERVO("hood"),
-    PARTNER_PARK_MOTOR("partner_park");
+    IMU("imu");
 
     private final String name;
 

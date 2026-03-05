@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.hardware.limelightvision.Limelight3A;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -30,28 +32,34 @@ public class StateRobot {
     private final double ROTATION_PID_SPEED = 0.4;
     private Drivetrain drivetrain;
     private ShooterSystem shooterSystem;
-    private PartnerPark partnerPark;
     private OTOSSensor otosSensor;
     private Limelight limelight;
+    private IMU imu;
     private AllianceSide side;
     public static final String POSITION_BLACKBOARD_KEY = "pos";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
     public static final String MOTIF_BLACKBOARD_KEY = "motif";
     public static final double MAXHOODPOSITION = 0.5;
 
-    public StateRobot(Drivetrain drivetrain, ShooterSystem shooterSystem, PartnerPark partnerPark, OTOSSensor otosSensor, Limelight3A limelight) {
+    public StateRobot(Drivetrain drivetrain, ShooterSystem shooterSystem, OTOSSensor otosSensor, Limelight3A limelight, IMU imu) {
         this.drivetrain = drivetrain;
         this.shooterSystem = shooterSystem;
-        this.partnerPark = partnerPark;
         this.otosSensor = otosSensor;
         this.limelight = new Limelight(limelight);
+        this.imu = imu;
         this.side = AllianceSide.BLUE;
+        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.RIGHT;
+        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD;
+        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
+        imu.initialize(new IMU.Parameters(orientationOnRobot));
+        imu.resetYaw();
         otosSensor.configureOtos(Constants.getPhysicalOffset(), DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1); //default
     }
 
     public Drivetrain getDrivetrain() {
         return drivetrain;
     }
+    public IMU getIMU(){return imu;}
 
     public OTOSSensor getOtosSensor() {
         return otosSensor;
@@ -59,10 +67,6 @@ public class StateRobot {
 
     public ShooterSystem getShooterSystem() {
         return shooterSystem;
-    }
-
-    public PartnerPark getPartnerPark() {
-        return partnerPark;
     }
 
     public Limelight getLimelight() {
@@ -114,9 +118,8 @@ public class StateRobot {
                         ),
                         new Intake(hardwareMap.get(DcMotor.class, HardwareName.INTAKE_MOTOR.getName()))
                 ),
-                new PartnerPark(hardwareMap.get(DcMotor.class, HardwareName.PARTNER_PARK_MOTOR.getName())),
                 new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, HardwareName.ODOMETRY_SENSOR.getName())),
-                hardwareMap.get(Limelight3A.class, HardwareName.LIMELIGHT.getName())
-        );
+                hardwareMap.get(Limelight3A.class, HardwareName.LIMELIGHT.getName()),
+                hardwareMap.get(IMU.class, HardwareName.IMU.getName()));
     }
 }
