@@ -52,7 +52,7 @@ public class Limelight {
     }
 
     /**
-     * CAN RETURN NULL IF NO MOTIF IS DETECTED
+     * Returns NONE when no tag is detected
      * @return
      */
     public Motif getMotif(){

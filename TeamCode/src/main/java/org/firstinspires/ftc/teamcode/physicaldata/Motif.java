@@ -3,7 +3,8 @@ package org.firstinspires.ftc.teamcode.physicaldata;
 public enum Motif {
     GPP(21, new ArtifactState[]{ArtifactState.GREEN, ArtifactState.PURPLE, ArtifactState.PURPLE}),
     PGP(22, new ArtifactState[]{ArtifactState.PURPLE, ArtifactState.GREEN, ArtifactState.PURPLE}),
-    PPG(23, new ArtifactState[]{ArtifactState.PURPLE, ArtifactState.PURPLE, ArtifactState.GREEN});
+    PPG(23, new ArtifactState[]{ArtifactState.PURPLE, ArtifactState.PURPLE, ArtifactState.GREEN}),
+    NONE(0, null);
 
     private final int motifID;
 

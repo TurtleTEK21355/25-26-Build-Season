@@ -81,10 +81,11 @@ public class StateTeleOp extends OpMode {
             velocity = 1400;
         }
 
-        motif = robot.getLimelight().getMotif();
-        if (motif != null) {
-            telemetry.addData("Motif", motif);
+        Motif motif = robot.getLimelight().getMotif();
+        if (motif != Motif.NONE) {
+            this.motif = motif;
         }
+        telemetry.addData("Motif", motif.toString());
 
         robot.getShooterSystem().setFlywheelVelocity(velocity);
         robot.getShooterSystem().setHoodAngle(angle);
