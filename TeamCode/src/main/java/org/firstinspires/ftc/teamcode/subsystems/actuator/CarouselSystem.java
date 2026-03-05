@@ -63,7 +63,8 @@ public class CarouselSystem {
         if (currentPosition == CarouselPosition.INTAKE_SLOT_0 ||
                 currentPosition == CarouselPosition.INTAKE_SLOT_1 ||
                 currentPosition == CarouselPosition.INTAKE_SLOT_2) {
-            setPosition(CarouselPosition.SHOOT_SLOT_0);
+            setPosition(CarouselPosition.nextShootPosition(currentPosition));
+            return;
         }
 
         boolean ballInShootSlot;
