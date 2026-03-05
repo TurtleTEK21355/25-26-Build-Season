@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.subsystems.actuator.ShooterSystem;
 
 public class NextShootCommand extends Command {
     ShooterSystem shooterSystem;
-    CommandScheduler commandScheduler;
+    CommandScheduler commandScheduler = new CommandScheduler();
 
     public NextShootCommand(ShooterSystem shooterSystem) {
         this.shooterSystem = shooterSystem;
