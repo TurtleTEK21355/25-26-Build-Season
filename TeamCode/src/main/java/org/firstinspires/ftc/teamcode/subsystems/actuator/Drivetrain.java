@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems.actuator;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
 
@@ -10,20 +11,25 @@ import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
+import org.firstinspires.ftc.teamcode.physicaldata.DrivetrainMode;
 
 public class Drivetrain {
-    private DcMotor frontLeftMotor;
-    private DcMotor frontRightMotor;
+    private DcMotorEx frontLeftMotor;
+    private DcMotorEx frontRightMotor;
     private DcMotor backLeftMotor;
     private DcMotor backRightMotor;
 
     private final double ROTATION_PID_SPEED = 0.75;
 
-    public Drivetrain(DcMotor frontLeft,DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
+    public Drivetrain(DcMotorEx frontLeft, DcMotorEx frontRight, DcMotor backLeft, DcMotor backRight){
         this.frontLeftMotor = frontLeft;
         this.frontRightMotor = frontRight;
         this.backLeftMotor = backLeft;
         this.backRightMotor = backRight;
+        this.frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         this.frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -55,7 +61,67 @@ public class Drivetrain {
 
         control(correctedY, correctedX, h);
     }
-
+    public void resetEncoders(){
+        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+    public void setTargetMode(DrivetrainMode drivetrainMode){
+        switch (drivetrainMode) {
+            case TARGET:
+                frontLeftMotor.setTargetPosition(0);
+                frontRightMotor.setTargetPosition(0);
+                frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                break;
+            case FREE:
+                frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                break;
+        }
+    }
+    public void setTargetMode(DrivetrainMode drivetrainMode, int position){
+        switch (drivetrainMode) {
+            case TARGET:
+                frontLeftMotor.setTargetPosition(position);
+                frontRightMotor.setTargetPosition(position);
+                frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                frontLeftMotor.setPower(0.4);
+                frontRightMotor.setPower(0.4);
+                frontRightMotor.setTargetPosition(position);
+                break;
+            case FREE:
+                frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                break;
+        }
+    }
+    public void setTargetMode(DrivetrainMode drivetrainMode, int position, double speed){
+        switch (drivetrainMode) {
+            case TARGET:
+                frontLeftMotor.setTargetPosition(position);
+                frontRightMotor.setTargetPosition(position);
+                frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                frontLeftMotor.setPower(speed);
+                frontRightMotor.setPower(speed);
+                frontRightMotor.setTargetPosition(position);
+                break;
+            case FREE:
+                frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                break;
+        }
+    }
+    public boolean atPosition(){
+        if (frontRightMotor.getMode() == DcMotor.RunMode.RUN_TO_POSITION && frontLeftMotor.getMode() == DcMotor.RunMode.RUN_TO_POSITION) {
+            return frontRightMotor.getCurrentPosition()+40 > frontRightMotor.getTargetPosition() && frontRightMotor.getCurrentPosition()-40 < frontRightMotor.getTargetPosition();
+        } else {
+            return true;
+        }
+    }
     public void fcControl(double y, double x, double h, AllianceSide side, Pose2D position) {
         //this is a little confusing, but this is basically a null checker for side and position
         //because of the way that the stateRobot class works, if side is null then forward will be
