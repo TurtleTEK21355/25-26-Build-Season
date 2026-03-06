@@ -3,8 +3,10 @@ package org.firstinspires.ftc.teamcode.opmode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.commands.NextShootCommand;
 import org.firstinspires.ftc.teamcode.commands.PreviousShootCommand;
@@ -24,12 +26,15 @@ public class StateTeleOp extends OpMode {
     private StateRobot robot;
 
     private final CommandScheduler commandScheduler = new CommandScheduler();
+
     private final ElapsedTime delta = new ElapsedTime();
-    private int velocity = 1500;
-    private double angle = 25;
+    private int velocity = Constants.shootCloseVelocity;
+    private double angle = Constants.shootCloseAngle;
+
     private CarouselPosition firstShot = CarouselPosition.UNSET;
     private int shotCount = 0;
 
+    private boolean artifactStateShootEnabled = false;
     private Motif motif = Motif.NONE;
 
     @Override
@@ -71,39 +76,55 @@ public class StateTeleOp extends OpMode {
         telemetry.addData("Position", position);
         telemetry.addData("IMU Yaw: ", robot.getIMU().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
 
-        velocity -= (int) (gamepad2.left_stick_y*delta.seconds()*300); //inverted bc of gamepad
+        velocity -= (int) (gamepad2.left_stick_y*delta.seconds()*150); //inverted bc of gamepad
         angle -= gamepad2.right_stick_y*delta.seconds()*3;
-        delta.reset(); //I hope this works I don't know why it wouldn't tho
+        delta.reset();
 
         if (gamepad2.a) {
-            angle = 32;
-            velocity = 1200;
+            angle = Constants.shootCloseAngle;
+            velocity = Constants.shootCloseVelocity;
         }
         if (gamepad2.b) {
-            angle = 20;
-            velocity = 1400;
+            angle = Constants.shootFarAngle;
+            velocity = Constants.shootFarVelocity;
         }
 
-        if (motif == Motif.NONE) {
-            motif = robot.getLimelight().getMotif();
-        }
-        telemetry.addData("Motif", motif.toString());
-
+        velocity = Range.clip(velocity, 0, 1500);
+        angle = Range.clip(angle, 25, 40);
         robot.getShooterSystem().setFlywheelVelocity(velocity);
         robot.getShooterSystem().setHoodAngle(angle);
-        telemetry.addData("Velocity", "%d %.2f", velocity, robot.getShooterSystem().getFlywheelVelocity());
-        telemetry.addData("Angle", angle);
+        telemetry.addData("Velocity (Expected/Actual)", "%d/%.2f", velocity, robot.getShooterSystem().getFlywheelVelocity());
+        telemetry.addData("Angle", "%.2f", angle);
         telemetry.addData("Lifter Position", robot.getShooterSystem().getArtifactLift().getLiftPosition());
         telemetry.addData("Carousel Position", robot.getShooterSystem().getCarouselPosition().name());
 
         robot.getShooterSystem().setIntakePower(gamepad2.right_trigger - gamepad2.left_trigger);
 
-        robot.getDrivetrain().control(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        double speedFactor = 1-Range.clip(gamepad1.right_trigger+gamepad1.left_trigger, 0, 0.5);
+        robot.getDrivetrain().fcControl(-gamepad1.left_stick_y*speedFactor, gamepad1.left_stick_x*speedFactor, gamepad1.right_stick_x*speedFactor, robot.getIMU().getRobotYawPitchRollAngles().getYaw());
 
-        if (gamepad2.leftBumperWasPressed()) {
-            if (commandScheduler.isCompleted()) {
-                commandScheduler.add(new ShootAllArtifactsCommand(robot.getShooterSystem(), motif));
-                shotCount = 3;
+        if (artifactStateShootEnabled) {
+            //motif override for testing
+            if (gamepad1.dpad_left) {
+                motif = Motif.GPP;
+            }
+            else if (gamepad1.dpad_down) {
+                motif = Motif.PGP;
+            }
+            else if (gamepad1.dpad_right) {
+                motif = Motif.PPG;
+            }
+            //motif from apriltag
+            if (motif == Motif.NONE) {
+                motif = robot.getLimelight().getMotif();
+            }
+            telemetry.addData("Motif", motif.toString());
+
+            if (gamepad2.leftBumperWasPressed()) {
+                if (commandScheduler.isCompleted()) {
+                    commandScheduler.add(new ShootAllArtifactsCommand(robot.getShooterSystem(), motif));
+                    shotCount = 3;
+                }
             }
         }
 

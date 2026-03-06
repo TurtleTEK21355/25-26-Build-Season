@@ -32,6 +32,18 @@ public class Drivetrain {
 
     }
 
+    public void fcControl(double y, double x, double h, double heading) {
+        double r = Math.hypot(y, x);
+        double theta = Math.atan2(y, x);
+
+        double correctedTheta = theta - Math.toRadians(heading);
+
+        double correctedY = r * Math.sin(correctedTheta);
+        double correctedX = r * Math.cos(correctedTheta);
+
+        control(correctedY, correctedX, h);
+    }
+
     public void fcControl(double y, double x, double h, Pose2D position) {
         double r = Math.hypot(y, x);
         double theta = Math.atan2(y, x);

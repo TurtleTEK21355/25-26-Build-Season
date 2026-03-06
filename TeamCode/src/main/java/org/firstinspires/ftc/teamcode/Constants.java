@@ -7,6 +7,15 @@ import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
 
 @Configurable
 public class Constants {
+    public static int artifactLiftUpperTolerance = 20;
+    public static int artifactLiftLowerTolerance = 33;
+
+    public static int shootCloseVelocity = 1100;
+    public static double shootCloseAngle = 40;
+
+    public static int shootFarVelocity = 1400;
+    public static double shootFarAngle = 20;
+
     public static int carouselMoveOneTimer = 1000;
 
     public static double shootSlot0 = 0.21;

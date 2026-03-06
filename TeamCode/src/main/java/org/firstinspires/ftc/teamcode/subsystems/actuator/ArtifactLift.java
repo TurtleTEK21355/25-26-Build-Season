@@ -4,17 +4,19 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.teamcode.Constants;
+
 public class ArtifactLift {
     private DcMotorEx lift;
     private TouchSensor topLimit;
     private TouchSensor bottomLimit;
-    private final int TOP_LIMIT = 500;
+    private final int TOP_LIMIT = 550;
     private final int BOTTOM_LIMIT = 0;
 
     public ArtifactLift(DcMotorEx lift) {
         this.lift = lift;
         this.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.lift.setTargetPositionTolerance(10);
+        this.lift.setTargetPositionTolerance(Constants.artifactLiftUpperTolerance);
         this.lift.setTargetPosition(0);
         this.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -38,13 +40,13 @@ public class ArtifactLift {
         setLiftPosition(TOP_LIMIT);
     }
     public boolean getLiftUp(){
-        return getLiftPosition() >= TOP_LIMIT - 10;
+        return getLiftPosition() >= TOP_LIMIT - Constants.artifactLiftUpperTolerance;
     }
     public void setLiftDownNoLimit() {
         setLiftPosition(BOTTOM_LIMIT);
     }
     public boolean getLiftDown() {
-        return getLiftPosition() <= BOTTOM_LIMIT + 10;
+        return getLiftPosition() <= BOTTOM_LIMIT + Constants.artifactLiftLowerTolerance;
     }
 
     public void setLiftUp(){

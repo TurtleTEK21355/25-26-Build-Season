@@ -12,7 +12,7 @@ public class CarouselSystem {
 
     private final Servo carouselServo;
     private final ColorSensorArray colorSensorArray;
-    private ArtifactState targetArtifactState;
+    private ArtifactState targetArtifactState = ArtifactState.EMPTY;
     private CarouselPosition currentPosition = CarouselPosition.UNSET;
 
     public CarouselSystem(Servo carouselServo, ColorSensorArray colorSensorArray) {
@@ -121,6 +121,10 @@ public class CarouselSystem {
                     break;
             }
         }
+    }
+
+    public ArtifactState getTargetArtifactState() {
+        return targetArtifactState;
     }
 
     public boolean shootSlotIsTarget() {
