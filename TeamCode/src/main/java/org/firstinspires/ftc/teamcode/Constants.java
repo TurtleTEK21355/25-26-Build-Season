@@ -9,13 +9,13 @@ import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
 public class Constants {
     public static int carouselMoveOneTimer = 1000;
 
-    public static double shootSlot0 = 0.17;
-    public static double shootSlot1 = 0.5;
-    public static double shootSlot2 = 0.83;
+    public static double shootSlot0 = 0.21;
+    public static double shootSlot1 = 0.54;
+    public static double shootSlot2 = 0.87;
 
-    public static double intakeSlot0 = 0.02;
-    public static double intakeSlot1 = 0.34;
-    public static double intakeSlot2 = 0.67;
+    public static double intakeSlot0 = 0.1;
+    public static double intakeSlot1 = 0.42;
+    public static double intakeSlot2 = 0.75;
 
     public static double angularScalar = 0.997;
 
