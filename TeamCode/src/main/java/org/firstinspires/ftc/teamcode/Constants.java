@@ -18,13 +18,13 @@ public class Constants {
 
     public static int carouselMoveOneTimer = 1000;
 
-    public static double shootSlot0 = 0.09;
-    public static double shootSlot1 = 0.41;
-    public static double shootSlot2 = 0.74;
+    public static double shootSlot0 = 0.0;
+    public static double shootSlot1 = 0.34;
+    public static double shootSlot2 = 0.66;
 
-    public static double intakeSlot0 = 0.02;
-    public static double intakeSlot1 = 0.32;
-    public static double intakeSlot2 = 0.65;
+    public static double intakeSlot0 = 0.25;
+    public static double intakeSlot1 = 0.55;
+    public static double intakeSlot2 = 0.85;
 
     public static double angularScalar = 0.997;
 
@@ -59,5 +59,6 @@ public class Constants {
     public static Pose2D getPIDTolerance(){
         return new Pose2D(pidToleranceX, pidToleranceY, pidToleranceH);
     }
+    public static double drivetrainExponentIndex = 1; //change in configurables to change how speed ramps up (ex. quadratic, cubic, etc.)
 
 }

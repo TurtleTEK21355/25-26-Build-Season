@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 
 public class Limelight {
     private Limelight3A limelight;
+    private final double LL_POSITION_TOLERANCE = 5;
     public Limelight(Limelight3A limelight) {
         this.limelight = limelight;
         this.limelight.start();
@@ -61,14 +62,14 @@ public class Limelight {
                 -result.getBotpose_MT2().getPosition().x * 39.3700787, //magic number
                 currentPosition.h
         );
-        if (result.isValid() && llPosition.distanceTo(currentPosition) > 5) { //magic number
+        if (result.isValid() && llPosition.distanceTo(currentPosition) > LL_POSITION_TOLERANCE) { //magic number
             return llPosition;
         }
         else {
             return currentPosition;
         }
     }
-
+    public double getAngleToGoal(Pose2D position)
     /**
      * Returns NONE when no tag is detected
      * @return

@@ -73,6 +73,7 @@ public class StateTeleOp extends OpMode {
         }
         Pose2D position = robot.getOtosSensor().getPosition();
         robot.getLimelight().updateRobotOrientation(position.h); //gets proper position
+        Pose2D limelightPosition = robot.getLimelight().getPositionFromGoal();
         robot.getOtosSensor().setPosition(robot.getLimelight().getCorrectedPositionFromLL(position));
         telemetry.addData("Position", position);
         telemetry.addData("IMU Yaw: ", robot.getIMU().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));

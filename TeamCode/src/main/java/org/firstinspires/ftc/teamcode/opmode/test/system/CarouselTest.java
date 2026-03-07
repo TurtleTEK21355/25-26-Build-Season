@@ -29,8 +29,14 @@
 
 package org.firstinspires.ftc.teamcode.opmode.test.system;
 
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.bylazar.gamepad.GamepadManager;
+import com.bylazar.gamepad.PanelsGamepad;
+import com.bylazar.telemetry.PanelsTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
@@ -45,8 +51,9 @@ public class CarouselTest extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        TelemetryPasser.telemetry = telemetry;
-        Pose2D startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
+        Telemetry combined = new MultipleTelemetry(telemetry, PanelsTelemetry.INSTANCE.getFtcTelemetry());
+        TelemetryPasser.telemetry = combined;
+        PanelsGamepad virtualGamepad = PanelsGamepad.INSTANCE;        Pose2D startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
         AllianceSide side = (AllianceSide) blackboard.getOrDefault(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         robot = StateRobot.build(hardwareMap);
         robot.getOtosSensor().setPosition(startingPosition);
@@ -54,33 +61,34 @@ public class CarouselTest extends LinearOpMode {
 
         waitForStart();
         while (opModeIsActive()) {
-            robot.getDrivetrain().fcControl(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, robot.getAllianceSide(), robot.getOtosSensor().getPosition());
-            if(gamepad1.x) {
+            GamepadManager virtualGamepad1 = virtualGamepad.getFirstManager();
+            robot.getDrivetrain().fcControl(gamepad1.left_stick_y + virtualGamepad1.getLeftStickY(), gamepad1.left_stick_x + virtualGamepad1.getRightStickX(), gamepad1.right_stick_x + virtualGamepad1.getLeftStickX(), robot.getAllianceSide(), robot.getOtosSensor().getPosition());
+            if(gamepad1.x || virtualGamepad1.getSquare()) {
                 robot.getShooterSystem().setCarouselPosition(CarouselPosition.SHOOT_SLOT_0);
             }
-            else if(gamepad1.a) {
+            else if(gamepad1.a || virtualGamepad1.getCross()) {
                 robot.getShooterSystem().setCarouselPosition(CarouselPosition.SHOOT_SLOT_1);
             }
-            else if(gamepad1.b) {
+            else if(gamepad1.b || virtualGamepad1.getCircle()) {
                 robot.getShooterSystem().setCarouselPosition(CarouselPosition.SHOOT_SLOT_2);
             }
-            else if(gamepad1.dpad_left) {
+            else if(gamepad1.dpad_left || virtualGamepad1.getDpadLeft()) {
                 robot.getShooterSystem().setCarouselPosition(CarouselPosition.INTAKE_SLOT_0);
             }
-            else if(gamepad1.dpad_down) {
+            else if(gamepad1.dpad_down || virtualGamepad1.getDpadDown()) {
                 robot.getShooterSystem().setCarouselPosition(CarouselPosition.INTAKE_SLOT_1);
             }
-            else if(gamepad1.dpad_right) {
+            else if(gamepad1.dpad_right || virtualGamepad1.getDpadRight()) {
                 robot.getShooterSystem().setCarouselPosition(CarouselPosition.INTAKE_SLOT_2);
             }
 
-            if (gamepad1.right_bumper) {
+            if (gamepad1.right_bumper || virtualGamepad1.getR1()) {
                 robot.getShooterSystem().setArtifactToShoot(ArtifactState.PURPLE);
             }
-            else if (gamepad1.left_bumper) {
+            else if (gamepad1.left_bumper || virtualGamepad1.getL1()) {
                 robot.getShooterSystem().setArtifactToShoot(ArtifactState.GREEN);
             }
-            else if (gamepad1.rightTriggerWasPressed()) {
+            else if (gamepad1.rightTriggerWasPressed() || virtualGamepad1.getRightStickPressed()) {
                 robot.getShooterSystem().setArtifactToShoot(ArtifactState.ANY);
             }
 
