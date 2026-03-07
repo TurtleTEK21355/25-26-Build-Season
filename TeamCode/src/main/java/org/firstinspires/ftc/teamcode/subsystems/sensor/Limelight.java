@@ -59,7 +59,7 @@ public class Limelight {
         LLResult result = limelight.getLatestResult();
         Double degrees = null;
         for (LLResultTypes.FiducialResult llData : result.getFiducialResults()) {
-            degrees = llData.getTargetXDegrees();
+            degrees = -llData.getTargetXDegrees();
         }
         return degrees;
     }
