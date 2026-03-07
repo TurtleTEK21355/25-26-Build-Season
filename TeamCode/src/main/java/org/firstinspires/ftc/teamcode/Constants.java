@@ -14,17 +14,17 @@ public class Constants {
     public static double shootCloseAngle = 40;
 
     public static int shootFarVelocity = 1400;
-    public static double shootFarAngle = 20;
+    public static double shootFarAngle = 35;
 
     public static int carouselMoveOneTimer = 1000;
 
-    public static double shootSlot0 = 0.0;
-    public static double shootSlot1 = 0.34;
-    public static double shootSlot2 = 0.66;
+    public static double shootSlot0 = 0.12;
+    public static double shootSlot1 = 0.44;
+    public static double shootSlot2 = 0.78;
 
-    public static double intakeSlot0 = 0.25;
-    public static double intakeSlot1 = 0.55;
-    public static double intakeSlot2 = 0.85;
+    public static double intakeSlot0 = 0.02;
+    public static double intakeSlot1 = 0.34;
+    public static double intakeSlot2 = 0.68;
 
     public static double angularScalar = 0.997;
 
@@ -44,7 +44,7 @@ public class Constants {
         return new PIDConstants(drivetrainLinearKp, drivetrainLinearKi, drivetrainLinearKd);
     }
 
-    public static double drivetrainAngularKp = 0.04;
+    public static double drivetrainAngularKp = 0.02;
     public static double drivetrainAngularKi = 0;
     public static double drivetrainAngularKd = 0;
 
@@ -56,10 +56,11 @@ public class Constants {
     public static double pidToleranceY = 2;
     public static double pidToleranceH = 2.5;
     public static double blindRotateSpeed = 0.4;
+    public static double cameraAngleOffset = 5;
 
     public static Pose2D getPIDTolerance(){
         return new Pose2D(pidToleranceX, pidToleranceY, pidToleranceH);
     }
-    public static double drivetrainExponentIndex = 1; //change in configurables to change how speed ramps up (ex. quadratic, cubic, etc.)
+    public static double drivetrainExponentIndex = 3; //change in configurables to change how speed ramps up (ex. quadratic, cubic, etc.)
 
 }

@@ -59,11 +59,6 @@ public class Drivetrain {
 
         control(correctedY, correctedX, h);
     }
-    public boolean rotatePID(double target, double current){
-        PIDControllerSpeedLimit hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), target, Constants.getPIDTolerance().h, Constants.blindRotateSpeed);
-        control(0.0,0.0,hPID.calculate(current));
-        return hPID.atTarget(current);
-    }
 
     public void fcControl(double y, double x, double h, AllianceSide side, Pose2D position) {
         y = Math.pow(y, Constants.drivetrainExponentIndex);
@@ -149,6 +144,8 @@ public class Drivetrain {
     public void setMode(DrivetrainMode drivetrainMode){
         switch (drivetrainMode) {
             case TARGET:
+                frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 frontLeftMotor.setTargetPosition(0);
                 frontRightMotor.setTargetPosition(0);
                 frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -162,28 +159,34 @@ public class Drivetrain {
     }
 
     public void setTarget(int position){
+        frontLeftMotor.setPower(0.4);
+        frontRightMotor.setPower(0.4);
         frontLeftMotor.setTargetPosition(position);
         frontRightMotor.setTargetPosition(position);
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        frontLeftMotor.setPower(0.4);
-        frontRightMotor.setPower(0.4);
-        frontRightMotor.setTargetPosition(position);
+        backLeftMotor.setPower(frontLeftMotor.getPower());
+        backRightMotor.setPower(frontLeftMotor.getPower());
+        frontRightMotor.setPower(frontLeftMotor.getPower());
+
     }
 
     public void setTarget(int position, double speed){
+        frontLeftMotor.setPower(speed);
+        frontRightMotor.setPower(speed);
         frontLeftMotor.setTargetPosition(position);
         frontRightMotor.setTargetPosition(position);
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        frontLeftMotor.setPower(speed);
-        frontRightMotor.setPower(speed);
-        frontRightMotor.setTargetPosition(position);
+        backLeftMotor.setPower(frontLeftMotor.getPower());
+        backRightMotor.setPower(frontLeftMotor.getPower());
+        frontRightMotor.setPower(frontLeftMotor.getPower());
     }
 
     public boolean atPosition(){
         if (frontRightMotor.getMode() == DcMotor.RunMode.RUN_TO_POSITION && frontLeftMotor.getMode() == DcMotor.RunMode.RUN_TO_POSITION) {
-            return frontRightMotor.getCurrentPosition()+40 > frontRightMotor.getTargetPosition() && frontRightMotor.getCurrentPosition()-40 < frontRightMotor.getTargetPosition();
+            int averagePosition = (frontLeftMotor.getCurrentPosition() + frontLeftMotor.getCurrentPosition())/2;
+            return averagePosition > frontRightMotor.getTargetPosition() - 20 && frontRightMotor.getTargetPosition() + 20 > averagePosition;
         } else {
             return true;
         }

@@ -59,13 +59,13 @@ public class Limelight {
         LLResult result = limelight.getLatestResult();
         Double degrees = null;
         for (LLResultTypes.FiducialResult llData : result.getFiducialResults()) {
-            degrees = -llData.getTargetXDegrees();
+            degrees = llData.getTargetXDegrees();
         }
         return degrees;
     }
     public boolean isDetectingGoal(AllianceSide side){
         LLResult result = limelight.getLatestResult();
-        Integer id = null;
+        int id = 0;
         for (LLResultTypes.FiducialResult llData : result.getFiducialResults()) {
             id = llData.getFiducialId();
         }

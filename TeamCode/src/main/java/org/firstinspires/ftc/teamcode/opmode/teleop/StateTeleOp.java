@@ -17,6 +17,8 @@ import org.firstinspires.ftc.teamcode.commands.ShootAllArtifactsCommand;
 import org.firstinspires.ftc.teamcode.commands.TimerCommand;
 import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
+import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
+import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerSpeedLimit;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
 import org.firstinspires.ftc.teamcode.physicaldata.Motif;
@@ -91,6 +93,9 @@ public class StateTeleOp extends OpMode {
             angle = Constants.shootFarAngle;
             velocity = Constants.shootFarVelocity;
         }
+        if (gamepad2.x) {
+            velocity = 0;
+        }
 
         velocity = Range.clip(velocity, 0, 1500);
         angle = Range.clip(angle, 25, 40);
@@ -104,8 +109,14 @@ public class StateTeleOp extends OpMode {
         robot.getShooterSystem().setIntakePower(gamepad2.right_trigger - gamepad2.left_trigger);
         if (gamepad1.right_bumper) {
             if (robot.getLimelight().isDetectingGoal(robot.getAllianceSide())) {
-                robot.getDrivetrain().rotatePID(0, -robot.getLimelight().getAngleFromGoal());
-            } else {robot.getDrivetrain().control(0,0,Constants.blindRotateSpeed);}
+                double currentAngleError = robot.getLimelight().getAngleFromGoal();
+                PIDControllerSpeedLimit hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), Constants.cameraAngleOffset, Constants.getPIDTolerance().h, Constants.blindRotateSpeed);
+                if (!hPID.atTarget(currentAngleError)) {
+                    robot.getDrivetrain().control(0.0, 0.0, hPID.calculate(currentAngleError));
+                }
+            } else {
+                robot.getDrivetrain().control(0,0,gamepad1.right_stick_x);
+            }
         } else {
             double speedFactor = 1 - Range.clip(gamepad1.right_trigger + gamepad1.left_trigger, 0, 0.5);
             robot.getDrivetrain().fcControl(-gamepad1.left_stick_y * speedFactor, gamepad1.left_stick_x * speedFactor, gamepad1.right_stick_x * speedFactor, robot.getIMU().getRobotYawPitchRollAngles().getYaw());
