@@ -85,11 +85,8 @@ public class StateTeleOp extends OpMode {
         boolean gppMotif = gamepad1.dpad_left;
         boolean pgpMotif = gamepad1.dpad_down;
         boolean ppgMotif = gamepad1.dpad_right;
-        boolean artifactStateShoot = gamepad2.leftBumperWasPressed();
-        boolean normalShoot = gamepad2.rightBumperWasPressed();
         boolean cancelShoot = gamepad2.back && gamepad2.start;
-        boolean previousCarouselSlot = gamepad2.dpad_left;
-        boolean nextCarouselSlot = gamepad2. dpad_right;
+
 
 
         if (resetPositionButton) {
@@ -162,7 +159,7 @@ public class StateTeleOp extends OpMode {
             }
             telemetry.addData("Motif", motif.toString());
 
-            if (artifactStateShoot) {
+            if (gamepad2.leftBumperWasPressed()) {
                 if (commandScheduler.isCompleted()) {
                     commandScheduler.add(new ShootAllArtifactsCommand(robot.getShooterSystem(), motif));
                     shotCount = 3;
@@ -170,7 +167,7 @@ public class StateTeleOp extends OpMode {
             }
         }
 
-        if (normalShoot) {
+        if (gamepad2.rightBumperWasPressed()) {
             if (commandScheduler.isCompleted()) {
                 firstShot = robot.getShooterSystem().getCarouselPosition();
             }
@@ -207,10 +204,10 @@ public class StateTeleOp extends OpMode {
             }
             shotCount = 0;
 
-            if (previousCarouselSlot) {
+            if (gamepad2.dpadLeftWasPressed()) {
                 robot.getShooterSystem().getCarouselSystem().goToPreviousIntakePosition();
             }
-            else if (nextCarouselSlot) {
+            else if (gamepad2.dpadRightWasPressed()) {
                 robot.getShooterSystem().getCarouselSystem().goToNextIntakePosition();
             }
         }
