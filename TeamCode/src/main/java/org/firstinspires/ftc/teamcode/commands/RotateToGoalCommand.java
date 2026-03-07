@@ -43,7 +43,7 @@ public class RotateToGoalCommand extends Command {
     @Override
     public String telemetry() {
         TelemetryString string = new TelemetryString();
-        string.addData("distance to goal", otosSensor.getPosition().positionsToFCAngle(target)*(180.0/Math.PI) - otosSensor.getPosition().h);
+        string.addData("distance to goal", Math.toDegrees(target.subtract(otosSensor.getPosition()).getTheta()) - otosSensor.getPosition().h);
         return string.toString();
     }
 

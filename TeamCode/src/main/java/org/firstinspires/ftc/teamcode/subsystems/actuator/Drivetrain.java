@@ -9,7 +9,6 @@ import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
-import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.DrivetrainMode;
 
@@ -26,10 +25,8 @@ public class Drivetrain {
         this.frontRightMotor = frontRight;
         this.backLeftMotor = backLeft;
         this.backRightMotor = backRight;
-        this.frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        this.frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        this.frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -61,67 +58,7 @@ public class Drivetrain {
 
         control(correctedY, correctedX, h);
     }
-    public void resetEncoders(){
-        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
-    public void setTargetMode(DrivetrainMode drivetrainMode){
-        switch (drivetrainMode) {
-            case TARGET:
-                frontLeftMotor.setTargetPosition(0);
-                frontRightMotor.setTargetPosition(0);
-                frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                break;
-            case FREE:
-                frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                break;
-        }
-    }
-    public void setTargetMode(DrivetrainMode drivetrainMode, int position){
-        switch (drivetrainMode) {
-            case TARGET:
-                frontLeftMotor.setTargetPosition(position);
-                frontRightMotor.setTargetPosition(position);
-                frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                frontLeftMotor.setPower(0.4);
-                frontRightMotor.setPower(0.4);
-                frontRightMotor.setTargetPosition(position);
-                break;
-            case FREE:
-                frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                break;
-        }
-    }
-    public void setTargetMode(DrivetrainMode drivetrainMode, int position, double speed){
-        switch (drivetrainMode) {
-            case TARGET:
-                frontLeftMotor.setTargetPosition(position);
-                frontRightMotor.setTargetPosition(position);
-                frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                frontLeftMotor.setPower(speed);
-                frontRightMotor.setPower(speed);
-                frontRightMotor.setTargetPosition(position);
-                break;
-            case FREE:
-                frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                break;
-        }
-    }
-    public boolean atPosition(){
-        if (frontRightMotor.getMode() == DcMotor.RunMode.RUN_TO_POSITION && frontLeftMotor.getMode() == DcMotor.RunMode.RUN_TO_POSITION) {
-            return frontRightMotor.getCurrentPosition()+40 > frontRightMotor.getTargetPosition() && frontRightMotor.getCurrentPosition()-40 < frontRightMotor.getTargetPosition();
-        } else {
-            return true;
-        }
-    }
+
     public void fcControl(double y, double x, double h, AllianceSide side, Pose2D position) {
         //this is a little confusing, but this is basically a null checker for side and position
         //because of the way that the stateRobot class works, if side is null then forward will be
@@ -161,57 +98,6 @@ public class Drivetrain {
 
     }
 
-    public void joystickMovement(double ly, double lx, double rx, double ry) {
-        if (rx != 0 || ry != 0) {
-            double magnitude = Math.sqrt((ry*ry)+(rx*rx));
-            TelemetryPasser.telemetry.addData("magnitude", magnitude);
-            TelemetryPasser.telemetry.update();
-            double fr = (ry + rx) / 2;
-            double br = (ry + rx) / 2;
-            double fl = (ry - rx) / 2;
-            double bl = (ry - rx) / 2;
-            double min = Math.min(Math.min(fr, br), Math.min(fl, bl));
-            frontRightMotor.setPower((fr/min)*magnitude);
-            backRightMotor.setPower((br/min)*magnitude);
-            frontLeftMotor.setPower((fl/min)*magnitude);
-            backLeftMotor.setPower((bl/min)*magnitude);
-        } else {
-            //double magnitude = Math.sqrt((ly*ly)+(lx*lx));
-            double magnitude = 1;
-            TelemetryPasser.telemetry.addData("magnitude", magnitude);
-            TelemetryPasser.telemetry.update();
-            double fr = (ly - lx) / 2;
-            double br = (ly + lx) / 2;
-            double fl = (ly + lx) / 2;
-            double bl = (ly - lx) / 2;
-            double min = Math.min(Math.min(fr, br), Math.min(fl, bl));
-            min = Math.abs(min);
-            frontRightMotor.setPower((fr/min)*magnitude);
-            backRightMotor.setPower((br/min)*magnitude);
-            frontLeftMotor.setPower((fl/min)*magnitude);
-            backLeftMotor.setPower((bl/min)*magnitude);
-
-        }
-    }
-
-    public double getRotationToGoal(AllianceSide side, Pose2D position) {
-        Pose2D distance = side.getGoalPosition().subtract(position);
-        return Math.toDegrees(distance.getTheta());
-    }
-    public boolean rotateToGoal(Pose2D position, AllianceSide side, boolean telemetry){
-        double angle = position.positionsToFCAngle(side.getGoalPosition());
-        PIDControllerHeading hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), angle, Constants.getPIDTolerance().h, ROTATION_PID_SPEED);
-        if (!hPID.atTarget(position.h)) {
-            fcControl(0, 0, hPID.calculate(position.h), position);
-            if (telemetry) {
-                TelemetryPasser.telemetry.addData("Rotation Target: ", angle);
-                TelemetryPasser.telemetry.addData("Rotation Distance Left: ", angle - position.h);
-            }
-        }
-        TelemetryPasser.telemetry.addData("At H Target: ", hPID.atTarget(position.h));
-        return hPID.atTarget(position.h);
-    }
-
     // Sends power of each motor to telemetry
     public void powerTelemetry() {
         TelemetryPasser.telemetry.addLine()
@@ -224,9 +110,9 @@ public class Drivetrain {
 
     public void PIDTelemetry(Pose2D pos, Pose2D target, boolean xAtTarget, boolean yAtTarget, boolean hAtTarget) {
         TelemetryPasser.telemetry.addLine()
-            .addData("X Position: ", pos.x)
-            .addData("Y Position: ", pos.y)
-            .addData("Heading: ", pos.h);
+        .addData("X Position: ", pos.x)
+        .addData("Y Position: ", pos.y)
+        .addData("Heading: ", pos.h);
 
         TelemetryPasser.telemetry.addLine()
         .addData("Target X: ", target.x)
@@ -246,6 +132,49 @@ public class Drivetrain {
         this.backLeftMotor.setDirection(lb);
         this.backRightMotor.setDirection(rb);
 
+    }
+
+    public void setMode(DrivetrainMode drivetrainMode){
+        switch (drivetrainMode) {
+            case TARGET:
+                frontLeftMotor.setTargetPosition(0);
+                frontRightMotor.setTargetPosition(0);
+                frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                break;
+            case FREE:
+                frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                break;
+        }
+    }
+
+    public void setTarget(int position){
+        frontLeftMotor.setTargetPosition(position);
+        frontRightMotor.setTargetPosition(position);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftMotor.setPower(0.4);
+        frontRightMotor.setPower(0.4);
+        frontRightMotor.setTargetPosition(position);
+    }
+
+    public void setTarget(int position, double speed){
+        frontLeftMotor.setTargetPosition(position);
+        frontRightMotor.setTargetPosition(position);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftMotor.setPower(speed);
+        frontRightMotor.setPower(speed);
+        frontRightMotor.setTargetPosition(position);
+    }
+
+    public boolean atPosition(){
+        if (frontRightMotor.getMode() == DcMotor.RunMode.RUN_TO_POSITION && frontLeftMotor.getMode() == DcMotor.RunMode.RUN_TO_POSITION) {
+            return frontRightMotor.getCurrentPosition()+40 > frontRightMotor.getTargetPosition() && frontRightMotor.getCurrentPosition()-40 < frontRightMotor.getTargetPosition();
+        } else {
+            return true;
+        }
     }
 
 

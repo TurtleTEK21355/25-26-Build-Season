@@ -18,7 +18,8 @@ public class MoveViaEncoderCommand extends Command {
 
     @Override
     public void init() {
-        drivetrain.setTargetMode(DrivetrainMode.TARGET, position, speed);
+        drivetrain.setMode(DrivetrainMode.TARGET);
+        drivetrain.setTarget(position, speed);
     }
 
     @Override

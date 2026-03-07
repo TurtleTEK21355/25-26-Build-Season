@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
+import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -100,8 +101,17 @@ public class StateTeleOp extends OpMode {
 
         robot.getShooterSystem().setIntakePower(gamepad2.right_trigger - gamepad2.left_trigger);
 
-        double speedFactor = 1-Range.clip(gamepad1.right_trigger+gamepad1.left_trigger, 0, 0.5);
-        robot.getDrivetrain().fcControl(-gamepad1.left_stick_y*speedFactor, gamepad1.left_stick_x*speedFactor, gamepad1.right_stick_x*speedFactor, robot.getIMU().getRobotYawPitchRollAngles().getYaw());
+        LLResult result = robot.getLimelight().getLatestResult();
+        if (gamepad1.right_bumper && result.isValid()) {
+            double rotationDistanceFromGoal = Math.toDegrees(robot.getAllianceSide().getGoalPosition().subtract(new Pose2D(result.getBotpose_MT2())).getTheta());
+            if (Math.abs(rotationDistanceFromGoal) > 5) {
+                robot.getDrivetrain().control(0, 0, gamepad1.left_stick_x);
+            }
+        }
+        else {
+            double speedFactor = 1 - Range.clip(gamepad1.right_trigger + gamepad1.left_trigger, 0, 0.5);
+            robot.getDrivetrain().fcControl(-gamepad1.left_stick_y * speedFactor, gamepad1.left_stick_x * speedFactor, gamepad1.right_stick_x * speedFactor, robot.getIMU().getRobotYawPitchRollAngles().getYaw());
+        }
 
         if (artifactStateShootEnabled) {
             //motif override for testing
@@ -174,6 +184,7 @@ public class StateTeleOp extends OpMode {
         }
 
         robot.getLimelight().telemetryLimelightAprilTagData(position);
+
         telemetry.update();
     }
 

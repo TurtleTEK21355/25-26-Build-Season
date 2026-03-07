@@ -39,7 +39,6 @@ public class StateRobot {
     public static final String POSITION_BLACKBOARD_KEY = "pos";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
     public static final String MOTIF_BLACKBOARD_KEY = "motif";
-    public static final double MAXHOODPOSITION = 0.5;
 
     public StateRobot(Drivetrain drivetrain, ShooterSystem shooterSystem, OTOSSensor otosSensor, Limelight3A limelight, IMU imu) {
         this.drivetrain = drivetrain;
@@ -59,6 +58,7 @@ public class StateRobot {
     public Drivetrain getDrivetrain() {
         return drivetrain;
     }
+
     public IMU getIMU(){return imu;}
 
     public OTOSSensor getOtosSensor() {
@@ -73,13 +73,10 @@ public class StateRobot {
         return limelight;
     }
 
-    public boolean rotateToGoal(boolean telemetry){
-        return drivetrain.rotateToGoal(otosSensor.getPosition(), side, telemetry);
-    }
-
     public AllianceSide getAllianceSide(){
         return side;
     }
+
     public void setAllianceSide(AllianceSide side) {
         this.side = side;
     }
