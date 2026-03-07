@@ -69,7 +69,6 @@ public class Limelight {
             return currentPosition;
         }
     }
-    public double getAngleToGoal(Pose2D position)
     /**
      * Returns NONE when no tag is detected
      * @return
