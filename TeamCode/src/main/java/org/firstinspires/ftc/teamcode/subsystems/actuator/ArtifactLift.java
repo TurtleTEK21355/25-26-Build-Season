@@ -36,12 +36,14 @@ public class ArtifactLift {
     public double getLiftPosition() {
         return lift.getCurrentPosition();
     }
+
     public void setLiftUpNoLimit() {
         setLiftPosition(TOP_LIMIT);
     }
     public boolean getLiftUp(){
         return getLiftPosition() >= TOP_LIMIT - Constants.artifactLiftUpperTolerance;
     }
+
     public void setLiftDownNoLimit() {
         setLiftPosition(BOTTOM_LIMIT);
     }
