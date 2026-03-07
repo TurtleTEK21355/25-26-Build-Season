@@ -127,7 +127,7 @@ public class StateTeleOp extends OpMode {
         telemetry.addData("Angle", "%.2f", angle);
         telemetry.addData("Lifter Position", robot.getShooterSystem().getArtifactLift().getLiftPosition());
         telemetry.addData("Carousel Position", robot.getShooterSystem().getCarouselPosition().name());
-
+        
         robot.getShooterSystem().setIntakePower(intakePowerAxis);
 
         if (rotateToGoalButton) {
