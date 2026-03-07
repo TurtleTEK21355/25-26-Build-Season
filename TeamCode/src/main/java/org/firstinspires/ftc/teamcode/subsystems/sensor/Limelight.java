@@ -7,6 +7,7 @@ import com.qualcomm.hardware.limelightvision.Limelight3A;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
+import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 
 public class Limelight {
@@ -54,7 +55,22 @@ public class Limelight {
             return new Pose2D();
         }
     }
-
+    public Double getAngleFromGoal(){
+        LLResult result = limelight.getLatestResult();
+        Double degrees = null;
+        for (LLResultTypes.FiducialResult llData : result.getFiducialResults()) {
+            degrees = llData.getTargetXDegrees();
+        }
+        return degrees;
+    }
+    public boolean isDetectingGoal(AllianceSide side){
+        LLResult result = limelight.getLatestResult();
+        Integer id = null;
+        for (LLResultTypes.FiducialResult llData : result.getFiducialResults()) {
+            id = llData.getFiducialId();
+        }
+        return id == side.getGoalID();
+    }
     public Pose2D getCorrectedPositionFromLL(Pose2D currentPosition){
         LLResult result = limelight.getLatestResult();
         Pose2D llPosition = new Pose2D(

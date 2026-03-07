@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
+import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerSpeedLimit;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
@@ -57,6 +58,11 @@ public class Drivetrain {
         double correctedX = r * Math.cos(correctedTheta);
 
         control(correctedY, correctedX, h);
+    }
+    public boolean rotatePID(double target, double current){
+        PIDControllerSpeedLimit hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), target, Constants.getPIDTolerance().h, Constants.blindRotateSpeed);
+        control(0.0,0.0,hPID.calculate(current));
+        return hPID.atTarget(current);
     }
 
     public void fcControl(double y, double x, double h, AllianceSide side, Pose2D position) {

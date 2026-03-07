@@ -55,6 +55,7 @@ public class Constants {
     public static double pidToleranceX = 2;
     public static double pidToleranceY = 2;
     public static double pidToleranceH = 2.5;
+    public static double blindRotateSpeed = 0.7;
 
     public static Pose2D getPIDTolerance(){
         return new Pose2D(pidToleranceX, pidToleranceY, pidToleranceH);

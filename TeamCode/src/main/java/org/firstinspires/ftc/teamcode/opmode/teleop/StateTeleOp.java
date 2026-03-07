@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.commands.PreviousShootCommand;
 import org.firstinspires.ftc.teamcode.commands.SelectArtifactCommand;
 import org.firstinspires.ftc.teamcode.commands.SetCarouselPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.ShootAllArtifactsCommand;
+import org.firstinspires.ftc.teamcode.commands.TimerCommand;
 import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
@@ -101,15 +102,11 @@ public class StateTeleOp extends OpMode {
         telemetry.addData("Carousel Position", robot.getShooterSystem().getCarouselPosition().name());
 
         robot.getShooterSystem().setIntakePower(gamepad2.right_trigger - gamepad2.left_trigger);
-
-        LLResult result = robot.getLimelight().getLatestResult();
-        if (gamepad1.right_bumper && result.isValid()) {
-            double rotationDistanceFromGoal = Math.toDegrees(robot.getAllianceSide().getGoalPosition().subtract(new Pose2D(result.getBotpose_MT2())).getTheta());
-            if (Math.abs(rotationDistanceFromGoal) > 5) {
-                robot.getDrivetrain().control(0, 0, gamepad1.left_stick_x);
-            }
-        }
-        else {
+        if (gamepad1.right_bumper) {
+            if (robot.getLimelight().isDetectingGoal(robot.getAllianceSide())) {
+                robot.getDrivetrain().rotatePID(0, -robot.getLimelight().getAngleFromGoal());
+            } else {robot.getDrivetrain().control(0,0,Constants.blindRotateSpeed);}
+        } else {
             double speedFactor = 1 - Range.clip(gamepad1.right_trigger + gamepad1.left_trigger, 0, 0.5);
             robot.getDrivetrain().fcControl(-gamepad1.left_stick_y * speedFactor, gamepad1.left_stick_x * speedFactor, gamepad1.right_stick_x * speedFactor, robot.getIMU().getRobotYawPitchRollAngles().getYaw());
         }
