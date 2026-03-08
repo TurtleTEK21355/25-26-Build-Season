@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.commands.MovePIDCommand;
+import org.firstinspires.ftc.teamcode.commands.MovePIDEncoderCommand;
 import org.firstinspires.ftc.teamcode.commands.MoveViaEncoderCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
