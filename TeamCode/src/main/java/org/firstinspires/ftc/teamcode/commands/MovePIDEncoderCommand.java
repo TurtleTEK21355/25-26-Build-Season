@@ -55,7 +55,7 @@ public class MovePIDEncoderCommand extends Command {
         TelemetryString string = new TelemetryString();
 
         string.addData("Encoder Value: ", yPosition);
-        string.addData("Field Position (Relative): ", yPosition/INCHES_TO_ENCODER);
+        string.addData("Field Position in Inches (Relative): ", yPosition/INCHES_TO_ENCODER);
 
         return string.toString();
     }
