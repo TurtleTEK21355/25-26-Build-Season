@@ -114,6 +114,12 @@ public class Drivetrain {
         .addData("br Power: ", backRightMotor.getPower());
 
     }
+    public int encoderPosition(){
+        if(frontRightMotor.getMode() != DcMotor.RunMode.RUN_USING_ENCODER) {
+            setMode(DrivetrainMode.PID);
+        }
+        return frontRightMotor.getCurrentPosition();
+    }
 
     public void PIDTelemetry(Pose2D pos, Pose2D target, boolean xAtTarget, boolean yAtTarget, boolean hAtTarget) {
         TelemetryPasser.telemetry.addLine()
@@ -155,38 +161,60 @@ public class Drivetrain {
                 frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 break;
+            case PID:
+                frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+    public DcMotor.RunMode getMode(){return frontRightMotor.getMode();}
 
     public void setTarget(int position){
-        frontLeftMotor.setPower(0.4);
-        frontRightMotor.setPower(0.4);
-        frontLeftMotor.setTargetPosition(position);
+//        frontLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+//        frontLeftMotor.setTargetPosition(position);
         frontRightMotor.setTargetPosition(position);
-        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backLeftMotor.setPower(frontLeftMotor.getPower());
-        backRightMotor.setPower(frontLeftMotor.getPower());
-        frontRightMotor.setPower(frontLeftMotor.getPower());
+        backLeftMotor.setPower(0);
+        backRightMotor.setPower(0);
+        frontLeftMotor.setPower(0);
 
     }
 
     public void setTarget(int position, double speed){
-        frontLeftMotor.setPower(speed);
+//        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+//        frontLeftMotor.setPower(speed);
         frontRightMotor.setPower(speed);
-        frontLeftMotor.setTargetPosition(position);
+//        frontLeftMotor.setTargetPosition(position);
         frontRightMotor.setTargetPosition(position);
-        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+    public void setNonTargetMotors(double speed){
+        frontRightMotor.setPower(speed);
         backLeftMotor.setPower(frontLeftMotor.getPower());
+//        if (frontRightMotor.getMode() != DcMotor.RunMode.RUN_TO_POSITION) {
+        frontLeftMotor.setPower(frontLeftMotor.getPower());
         backRightMotor.setPower(frontLeftMotor.getPower());
-        frontRightMotor.setPower(frontLeftMotor.getPower());
+//        } else {
+//            backRightMotor.setPower(frontRightMotor.getPower());
+//        }
     }
 
     public boolean atPosition(){
-        if (frontRightMotor.getMode() == DcMotor.RunMode.RUN_TO_POSITION && frontLeftMotor.getMode() == DcMotor.RunMode.RUN_TO_POSITION) {
-            int averagePosition = (frontLeftMotor.getCurrentPosition() + frontLeftMotor.getCurrentPosition())/2;
-            return averagePosition > frontRightMotor.getTargetPosition() - 20 && frontRightMotor.getTargetPosition() + 20 > averagePosition;
+        if (frontRightMotor.getMode() == DcMotor.RunMode.RUN_TO_POSITION) {
+            if (frontLeftMotor.getMode() == DcMotor.RunMode.RUN_TO_POSITION) {
+                int averagePosition = (frontLeftMotor.getCurrentPosition() + frontLeftMotor.getCurrentPosition()) / 2;
+                return averagePosition > frontRightMotor.getTargetPosition() - 5 && frontRightMotor.getTargetPosition() + 5 > averagePosition;
+            } else {
+                return frontRightMotor.getTargetPosition() > frontRightMotor.getCurrentPosition()-5 && frontRightMotor.getTargetPosition() < frontRightMotor.getCurrentPosition()+5;
+            }
         } else {
             return true;
         }

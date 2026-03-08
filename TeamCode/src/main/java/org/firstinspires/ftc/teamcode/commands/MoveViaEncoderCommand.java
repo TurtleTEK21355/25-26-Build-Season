@@ -9,17 +9,22 @@ public class MoveViaEncoderCommand extends Command {
     Drivetrain drivetrain;
     int position;
     double speed;
+    final double INCHES_TO_ENCODER = -41.8013539662;
 
     public MoveViaEncoderCommand(Drivetrain drivetrain, int position, double speed) {
         this.drivetrain = drivetrain;
-        this.position = position;
+        this.position = (int)Math.floor(position*INCHES_TO_ENCODER);
         this.speed = speed;
     }
 
     @Override
     public void init() {
-        drivetrain.setMode(DrivetrainMode.TARGET);
-        drivetrain.setTarget(position, speed);
+        drivetrain.setTarget(position);
+    }
+    @Override
+    public void loop(){
+        drivetrain.setNonTargetMotors(speed);
+        drivetrain.powerTelemetry();
     }
 
     @Override
