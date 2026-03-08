@@ -26,7 +26,7 @@ public class EncoderTest extends StateAutoOpMode {
     @Override
     public void commands() {
 //        addCommand(new MoveViaEncoderCommand(robot.getDrivetrain(), -60, SPEED));
-        addCommand(new MovePIDCommand(-60, SPEED, robot.getDrivetrain()));
+        addCommand(new MovePIDEncoderCommand(-60, SPEED, robot.getDrivetrain()));
     }
 
 }
