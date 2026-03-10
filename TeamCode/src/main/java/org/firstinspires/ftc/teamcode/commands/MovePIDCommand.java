@@ -17,10 +17,9 @@ import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 
 public class MovePIDCommand extends Command {
     private Pose2D position;
-    private Pose2D target;
     double speed;
-    private Drivetrain drivetrain;
-    private OTOSSensor otosSensor;
+    Drivetrain drivetrain;
+    OTOSSensor otosSensor;
     PIDControllerSpeedLimit yPID;
     PIDControllerSpeedLimit xPID;
     PIDControllerHeading hPID;
@@ -38,7 +37,6 @@ public class MovePIDCommand extends Command {
     public MovePIDCommand(Pose2D target, double speed, Drivetrain drivetrain, OTOSSensor otosSensor) {
         this.drivetrain = drivetrain;
         this.otosSensor = otosSensor;
-        this.target = target;
         this.speed = speed;
         yPID = new PIDControllerSpeedLimit(Constants.getLinearPIDConstants(), target.y, Constants.getPIDTolerance().y, speed);
         xPID = new PIDControllerSpeedLimit(Constants.getLinearPIDConstants(), target.x, Constants.getPIDTolerance().x, speed);

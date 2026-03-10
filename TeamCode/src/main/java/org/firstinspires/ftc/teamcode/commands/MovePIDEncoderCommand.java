@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
 
 public class MovePIDEncoderCommand extends Command {
-    private final Drivetrain drivetrain;
+    Drivetrain drivetrain;
     PIDControllerSpeedLimit yPID;
     private double yPosition = 0;
 
@@ -17,7 +17,7 @@ public class MovePIDEncoderCommand extends Command {
 
     /**
      * This command is encoder-based and only moves on the robot-centric y-axis
-     * @param targetY amount Y to move
+     * @param yTarget amount Y to move
      * @param speed Maximum PID speed
      */
     public MovePIDEncoderCommand(double yTarget, double speed, Drivetrain drivetrain) {

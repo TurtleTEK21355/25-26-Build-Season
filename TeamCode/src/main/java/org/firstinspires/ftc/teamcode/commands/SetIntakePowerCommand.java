@@ -22,7 +22,7 @@ public class SetIntakePowerCommand extends Command {
 
     @Override
     public boolean isCompleted() {
-        return (true);
+        return true;
 
     }
 

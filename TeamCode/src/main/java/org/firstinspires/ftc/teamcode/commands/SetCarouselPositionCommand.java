@@ -3,22 +3,23 @@ package org.firstinspires.ftc.teamcode.commands;
 import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.CarouselSystem;
+import org.firstinspires.ftc.teamcode.subsystems.actuator.ShooterSystem;
 
 public class SetCarouselPositionCommand extends Command {
-    CarouselSystem carouselSystem;
+    ShooterSystem shooterSystem;
     CarouselPosition carouselPosition;
     public String dataKey = "SetCarouselPositionCommand";
 
 
 
-    public SetCarouselPositionCommand(CarouselPosition carouselPosition, CarouselSystem carouselSystem) {
-        this.carouselSystem = carouselSystem;
+    public SetCarouselPositionCommand(CarouselPosition carouselPosition, ShooterSystem shooterSystem) {
+        this.shooterSystem = shooterSystem;
         this.carouselPosition = carouselPosition;
     }
 
     @Override
     public void init() {
-        carouselSystem.setPosition(carouselPosition);
+        shooterSystem.setCarouselPosition(carouselPosition);
     }
 
     @Override

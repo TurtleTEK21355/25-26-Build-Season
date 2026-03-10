@@ -9,7 +9,7 @@ public class ShootAllArtifactsCommand extends SequentialCommand {
     public String dataKey = "ShootAllArtifactsCommand";
 
     public ShootAllArtifactsCommand(ShooterSystem shooterSystem, Motif motif) {
-        commandScheduler.add(new SetCarouselPositionCommand(CarouselPosition.nextShootPosition(shooterSystem.getCarouselPosition()), shooterSystem.getCarouselSystem()));
+        commandScheduler.add(new SetCarouselPositionCommand(CarouselPosition.nextShootPosition(shooterSystem.getCarouselPosition()), shooterSystem));
         commandScheduler.add(new TimerCommand(Constants.carouselMoveOneTimer));
         if (motif == Motif.NONE) {
             for (int i = 0; i < 3; i++) {

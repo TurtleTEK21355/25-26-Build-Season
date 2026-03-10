@@ -17,7 +17,7 @@ public class NextShootCommand extends Command {
     @Override
     public void init() {
         CarouselPosition currentCarouselPosition = shooterSystem.getCarouselPosition();
-        commandScheduler.add(new SetCarouselPositionCommand(CarouselPosition.nextShootPosition(currentCarouselPosition), shooterSystem.getCarouselSystem()));
+        commandScheduler.add(new SetCarouselPositionCommand(CarouselPosition.nextShootPosition(currentCarouselPosition), shooterSystem));
         commandScheduler.add(new TimerCommand(Constants.carouselMoveOneTimer));
         commandScheduler.add(new LifterUpCommand(shooterSystem));
         commandScheduler.add(new LifterDownCommand(shooterSystem));
