@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 
-@Autonomous(name="Carousel Shoot Test", group = "auto")
+@Autonomous(name="Carousel Shoot Test", group = "test")
 public class CarouselShootTest extends StateAutoOpMode {
     Pose2D startingPosition = new Pose2D(0,0,0);
     AllianceSide side = AllianceSide.BLUE;

@@ -26,8 +26,8 @@ public class PositioningTest extends OpMode {
     @Override
     public void init() {
         drivetrain = new Drivetrain(
-                hardwareMap.get(DcMotorEx.class, HardwareName.FRONT_LEFT_MOTOR.getName()),
-                hardwareMap.get(DcMotorEx.class, HardwareName.FRONT_RIGHT_MOTOR.getName()),
+                hardwareMap.get(DcMotor.class, HardwareName.FRONT_LEFT_MOTOR.getName()),
+                hardwareMap.get(DcMotor.class, HardwareName.FRONT_RIGHT_MOTOR.getName()),
                 hardwareMap.get(DcMotor.class, HardwareName.BACK_LEFT_MOTOR.getName()),
                 hardwareMap.get(DcMotor.class, HardwareName.BACK_RIGHT_MOTOR.getName())
         );

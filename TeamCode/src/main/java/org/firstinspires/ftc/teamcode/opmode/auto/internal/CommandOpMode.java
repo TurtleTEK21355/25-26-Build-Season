@@ -7,6 +7,8 @@ import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.lib.command.CommandList;
 import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
 
+import java.util.Arrays;
+
 public abstract class CommandOpMode extends LinearOpMode {
     protected CommandScheduler commandScheduler = new CommandScheduler();
     private CommandList backgroundCommands = new CommandList();//these can be for telemetry that runs the whole time, or other stuff
@@ -36,6 +38,9 @@ public abstract class CommandOpMode extends LinearOpMode {
 
     public void addCommand(Command command) {
         commandScheduler.add(command);
+    }
+    public void addCommands(Command... commands) {
+        commandScheduler.addAll(Arrays.asList(commands));
     }
     public void addBackgroundCommand(Command command) {backgroundCommands.add(command);}
 

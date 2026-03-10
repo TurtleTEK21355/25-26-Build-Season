@@ -31,7 +31,6 @@ public class Constants {
     public static double otosPhysicalOffsetInchesX = -1.57;
     public static double otosPhysicalOffsetInchesY = -1.42;
     public static double otosPhysicalOffsetDegreesH = 0;
-
     public static Pose2D getPhysicalOffset(){
         return new Pose2D(otosPhysicalOffsetInchesX, otosPhysicalOffsetInchesY, otosPhysicalOffsetDegreesH);
     }
@@ -39,7 +38,6 @@ public class Constants {
     public static double drivetrainLinearKp = 0.08;
     public static double drivetrainLinearKi = 0;
     public static double drivetrainLinearKd = 0;
-
     public static PIDConstants getLinearPIDConstants() {
         return new PIDConstants(drivetrainLinearKp, drivetrainLinearKi, drivetrainLinearKd);
     }
@@ -47,7 +45,6 @@ public class Constants {
     public static double drivetrainAngularKp = 0.02;
     public static double drivetrainAngularKi = 0;
     public static double drivetrainAngularKd = 0;
-
     public static PIDConstants getAngularPIDConstants() {
         return new PIDConstants(drivetrainAngularKp, drivetrainAngularKi, drivetrainAngularKd);
     }
@@ -55,12 +52,13 @@ public class Constants {
     public static double pidToleranceX = 2;
     public static double pidToleranceY = 2;
     public static double pidToleranceH = 2.5;
-    public static double blindRotateSpeed = 0.4;
-    public static double cameraAngleOffset = 5;
-
     public static Pose2D getPIDTolerance(){
         return new Pose2D(pidToleranceX, pidToleranceY, pidToleranceH);
     }
+
+    public static double blindRotateSpeed = 0.4;
+    public static double cameraAngleOffset = 5;
+    public static double inchesToEncoderDrivetrain = 41.8013539662;
     public static double drivetrainExponentIndex = 3; //change in configurables to change how speed ramps up (ex. quadratic, cubic, etc.)
 
 }

@@ -54,8 +54,8 @@ public class OdometryTest extends LinearOpMode {
         limelight = hardwareMap.get(Limelight3A.class, HardwareName.LIMELIGHT.getName());
         otosSensor = new OTOSSensor(hardwareMap.get(SparkFunOTOS.class, HardwareName.ODOMETRY_SENSOR.getName()));
         drivetrain = new Drivetrain(
-                hardwareMap.get(DcMotorEx.class, HardwareName.FRONT_LEFT_MOTOR.getName()),
-                hardwareMap.get(DcMotorEx.class, HardwareName.FRONT_RIGHT_MOTOR.getName()),
+                hardwareMap.get(DcMotor.class, HardwareName.FRONT_LEFT_MOTOR.getName()),
+                hardwareMap.get(DcMotor.class, HardwareName.FRONT_RIGHT_MOTOR.getName()),
                 hardwareMap.get(DcMotor.class, HardwareName.BACK_LEFT_MOTOR.getName()),
                 hardwareMap.get(DcMotor.class, HardwareName.BACK_RIGHT_MOTOR.getName()));
         otosSensor.resetPosition();

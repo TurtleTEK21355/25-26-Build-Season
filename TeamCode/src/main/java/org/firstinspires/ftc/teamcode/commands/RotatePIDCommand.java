@@ -13,8 +13,6 @@ import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 
 public class RotatePIDCommand extends Command {
     private double position;
-    private double target;
-    double speed;
     private Drivetrain drivetrain;
     private IMU imu;
     PIDControllerHeading hPID;
@@ -25,9 +23,12 @@ public class RotatePIDCommand extends Command {
     public RotatePIDCommand(double target, double speed, Drivetrain drivetrain, IMU imu) {
         this.drivetrain = drivetrain;
         this.imu = imu;
-        this.target = target;
-        this.speed = speed;
         hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), target+Constants.cameraAngleOffset, Constants.getPIDTolerance().h, speed);
+    }
+
+    @Override
+    public void init() {
+        imu.resetYaw();
     }
 
     @Override

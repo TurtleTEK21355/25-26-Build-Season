@@ -56,8 +56,8 @@ public class ProgrammingRobot {
     public static ProgrammingRobot build(HardwareMap hardwareMap) {
         return new ProgrammingRobot(
                 new Drivetrain(
-                        hardwareMap.get(DcMotorEx.class, HardwareName.FRONT_LEFT_MOTOR.getName()),
-                        hardwareMap.get(DcMotorEx.class, HardwareName.FRONT_RIGHT_MOTOR.getName()),
+                        hardwareMap.get(DcMotor.class, HardwareName.FRONT_LEFT_MOTOR.getName()),
+                        hardwareMap.get(DcMotor.class, HardwareName.FRONT_RIGHT_MOTOR.getName()),
                         hardwareMap.get(DcMotor.class, HardwareName.BACK_LEFT_MOTOR.getName()),
                         hardwareMap.get(DcMotor.class, HardwareName.BACK_RIGHT_MOTOR.getName())
                 ),

@@ -1,9 +1,10 @@
-package org.firstinspires.ftc.teamcode.opmode.test.system;
+package org.firstinspires.ftc.teamcode.opmode.auto;
 
 import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.commands.MoveViaEncoderCommand;
+import org.firstinspires.ftc.teamcode.commands.MovePIDEncoderCommand;
+import org.firstinspires.ftc.teamcode.commands.RotatePIDCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
@@ -29,7 +30,13 @@ public class EncoderCommandTest extends StateAutoOpMode {
 
     @Override
     public void commands() {
-        addCommand(new MoveViaEncoderCommand(robot.getDrivetrain(), firstPosition, SPEED));
-        addCommand(new MoveViaEncoderCommand(robot.getDrivetrain(), secondPosition, SPEED));
+        addCommand(new MovePIDEncoderCommand(24, SPEED, robot.getDrivetrain()));
+        addCommand(new RotatePIDCommand(90, SPEED, robot.getDrivetrain(), robot.getIMU()));
+        addCommand(new MovePIDEncoderCommand(24, SPEED, robot.getDrivetrain()));
+        addCommand(new RotatePIDCommand(180, SPEED, robot.getDrivetrain(), robot.getIMU()));
+        addCommand(new MovePIDEncoderCommand(24, SPEED, robot.getDrivetrain()));
+        addCommand(new RotatePIDCommand(-90, SPEED, robot.getDrivetrain(), robot.getIMU()));
+        addCommand(new MovePIDEncoderCommand(24, SPEED, robot.getDrivetrain()));
+        addCommand(new RotatePIDCommand(0, SPEED, robot.getDrivetrain(), robot.getIMU()));
     }
 }
