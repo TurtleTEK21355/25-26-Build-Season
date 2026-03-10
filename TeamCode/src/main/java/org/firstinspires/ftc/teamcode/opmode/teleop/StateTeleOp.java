@@ -27,7 +27,7 @@ import org.firstinspires.ftc.teamcode.subsystems.actuator.ShooterSystem;
 
 @TeleOp(name = "TeleOp", group = "teleop")
 public class StateTeleOp extends OpMode {
-    private StateRobot robot;
+    protected StateRobot robot;
 
     private final CommandScheduler commandScheduler = new CommandScheduler();
 
