@@ -26,6 +26,12 @@ public class RotatePIDCommand extends Command {
         hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), target+Constants.cameraAngleOffset, Constants.getPIDTolerance().h, speed);
     }
 
+    public RotatePIDCommand(double start, double end, double speed, Drivetrain drivetrain, IMU imu) {
+        this.drivetrain = drivetrain;
+        this.imu = imu;
+        hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), end-start+Constants.cameraAngleOffset, Constants.getPIDTolerance().h, speed);
+    }
+
     @Override
     public void init() {
         imu.resetYaw();

@@ -4,13 +4,13 @@ import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Hood;
 
-public class SetHoodCommand extends Command {
+public class SetHoodAngleCommand extends Command {
     Hood hood;
-    public String dataKey = "SetHoodCommand";
+    public String dataKey = "SetHoodAngleCommand";
 
-    private double targetAngle; //not really an angle right now because the conversion from angle to hood doesnt do anything
+    private final double targetAngle;
 
-    public SetHoodCommand(double targetAngle, Hood hood) {
+    public SetHoodAngleCommand(double targetAngle, Hood hood) {
         this.hood = hood;
         this.targetAngle = targetAngle;
     }

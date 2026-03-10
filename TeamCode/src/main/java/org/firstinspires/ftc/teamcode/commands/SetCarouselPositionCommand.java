@@ -11,7 +11,7 @@ public class SetCarouselPositionCommand extends Command {
 
 
 
-    public SetCarouselPositionCommand(CarouselSystem carouselSystem, CarouselPosition carouselPosition) {
+    public SetCarouselPositionCommand(CarouselPosition carouselPosition, CarouselSystem carouselSystem) {
         this.carouselSystem = carouselSystem;
         this.carouselPosition = carouselPosition;
     }

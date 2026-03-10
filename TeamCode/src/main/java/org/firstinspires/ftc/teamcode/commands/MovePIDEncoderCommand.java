@@ -25,6 +25,11 @@ public class MovePIDEncoderCommand extends Command {
         yPID = new PIDControllerSpeedLimit(Constants.getLinearPIDConstants(), yTarget*Constants.inchesToEncoderDrivetrain, Constants.getPIDTolerance().y, speed);
     }
 
+    public MovePIDEncoderCommand(double yStart, double yEnd, double speed, Drivetrain drivetrain) {
+        this.drivetrain = drivetrain;
+        yPID = new PIDControllerSpeedLimit(Constants.getLinearPIDConstants(), (yEnd-yStart)*Constants.inchesToEncoderDrivetrain, Constants.getPIDTolerance().y, speed);
+    }
+
     @Override
     public void init() {
         drivetrain.resetEncoderPosition();

@@ -35,12 +35,11 @@ public class EncoderTelemetryTest extends OpMode {
         robot = StateRobot.build(hardwareMap);
         robot.getOtosSensor().setPosition(startingPosition);
         robot.setAllianceSide(side);
-        robot.getDrivetrain().setMode(DrivetrainMode.PID);
     }
 
     @Override
     public void loop() {
-        telemetry.addData("Encoder Value: ", robot.getDrivetrain().encoderPosition());
+        telemetry.addData("Encoder Value: ", robot.getDrivetrain().getEncoderPosition());
     }
 
 

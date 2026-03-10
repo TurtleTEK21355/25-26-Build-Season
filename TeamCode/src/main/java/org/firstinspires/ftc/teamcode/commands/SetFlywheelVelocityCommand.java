@@ -4,9 +4,9 @@ import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
-public class SetFlywheelCommand extends Command {
+public class SetFlywheelVelocityCommand extends Command {
 StateRobot robot;
-    public String dataKey = "SetFlywheelCommand";
+    public String dataKey = "SetFlywheelVelocityCommand";
 
 
     final int FLYWHEEL_ON_VELOCITY = 1; //placeholder
@@ -19,7 +19,7 @@ StateRobot robot;
      * @param robot The robot
      * @param flywheelVelocity The power to set the intake to
      */
-    public SetFlywheelCommand(StateRobot robot, double flywheelVelocity) {
+    public SetFlywheelVelocityCommand(StateRobot robot, double flywheelVelocity) {
         this.robot = robot;
         this.flywheelVelocity = flywheelVelocity;
     }
@@ -29,7 +29,7 @@ StateRobot robot;
      * @param robot The robot
      * @param flyhweelBoolean Whether to set the flywheel off/on
      */
-    public SetFlywheelCommand(StateRobot robot, boolean flyhweelBoolean) {
+    public SetFlywheelVelocityCommand(StateRobot robot, boolean flyhweelBoolean) {
         this.robot = robot;
         if (flyhweelBoolean) {
             flywheelVelocity = FLYWHEEL_ON_VELOCITY;
