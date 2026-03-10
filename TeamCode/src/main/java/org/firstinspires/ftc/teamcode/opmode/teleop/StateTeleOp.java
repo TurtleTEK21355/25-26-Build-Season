@@ -35,6 +35,7 @@ public class StateTeleOp extends OpMode {
     private int velocity = Constants.shootCloseVelocity;
     private double angle = Constants.shootCloseAngle;
 
+    private final PIDControllerHeading hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), Constants.cameraAngleOffset, Constants.getPIDTolerance().h, Constants.blindRotateSpeed);
     private CarouselPosition firstShot = CarouselPosition.UNSET;
     private int shotCount = 0;
 
@@ -93,9 +94,10 @@ public class StateTeleOp extends OpMode {
             robot.getOtosSensor().resetPosition();
             robot.getIMU().resetYaw();
         }
-        Pose2D position = robot.getOtosSensor().getPosition();
-        robot.getLimelight().updateRobotOrientation(position.h); //gets proper position
-        robot.getOtosSensor().setPosition(robot.getLimelight().getCorrectedPositionFromLL(position));
+        double robotYaw = robot.getIMU().getRobotYawPitchRollAngles().getYaw();
+        robot.getLimelight().updateRobotOrientation(robotYaw); //gets proper position
+        Pose2D limelightPosition = robot.getLimelight().getPositionFromGoal();
+        Pose2D position = new Pose2D(limelightPosition.x, limelightPosition.y, robotYaw);
         telemetry.addData("Position", position);
         telemetry.addData("IMU Yaw: ", robot.getIMU().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
 
@@ -125,12 +127,11 @@ public class StateTeleOp extends OpMode {
         telemetry.addData("Lifter Position", robot.getShooterSystem().getArtifactLift().getLiftPosition());
         telemetry.addData("Carousel Position", robot.getShooterSystem().getCarouselPosition().name());
         
-        robot.getShooterSystem().setIntakePower(intakePowerAxis);
+        robot.getShooterSystem().setIntakePower(Range.clip(intakePowerAxis, -1, 1));
 
         if (rotateToGoalButton) {
             if (robot.getLimelight().isDetectingGoal(robot.getAllianceSide())) {
                 double currentAngleError = robot.getLimelight().getAngleFromGoal();
-                PIDControllerSpeedLimit hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), Constants.cameraAngleOffset, Constants.getPIDTolerance().h, Constants.blindRotateSpeed);
                 if (!hPID.atTarget(currentAngleError)) {
                     robot.getDrivetrain().control(0.0, 0.0, hPID.calculate(currentAngleError));
                 }
