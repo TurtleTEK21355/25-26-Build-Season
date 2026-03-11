@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.subsystems.actuator.ShooterSystem;
 
 public class LifterUpCommand extends Command {
 
-    private ShooterSystem shooterSystem;
+    ShooterSystem shooterSystem;
     public String dataKey = "LifterUpCommand";
 
 

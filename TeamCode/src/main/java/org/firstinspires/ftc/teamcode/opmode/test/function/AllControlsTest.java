@@ -84,7 +84,7 @@ public class AllControlsTest extends LinearOpMode {
 
 
 
-            robot.getDrivetrain().fcControl(-gamepad1.left_stick_y + (0.5 * virtualGamepad1.getLeftStickY()), gamepad1.left_stick_x + (0.5 * virtualGamepad1.getLeftStickX()), gamepad1.right_stick_x - (0.5 * virtualGamepad1.getRightStickX()), robot.getAllianceSide(), robot.getOtosSensor().getPosition());
+            robot.getDrivetrain().fcControl(-gamepad1.left_stick_y + (0.5 * virtualGamepad1.getLeftStickY()), gamepad1.left_stick_x + (0.5 * virtualGamepad1.getLeftStickX()), gamepad1.right_stick_x - (0.5 * virtualGamepad1.getRightStickX()), robot.getAllianceSide(), robot.getOtosSensor().getPosition().h);
 
             telemetry.update();
         }

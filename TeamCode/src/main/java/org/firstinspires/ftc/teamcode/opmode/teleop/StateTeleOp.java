@@ -1,30 +1,23 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
-import com.qualcomm.hardware.limelightvision.LLResult;
+import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.commands.NextShootCommand;
 import org.firstinspires.ftc.teamcode.commands.PreviousShootCommand;
-import org.firstinspires.ftc.teamcode.commands.SelectArtifactCommand;
-import org.firstinspires.ftc.teamcode.commands.SetCarouselPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.ShootAllArtifactsCommand;
-import org.firstinspires.ftc.teamcode.commands.TimerCommand;
 import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
-import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
-import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerSpeedLimit;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
 import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
-import org.firstinspires.ftc.teamcode.subsystems.actuator.ShooterSystem;
 
+@Configurable
 @TeleOp(name = "TeleOp", group = "teleop")
 public class StateTeleOp extends OpMode {
     protected StateRobot robot;
@@ -35,19 +28,29 @@ public class StateTeleOp extends OpMode {
     private int velocity = Constants.shootCloseVelocity;
     private double angle = Constants.shootCloseAngle;
 
+    private boolean carouselButtonsLock = false;
+    private boolean shootButtonLock = false;
     private CarouselPosition firstShot = CarouselPosition.UNSET;
     private int shotCount = 0;
 
-    private boolean artifactStateShootEnabled = false;
+
+    private final PIDControllerHeading hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), Constants.cameraAngleOffset, Constants.getPIDTolerance().h, Constants.blindRotateSpeed);
+
     private Motif motif = Motif.NONE;
+
+    public static boolean stateShootCommandUpdating = false;
+    public static boolean positionUpdating = true;
+    public static boolean turretUpdating = true;
+    public static boolean intakeUpdating = true;
+    public static boolean rotateToGoalUpdating = true;
+    public static boolean shootingCommandUpdating = true;
+    public static boolean carouselMoveUpdating = true;
 
     @Override
     public void init() {
         TelemetryPasser.telemetry = telemetry;
-        Pose2D startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.POSITION_BLACKBOARD_KEY, new Pose2D(0,0, 0));
         AllianceSide side = (AllianceSide) blackboard.getOrDefault(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         robot = StateRobot.build(hardwareMap);
-        robot.getOtosSensor().setPosition(startingPosition);
         robot.setAllianceSide(side);
 
         telemetry.addLine("G1 Left Stick → Drive & Strafe");
@@ -72,87 +75,69 @@ public class StateTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        boolean resetPositionButton = gamepad1.back;
-        double velocityTweakStick = -gamepad2.left_stick_y;
-        double angleTweakStick = -gamepad2.right_stick_y;
-        boolean closeShootPresetButton = gamepad2.a;
-        boolean farShootPresetButton = gamepad2.b;
-        boolean stopFlywheelButton = gamepad2.x;
-        double intakePowerAxis = gamepad2.right_trigger - gamepad2.left_trigger;
-        boolean rotateToGoalButton = gamepad1.right_bumper;
-        double speedFactorAxis = gamepad1.right_trigger + gamepad1.left_trigger;
-        double forwardBackwardsStick = -gamepad1.left_stick_y;
-        double strafeStick = gamepad1.left_stick_x;
-        double rotateStick = gamepad1.right_stick_x;
-        boolean gppMotif = gamepad1.dpad_left;
-        boolean pgpMotif = gamepad1.dpad_down;
-        boolean ppgMotif = gamepad1.dpad_right;
-        boolean cancelShoot = gamepad2.back && gamepad2.start;
 
-
-
-        if (resetPositionButton) {
-            robot.getOtosSensor().resetPosition();
-            robot.getIMU().resetYaw();
-        }
-        Pose2D position = robot.getOtosSensor().getPosition();
-        robot.getLimelight().updateRobotOrientation(position.h); //gets proper position
-        robot.getOtosSensor().setPosition(robot.getLimelight().getCorrectedPositionFromLL(position));
-        telemetry.addData("Position", position);
-        telemetry.addData("IMU Yaw: ", robot.getIMU().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
-
-
-        velocity += (int) (velocityTweakStick*delta.seconds()*150); //inverted bc of gamepad
-        angle += angleTweakStick*delta.seconds()*3;
-        delta.reset();
-
-        if (closeShootPresetButton) {
-            angle = Constants.shootCloseAngle;
-            velocity = Constants.shootCloseVelocity;
-        }
-        if (farShootPresetButton) {
-            angle = Constants.shootFarAngle;
-            velocity = Constants.shootFarVelocity;
-        }
-        if (stopFlywheelButton) {
-            velocity = 0;
+        if (positionUpdating) {
+            if (gamepad1.back) {
+                robot.getIMU().resetYaw();
+            }
         }
 
-        velocity = Range.clip(velocity, 0, 1500);
-        angle = Range.clip(angle, 25, 40);
-        robot.getShooterSystem().setFlywheelVelocity(velocity);
-        robot.getShooterSystem().setHoodAngle(angle);
-        telemetry.addData("Velocity (Expected/Actual)", "%d/%.2f", velocity, robot.getShooterSystem().getFlywheelVelocity());
-        telemetry.addData("Angle", "%.2f", angle);
-        telemetry.addData("Lifter Position", robot.getShooterSystem().getArtifactLift().getLiftPosition());
-        telemetry.addData("Carousel Position", robot.getShooterSystem().getCarouselPosition().name());
-        
-        robot.getShooterSystem().setIntakePower(intakePowerAxis);
+        if (turretUpdating) {
+            velocity += (int) (-gamepad2.left_stick_y * delta.seconds() * 150);
+            angle += -gamepad2.right_stick_y * delta.seconds() * 3;
+            delta.reset();
 
-        if (rotateToGoalButton) {
-            if (robot.getLimelight().isDetectingGoal(robot.getAllianceSide())) {
-                double currentAngleError = robot.getLimelight().getAngleFromGoal();
-                PIDControllerSpeedLimit hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), Constants.cameraAngleOffset, Constants.getPIDTolerance().h, Constants.blindRotateSpeed);
-                if (!hPID.atTarget(currentAngleError)) {
-                    robot.getDrivetrain().control(0.0, 0.0, hPID.calculate(currentAngleError));
+            if (gamepad2.a) {
+                angle = Constants.shootCloseAngle;
+                velocity = Constants.shootCloseVelocity;
+            }
+            if (gamepad2.b) {
+                angle = Constants.shootFarAngle;
+                velocity = Constants.shootFarVelocity;
+            }
+            if (gamepad2.x) {
+                velocity = 0;
+            }
+
+            velocity = Range.clip(velocity, 0, 1500);
+            angle = Range.clip(angle, 25, 40);
+            robot.getShooterSystem().setFlywheelVelocity(velocity);
+            robot.getShooterSystem().setHoodAngle(angle);
+            telemetry.addData("Velocity (Expected/Actual)", "%d/%.2f", velocity, robot.getShooterSystem().getFlywheelVelocity());
+            telemetry.addData("Angle", "%.2f", angle);
+            telemetry.addData("Lifter Position", robot.getShooterSystem().getArtifactLift().getLiftPosition());
+            telemetry.addData("Carousel Position", robot.getShooterSystem().getCarouselPosition().name());
+        }
+
+        if (intakeUpdating) {
+            robot.getShooterSystem().setIntakePower(Range.clip(gamepad2.right_trigger - gamepad2.left_trigger, -1, 1));
+        }
+
+        if (rotateToGoalUpdating) {
+            if (gamepad1.right_bumper) {
+                if (robot.getLimelight().isDetectingGoal(robot.getAllianceSide())) {
+                    double currentAngleError = robot.getLimelight().getAngleFromGoal();
+                    if (!hPID.atTarget(currentAngleError)) {
+                        robot.getDrivetrain().control(0.0, 0.0, hPID.calculate(currentAngleError));
+                    }
+                } else {
+                    robot.getDrivetrain().control(0, 0, gamepad1.right_stick_x);
                 }
             } else {
-                robot.getDrivetrain().control(0,0,rotateStick);
+                double speedFactor = 1 - Range.clip(gamepad1.right_trigger + gamepad1.left_trigger, 0, 0.5);
+                robot.getDrivetrain().fcControl(-gamepad1.left_stick_y * speedFactor, gamepad1.left_stick_x * speedFactor, gamepad1.right_stick_x * speedFactor, robot.getIMU().getRobotYawPitchRollAngles().getYaw());
             }
-        } else {
-            double speedFactor = 1 - Range.clip(speedFactorAxis, 0, 0.5);
-            robot.getDrivetrain().fcControl(forwardBackwardsStick * speedFactor, strafeStick * speedFactor, rotateStick * speedFactor, robot.getIMU().getRobotYawPitchRollAngles().getYaw());
         }
 
-        if (artifactStateShootEnabled) {
+        if (stateShootCommandUpdating) {
             //motif override for testing
-            if (gppMotif) {
+            if (gamepad1.dpad_left) {
                 motif = Motif.GPP;
             }
-            else if (pgpMotif) {
+            else if (gamepad1.dpad_down) {
                 motif = Motif.PGP;
             }
-            else if (ppgMotif) {
+            else if (gamepad1.dpad_right) {
                 motif = Motif.PPG;
             }
             //motif from apriltag
@@ -160,36 +145,48 @@ public class StateTeleOp extends OpMode {
                 motif = robot.getLimelight().getMotif();
             }
             telemetry.addData("Motif", motif.toString());
-
-            if (gamepad2.leftBumperWasPressed()) {
-                if (commandScheduler.isCompleted()) {
-                    commandScheduler.add(new ShootAllArtifactsCommand(robot.getShooterSystem(), motif));
-                    shotCount = 3;
+            if (gamepad2.left_bumper) {
+                if (!shootButtonLock) {
+                    if (commandScheduler.isCompleted()) {
+                        commandScheduler.add(new ShootAllArtifactsCommand(robot.getShooterSystem(), motif));
+                        shotCount = 3;
+                    }
                 }
+                shootButtonLock = true;
+            }
+            else {
+                shootButtonLock = false;
             }
         }
 
-        if (gamepad2.rightBumperWasPressed()) {
-            if (commandScheduler.isCompleted()) {
-                firstShot = robot.getShooterSystem().getCarouselPosition();
-            }
+        if (shootingCommandUpdating) {
+            if (gamepad2.right_bumper) {
+                if (!shootButtonLock) {
+                    if (commandScheduler.isCompleted()) {
+                        firstShot = robot.getShooterSystem().getCarouselPosition();
+                    }
 
-            if (firstShot == CarouselPosition.INTAKE_SLOT_0 && shotCount <= 2) {
-                commandScheduler.add(new NextShootCommand(robot.getShooterSystem()));
-                shotCount++;
+                    if (firstShot == CarouselPosition.INTAKE_SLOT_0 && shotCount <= 2) {
+                        commandScheduler.add(new NextShootCommand(robot.getShooterSystem()));
+                        shotCount++;
+                    } else if (firstShot == CarouselPosition.INTAKE_SLOT_1 && shotCount <= 1) {
+                        commandScheduler.add(new PreviousShootCommand(robot.getShooterSystem()));
+                        shotCount++;
+                    } else if (firstShot == CarouselPosition.INTAKE_SLOT_2 && shotCount <= 2) {
+                        commandScheduler.add(new PreviousShootCommand(robot.getShooterSystem()));
+                        shotCount++;
+                    }
+                }
+                shootButtonLock = true;
             }
-            else if (firstShot == CarouselPosition.INTAKE_SLOT_1 && shotCount <=1) {
-                commandScheduler.add(new PreviousShootCommand(robot.getShooterSystem()));
-                shotCount++;
-            }
-            else if (firstShot == CarouselPosition.INTAKE_SLOT_2 && shotCount <= 2){
-                commandScheduler.add(new PreviousShootCommand(robot.getShooterSystem()));
-                shotCount++;
+            else {
+                shootButtonLock = false;
             }
         }
 
-        if (cancelShoot) {
+        if (gamepad2.back && gamepad2.start) {
             commandScheduler.emptyAll();
+            robot.getShooterSystem().getArtifactLift().setLiftDownNoLimit();
         }
 
         commandScheduler.loop();
@@ -206,16 +203,27 @@ public class StateTeleOp extends OpMode {
             }
             shotCount = 0;
 
-            if (gamepad2.dpadLeftWasPressed()) {
-                robot.getShooterSystem().getCarouselSystem().goToPreviousIntakePosition();
-            }
-            else if (gamepad2.dpadRightWasPressed()) {
-                robot.getShooterSystem().getCarouselSystem().goToNextIntakePosition();
+            if (carouselMoveUpdating) {
+                if (gamepad2.dpad_left) {
+                    if (!carouselButtonsLock) {
+                        robot.getShooterSystem().getCarouselSystem().goToPreviousIntakePosition();
+                    }
+                    carouselButtonsLock = true;
+                }
+                else if (gamepad2.dpad_right) {
+                    if (!carouselButtonsLock) {
+                        robot.getShooterSystem().getCarouselSystem().goToNextIntakePosition();
+                    }
+                    carouselButtonsLock = true;
+                }
+                else {
+                    carouselButtonsLock = false;
+                }
             }
         }
 
-
         telemetry.update();
+
     }
 
 

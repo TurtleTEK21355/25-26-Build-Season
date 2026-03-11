@@ -19,22 +19,22 @@ public class Auto extends StateAutoOpMode {
 
     public static double SPEED = 0.5;
 
-    // X positions (along the intake axis)
-    public static double SHOOT_X = 0.0;
-    public static double INTAKE_1_X = 10.0;
-    public static double INTAKE_2_X = 20.0;
-    public static double INTAKE_3_X = 30.0;
+    // X positions
+    public static double SHOOT_X = 12.0;
+    public static double INTAKE_1_X = 44.0;
+    public static double INTAKE_2_X = 48.0;
+    public static double INTAKE_3_X = 52.0;
 
-    // Y positions (judge ↔ opponent wall)
-    public static double START_Y = 0.0;
-    public static double SHOOT_Y = -10.0;
-    public static double ROW_2_Y = -20.0;
-    public static double ROW_3_Y = -30.0;
+    // Y positions
+    public static double START_Y = 60.0;
+    public static double SHOOT_Y = 11.0;
+    public static double ROW_2_Y = -12.0;
+    public static double ROW_3_Y = -35.0;
 
-    // Headings (degrees – tune to your convention)
+    // Headings
     public static double START_H = 0.0;
-    public static double SHOOT_H = 0.0;
-    public static double INTAKE_H = 180.0;
+    public static double SHOOT_H = 45.0;
+    public static double INTAKE_H = 90.0;
 
     // Intake power
     public static double INTAKE_ON_POWER = 1.0;
@@ -62,7 +62,7 @@ public class Auto extends StateAutoOpMode {
             case SHOOT_ALL_4:
                 return new ShootAllArtifactsCommand(robot.getShooterSystem(), currentMotif);
             case ROTATE_CAROUSEL_5:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_0, robot.getShooterSystem().getCarouselSystem());
+                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_0, robot.getShooterSystem());
             case ROTATE_ROBOT_6:
                 return new RotatePIDCommand(START_H, INTAKE_H, SPEED, robot.getDrivetrain(), robot.getIMU());
             case SET_INTAKE_POWER_7:
@@ -70,11 +70,11 @@ public class Auto extends StateAutoOpMode {
             case MOVE_TO_POS_8:
                 return new MovePIDEncoderCommand(SHOOT_X, INTAKE_1_X, SPEED, robot.getDrivetrain());
             case ROTATE_CAROUSEL_9:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_1, robot.getShooterSystem().getCarouselSystem());
+                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_1, robot.getShooterSystem());
             case MOVE_TO_POS_10:
                 return new MovePIDEncoderCommand(INTAKE_1_X, INTAKE_2_X, SPEED, robot.getDrivetrain());
             case ROTATE_CAROUSEL_11:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_2, robot.getShooterSystem().getCarouselSystem());
+                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_2, robot.getShooterSystem());
             case MOVE_TO_POS_12:
                 return new MovePIDEncoderCommand(INTAKE_2_X, INTAKE_3_X, SPEED, robot.getDrivetrain());
             case MOVE_TO_POS_13:
@@ -86,7 +86,7 @@ public class Auto extends StateAutoOpMode {
             case SHOOT_ALL_16:
                 return new ShootAllArtifactsCommand(robot.getShooterSystem(), currentMotif);
             case ROTATE_CAROUSEL_17:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_0, robot.getShooterSystem().getCarouselSystem());
+                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_0, robot.getShooterSystem());
             case ROTATE_ROBOT_18:
                 return new RotatePIDCommand(SHOOT_H, START_H, SPEED, robot.getDrivetrain(), robot.getIMU());
             case MOVE_TO_POS_19:
@@ -98,11 +98,11 @@ public class Auto extends StateAutoOpMode {
             case MOVE_TO_POS_22:
                 return new MovePIDEncoderCommand(SHOOT_X, INTAKE_1_X, SPEED, robot.getDrivetrain());
             case ROTATE_CAROUSEL_23:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_1, robot.getShooterSystem().getCarouselSystem());
+                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_1, robot.getShooterSystem());
             case MOVE_TO_POS_24:
                 return new MovePIDEncoderCommand(INTAKE_1_X, INTAKE_2_X, SPEED, robot.getDrivetrain());
             case ROTATE_CAROUSEL_25:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_2, robot.getShooterSystem().getCarouselSystem());
+                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_2, robot.getShooterSystem());
             case MOVE_TO_POS_26:
                 return new MovePIDEncoderCommand(INTAKE_2_X, INTAKE_3_X, SPEED, robot.getDrivetrain());
             case MOVE_TO_POS_27:
@@ -118,7 +118,7 @@ public class Auto extends StateAutoOpMode {
             case SHOOT_ALL_32:
                 return new ShootAllArtifactsCommand(robot.getShooterSystem(), currentMotif);
             case ROTATE_CAROUSEL_33:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_0, robot.getShooterSystem().getCarouselSystem());
+                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_0, robot.getShooterSystem());
             case ROTATE_ROBOT_34:
                 return new RotatePIDCommand(SHOOT_H, START_H, SPEED, robot.getDrivetrain(), robot.getIMU());
             case MOVE_TO_POS_35:
@@ -130,11 +130,11 @@ public class Auto extends StateAutoOpMode {
             case MOVE_TO_POS_38:
                 return new MovePIDEncoderCommand(SHOOT_X, INTAKE_1_X, SPEED, robot.getDrivetrain());
             case ROTATE_CAROUSEL_39:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_1, robot.getShooterSystem().getCarouselSystem());
+                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_1, robot.getShooterSystem());
             case MOVE_TO_POS_40:
                 return new MovePIDEncoderCommand(INTAKE_1_X, INTAKE_2_X, SPEED, robot.getDrivetrain());
             case ROTATE_CAROUSEL_41:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_2, robot.getShooterSystem().getCarouselSystem());
+                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_2, robot.getShooterSystem());
             case MOVE_TO_POS_42:
                 return new MovePIDEncoderCommand(INTAKE_2_X, INTAKE_3_X, SPEED, robot.getDrivetrain());
             case MOVE_TO_POS_43:

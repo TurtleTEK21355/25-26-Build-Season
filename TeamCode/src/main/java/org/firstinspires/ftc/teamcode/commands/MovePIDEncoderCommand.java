@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
 
 public class MovePIDEncoderCommand extends Command {
-    private final Drivetrain drivetrain;
+    Drivetrain drivetrain;
     PIDControllerSpeedLimit yPID;
     private double yPosition = 0;
 

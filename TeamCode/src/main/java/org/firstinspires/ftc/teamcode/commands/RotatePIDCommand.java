@@ -4,17 +4,14 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.lib.command.Command;
-import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
-import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerSpeedLimit;
 import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
-import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 
 public class RotatePIDCommand extends Command {
     private double position;
-    private Drivetrain drivetrain;
-    private IMU imu;
+    Drivetrain drivetrain;
+    IMU imu;
     PIDControllerHeading hPID;
     public String dataKey = "RotatePIDCommand";
 

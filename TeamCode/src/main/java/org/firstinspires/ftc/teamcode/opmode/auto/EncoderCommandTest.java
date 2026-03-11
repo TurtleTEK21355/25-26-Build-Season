@@ -16,10 +16,6 @@ public class EncoderCommandTest extends StateAutoOpMode {
     AllianceSide side = AllianceSide.BLUE; // Replace BLUE with RED if required
 
     public static double SPEED = 0.5;
-    public static int firstPosition = 1000;
-    public static int secondPosition = -1000;
-
-
 
     @Override
     public void initialize() {
@@ -30,13 +26,15 @@ public class EncoderCommandTest extends StateAutoOpMode {
 
     @Override
     public void commands() {
-        addCommand(new MovePIDEncoderCommand(24, SPEED, robot.getDrivetrain()));
-        addCommand(new RotatePIDCommand(90, SPEED, robot.getDrivetrain(), robot.getIMU()));
-        addCommand(new MovePIDEncoderCommand(24, SPEED, robot.getDrivetrain()));
-        addCommand(new RotatePIDCommand(180, SPEED, robot.getDrivetrain(), robot.getIMU()));
-        addCommand(new MovePIDEncoderCommand(24, SPEED, robot.getDrivetrain()));
-        addCommand(new RotatePIDCommand(-90, SPEED, robot.getDrivetrain(), robot.getIMU()));
-        addCommand(new MovePIDEncoderCommand(24, SPEED, robot.getDrivetrain()));
-        addCommand(new RotatePIDCommand(0, SPEED, robot.getDrivetrain(), robot.getIMU()));
+        int yForwardAmount = 24;
+        int rotate90DegreesCounterClockwise = 90;
+        addCommand(new MovePIDEncoderCommand(yForwardAmount, SPEED, robot.getDrivetrain()));
+        addCommand(new RotatePIDCommand(rotate90DegreesCounterClockwise, SPEED, robot.getDrivetrain(), robot.getIMU()));
+        addCommand(new MovePIDEncoderCommand(yForwardAmount, SPEED, robot.getDrivetrain()));
+        addCommand(new RotatePIDCommand(rotate90DegreesCounterClockwise, SPEED, robot.getDrivetrain(), robot.getIMU()));
+        addCommand(new MovePIDEncoderCommand(yForwardAmount, SPEED, robot.getDrivetrain()));
+        addCommand(new RotatePIDCommand(rotate90DegreesCounterClockwise, SPEED, robot.getDrivetrain(), robot.getIMU()));
+        addCommand(new MovePIDEncoderCommand(yForwardAmount, SPEED, robot.getDrivetrain()));
+        addCommand(new RotatePIDCommand(rotate90DegreesCounterClockwise, SPEED, robot.getDrivetrain(), robot.getIMU()));
     }
 }
