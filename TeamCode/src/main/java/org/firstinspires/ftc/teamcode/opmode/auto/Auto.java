@@ -19,22 +19,22 @@ public class Auto extends StateAutoOpMode {
 
     public static double SPEED = 0.5;
 
-    // X positions (along the intake axis)
-    public static double SHOOT_X = 0.0;
-    public static double INTAKE_1_X = 10.0;
-    public static double INTAKE_2_X = 20.0;
-    public static double INTAKE_3_X = 30.0;
+    // X positions
+    public static double SHOOT_X = 12.0;
+    public static double INTAKE_1_X = 44.0;
+    public static double INTAKE_2_X = 48.0;
+    public static double INTAKE_3_X = 52.0;
 
-    // Y positions (judge ↔ opponent wall)
-    public static double START_Y = 0.0;
-    public static double SHOOT_Y = -10.0;
-    public static double ROW_2_Y = -20.0;
-    public static double ROW_3_Y = -30.0;
+    // Y positions
+    public static double START_Y = 60.0;
+    public static double SHOOT_Y = 11.0;
+    public static double ROW_2_Y = -12.0;
+    public static double ROW_3_Y = -35.0;
 
-    // Headings (degrees – tune to your convention)
+    // Headings
     public static double START_H = 0.0;
-    public static double SHOOT_H = 0.0;
-    public static double INTAKE_H = 180.0;
+    public static double SHOOT_H = 45.0;
+    public static double INTAKE_H = 90.0;
 
     // Intake power
     public static double INTAKE_ON_POWER = 1.0;
