@@ -44,9 +44,9 @@ public class Limelight {
     
     public Pose2D getPositionFromGoal() {
         LLResult result = limelight.getLatestResult();
-        if (result != null && result.isValid()) {  // Add null check
+        if (result != null && result.isValid()) {  
             Pose3D botpose = result.getBotpose_MT2();
-            if (botpose != null) {  // Also check botpose
+            if (botpose != null) { 
                 return new Pose2D(
                         botpose.getPosition().y * 39.3700787,
                         -botpose.getPosition().x * 39.3700787,
@@ -65,6 +65,7 @@ public class Limelight {
         }
         return degrees;
     }
+    
     public boolean isDetectingGoal(AllianceSide side){
         LLResult result = limelight.getLatestResult();
         int id = 0;
@@ -73,19 +74,21 @@ public class Limelight {
         }
         return id == side.getGoalID();
     }
+    
     public Pose2D getCorrectedPositionFromLL(Pose2D currentPosition){
-        LLResult result = limelight.getLatestResult();
-        Pose2D llPosition = new Pose2D(
+        LLResult llResult = limelight.getLatestResult();
+        Pose2D result = currentPosition;
+        if (llResult  != null && result.isValid()){
+            Pose2D llPosition = new Pose2D(
                 result.getBotpose_MT2().getPosition().y * 39.3700787, //magic number
                 -result.getBotpose_MT2().getPosition().x * 39.3700787, //magic number
                 currentPosition.h
-        );
-        if (result.isValid() && llPosition.distanceTo(currentPosition) > LL_POSITION_TOLERANCE) { //magic number
-            return llPosition;
+            );
+            if ( llPosition.distanceTo(currentPosition) > LL_POSITION_TOLERANCE) {
+                result = llPosition;
+            } 
         }
-        else {
-            return currentPosition;
-        }
+        return result;
     }
     /**
      * Returns NONE when no tag is detected
