@@ -11,10 +11,10 @@ import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 
 public class Drivetrain {
-    private DcMotor frontLeftMotor;
-    private DcMotor frontRightMotor;
-    private DcMotor backLeftMotor;
-    private DcMotor backRightMotor;
+    private final DcMotor frontLeftMotor;
+    private final DcMotor frontRightMotor;
+    private final DcMotor backLeftMotor;
+    private final DcMotor backRightMotor;
 
 
     public Drivetrain(DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight){
@@ -44,41 +44,24 @@ public class Drivetrain {
         control(correctedY, correctedX, h);
     }
 
-    public void fcControl(double y, double x, double h, Pose2D position) {
-        double r = Math.hypot(y, x);
-        double theta = Math.atan2(y, x);
-
-        double correctedTheta = theta - Math.toRadians(position.h);
-
-        double correctedY = r * Math.sin(correctedTheta);
-        double correctedX = r * Math.cos(correctedTheta);
-
-        control(correctedY, correctedX, h);
-    }
-
-    public void fcControl(double y, double x, double h, AllianceSide side, Pose2D position) {
+    public void fcControl(double y, double x, double h, AllianceSide side, double heading) {
         y = Math.pow(y, Constants.drivetrainExponentIndex);
         x = Math.pow(x, Constants.drivetrainExponentIndex);
         h = Math.pow(h, Constants.drivetrainExponentIndex);
 
-
-
-        //this is a little confusing, but this is basically a null checker for side and position
+        //this is a little confusing, but this is basically a null checker for side
         //because of the way that the stateRobot class works, if side is null then forward will be
-        //0 degrees so the direction it starts in, and if position is null then it will pass in
-        //position as 0 0 0 basically turning off field centric.
+        //0 degrees so the direction it starts in
+
         int forwardDirection = 0;
         if (side != null) {
             forwardDirection = side.getForwardDirection();
-        }
-        if (position == null) {
-            position = new Pose2D(0, 0, 0);
         }
 
         double r = Math.hypot(y, x);
         double theta = Math.atan2(y, x);
 
-        double correctedTheta = theta - Math.toRadians(position.h + forwardDirection);
+        double correctedTheta = theta - Math.toRadians(heading + forwardDirection);
 
         double correctedY = r * Math.sin(correctedTheta);
         double correctedX = r * Math.cos(correctedTheta);

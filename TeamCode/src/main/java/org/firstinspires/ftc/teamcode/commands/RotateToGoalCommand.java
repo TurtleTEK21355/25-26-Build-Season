@@ -36,7 +36,7 @@ public class RotateToGoalCommand extends Command {
     @Override
     public void loop() {
         Pose2D position = otosSensor.getPosition();
-        drivetrain.fcControl(0, 0, hPID.calculate(position.h), position);
+        drivetrain.fcControl(0, 0, hPID.calculate(position.h), position.h);
 
     }
 

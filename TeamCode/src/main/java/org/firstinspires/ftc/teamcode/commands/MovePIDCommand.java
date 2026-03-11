@@ -49,7 +49,7 @@ public class MovePIDCommand extends Command {
         double xCalc = xPID.calculate(position.x);
         double hCalc = hPID.calculate(position.h);
         double yCalc = yPID.calculate(position.y);
-        drivetrain.fcControl(yCalc, xCalc, hCalc, position);
+        drivetrain.fcControl(yCalc, xCalc, hCalc, position.h);
 
     }
 
