@@ -41,20 +41,22 @@ public class Limelight {
     public LLResult getLatestResult() {
         return limelight.getLatestResult();
     }
-
+    
     public Pose2D getPositionFromGoal() {
         LLResult result = limelight.getLatestResult();
-        if (result.isValid()) {
-            return new Pose2D(
-                    result.getBotpose_MT2().getPosition().y * 39.3700787, //magic number
-                    -result.getBotpose_MT2().getPosition().x * 39.3700787, //magic number
-                    result.getBotpose_MT2().getOrientation().getYaw()
-            );
+        if (result != null && result.isValid()) {  // Add null check
+            Pose3D botpose = result.getBotpose_MT2();
+            if (botpose != null) {  // Also check botpose
+                return new Pose2D(
+                        botpose.getPosition().y * 39.3700787,
+                        -botpose.getPosition().x * 39.3700787,
+                        botpose.getOrientation().getYaw()
+                );
+            }
         }
-        else {
-            return new Pose2D();
-        }
+        return new Pose2D();
     }
+
     public Double getAngleFromGoal(){
         LLResult result = limelight.getLatestResult();
         Double degrees = null;
