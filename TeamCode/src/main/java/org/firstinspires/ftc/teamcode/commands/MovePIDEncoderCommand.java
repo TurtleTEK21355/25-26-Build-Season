@@ -17,7 +17,7 @@ public class MovePIDEncoderCommand extends Command {
 
     /**
      * This command is encoder-based and only moves on the robot-centric y-axis
-     * @param targetY amount Y to move
+     * @param yTarget amount Y to move
      * @param speed Maximum PID speed
      */
     public MovePIDEncoderCommand(double yTarget, double speed, Drivetrain drivetrain) {
@@ -37,7 +37,7 @@ public class MovePIDEncoderCommand extends Command {
 
     @Override
     public void loop() {
-         yPosition = drivetrain.getEncoderPosition();
+         yPosition = -drivetrain.getEncoderPosition();
          double yCalc = yPID.calculate(yPosition*Constants.inchesToEncoderDrivetrain);
          drivetrain.control(yCalc, 0, 0);
     }
@@ -54,7 +54,7 @@ public class MovePIDEncoderCommand extends Command {
 
     @Override
     public boolean isCompleted() {
-        return yPID.atTarget(drivetrain.getEncoderPosition());
+        return yPID.atTarget(-drivetrain.getEncoderPosition());
     }
 
 }

@@ -52,6 +52,8 @@ public class StateTeleOp extends OpMode {
 
         telemetry.addLine("G1 Left Stick → Drive & Strafe");
         telemetry.addLine("G1 Right Stick X → Rotate");
+        telemetry.addLine("G1 Right Bumper → Align to Goal");
+
         telemetry.addLine("G1 Back Button → Reset Position");
         telemetry.addLine();
         telemetry.addLine("G2 Left Trigger → Reverse Intake");

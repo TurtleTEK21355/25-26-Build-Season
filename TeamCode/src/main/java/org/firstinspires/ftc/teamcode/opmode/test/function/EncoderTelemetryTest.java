@@ -33,13 +33,15 @@ public class EncoderTelemetryTest extends OpMode {
         Pose2D startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.POSITION_BLACKBOARD_KEY, new Pose2D(0, 0, 0));
         AllianceSide side = (AllianceSide) blackboard.getOrDefault(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         robot = StateRobot.build(hardwareMap);
-        robot.getOtosSensor().setPosition(startingPosition);
         robot.setAllianceSide(side);
+        robot.getDrivetrain().resetEncoderPosition();
     }
 
     @Override
     public void loop() {
-        telemetry.addData("Encoder Value: ", robot.getDrivetrain().getEncoderPosition());
+        telemetry.addData("Encoder Value (Raw): ", robot.getDrivetrain().getEncoderPosition());
+        telemetry.addData("Encoder Value (Inches): ", robot.getDrivetrain().getEncoderPosition()/Constants.inchesToEncoderDrivetrain);
+
     }
 
 
