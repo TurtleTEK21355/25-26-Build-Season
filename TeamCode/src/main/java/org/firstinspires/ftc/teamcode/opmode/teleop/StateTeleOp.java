@@ -53,7 +53,7 @@ public class StateTeleOp extends OpMode {
         Pose2D startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.POSITION_BLACKBOARD_KEY, new Pose2D(0,0, 0));
         AllianceSide side = (AllianceSide) blackboard.getOrDefault(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         robot = StateRobot.build(hardwareMap);
-        robot.getOtosSensor().setPosition(startingPosition);
+        position = startingPosition;
         robot.setAllianceSide(side);
 
         telemetry.addLine("G1 Left Stick → Drive & Strafe");
