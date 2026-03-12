@@ -42,6 +42,8 @@ public class Auto extends StateAutoOpMode {
     public static double INTAKE_ON_POWER = 1.0;
     public static double INTAKE_OFF_POWER = 0.0;
 
+    public static AutoStep STOP_COMMAND = AutoStep.ROTATE_CAROUSEL_5;
+
     public static Motif currentMotif = Motif.PPG;
 
     private final AutoStep[] steps = AutoStep.values();
@@ -49,6 +51,7 @@ public class Auto extends StateAutoOpMode {
     @Override
     public void commands() {
         for (AutoStep step : steps) {
+            if (step == STOP_COMMAND) break;
             addCommand(buildCommandForStep(step));
         }
     }

@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.opmode.test.system;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.subsystems.HardwareName;
 
+@TeleOp(name = "Carousel Servo Test", group = "test")
 public class CarouselServoTest extends OpMode {
     private Servo carouselServo;
 

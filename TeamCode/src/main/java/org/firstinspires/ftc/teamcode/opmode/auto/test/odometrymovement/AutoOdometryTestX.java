@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.test.odometrymovement;
+package org.firstinspires.ftc.teamcode.opmode.auto.test.odometrymovement;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
@@ -6,8 +6,8 @@ import org.firstinspires.ftc.teamcode.commands.MovePIDHoldTimeCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 
-@Autonomous(name="Auto Odometry Test Y", group="test")
-public class AutoOdometryTestY extends StateAutoOpMode {
+@Autonomous(name="Auto Odometry Test X", group="test")
+public class AutoOdometryTestX extends StateAutoOpMode {
     double startingHeading = 0;
 
     final double SPEED = 0.5;
@@ -20,7 +20,7 @@ public class AutoOdometryTestY extends StateAutoOpMode {
 
     @Override
     public void commands() {
-        addCommand(new MovePIDHoldTimeCommand(new Pose2D(0, 24, 0), 1000, SPEED, robot.getDrivetrain(), robot.getOtosSensor()));
+        addCommand(new MovePIDHoldTimeCommand(new Pose2D(24, 0, 0), 1000, SPEED, robot.getDrivetrain(), robot.getOtosSensor()));
         addCommand(new MovePIDHoldTimeCommand(new Pose2D(0, 0, 0), 1000, SPEED, robot.getDrivetrain(), robot.getOtosSensor()));
     }
 }

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.subsystems.HardwareName;
 
-//@Disabled
+@Disabled
 @TeleOp(name = "Telemetry Test", group = "test")
 public class TelemetryTest extends LinearOpMode {
     ElapsedTime timer = new ElapsedTime();

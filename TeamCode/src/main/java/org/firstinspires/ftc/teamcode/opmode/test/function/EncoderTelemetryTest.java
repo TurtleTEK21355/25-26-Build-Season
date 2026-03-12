@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.test.function;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -9,7 +10,7 @@ import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
-@TeleOp(name = "Encoder Telemetry Test", group = "teleop")
+@TeleOp(name = "Encoder Telemetry Test", group = "test")
 public class EncoderTelemetryTest extends OpMode {
     private StateRobot robot;
 

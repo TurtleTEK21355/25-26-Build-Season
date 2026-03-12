@@ -22,12 +22,12 @@ public class MovePIDEncoderCommand extends Command {
      */
     public MovePIDEncoderCommand(double yTargetInches, double speed, Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        yPID = new PIDControllerSpeedLimit(Constants.getLinearPIDConstants(), yTargetInches *Constants.inchesToEncoderDrivetrain, 200, speed);
+        yPID = new PIDControllerSpeedLimit(Constants.getEncoderLinearPIDConstants(), yTargetInches*Constants.inchesToEncoderDrivetrain, 200, speed);
     }
 
     public MovePIDEncoderCommand(double yStartInches, double yEndInches, double speed, Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        yPID = new PIDControllerSpeedLimit(Constants.getLinearPIDConstants(), (yEndInches-yStartInches)*Constants.inchesToEncoderDrivetrain, 200, speed);
+        yPID = new PIDControllerSpeedLimit(Constants.getEncoderLinearPIDConstants(), (yEndInches-yStartInches)*Constants.inchesToEncoderDrivetrain, 200, speed);
     }
 
     @Override
@@ -46,6 +46,7 @@ public class MovePIDEncoderCommand extends Command {
     public String telemetry() {
         TelemetryString string = new TelemetryString();
 
+        string.addData("yCalc: ", yPID.calculate(yPosition));
         string.addData("Encoder Value: ", yPosition);
         string.addData("Field Position in Inches (Relative): ", yPosition/Constants.inchesToEncoderDrivetrain);
 
@@ -54,7 +55,11 @@ public class MovePIDEncoderCommand extends Command {
 
     @Override
     public boolean isCompleted() {
-        return yPID.atTarget(drivetrain.getEncoderPosition());
+        if (yPID.atTarget(drivetrain.getEncoderPosition())) {
+            drivetrain.control(0,0,0);
+            return true;
+        }
+        return false;
     }
 
 }

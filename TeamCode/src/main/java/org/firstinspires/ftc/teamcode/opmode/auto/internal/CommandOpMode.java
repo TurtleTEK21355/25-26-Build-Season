@@ -18,16 +18,17 @@ public abstract class CommandOpMode extends LinearOpMode {
         initialize();
         waitForStart();
         while (!commandScheduler.isCompleted() && opModeIsActive()) {
-            for (Command command : backgroundCommands) {
-                command.loop();
-                telemetry.addLine(command.telemetry());
-            }
-
             commandScheduler.loop();
 
             dataHandler();
 
             telemetry.addLine(commandScheduler.getTelemetry());
+
+            for (Command command : backgroundCommands) {
+                command.loop();
+                telemetry.addLine(command.telemetry());
+            }
+
             telemetry.update();
         }
         cleanup(); //for blackboard

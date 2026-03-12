@@ -1,16 +1,17 @@
-package org.firstinspires.ftc.teamcode.opmode.test.function;
+package org.firstinspires.ftc.teamcode.opmode.auto.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.commands.NearestArtifactCommand;
 import org.firstinspires.ftc.teamcode.commands.SelectArtifactCommand;
 import org.firstinspires.ftc.teamcode.commands.TimerCommand;
-import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 
-@Autonomous(name="Carousel Command Test", group = "test") // Replace name with clear and identifiable name
+@Disabled
+@Autonomous(name="Carousel ArtifactState Command Test", group = "test") // Replace name with clear and identifiable name
 public class CarouselCommandTest extends StateAutoOpMode {
     double startingHeading = 0;
     AllianceSide side = AllianceSide.BLUE; // Replace BLUE with RED if required

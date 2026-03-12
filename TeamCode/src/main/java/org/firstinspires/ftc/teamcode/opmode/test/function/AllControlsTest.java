@@ -33,6 +33,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.bylazar.gamepad.GamepadManager;
 import com.bylazar.gamepad.PanelsGamepad;
 import com.bylazar.telemetry.PanelsTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -42,6 +43,7 @@ import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
+@Disabled
 @TeleOp(name = "All Controls Test", group = "test")
 public class AllControlsTest extends LinearOpMode {
     private StateRobot robot;

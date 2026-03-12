@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.Limelight;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.OTOSSensor;
 
-@TeleOp(name = "Positioning Test", group = "test")
+@TeleOp(name = "OTOS/Limelight Test", group = "test")
 public class PositioningTest extends OpMode {
     private Drivetrain drivetrain;
     private OTOSSensor otosSensor;

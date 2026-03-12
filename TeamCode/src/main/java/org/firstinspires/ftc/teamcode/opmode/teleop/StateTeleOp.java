@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
+import static org.firstinspires.ftc.teamcode.subsystems.StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY;
+import static org.firstinspires.ftc.teamcode.subsystems.StateRobot.HEADING_BLACKBOARD_KEY;
+
 import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -227,5 +230,9 @@ public class StateTeleOp extends OpMode {
 
     }
 
+    @Override
+    public void stop() {
+        blackboard.put(ALLIANCE_SIDE_BLACKBOARD_KEY, robot.getAllianceSide());
+    }
 
 }
