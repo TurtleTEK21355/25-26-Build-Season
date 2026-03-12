@@ -5,10 +5,10 @@ import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
 import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.ShooterSystem;
 
-public class ShootAllArtifactsCommand extends SequentialCommand {
+public class ShootAllArtifactStateCommand extends SequentialCommand {
     public String dataKey = "ShootAllArtifactsCommand";
 
-    public ShootAllArtifactsCommand(ShooterSystem shooterSystem, Motif motif) {
+    public ShootAllArtifactStateCommand(ShooterSystem shooterSystem, Motif motif) {
         commandScheduler.add(new SetCarouselPositionCommand(CarouselPosition.nextShootPosition(shooterSystem.getCarouselPosition()), shooterSystem));
         commandScheduler.add(new TimerCommand(Constants.carouselMoveOneTimer));
         if (motif == Motif.NONE) {

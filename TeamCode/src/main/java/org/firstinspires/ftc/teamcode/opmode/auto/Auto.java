@@ -3,12 +3,16 @@ package org.firstinspires.ftc.teamcode.opmode.auto;
 import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commands.GetMotifCommand;
 import org.firstinspires.ftc.teamcode.commands.MovePIDEncoderCommand;
 import org.firstinspires.ftc.teamcode.commands.RotatePIDCommand;
 import org.firstinspires.ftc.teamcode.commands.SetCarouselPositionCommand;
+import org.firstinspires.ftc.teamcode.commands.SetFlywheelVelocityCommand;
+import org.firstinspires.ftc.teamcode.commands.SetHoodAngleCommand;
 import org.firstinspires.ftc.teamcode.commands.SetIntakePowerCommand;
-import org.firstinspires.ftc.teamcode.commands.ShootAllArtifactsCommand;
+import org.firstinspires.ftc.teamcode.commands.Shoot3Command;
+import org.firstinspires.ftc.teamcode.commands.ShootAllArtifactStateCommand;
 import org.firstinspires.ftc.teamcode.commands.TimerCommand;
 import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
@@ -43,6 +47,8 @@ public class Auto extends StateAutoOpMode {
     public static double INTAKE_OFF_POWER = 0.0;
 
     public static AutoStep STOP_COMMAND = AutoStep.ROTATE_CAROUSEL_5;
+    public static AutoStep START_COMMAND = AutoStep.SHOOT_ALL_4;
+    boolean startCommandLock = true;
 
     public static Motif currentMotif = Motif.PPG;
 
@@ -50,8 +56,13 @@ public class Auto extends StateAutoOpMode {
 
     @Override
     public void commands() {
+        addCommand(new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_0, robot.getShooterSystem()));
+        addCommand(new SetFlywheelVelocityCommand(robot.getShooterSystem(), Constants.shootCloseVelocity));
+        addCommand(new SetHoodAngleCommand(Constants.shootCloseAngle, robot.getShooterSystem()));
         for (AutoStep step : steps) {
+            if (step == START_COMMAND) startCommandLock = false;
             if (step == STOP_COMMAND) break;
+            if (startCommandLock) continue;
             addCommand(buildCommandForStep(step));
         }
     }
@@ -65,7 +76,7 @@ public class Auto extends StateAutoOpMode {
             case ROTATE_ROBOT_3:
                 return new RotatePIDCommand(START_H, SHOOT_H, SPEED, robot.getDrivetrain(), robot.getIMU());
             case SHOOT_ALL_4:
-                return new ShootAllArtifactsCommand(robot.getShooterSystem(), currentMotif);
+                return new Shoot3Command(robot.getShooterSystem());
             case ROTATE_CAROUSEL_5:
                 return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_0, robot.getShooterSystem());
             case ROTATE_ROBOT_6:
@@ -89,7 +100,7 @@ public class Auto extends StateAutoOpMode {
             case ROTATE_ROBOT_15:
                 return new RotatePIDCommand(INTAKE_H, START_H, SPEED, robot.getDrivetrain(), robot.getIMU());
             case SHOOT_ALL_16:
-                return new ShootAllArtifactsCommand(robot.getShooterSystem(), currentMotif);
+                return new Shoot3Command(robot.getShooterSystem());
             case ROTATE_CAROUSEL_17:
                 return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_0, robot.getShooterSystem());
             case ROTATE_ROBOT_18:
@@ -121,7 +132,7 @@ public class Auto extends StateAutoOpMode {
             case ROTATE_ROBOT_31:
                 return new RotatePIDCommand(START_H, SHOOT_H, SPEED, robot.getDrivetrain(), robot.getIMU());
             case SHOOT_ALL_32:
-                return new ShootAllArtifactsCommand(robot.getShooterSystem(), currentMotif);
+                return new Shoot3Command(robot.getShooterSystem());
             case ROTATE_CAROUSEL_33:
                 return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_0, robot.getShooterSystem());
             case ROTATE_ROBOT_34:
@@ -153,7 +164,7 @@ public class Auto extends StateAutoOpMode {
             case ROTATE_ROBOT_47:
                 return new RotatePIDCommand(START_H, SHOOT_H, SPEED, robot.getDrivetrain(), robot.getIMU());
             case SHOOT_ALL_48:
-                return new ShootAllArtifactsCommand(robot.getShooterSystem(), currentMotif);
+                return new Shoot3Command(robot.getShooterSystem());
             default:
                 return new TimerCommand(0);
         }

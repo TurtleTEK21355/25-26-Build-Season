@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.lib.command;
 
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
+import org.firstinspires.ftc.teamcode.commands.NextShootCommand;
 import org.firstinspires.ftc.teamcode.lib.telemetry.TelemetryString;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -15,14 +17,15 @@ public class CommandScheduler{
     private boolean initLock = false;
 
     public CommandScheduler(Command... commands) {
-        for (Command command : commands) {
-            add(command);
-        }
+        commandQueue.addAll(Arrays.asList(commands));
     }
 
 
     public void add(Command command) {
         commandQueue.add(command);
+    }
+    public void addAll(Command... commands) {
+        commandQueue.addAll(Arrays.asList(commands));
     }
     public void addAll(Collection<Command> commands) {
         commandQueue.addAll(commands);

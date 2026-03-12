@@ -1,23 +1,9 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
-import org.firstinspires.ftc.teamcode.commands.NextShootCommand;
-import org.firstinspires.ftc.teamcode.commands.PreviousShootCommand;
-import org.firstinspires.ftc.teamcode.commands.ShootAllArtifactsCommand;
-import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
-import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
-import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
-import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerSpeedLimit;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
-import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
-import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
 @TeleOp(name = "Red TeleOp", group = "teleop")

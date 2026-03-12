@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
 import static org.firstinspires.ftc.teamcode.subsystems.StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY;
-import static org.firstinspires.ftc.teamcode.subsystems.StateRobot.HEADING_BLACKBOARD_KEY;
 
 import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -12,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
 import org.firstinspires.ftc.teamcode.commands.NextShootCommand;
 import org.firstinspires.ftc.teamcode.commands.PreviousShootCommand;
-import org.firstinspires.ftc.teamcode.commands.ShootAllArtifactsCommand;
+import org.firstinspires.ftc.teamcode.commands.ShootAllArtifactStateCommand;
 import org.firstinspires.ftc.teamcode.lib.command.CommandScheduler;
 import org.firstinspires.ftc.teamcode.lib.pid.PIDControllerHeading;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
@@ -152,7 +151,7 @@ public class StateTeleOp extends OpMode {
             if (gamepad2.left_bumper) {
                 if (!shootButtonLock) {
                     if (commandScheduler.isCompleted()) {
-                        commandScheduler.add(new ShootAllArtifactsCommand(robot.getShooterSystem(), motif));
+                        commandScheduler.add(new ShootAllArtifactStateCommand(robot.getShooterSystem(), motif));
                         shotCount = 3;
                     }
                 }

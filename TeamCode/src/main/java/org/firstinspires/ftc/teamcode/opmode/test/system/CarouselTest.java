@@ -53,10 +53,9 @@ public class CarouselTest extends LinearOpMode {
     public void runOpMode() {
         Telemetry combined = new MultipleTelemetry(telemetry, PanelsTelemetry.INSTANCE.getFtcTelemetry());
         TelemetryPasser.telemetry = combined;
-        PanelsGamepad virtualGamepad = PanelsGamepad.INSTANCE;        Pose2D startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.HEADING_BLACKBOARD_KEY, new Pose2D(0,0,0));
+        PanelsGamepad virtualGamepad = PanelsGamepad.INSTANCE;
         AllianceSide side = (AllianceSide) blackboard.getOrDefault(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         robot = StateRobot.build(hardwareMap);
-        robot.getOtosSensor().setPosition(startingPosition);
         robot.setAllianceSide(side);
 
         waitForStart();

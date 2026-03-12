@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.teamcode.subsystems.StateRobot.HEADING_BLACK
 
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
+import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
 import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
@@ -21,6 +22,7 @@ public abstract class StateAutoOpMode extends CommandOpMode {
     public void initialize() {
         TelemetryPasser.telemetry = telemetry;
         robot = StateRobot.build(hardwareMap);
+
         commands();
 
     }
