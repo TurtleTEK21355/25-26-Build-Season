@@ -27,7 +27,7 @@ public class RedBack extends StateAutoOpMode {
     @Override
     public void initialize() {
         setAllianceSide(side);
-        setStartingPosition(startingPosition);
+        setStartingHeading(startingPosition);
         super.initialize();
     }
 

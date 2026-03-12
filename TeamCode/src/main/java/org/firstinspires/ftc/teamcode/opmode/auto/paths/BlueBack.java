@@ -2,10 +2,7 @@ package org.firstinspires.ftc.teamcode.opmode.auto.paths;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.commands.LifterDownCommand;
-import org.firstinspires.ftc.teamcode.commands.LifterUpCommand;
 import org.firstinspires.ftc.teamcode.commands.MovePIDCommand;
-import org.firstinspires.ftc.teamcode.commands.SequentialCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
@@ -28,7 +25,7 @@ public class BlueBack extends StateAutoOpMode {
     @Override
     public void initialize() {
         setAllianceSide(side);
-        setStartingPosition(startingPosition);
+        setStartingHeading(startingPosition);
         super.initialize();
     }
 

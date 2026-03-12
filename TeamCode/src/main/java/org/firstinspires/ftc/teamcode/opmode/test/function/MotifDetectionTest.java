@@ -1,19 +1,14 @@
 package org.firstinspires.ftc.teamcode.opmode.test.function;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.commands.GetMotifCommand;
-import org.firstinspires.ftc.teamcode.commands.MovePIDHoldTimeCommand;
 import org.firstinspires.ftc.teamcode.commands.SimultaneousAnyCommand;
 import org.firstinspires.ftc.teamcode.commands.TimerCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
-import org.firstinspires.ftc.teamcode.opmode.auto.internal.ProgrammingAutoOpMode;
 import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.physicaldata.Motif;
-
-import java.util.Objects;
 
 @Autonomous(name="Motif Detection Test", group = "test") // Replace name with clear and identifiable name
 public class MotifDetectionTest extends StateAutoOpMode {
@@ -25,7 +20,7 @@ public class MotifDetectionTest extends StateAutoOpMode {
     @Override
     public void initialize() {
         setAllianceSide(side);
-        setStartingPosition(startingPosition);
+        setStartingHeading(startingPosition);
         super.initialize();
     }
 

@@ -34,7 +34,7 @@ public class StateTeleOp extends OpMode {
     private int shotCount = 0;
 
 
-    private final PIDControllerHeading hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), Constants.cameraAngleOffset, Constants.getPIDTolerance().h, Constants.blindRotateSpeed);
+    private final PIDControllerHeading hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), Constants.cameraAngleOffset, Constants.getPIDTolerance().h, Constants.linearSpeed);
 
     private Motif motif = Motif.NONE;
 
@@ -80,6 +80,7 @@ public class StateTeleOp extends OpMode {
             if (gamepad1.back) {
                 robot.getIMU().resetYaw();
             }
+            telemetry.addData("Heading", robot.getIMU().getRobotYawPitchRollAngles().getYaw());
         }
 
         if (turretUpdating) {

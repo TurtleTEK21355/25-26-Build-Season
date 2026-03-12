@@ -14,7 +14,7 @@ public class AutoOdometryTestY extends StateAutoOpMode {
 
     @Override
     public void initialize() {
-        setStartingPosition(startingPosition);
+        setStartingHeading(startingPosition);
         super.initialize();
     }
 

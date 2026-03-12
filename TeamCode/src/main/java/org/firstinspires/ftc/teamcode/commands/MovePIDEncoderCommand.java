@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
 public class MovePIDEncoderCommand extends Command {
     Drivetrain drivetrain;
     PIDControllerSpeedLimit yPID;
-    private double yPosition = 0;
+    private double yPosition;
 
     public String dataKey = "MovePIDEncoderCommand";
 
@@ -17,17 +17,17 @@ public class MovePIDEncoderCommand extends Command {
 
     /**
      * This command is encoder-based and only moves on the robot-centric y-axis
-     * @param yTarget amount Y to move
+     * @param yTargetInches amount Y to move
      * @param speed Maximum PID speed
      */
-    public MovePIDEncoderCommand(double yTarget, double speed, Drivetrain drivetrain) {
+    public MovePIDEncoderCommand(double yTargetInches, double speed, Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        yPID = new PIDControllerSpeedLimit(Constants.getLinearPIDConstants(), yTarget*Constants.inchesToEncoderDrivetrain, Constants.getPIDTolerance().y, speed);
+        yPID = new PIDControllerSpeedLimit(Constants.getLinearPIDConstants(), yTargetInches *Constants.inchesToEncoderDrivetrain, 200, speed);
     }
 
-    public MovePIDEncoderCommand(double yStart, double yEnd, double speed, Drivetrain drivetrain) {
+    public MovePIDEncoderCommand(double yStartInches, double yEndInches, double speed, Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        yPID = new PIDControllerSpeedLimit(Constants.getLinearPIDConstants(), (yEnd-yStart)*Constants.inchesToEncoderDrivetrain, Constants.getPIDTolerance().y, speed);
+        yPID = new PIDControllerSpeedLimit(Constants.getLinearPIDConstants(), (yEndInches-yStartInches)*Constants.inchesToEncoderDrivetrain, 200, speed);
     }
 
     @Override
@@ -37,8 +37,8 @@ public class MovePIDEncoderCommand extends Command {
 
     @Override
     public void loop() {
-         yPosition = -drivetrain.getEncoderPosition();
-         double yCalc = yPID.calculate(yPosition*Constants.inchesToEncoderDrivetrain);
+         yPosition = drivetrain.getEncoderPosition();
+         double yCalc = yPID.calculate(yPosition);
          drivetrain.control(yCalc, 0, 0);
     }
 
@@ -54,7 +54,7 @@ public class MovePIDEncoderCommand extends Command {
 
     @Override
     public boolean isCompleted() {
-        return yPID.atTarget(-drivetrain.getEncoderPosition());
+        return yPID.atTarget(drivetrain.getEncoderPosition());
     }
 
 }

@@ -50,7 +50,7 @@ public class AllControlsTest extends LinearOpMode {
 
 
     public void initialize() {
-        Pose2D startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
+        Pose2D startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.HEADING_BLACKBOARD_KEY, new Pose2D(0,0,0));
         AllianceSide side = (AllianceSide) blackboard.getOrDefault(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         robot = StateRobot.build(hardwareMap);
         robot.getOtosSensor().setPosition(startingPosition);

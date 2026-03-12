@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.test.function;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.commands.NearestArtifactCommand;
 import org.firstinspires.ftc.teamcode.commands.SelectArtifactCommand;
@@ -21,7 +20,7 @@ public class CarouselCommandTest extends StateAutoOpMode {
     @Override
     public void initialize() {
         setAllianceSide(side);
-        setStartingPosition(startingPosition);
+        setStartingHeading(startingPosition);
         super.initialize();
     }
 

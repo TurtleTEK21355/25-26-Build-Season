@@ -130,7 +130,7 @@ public class Drivetrain {
 
     public double getEncoderPosition() {
 //        return (frontRightMotor.getCurrentPosition() + frontLeftMotor.getCurrentPosition()) / 2.0;
-        return frontRightMotor.getCurrentPosition();
+        return -frontRightMotor.getCurrentPosition();
     }
 
 

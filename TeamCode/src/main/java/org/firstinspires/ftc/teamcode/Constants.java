@@ -42,7 +42,7 @@ public class Constants {
         return new PIDConstants(drivetrainLinearKp, drivetrainLinearKi, drivetrainLinearKd);
     }
 
-    public static double drivetrainAngularKp = 0.02;
+    public static double drivetrainAngularKp = 0.08;
     public static double drivetrainAngularKi = 0;
     public static double drivetrainAngularKd = 0;
     public static PIDConstants getAngularPIDConstants() {
@@ -51,12 +51,14 @@ public class Constants {
 
     public static double pidToleranceX = 2;
     public static double pidToleranceY = 2;
-    public static double pidToleranceH = 2.5;
+    public static double pidToleranceH = 0.2;
     public static Pose2D getPIDTolerance(){
         return new Pose2D(pidToleranceX, pidToleranceY, pidToleranceH);
     }
 
-    public static double blindRotateSpeed = 0.4;
+    public static double linearSpeed = 0.4;
+    public static double angularSpeed = 0.4;
+
     public static double cameraAngleOffset = 5;
     public static double inchesToEncoderDrivetrain = 41.8013539662;
     public static double drivetrainExponentIndex = 3; //change in configurables to change how speed ramps up (ex. quadratic, cubic, etc.)

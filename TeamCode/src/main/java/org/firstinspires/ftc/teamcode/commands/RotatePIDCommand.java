@@ -30,11 +30,6 @@ public class RotatePIDCommand extends Command {
     }
 
     @Override
-    public void init() {
-        imu.resetYaw();
-    }
-
-    @Override
     public void loop() {
         position = imu.getRobotYawPitchRollAngles().getYaw();
         drivetrain.control(0,0, hPID.calculate(position));

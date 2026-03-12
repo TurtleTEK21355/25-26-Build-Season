@@ -53,7 +53,7 @@ public class CarouselTest extends LinearOpMode {
     public void runOpMode() {
         Telemetry combined = new MultipleTelemetry(telemetry, PanelsTelemetry.INSTANCE.getFtcTelemetry());
         TelemetryPasser.telemetry = combined;
-        PanelsGamepad virtualGamepad = PanelsGamepad.INSTANCE;        Pose2D startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
+        PanelsGamepad virtualGamepad = PanelsGamepad.INSTANCE;        Pose2D startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.HEADING_BLACKBOARD_KEY, new Pose2D(0,0,0));
         AllianceSide side = (AllianceSide) blackboard.getOrDefault(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         robot = StateRobot.build(hardwareMap);
         robot.getOtosSensor().setPosition(startingPosition);
@@ -62,7 +62,7 @@ public class CarouselTest extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
             GamepadManager virtualGamepad1 = virtualGamepad.getFirstManager();
-            robot.getDrivetrain().fcControl(gamepad1.left_stick_y + virtualGamepad1.getLeftStickY(), gamepad1.left_stick_x + virtualGamepad1.getRightStickX(), gamepad1.right_stick_x + virtualGamepad1.getLeftStickX(), robot.getAllianceSide(), robot.getOtosSensor().getPosition());
+            robot.getDrivetrain().fcControl(gamepad1.left_stick_y + virtualGamepad1.getLeftStickY(), gamepad1.left_stick_x + virtualGamepad1.getRightStickX(), gamepad1.right_stick_x + virtualGamepad1.getLeftStickX(), robot.getAllianceSide(), robot.getOtosSensor().getPosition().h);
             if(gamepad1.x || virtualGamepad1.getSquare()) {
                 robot.getShooterSystem().setCarouselPosition(CarouselPosition.SHOOT_SLOT_0);
             }

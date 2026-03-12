@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.test.sensor;
 
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.bylazar.gamepad.PanelsGamepad;
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -20,7 +19,7 @@ public class LimelightTest extends OpMode {
     @Override
     public void init() {
 
-        Pose2D startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.POSITION_BLACKBOARD_KEY, new Pose2D(0,0,0));
+        Pose2D startingPosition = (Pose2D) blackboard.getOrDefault(StateRobot.HEADING_BLACKBOARD_KEY, new Pose2D(0,0,0));
         AllianceSide side = (AllianceSide) blackboard.getOrDefault(StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY, AllianceSide.BLUE);
         robot = StateRobot.build(hardwareMap);
         robot.getOtosSensor().setPosition(startingPosition);
