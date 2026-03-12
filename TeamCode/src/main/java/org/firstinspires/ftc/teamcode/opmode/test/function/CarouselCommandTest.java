@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.physicaldata.ArtifactState;
 
 @Autonomous(name="Carousel Command Test", group = "test") // Replace name with clear and identifiable name
 public class CarouselCommandTest extends StateAutoOpMode {
-    Pose2D startingPosition = new Pose2D(0,0,0); // Replace 0s with starting position
+    double startingHeading = 0;
     AllianceSide side = AllianceSide.BLUE; // Replace BLUE with RED if required
 
     final double SPEED = 0.5; // Replace with wanted speed
@@ -20,7 +20,7 @@ public class CarouselCommandTest extends StateAutoOpMode {
     @Override
     public void initialize() {
         setAllianceSide(side);
-        setStartingHeading(startingPosition);
+        setStartingHeading(startingHeading);
         super.initialize();
     }
 

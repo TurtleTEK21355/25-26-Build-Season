@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 
 @Autonomous(name="Carousel Shoot Test", group = "test")
 public class CarouselShootTest extends StateAutoOpMode {
-    Pose2D startingPosition = new Pose2D(0,0,0);
+    double startingHeading = 0;
     AllianceSide side = AllianceSide.BLUE;
 
     final double SPEED = 0.75;
@@ -16,7 +16,7 @@ public class CarouselShootTest extends StateAutoOpMode {
     @Override
     public void initialize() {
         setAllianceSide(side);
-        setStartingHeading(startingPosition);
+        setStartingHeading(startingHeading);
         super.initialize();
     }
 

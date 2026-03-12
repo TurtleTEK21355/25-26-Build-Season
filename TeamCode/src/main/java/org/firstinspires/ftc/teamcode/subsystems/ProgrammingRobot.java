@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -20,7 +19,7 @@ public class ProgrammingRobot {
     private OTOSSensor otosSensor;
     private AprilTagCamera aprilTagCamera;
     private AllianceSide side;
-    public static final String POSITION_BLACKBOARD_KEY = "pos";
+    public static final String HEADING_BLACKBOARD_KEY = "heading";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
 
     public ProgrammingRobot(Drivetrain drivetrain, OTOSSensor otosSensor, AprilTagCamera aprilTagCamera) {

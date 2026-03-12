@@ -13,7 +13,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.ArtifactLift;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.CarouselSystem;
@@ -21,7 +20,6 @@ import org.firstinspires.ftc.teamcode.subsystems.actuator.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.FlyWheel;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Hood;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.actuator.PartnerPark;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.ShooterSystem;
 import org.firstinspires.ftc.teamcode.subsystems.actuator.TurretSystem;
 import org.firstinspires.ftc.teamcode.subsystems.sensor.ColorSensorArray;
@@ -36,7 +34,7 @@ public class StateRobot {
     private Limelight limelight;
     private IMU imu;
     private AllianceSide side;
-    public static final String POSITION_BLACKBOARD_KEY = "pos";
+    public static final String HEADING_BLACKBOARD_KEY = "heading";
     public static final String ALLIANCE_SIDE_BLACKBOARD_KEY = "side";
     public static final String MOTIF_BLACKBOARD_KEY = "motif";
 

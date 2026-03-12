@@ -8,13 +8,13 @@ import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 
 @Autonomous(name="Auto Odometry Test X", group="test")
 public class AutoOdometryTestX extends StateAutoOpMode {
-    Pose2D startingPosition = new Pose2D(0,0,0);
+    double startingHeading = 0;
 
     final double SPEED = 0.5;
 
     @Override
     public void initialize() {
-        setStartingHeading(startingPosition);
+        setStartingHeading(startingHeading);
         super.initialize();
     }
 

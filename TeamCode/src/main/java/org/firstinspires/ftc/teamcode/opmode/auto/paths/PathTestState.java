@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 
 @Autonomous(name="Path Test State", group = "test")
 public class PathTestState extends ProgrammingAutoOpMode {
-    Pose2D startingPosition = new Pose2D(-53, 51, 54);
+    double startingHeading = 54;
     AllianceSide side = AllianceSide.BLUE;
 
     double speed = 0.5;
@@ -24,7 +24,7 @@ public class PathTestState extends ProgrammingAutoOpMode {
     @Override
     public void initialize() {
         setAllianceSide(side);
-        setStartingPosition(startingPosition);
+        setStartingHeading(startingHeading);
         super.initialize();
     }
 

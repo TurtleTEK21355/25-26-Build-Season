@@ -1,15 +1,10 @@
 package org.firstinspires.ftc.teamcode.opmode.auto.internal;
 
 import static org.firstinspires.ftc.teamcode.subsystems.StateRobot.ALLIANCE_SIDE_BLACKBOARD_KEY;
-import static org.firstinspires.ftc.teamcode.subsystems.StateRobot.MOTIF_BLACKBOARD_KEY;
-import static org.firstinspires.ftc.teamcode.subsystems.StateRobot.POSITION_BLACKBOARD_KEY;
+import static org.firstinspires.ftc.teamcode.subsystems.StateRobot.HEADING_BLACKBOARD_KEY;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 import org.firstinspires.ftc.teamcode.TelemetryPasser;
-import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
-import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
 import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 
@@ -18,27 +13,21 @@ import org.firstinspires.ftc.teamcode.subsystems.StateRobot;
 public abstract class StateAutoOpMode extends CommandOpMode {
     protected StateRobot robot;
 
+    protected double startingHeading = 0;
     protected AllianceSide side;
-    protected Pose2D startingPosition;
     protected Motif motif;
 
     @Override
     public void initialize() {
-//        telemetry.addData("Starting Position", startingPosition.x + ", " +  startingPosition.y + ", " + startingPosition.h);
         TelemetryPasser.telemetry = telemetry;
-
         robot = StateRobot.build(hardwareMap);
-
-
-        robot.getOtosSensor().configureOtos(startingPosition, DistanceUnit.INCH, AngleUnit.DEGREES, 1, 1);
-
         commands();
 
     }
 
     @Override
     public void cleanup() {
-        blackboard.put(POSITION_BLACKBOARD_KEY, robot.getOtosSensor().getPosition());
+        blackboard.put(HEADING_BLACKBOARD_KEY, robot.getIMU().getRobotYawPitchRollAngles().getYaw());
         blackboard.put(ALLIANCE_SIDE_BLACKBOARD_KEY, side);
 
     }
@@ -49,8 +38,8 @@ public abstract class StateAutoOpMode extends CommandOpMode {
         this.side = side;
     }
 
-    public void setStartingPosition(Pose2D offset) {
-        startingPosition = offset;
+    public void setStartingHeading(double offset) {
+        startingHeading = offset;
     }
     public void setMotif(Motif motif){this.motif = motif;}
 

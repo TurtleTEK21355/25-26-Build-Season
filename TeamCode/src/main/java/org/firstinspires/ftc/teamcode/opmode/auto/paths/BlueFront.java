@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 
 @Autonomous(name="Blue Front", group = "auto")
 public class BlueFront extends StateAutoOpMode {
-    Pose2D startingPosition = new Pose2D(-51, 51, 54);
+    double startingHeading = 54;
     AllianceSide side = AllianceSide.BLUE;
 
     double speed = 0.5;
@@ -26,7 +26,7 @@ public class BlueFront extends StateAutoOpMode {
     @Override
     public void initialize() {
         setAllianceSide(side);
-        setStartingHeading(startingPosition);
+        setStartingHeading(startingHeading);
         super.initialize();
     }
 

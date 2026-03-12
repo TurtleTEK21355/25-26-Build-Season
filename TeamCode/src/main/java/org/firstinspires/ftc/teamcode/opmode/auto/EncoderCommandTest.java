@@ -13,13 +13,13 @@ import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 @Configurable
 @Autonomous(name = "Encoder Command Test", group = "test")
 public class EncoderCommandTest extends StateAutoOpMode {
-    Pose2D startingPosition = new Pose2D(0,0,0); // Replace 0s with starting position
+    double startingHeading = 0;
     AllianceSide side = AllianceSide.BLUE; // Replace BLUE with RED if required
 
     @Override
     public void initialize() {
         setAllianceSide(side);
-        setStartingHeading(startingPosition);
+        setStartingHeading(startingHeading);
         super.initialize();
     }
 
