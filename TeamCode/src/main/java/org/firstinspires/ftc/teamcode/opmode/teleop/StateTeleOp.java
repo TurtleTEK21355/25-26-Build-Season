@@ -42,7 +42,7 @@ public class StateTeleOp extends OpMode {
     public static boolean positionUpdating = true;
     public static boolean turretUpdating = true;
     public static boolean intakeUpdating = true;
-    public static boolean rotateToGoalUpdating = true;
+    public static boolean rotateAndDrivetrainUpdating = true;
     public static boolean shootingCommandUpdating = true;
     public static boolean carouselMoveUpdating = true;
 
@@ -114,7 +114,7 @@ public class StateTeleOp extends OpMode {
             robot.getShooterSystem().setIntakePower(Range.clip(gamepad2.right_trigger - gamepad2.left_trigger, -1, 1));
         }
 
-        if (rotateToGoalUpdating) {
+        if (rotateAndDrivetrainUpdating) {
             if (gamepad1.right_bumper) {
                 if (robot.getLimelight().isDetectingGoal(robot.getAllianceSide())) {
                     double currentAngleError = robot.getLimelight().getAngleFromGoal();
@@ -126,7 +126,7 @@ public class StateTeleOp extends OpMode {
                 }
             } else {
                 double speedFactor = 1 - Range.clip(gamepad1.right_trigger + gamepad1.left_trigger, 0, 0.5);
-                robot.getDrivetrain().fcControl(-gamepad1.left_stick_y * speedFactor, gamepad1.left_stick_x * speedFactor, gamepad1.right_stick_x * speedFactor, robot.getIMU().getRobotYawPitchRollAngles().getYaw());
+                robot.getDrivetrain().fcControl(-gamepad1.left_stick_y * speedFactor, gamepad1.left_stick_x * speedFactor, gamepad1.right_stick_x * speedFactor, robot.getAllianceSide(), robot.getIMU().getRobotYawPitchRollAngles().getYaw());
             }
         }
 
