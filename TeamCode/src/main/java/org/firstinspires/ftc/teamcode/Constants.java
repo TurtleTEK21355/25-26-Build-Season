@@ -23,8 +23,8 @@ public class Constants {
     public static double shootSlot2 = 0.87;
 
     public static double intakeSlot0 = 0.1;
-    public static double intakeSlot1 = 0.46;
-    public static double intakeSlot2 = 0.8;
+    public static double intakeSlot1 = 0.63;
+    public static double intakeSlot2 = 0.93;
 
     public static double angularScalar = 0.997;
 
