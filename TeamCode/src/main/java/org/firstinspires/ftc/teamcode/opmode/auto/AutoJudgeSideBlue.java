@@ -20,8 +20,8 @@ import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
 import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 
 @Configurable
-@Autonomous(name="Auto", group = "auto") // Replace name with clear and identifiable name
-public class Auto extends StateAutoOpMode {
+@Autonomous(name="AutoJudgeSideBlue", group = "auto") // Replace name with clear and identifiable name
+public class AutoJudgeSideBlue extends StateAutoOpMode {
 
     public static double SPEED = 0.5;
 
