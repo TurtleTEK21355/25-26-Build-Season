@@ -46,127 +46,24 @@ public class AutoJudgeSideBlue extends StateAutoOpMode {
     public static double INTAKE_ON_POWER = 1.0;
     public static double INTAKE_OFF_POWER = 0.0;
 
-    public static AutoStep STOP_COMMAND = AutoStep.ROTATE_CAROUSEL_5;
-    public static AutoStep START_COMMAND = AutoStep.SHOOT_ALL_4;
+    public static AutoStep STOP_COMMAND = AutoStep.MOVE_TO_POS_1;
+    public static AutoStep START_COMMAND = AutoStep.SHOOT_ALL_16;
     boolean startCommandLock = true;
 
     public static Motif currentMotif = Motif.PPG;
 
-    private final AutoStep[] steps = AutoStep.values();
+    private final JudgeSideAutoStep[] steps = JudgeSideAutoStep.values();
 
     @Override
     public void commands() {
-        addCommand(new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_0, robot.getShooterSystem()));
+        addCommand(new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_2, robot.getShooterSystem()));
         addCommand(new SetFlywheelVelocityCommand(robot.getShooterSystem(), Constants.shootCloseVelocity));
         addCommand(new SetHoodAngleCommand(Constants.shootCloseAngle, robot.getShooterSystem()));
-        for (AutoStep step : steps) {
+        for (JudgeSideAutoStep step : steps) {
             if (step == START_COMMAND) startCommandLock = false;
             if (step == STOP_COMMAND) break;
             if (startCommandLock) continue;
-            addCommand(buildCommandForStep(step));
-        }
-    }
-
-    private Command buildCommandForStep(AutoStep step) {
-        switch (step) {
-            case MOVE_TO_POS_1:
-                return new MovePIDEncoderCommand(START_Y, SHOOT_Y, SPEED, robot.getDrivetrain());
-            case DETECT_MOTIF_2:
-                return new GetMotifCommand(robot.getLimelight());
-            case ROTATE_ROBOT_3:
-                return new RotatePIDCommand(START_H, SHOOT_H, SPEED, robot.getDrivetrain(), robot.getIMU());
-            case SHOOT_ALL_4:
-                return new Shoot3Command(robot.getShooterSystem());
-            case ROTATE_CAROUSEL_5:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_0, robot.getShooterSystem());
-            case ROTATE_ROBOT_6:
-                return new RotatePIDCommand(START_H, INTAKE_H, SPEED, robot.getDrivetrain(), robot.getIMU());
-            case SET_INTAKE_POWER_7:
-                return new SetIntakePowerCommand(INTAKE_ON_POWER, robot.getShooterSystem());
-            case MOVE_TO_POS_8:
-                return new MovePIDEncoderCommand(SHOOT_X, INTAKE_1_X, SPEED, robot.getDrivetrain());
-            case ROTATE_CAROUSEL_9:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_1, robot.getShooterSystem());
-            case MOVE_TO_POS_10:
-                return new MovePIDEncoderCommand(INTAKE_1_X, INTAKE_2_X, SPEED, robot.getDrivetrain());
-            case ROTATE_CAROUSEL_11:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_2, robot.getShooterSystem());
-            case MOVE_TO_POS_12:
-                return new MovePIDEncoderCommand(INTAKE_2_X, INTAKE_3_X, SPEED, robot.getDrivetrain());
-            case MOVE_TO_POS_13:
-                return new MovePIDEncoderCommand(INTAKE_3_X, SHOOT_X, SPEED, robot.getDrivetrain());
-            case SET_INTAKE_POWER_14:
-                return new SetIntakePowerCommand(INTAKE_OFF_POWER, robot.getShooterSystem());
-            case ROTATE_ROBOT_15:
-                return new RotatePIDCommand(INTAKE_H, START_H, SPEED, robot.getDrivetrain(), robot.getIMU());
-            case SHOOT_ALL_16:
-                return new Shoot3Command(robot.getShooterSystem());
-            case ROTATE_CAROUSEL_17:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_0, robot.getShooterSystem());
-            case ROTATE_ROBOT_18:
-                return new RotatePIDCommand(SHOOT_H, START_H, SPEED, robot.getDrivetrain(), robot.getIMU());
-            case MOVE_TO_POS_19:
-                return new MovePIDEncoderCommand(SHOOT_Y, ROW_2_Y, SPEED, robot.getDrivetrain());
-            case ROTATE_ROBOT_20:
-                return new RotatePIDCommand(START_H, INTAKE_H, SPEED, robot.getDrivetrain(), robot.getIMU());
-            case SET_INTAKE_POWER_21:
-                return new SetIntakePowerCommand(INTAKE_ON_POWER, robot.getShooterSystem());
-            case MOVE_TO_POS_22:
-                return new MovePIDEncoderCommand(SHOOT_X, INTAKE_1_X, SPEED, robot.getDrivetrain());
-            case ROTATE_CAROUSEL_23:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_1, robot.getShooterSystem());
-            case MOVE_TO_POS_24:
-                return new MovePIDEncoderCommand(INTAKE_1_X, INTAKE_2_X, SPEED, robot.getDrivetrain());
-            case ROTATE_CAROUSEL_25:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_2, robot.getShooterSystem());
-            case MOVE_TO_POS_26:
-                return new MovePIDEncoderCommand(INTAKE_2_X, INTAKE_3_X, SPEED, robot.getDrivetrain());
-            case MOVE_TO_POS_27:
-                return new MovePIDEncoderCommand(INTAKE_3_X, SHOOT_X, SPEED, robot.getDrivetrain());
-            case SET_INTAKE_POWER_28:
-                return new SetIntakePowerCommand(INTAKE_OFF_POWER, robot.getShooterSystem());
-            case ROTATE_ROBOT_29:
-                return new RotatePIDCommand(INTAKE_H, START_H, SPEED, robot.getDrivetrain(), robot.getIMU());
-            case MOVE_TO_POS_30:
-                return new MovePIDEncoderCommand(ROW_2_Y, SHOOT_Y, SPEED, robot.getDrivetrain());
-            case ROTATE_ROBOT_31:
-                return new RotatePIDCommand(START_H, SHOOT_H, SPEED, robot.getDrivetrain(), robot.getIMU());
-            case SHOOT_ALL_32:
-                return new Shoot3Command(robot.getShooterSystem());
-            case ROTATE_CAROUSEL_33:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_0, robot.getShooterSystem());
-            case ROTATE_ROBOT_34:
-                return new RotatePIDCommand(SHOOT_H, START_H, SPEED, robot.getDrivetrain(), robot.getIMU());
-            case MOVE_TO_POS_35:
-                return new MovePIDEncoderCommand(SHOOT_Y, ROW_3_Y, SPEED, robot.getDrivetrain());
-            case ROTATE_ROBOT_36:
-                return new RotatePIDCommand(SHOOT_H, INTAKE_H, SPEED, robot.getDrivetrain(), robot.getIMU());
-            case SET_INTAKE_POWER_37:
-                return new SetIntakePowerCommand(INTAKE_ON_POWER, robot.getShooterSystem());
-            case MOVE_TO_POS_38:
-                return new MovePIDEncoderCommand(SHOOT_X, INTAKE_1_X, SPEED, robot.getDrivetrain());
-            case ROTATE_CAROUSEL_39:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_1, robot.getShooterSystem());
-            case MOVE_TO_POS_40:
-                return new MovePIDEncoderCommand(INTAKE_1_X, INTAKE_2_X, SPEED, robot.getDrivetrain());
-            case ROTATE_CAROUSEL_41:
-                return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_2, robot.getShooterSystem());
-            case MOVE_TO_POS_42:
-                return new MovePIDEncoderCommand(INTAKE_2_X, INTAKE_3_X, SPEED, robot.getDrivetrain());
-            case MOVE_TO_POS_43:
-                return new MovePIDEncoderCommand(INTAKE_3_X, SHOOT_X, SPEED, robot.getDrivetrain());
-            case SET_INTAKE_POWER_44:
-                return new SetIntakePowerCommand(INTAKE_OFF_POWER, robot.getShooterSystem());
-            case ROTATE_ROBOT_45:
-                return new RotatePIDCommand(INTAKE_H, START_H, SPEED, robot.getDrivetrain(), robot.getIMU());
-            case MOVE_TO_POS_46:
-                return new MovePIDEncoderCommand(ROW_3_Y, SHOOT_Y, SPEED, robot.getDrivetrain());
-            case ROTATE_ROBOT_47:
-                return new RotatePIDCommand(START_H, SHOOT_H, SPEED, robot.getDrivetrain(), robot.getIMU());
-            case SHOOT_ALL_48:
-                return new Shoot3Command(robot.getShooterSystem());
-            default:
-                return new TimerCommand(0);
+            addCommand(JudgeSideAutoStep.buildCommandForStep(step));
         }
     }
 }
