@@ -41,7 +41,7 @@ public abstract class AutoJudgeSideBase extends StateAutoOpMode {
 
     protected abstract void configureSide();
 
-    private final JudgeSideAutoStep[] steps = JudgeSideAutoStep.values();
+    private final AutoJudegSideSteps[] steps = AutoJudegSideSteps.values();
 
     @Override
     public void commands() {
@@ -52,13 +52,13 @@ public abstract class AutoJudgeSideBase extends StateAutoOpMode {
         addCommand(new SetFlywheelVelocityCommand(robot.getShooterSystem(), Constants.shootCloseVelocity));
         addCommand(new SetHoodAngleCommand(Constants.shootCloseAngle, robot.getShooterSystem()));
 
-        for (JudgeSideAutoStep step : steps) {
+        for (AutoJudegSideSteps  step : steps) {
 
             if (step == START_COMMAND) startLock = false;
             if (step == STOP_COMMAND) break;
             if (startLock) continue;
 
-            addCommand(JudgeSideAutoStep.buildCommandForStep(step, this));
+            addCommand(AutoJudegSideSteps.buildCommandForStep(step, this));
         }
     }
 
