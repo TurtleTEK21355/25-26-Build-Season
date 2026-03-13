@@ -8,13 +8,13 @@ public enum CarouselPosition {
     UNSET(() -> Double.NaN, false, false),
 
     INTAKE_SLOT_0(() -> Constants.intakeSlot0, true, false),
-    INTAKE_SLOT_1(() -> Constants.intakeSlot0 + 0.33, true, false),
-    INTAKE_SLOT_2(() -> Constants.intakeSlot0 + 0.66, true, false),
+    INTAKE_SLOT_1(() -> Constants.intakeSlot1, true, false),
+    INTAKE_SLOT_2(() -> Constants.intakeSlot2, true, false),
     
     // slot 0 is the slot closest to servo position 0
-    SHOOT_SLOT_0(() -> Constants.intakeSlot0 + 0.08, false, true),
-    SHOOT_SLOT_1(() -> Constants.intakeSlot0 + 0.33 + 0.08, false, true),
-    SHOOT_SLOT_2(() -> Constants.intakeSlot0 + 0.66 + 0.08, false, true);
+    SHOOT_SLOT_0(() -> Constants.shootSlot0, false, true),
+    SHOOT_SLOT_1(() -> Constants.shootSlot1, false, true),
+    SHOOT_SLOT_2(() -> Constants.shootSlot2, false, true);
 
 
     private final DoubleSupplier servoPositionSupplier;
