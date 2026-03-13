@@ -21,6 +21,8 @@ public abstract class AutoJudgeSideBase extends StateAutoOpMode {
 
     protected double SHOOT_X;
     protected double SHOOT_Y;
+    protected double ROW_1_Y;
+    protected double ROW_2_Y;
 
     protected double START_Y;
 
@@ -67,9 +69,14 @@ public abstract class AutoJudgeSideBase extends StateAutoOpMode {
     public double getShootX() { return SHOOT_X; }
     public double getShootY() { return SHOOT_Y; }
 
+    public double getRow2Y() { return ROW_2_Y; }
+    public double getRow3Y() { return ROW_3_Y; }
+
     public double getStartY() { return START_Y; }
 
     public double getIntake1X() { return INTAKE_1_X; }
     public double getIntake2X() { return INTAKE_2_X; }
     public double getIntake3X() { return INTAKE_3_X; }
+
+    
 }
