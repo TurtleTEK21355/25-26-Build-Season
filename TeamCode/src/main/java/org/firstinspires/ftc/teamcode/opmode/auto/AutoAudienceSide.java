@@ -50,7 +50,7 @@ public abstract class AutoAudienceSide extends StateAutoOpMode {
 
         addCommand(new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_2, robot.getShooterSystem()));
         addCommand(new SetFlywheelVelocityCommand(robot.getShooterSystem(), Constants.shootFarVelocity));
-        addCommand(new SetHoodAngleCommand(Constants.shootCloseAngle, robot.getShooterSystem()));
+        addCommand(new SetHoodAngleCommand(Constants.shootFarAngle, robot.getShooterSystem()));
 
         for (AutoAudienceSideSteps step : steps) {
 
