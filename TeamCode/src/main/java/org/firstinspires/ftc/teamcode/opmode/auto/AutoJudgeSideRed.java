@@ -1,0 +1,24 @@
+package org.firstinspires.ftc.teamcode.opmode.auto;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
+@Autonomous(name="AutoJudgeSideRed", group = "auto")
+public class AutoJudgeSideRed extends AutoJudgeSide {
+
+    @Override
+    protected void configureSide() {
+        START_H = 0.0;
+        SHOOT_H = -45.0;
+        INTAKE_H = -90.0;
+
+        START_Y = 60.0;
+
+        SHOOT_X = -12.0;
+        SHOOT_Y = 11.0;
+
+        INTAKE_1_X = -44.0;
+        INTAKE_2_X = -48.0;
+        INTAKE_3_X = -52.0;
+
+    }
+}
