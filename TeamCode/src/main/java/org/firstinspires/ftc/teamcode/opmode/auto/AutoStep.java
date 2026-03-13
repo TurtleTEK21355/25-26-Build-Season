@@ -1,6 +1,13 @@
 package org.firstinspires.ftc.teamcode.opmode.auto;
 
-public enum AutoStep {
+public enum AudienceSideAutoStep {
+    MOVE_TO_POS_1,
+    ROTATE_ROBOT_2,
+    SHOOT_ALL_3
+}
+
+
+public enum JudgeSideAutoStep {
     MOVE_TO_POS_1,
     DETECT_MOTIF_2,
     ROTATE_ROBOT_3,
