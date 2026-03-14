@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.opmode.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="AutoJudgeSideBlue", group = "auto")
-public class AutoJudgeSideBlue extends AutoJudgeSide {
+@Autonomous(name="AutoRefSideBlue", group = "auto")
+public class AutoRefSideBlue extends AutoJudgeSide {
 
     @Override
     protected void configureSide() {
