@@ -67,7 +67,7 @@ public abstract class AutoRefSide extends StateAutoOpMode {
             if (step == STOP_COMMAND) break;
             if (startLock) continue;
 
-            addCommand(AutoRefSideSteps.buildCommandForStep(step, this));
+            addCommand(AutoRefSideSteps.buildCommandForStep(step, this, robot));
         }
     }
 
