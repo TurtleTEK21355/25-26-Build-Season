@@ -33,8 +33,8 @@ public abstract class AutoRefSide extends StateAutoOpMode {
     public static double INTAKE_ON_POWER = 1.0;
     public static double INTAKE_OFF_POWER = 0.0;
 
-    public static AutoRefSideSteps STOP_COMMAND = AutoRefSideSteps.MOVE_TO_POS_1;
-    public static AutoRefSideSteps START_COMMAND = AutoRefSideSteps.SHOOT_ALL_16;
+    public static AutoRefSideSteps START_COMMAND = AutoRefSideSteps.MOVE_TO_POS_1;
+    public static AutoRefSideSteps STOP_COMMAND = AutoRefSideSteps.SHOOT_ALL_16;
     public static Motif currentMotif = Motif.PPG;
 
     private boolean startLock = true;
