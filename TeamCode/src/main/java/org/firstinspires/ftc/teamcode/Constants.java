@@ -18,11 +18,11 @@ public class Constants {
 
     public static int carouselMoveOneTimer = 1000;
 
-    public static double shootSlot0 = 0.19;
-    public static double shootSlot1 = 0.5;
-    public static double shootSlot2 = 0.87;
+    public static double shootSlot0 = 0.38;
+    public static double shootSlot1 = 0.7;
+    public static double shootSlot2 = 1.0;
 
-    public static double intakeSlot0 = 0.1;
+    public static double intakeSlot0 = 0.0;
     public static double intakeSlot1 = 0.63;
     public static double intakeSlot2 = 0.93;
 
