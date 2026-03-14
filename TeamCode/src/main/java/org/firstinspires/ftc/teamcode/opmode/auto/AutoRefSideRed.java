@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.opmode.auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous(name="AutoRefSideRed", group = "auto")
-public class AutoRefSideRed extends AutoJudgeSide {
+public class AutoRefSideRed extends AutoRefSide {
     public static double rr_START_H = 0.0;
     public static double rr_SHOOT_H = -45.0;
     public static double rr_INTAKE_H = -90.0;
