@@ -21,8 +21,8 @@ public abstract class AutoJudgeSideBase extends StateAutoOpMode {
 
     protected double SHOOT_X;
     protected double SHOOT_Y;
-    protected double ROW_1_Y;
     protected double ROW_2_Y;
+    protected double ROW_3_Y;
 
     protected double START_Y;
 
