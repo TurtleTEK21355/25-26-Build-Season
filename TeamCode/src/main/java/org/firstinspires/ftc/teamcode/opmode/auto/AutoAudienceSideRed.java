@@ -16,6 +16,9 @@ public class AutoAudienceSideRed extends AutoAudienceSide {
 
         SHOOT_X = -12.0;
         SHOOT_Y = -50.0;
+        
+        ROW_2_Y = -12.0;
+        ROW_3_Y = -35.0;
 
         INTAKE_1_X = 0.0;// not used
         INTAKE_2_X = 0.0;//not used
