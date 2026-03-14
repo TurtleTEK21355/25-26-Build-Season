@@ -78,7 +78,7 @@ public enum AutoRefSideSteps {
             case ROTATE_CAROUSEL_5:
                 return new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_0, robot.getShooterSystem());
             case ROTATE_ROBOT_6:
-                return new RotatePIDCommand(opMode.getStartHeading(), opMode.getIntakeHeading(), opMode.SPEED, robot.getDrivetrain(), robot.getIMU());
+                return new RotatePIDCommand(opMode.getShootHeading(), opMode.getIntakeHeading(), opMode.SPEED, robot.getDrivetrain(), robot.getIMU());
             case SET_INTAKE_POWER_7:
                 return new SetIntakePowerCommand(opMode.INTAKE_ON_POWER, robot.getShooterSystem());
             case MOVE_TO_POS_8:
@@ -96,7 +96,7 @@ public enum AutoRefSideSteps {
             case SET_INTAKE_POWER_14:
                 return new SetIntakePowerCommand(opMode.INTAKE_OFF_POWER, robot.getShooterSystem());
             case ROTATE_ROBOT_15:
-                return new RotatePIDCommand(opMode.getIntakeHeading(), opMode.getStartHeading(), opMode.SPEED, robot.getDrivetrain(), robot.getIMU());
+                return new RotatePIDCommand(opMode.getIntakeHeading(), opMode.getShootHeading(), opMode.SPEED, robot.getDrivetrain(), robot.getIMU());
             case SHOOT_ALL_16:
                 return new Shoot3Command(robot.getShooterSystem());
             case ROTATE_CAROUSEL_17:
