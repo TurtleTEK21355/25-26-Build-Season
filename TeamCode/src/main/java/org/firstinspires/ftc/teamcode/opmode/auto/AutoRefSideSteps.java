@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.auto;
 
-public enum AutoJudgeSideSteps {
+public enum AutoRefSideSteps {
     MOVE_TO_POS_1,
     DETECT_MOTIF_2,
     ROTATE_ROBOT_3,
@@ -50,7 +50,7 @@ public enum AutoJudgeSideSteps {
     ROTATE_ROBOT_47,
     SHOOT_ALL_48;
 
-    private Command buildCommandForStep(JudgeSideAutoStep step, AutoJudgeSide opMode) {
+    private Command buildCommandForStep(AutoRefSideSteps step, AutoRefSide opMode) {
 
         switch (step) {
             case MOVE_TO_POS_1:
