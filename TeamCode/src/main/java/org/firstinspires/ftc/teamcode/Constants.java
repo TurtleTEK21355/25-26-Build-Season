@@ -7,8 +7,10 @@ import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
 
 @Configurable
 public class Constants {
-    public static int artifactLiftUpperTolerance = 20;
-    public static int artifactLiftLowerTolerance = 33;
+    public static int artifactLiftUpperTolerance = 50;
+    public static int artifactLiftLowerTolerance = 50;
+    public static int artifactLiftTimeoutMilliseconds = 500;
+    public static double artifactLiftPower = 0.8;
 
     public static int shootCloseVelocity = 1100;
     public static double shootCloseAngle = 40;
@@ -18,13 +20,13 @@ public class Constants {
 
     public static int carouselMoveOneTimer = 1000;
 
-    public static double shootSlot0 = 0.19;
-    public static double shootSlot1 = 0.5;
-    public static double shootSlot2 = 0.87;
+    public static double shootSlot0 = 0.32; // 0.35
+    public static double shootSlot1 = 0.66; // 0.67
+    public static double shootSlot2 = 1.0; // 1.0
 
-    public static double intakeSlot0 = 0.1;
-    public static double intakeSlot1 = 0.63;
-    public static double intakeSlot2 = 0.93;
+    public static double intakeSlot0 = 0.0; // 0.0
+    public static double intakeSlot1 = 0.59; // 0.62
+    public static double intakeSlot2 = 0.92; //0.92
 
     public static double angularScalar = 0.997;
 

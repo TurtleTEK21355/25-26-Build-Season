@@ -18,9 +18,8 @@ public class ArtifactLift {
         this.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.lift.setTargetPositionTolerance(Constants.artifactLiftUpperTolerance);
         this.lift.setTargetPosition(0);
-        this.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         this.lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.lift.setPower(0.8);
+        this.lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
     public ArtifactLift(DcMotorEx lift, TouchSensor topLimit, TouchSensor bottomLimit) {
         this.lift = lift;
@@ -30,6 +29,14 @@ public class ArtifactLift {
         this.lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
+    public void setLiftMode(DcMotor.RunMode runMode) {
+        lift.setMode(runMode);
+    }
+
+    public void setLiftPower(double power) {
+        lift.setPower(power);
+    }
+
     public void setLiftPosition(int position) {
         lift.setTargetPosition(position);
     }
@@ -37,34 +44,20 @@ public class ArtifactLift {
         return lift.getCurrentPosition();
     }
 
-    public void setLiftUpNoLimit() {
+    public void setLiftTargetUp() {
         setLiftPosition(TOP_LIMIT);
     }
     public boolean getLiftUp(){
         return getLiftPosition() >= TOP_LIMIT - Constants.artifactLiftUpperTolerance;
     }
 
-    public void setLiftDownNoLimit() {
+    public void setLiftTargetDown() {
         setLiftPosition(BOTTOM_LIMIT);
     }
     public boolean getLiftDown() {
         return getLiftPosition() <= BOTTOM_LIMIT + Constants.artifactLiftLowerTolerance;
     }
 
-    public void setLiftUp(){
-        if(!isTouchingTopLimit()) {
-            lift.setPower(0.8);
-        } else {
-            lift.setPower(0);
-        }
-    }
-    public void setLiftDown(){
-        if(!isTouchingBottomLimit()) {
-            lift.setPower(-0.8);
-        } else {
-            lift.setPower(0);
-        }
-    }
     public boolean isTouchingTopLimit() {
         return topLimit.isPressed();
     }

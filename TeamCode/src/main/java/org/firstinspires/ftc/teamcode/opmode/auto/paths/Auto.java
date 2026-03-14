@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.auto;
+package org.firstinspires.ftc.teamcode.opmode.auto.paths;
 
 import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -12,7 +12,6 @@ import org.firstinspires.ftc.teamcode.commands.SetFlywheelVelocityCommand;
 import org.firstinspires.ftc.teamcode.commands.SetHoodAngleCommand;
 import org.firstinspires.ftc.teamcode.commands.SetIntakePowerCommand;
 import org.firstinspires.ftc.teamcode.commands.Shoot3Command;
-import org.firstinspires.ftc.teamcode.commands.ShootAllArtifactStateCommand;
 import org.firstinspires.ftc.teamcode.commands.TimerCommand;
 import org.firstinspires.ftc.teamcode.lib.command.Command;
 import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;

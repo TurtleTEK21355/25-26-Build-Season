@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.auto;
+package org.firstinspires.ftc.teamcode.opmode.auto.paths;
 
 public enum AutoStep {
     MOVE_TO_POS_1,

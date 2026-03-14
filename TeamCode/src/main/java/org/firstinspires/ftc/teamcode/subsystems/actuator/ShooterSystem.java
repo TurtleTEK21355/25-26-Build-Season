@@ -83,9 +83,9 @@ public class ShooterSystem {
 
     public void setArtifactLiftState(boolean up) {
         if (up) {
-            artifactLift.setLiftUpNoLimit();
+            artifactLift.setLiftTargetUp();
         } else {
-            artifactLift.setLiftDownNoLimit();
+            artifactLift.setLiftTargetDown();
         }
     }
 

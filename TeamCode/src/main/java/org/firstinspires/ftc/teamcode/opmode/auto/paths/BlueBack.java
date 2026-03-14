@@ -2,49 +2,26 @@ package org.firstinspires.ftc.teamcode.opmode.auto.paths;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commands.MovePIDCommand;
+import org.firstinspires.ftc.teamcode.commands.MovePIDEncoderCommand;
 import org.firstinspires.ftc.teamcode.lib.math.Pose2D;
 import org.firstinspires.ftc.teamcode.opmode.auto.internal.StateAutoOpMode;
 import org.firstinspires.ftc.teamcode.physicaldata.AllianceSide;
 
 @Autonomous(name="Blue Back", group = "auto")
 public class BlueBack extends StateAutoOpMode {
-    double startingHeading = 0;
     AllianceSide side = AllianceSide.BLUE;
 
-    double speed = 0.5;
-
-    double intake = -52;
-    double move = -20;
-    double top = 12;
-    double middle = -12;
-    double bottom = -36;
-
-    double theVoidY = -54;
 
     @Override
     public void initialize() {
         setAllianceSide(side);
-        setStartingHeading(startingHeading);
         super.initialize();
     }
 
     @Override
     public void commands() {
-        //assuming the void isnt the start position
-        addCommand(new MovePIDCommand(new Pose2D(move, theVoidY, 54), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-        addCommand(new MovePIDCommand(new Pose2D(move, bottom, 90), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-        addCommand(new MovePIDCommand(new Pose2D(intake, bottom, 90), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-        addCommand(new MovePIDCommand(new Pose2D(move, theVoidY, 54), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-        addCommand(new MovePIDCommand(new Pose2D(move, middle, 90), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-        addCommand(new MovePIDCommand(new Pose2D(intake, middle, 90), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-        addCommand(new MovePIDCommand(new Pose2D(move,top, 54), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-        //if the command above knocks away the artifacts, either move to the move column middle row first, or change to move, thevoidy.
-        addCommand(new MovePIDCommand(new Pose2D(move, top, 90), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-        addCommand(new MovePIDCommand(new Pose2D(intake, top, 90), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-        addCommand(new MovePIDCommand(new Pose2D(move, top, 54), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-        addCommand(new MovePIDCommand(new Pose2D(move, middle, 54), speed, robot.getDrivetrain(), robot.getOtosSensor()));
-
-
+        addCommand(new MovePIDEncoderCommand(24, Constants.linearSpeed, robot.getDrivetrain()));
     }
 }

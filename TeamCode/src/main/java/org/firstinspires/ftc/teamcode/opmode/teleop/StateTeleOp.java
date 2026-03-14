@@ -189,7 +189,7 @@ public class StateTeleOp extends OpMode {
 
         if (gamepad2.back && gamepad2.start) {
             commandScheduler.emptyAll();
-            robot.getShooterSystem().getArtifactLift().setLiftDownNoLimit();
+            robot.getShooterSystem().getArtifactLift().setLiftTargetDown();
         }
 
         commandScheduler.loop();
