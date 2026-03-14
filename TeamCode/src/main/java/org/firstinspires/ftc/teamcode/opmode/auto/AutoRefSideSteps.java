@@ -1,5 +1,19 @@
 package org.firstinspires.ftc.teamcode.opmode.auto;
 
+
+import org.firstinspires.ftc.teamcode.commands.Command;
+import org.firstinspires.ftc.teamcode.commands.MovePIDEncoderCommand;
+import org.firstinspires.ftc.teamcode.commands.RotatePIDCommand;
+import org.firstinspires.ftc.teamcode.commands.Shoot3Command;
+import org.firstinspires.ftc.teamcode.commands.TimerCommand;
+import org.firstinspires.ftc.teamcode.commands.SetIntakePowerCommand;
+import org.firstinspires.ftc.teamcode.commands.SetCarouselPositionCommand;
+import org.firstinspires.ftc.teamcode.commands.GetMotifCommand;
+
+import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
+import org.firstinspires.ftc.teamcode.robot.StateRobot;
+
+
 public enum AutoRefSideSteps {
     MOVE_TO_POS_1,
     DETECT_MOTIF_2,
@@ -50,7 +64,7 @@ public enum AutoRefSideSteps {
     ROTATE_ROBOT_47,
     SHOOT_ALL_48;
 
-    private static Command buildCommandForStep(AutoRefSideSteps step, AutoRefSide opMode, StateRobot robot) {
+    public static Command buildCommandForStep(AutoRefSideSteps step, AutoRefSide opMode, StateRobot robot) {
 
         switch (step) {
             case MOVE_TO_POS_1:
