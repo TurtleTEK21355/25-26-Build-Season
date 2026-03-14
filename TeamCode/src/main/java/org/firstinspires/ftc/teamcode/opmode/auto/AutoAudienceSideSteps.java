@@ -4,7 +4,7 @@ public enum AutoAudienceSideSteps {
     MOVE_TO_POS_1,
     ROTATE_ROBOT_2,
     SHOOT_ALL_3;
-    private Command buildCommandForStep(AudienceSideAutoStep step, AutoAudienceSide opMode) {
+    private Command buildCommandForStep(AudienceSideAutoSteps step, AutoAudienceSide opMode) {
         switch (step) {
             case MOVE_TO_POS_1:
                 return new MovePIDEncoderCommand(opMode.getStartY(), opMode.getShootY(), opMode.SPEED, robot.getDrivetrain());
