@@ -29,14 +29,16 @@ public class StateTeleOp extends OpMode {
     private final ElapsedTime delta = new ElapsedTime();
     private int velocity = Constants.shootCloseVelocity;
     private double angle = Constants.shootCloseAngle;
+    private boolean isFarShooting = false;
+
+    private final PIDControllerHeading hPIDClose = new PIDControllerHeading(Constants.getAngularPIDConstants(), Constants.cameraAngleOffsetClose, Constants.getPIDTolerance().h, Constants.linearSpeed);
+    private final PIDControllerHeading hPIDFar = new PIDControllerHeading(Constants.getAngularPIDConstants(), Constants.cameraAngleOffsetFar, Constants.getPIDTolerance().h, Constants.linearSpeed);
 
     private boolean carouselButtonsLock = false;
     private boolean shootButtonLock = false;
+
     private CarouselPosition firstShot = CarouselPosition.UNSET;
     private int shotCount = 0;
-
-
-    private final PIDControllerHeading hPID = new PIDControllerHeading(Constants.getAngularPIDConstants(), Constants.cameraAngleOffset, Constants.getPIDTolerance().h, Constants.linearSpeed);
 
     private Motif motif = Motif.NONE;
 
@@ -93,10 +95,12 @@ public class StateTeleOp extends OpMode {
             if (gamepad2.a) {
                 angle = Constants.shootCloseAngle;
                 velocity = Constants.shootCloseVelocity;
+                isFarShooting = false;
             }
             if (gamepad2.b) {
                 angle = Constants.shootFarAngle;
                 velocity = Constants.shootFarVelocity;
+                isFarShooting = true;
             }
             if (gamepad2.x) {
                 velocity = 0;
@@ -120,8 +124,13 @@ public class StateTeleOp extends OpMode {
             if (gamepad1.right_bumper) {
                 if (robot.getLimelight().isDetectingGoal(robot.getAllianceSide())) {
                     double currentAngleError = robot.getLimelight().getAngleFromGoal();
-                    if (!hPID.atTarget(currentAngleError)) {
-                        robot.getDrivetrain().control(0.0, 0.0, hPID.calculate(currentAngleError));
+                    if (!hPIDClose.atTarget(currentAngleError)) {
+                        if (isFarShooting) {
+                            robot.getDrivetrain().control(0.0, 0.0, hPIDFar.calculate(currentAngleError));
+                        }
+                        else {
+                            robot.getDrivetrain().control(0.0, 0.0, hPIDClose.calculate(currentAngleError));
+                        }
                     }
                 } else {
                     robot.getDrivetrain().control(0, 0, gamepad1.right_stick_x);

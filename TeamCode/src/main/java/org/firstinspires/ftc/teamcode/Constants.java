@@ -7,8 +7,8 @@ import org.firstinspires.ftc.teamcode.lib.pid.PIDConstants;
 
 @Configurable
 public class Constants {
-    public static int artifactLiftUpperTolerance = 50;
-    public static int artifactLiftLowerTolerance = 50;
+    public static int artifactLiftUpperTolerance = 20;
+    public static int artifactLiftLowerTolerance = 20;
     public static int artifactLiftTimeoutMilliseconds = 500;
     public static double artifactLiftPower = 0.8;
 
@@ -18,7 +18,10 @@ public class Constants {
     public static int shootFarVelocity = 1400;
     public static double shootFarAngle = 35;
 
-    public static int carouselMoveOneTimer = 1000;
+    public static int autoShootFarVelocity = 1350;
+    public static int autoShootCloseVelocity = 1000;
+
+    public static int carouselMoveOneTimer = 1200;
 
     public static double shootSlot0 = 0.32; // 0.35
     public static double shootSlot1 = 0.66; // 0.67
@@ -68,10 +71,12 @@ public class Constants {
     }
     public static int encoderPIDTolerance = 200;
 
-    public static double linearSpeed = 0.4;
-    public static double angularSpeed = 0.4;
+    public static double linearSpeed = 0.5;
+    public static double angularSpeed = 0.5;
 
-    public static double cameraAngleOffset = 5;
+    public static double cameraAngleOffsetClose = 5;
+    public static double cameraAngleOffsetFar = 2.5;
+
     public static double drivetrainExponentIndex = 3; //change in configurables to change how speed ramps up (ex. quadratic, cubic, etc.)
 
 }

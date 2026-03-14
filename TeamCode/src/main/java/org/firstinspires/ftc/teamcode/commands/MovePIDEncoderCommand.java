@@ -22,12 +22,12 @@ public class MovePIDEncoderCommand extends Command {
      */
     public MovePIDEncoderCommand(double yTargetInches, double speed, Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        yPID = new PIDControllerSpeedLimit(Constants.getEncoderLinearPIDConstants(), yTargetInches*Constants.inchesToEncoderDrivetrain, 200, speed);
+        yPID = new PIDControllerSpeedLimit(Constants.getEncoderLinearPIDConstants(), yTargetInches*Constants.inchesToEncoderDrivetrain, Constants.encoderPIDTolerance, speed);
     }
 
     public MovePIDEncoderCommand(double yStartInches, double yEndInches, double speed, Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        yPID = new PIDControllerSpeedLimit(Constants.getEncoderLinearPIDConstants(), (yEndInches-yStartInches)*Constants.inchesToEncoderDrivetrain, 200, speed);
+        yPID = new PIDControllerSpeedLimit(Constants.getEncoderLinearPIDConstants(), (yEndInches-yStartInches)*Constants.inchesToEncoderDrivetrain, Constants.encoderPIDTolerance, speed);
     }
 
     @Override
