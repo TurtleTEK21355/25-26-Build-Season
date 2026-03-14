@@ -48,6 +48,15 @@ public abstract class AutoAudienceSide extends StateAutoOpMode {
 
         configureSide();   
 
+
+        telemetry.addLine("Auto: Audience Side");
+        telemetry.addData("Start heading", START_H);
+        telemetry.addData("Shoot heading", SHOOT_H);
+        telemetry.addData("Start Y", START_Y);
+        telemetry.addData("Shoot (X,Y)", "%.1f, %.1f", SHOOT_X, SHOOT_Y);
+        telemetry.update();
+
+        
         addCommand(new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_2, robot.getShooterSystem()));
         addCommand(new SetFlywheelVelocityCommand(robot.getShooterSystem(), Constants.shootFarVelocity));
         addCommand(new SetHoodAngleCommand(Constants.shootFarAngle, robot.getShooterSystem()));
