@@ -95,7 +95,7 @@ public abstract class AutoAudienceSide extends StateAutoOpMode {
                 continue;
             }
 
-            addCommand(AutoAudienceSideSteps.buildCommandForStep(step, this));
+            addCommand(AutoAudienceSideSteps.buildCommandForStep(step, this, robot));
         }
 
         // Optional: warn about configuration that yields no steps
