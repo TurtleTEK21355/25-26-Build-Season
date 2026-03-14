@@ -33,15 +33,15 @@ public abstract class AutoRefSide extends StateAutoOpMode {
     public static double INTAKE_ON_POWER = 1.0;
     public static double INTAKE_OFF_POWER = 0.0;
 
-    public static AutoStep STOP_COMMAND = AutoStep.MOVE_TO_POS_1;
-    public static AutoStep START_COMMAND = AutoStep.SHOOT_ALL_16;
+    public static AutoRefSideSteps STOP_COMMAND = AutoRefSideSteps.MOVE_TO_POS_1;
+    public static AutoRefSideSteps START_COMMAND = AutoRefSideSteps.SHOOT_ALL_16;
     public static Motif currentMotif = Motif.PPG;
 
     private boolean startLock = true;
 
     protected abstract void configureSide();
 
-    private final AutoJudegSideSteps[] steps = AutoJudegSideSteps.values();
+    private final AutoRefSideSteps[] steps = AutoRefSideSteps.values();
 
     @Override
     public void commands() {
@@ -52,7 +52,7 @@ public abstract class AutoRefSide extends StateAutoOpMode {
         addCommand(new SetFlywheelVelocityCommand(robot.getShooterSystem(), Constants.shootCloseVelocity));
         addCommand(new SetHoodAngleCommand(Constants.shootCloseAngle, robot.getShooterSystem()));
 
-        for (AutoJudegSideSteps  step : steps) {
+        for (AutoRefSideSteps  step : steps) {
 
             if (step == START_COMMAND) startLock = false;
             if (step == STOP_COMMAND) break;
