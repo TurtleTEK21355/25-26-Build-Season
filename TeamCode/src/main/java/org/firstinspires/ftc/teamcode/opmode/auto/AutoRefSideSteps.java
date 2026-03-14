@@ -50,7 +50,7 @@ public enum AutoRefSideSteps {
     ROTATE_ROBOT_47,
     SHOOT_ALL_48;
 
-    private static Command buildCommandForStep(AutoRefSideSteps step, AutoRefSide opMode, robot StateRobot) {
+    private static Command buildCommandForStep(AutoRefSideSteps step, AutoRefSide opMode, StateRobot robot) {
 
         switch (step) {
             case MOVE_TO_POS_1:
