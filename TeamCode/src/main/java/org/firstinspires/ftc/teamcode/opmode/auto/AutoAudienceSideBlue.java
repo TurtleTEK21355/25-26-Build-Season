@@ -2,24 +2,39 @@ package org.firstinspires.ftc.teamcode.opmode.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+@Configurable
 @Autonomous(name="AutoAudienceSideBlue", group = "auto")
 public class AutoAudienceSideBlue extends AutoAudienceSide {
+    
+    private static double ab_START_H = 0.0;
+    private static double ab_SHOOT_H = 33.0;
+    private static double ab_INTAKE_H = 0.0;// not used
+
+    private static double ab_START_Y = -60.0;
+
+    private static double ab_SHOOT_X = 0.0; //not used.
+    private static double ab_SHOOT_Y = -50.0;
+    private static double ab_ROW_2_Y = -12.0;
+    private static double ab_ROW_3_Y = -35.0;
+    private static double ab_INTAKE_1_X = 0.0;// not used
+    private static double ab_INTAKE_2_X = 0.0;//not used
+    private static double ab_INTAKE_3_X = 0.0;//not used
 
     @Override
     protected void configureSide() {
 
-        START_H = 0.0;
-        SHOOT_H = 33.0;
-        INTAKE_H = 0.0;// not used
+        START_H = ab_START_H;
+        SHOOT_H = ab_SHOOT_H;
+        INTAKE_H = ab_INTAKE_H;
 
-        START_Y = -60.0;
+        START_Y = ab_START_Y;
 
-        SHOOT_X = 0.0; //not used.
-        SHOOT_Y = -50.0;
-        ROW_2_Y = -12.0;
-        ROW_3_Y = -35.0;
-        INTAKE_1_X = 0.0;// not used
-        INTAKE_2_X = 0.0;//not used
-        INTAKE_3_X = 0.0;//not used
+        SHOOT_X = ab_SHOOT_X;
+        SHOOT_Y = ab_SHOOT_Y;
+        ROW_2_Y = ab_ROW_2_Y;
+        ROW_3_Y = ab_ROW_3_Y;
+        INTAKE_1_X = ab_INTAKE_1_X;
+        INTAKE_2_X = ab_INTAKE_2_X;
+        INTAKE_3_X = ab_INTAKE_3_X;
     }
 }
