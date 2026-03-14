@@ -6,19 +6,19 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 @Autonomous(name="AutoAudienceSideBlue", group = "auto")
 public class AutoAudienceSideBlue extends AutoAudienceSide {
     
-    private static double ab_START_H = 0.0;
-    private static double ab_SHOOT_H = 33.0;
-    private static double ab_INTAKE_H = 0.0;// not used
+    public static double ab_START_H = 0.0;
+    public static double ab_SHOOT_H = 33.0;
+    public static double ab_INTAKE_H = 0.0;// not used
 
-    private static double ab_START_Y = -60.0;
+    public static double ab_START_Y = -60.0;
 
-    private static double ab_SHOOT_X = 0.0; //not used.
-    private static double ab_SHOOT_Y = -50.0;
-    private static double ab_ROW_2_Y = -12.0;
-    private static double ab_ROW_3_Y = -35.0;
-    private static double ab_INTAKE_1_X = 0.0;// not used
-    private static double ab_INTAKE_2_X = 0.0;//not used
-    private static double ab_INTAKE_3_X = 0.0;//not used
+    public static double ab_SHOOT_X = 0.0; //not used.
+    public static double ab_SHOOT_Y = -50.0;
+    public static double ab_ROW_2_Y = -12.0;
+    public static double ab_ROW_3_Y = -35.0;
+    public static double ab_INTAKE_1_X = 0.0;// not used
+    public static double ab_INTAKE_2_X = 0.0;//not used
+    public static double ab_INTAKE_3_X = 0.0;//not used
 
     @Override
     protected void configureSide() {
