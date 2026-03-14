@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
 import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 
 @Configurable
-public abstract class AutoJudgeSideBase extends StateAutoOpMode {
+public abstract class AutoRefSide extends StateAutoOpMode {
 
     public static double SPEED = 0.5;
 
