@@ -17,6 +17,9 @@ public class AutoJudgeSideBlue extends AutoJudgeSide {
 
         SHOOT_X = 12.0;
         SHOOT_Y = 11.0;
+        
+        ROW_2_Y = -12.0;
+        ROW_3_Y = -35.0;
 
         INTAKE_1_X = 44.0;
         INTAKE_2_X = 48.0;
