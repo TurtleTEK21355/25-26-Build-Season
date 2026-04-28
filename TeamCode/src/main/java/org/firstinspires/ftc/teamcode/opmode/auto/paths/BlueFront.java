@@ -25,10 +25,13 @@ import java.util.Collection;
 public class BlueFront extends StateAutoOpMode {
     AllianceSide side = AllianceSide.BLUE;
 
-    public static double shootMove = -49;
-    public static double shootAngle = 43;
+    public static double shootMove = -60;
+    public static double shootAngle = 0;
     public static double parkAngle = 135;
     public static double parkMove = 18;
+
+    public static int startCommand = 0;
+    public static int endCommand = 100;
 
     @Override
     public void initialize() {
@@ -44,7 +47,6 @@ public class BlueFront extends StateAutoOpMode {
                 new SetHoodAngleCommand(Constants.shootCloseAngle, robot.getShooterSystem()),
 
                 new MovePIDEncoderCommand(shootMove, Constants.linearSpeed, robot.getDrivetrain()),
-                new RotatePIDCommand(shootAngle, Constants.angularSpeed, robot.getDrivetrain(), robot.getIMU()),
 
                 new PreviousShootCommand(robot.getShooterSystem()),
                 new PreviousShootCommand(robot.getShooterSystem()),
@@ -53,7 +55,11 @@ public class BlueFront extends StateAutoOpMode {
                 new RotatePIDCommand(parkAngle, Constants.angularSpeed, robot.getDrivetrain(), robot.getIMU()),
                 new MovePIDEncoderCommand(parkMove, Constants.linearSpeed, robot.getDrivetrain())
         );
-        commandScheduler.addAll(commands);
-
+        for (int i = startCommand; i <= endCommand; i++) {
+            if (i > commands.size()) {
+                break;
+            }
+            commandScheduler.add(commands.get(i));
+        }
     }
 }

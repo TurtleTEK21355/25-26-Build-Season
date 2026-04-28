@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode.auto.steps;
 
 import com.bylazar.configurables.annotations.Configurable;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.commands.SetCarouselPositionCommand;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.physicaldata.CarouselPosition;
 import org.firstinspires.ftc.teamcode.physicaldata.Motif;
 
 @Configurable
+@Disabled
 public abstract class AutoRefSide extends StateAutoOpMode {
 
     public static double SPEED = 0.5;

@@ -2,8 +2,10 @@ package org.firstinspires.ftc.teamcode.opmode.auto.steps;
 
 import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Configurable
+@Disabled
 @Autonomous(name="AutoAudienceSideRed", group = "auto")
 public class AutoAudienceSideRed extends AutoAudienceSide {
     public static double ar_START_H = 0.0;

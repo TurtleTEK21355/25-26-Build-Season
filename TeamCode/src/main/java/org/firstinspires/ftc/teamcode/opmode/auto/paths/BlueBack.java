@@ -24,8 +24,11 @@ public class BlueBack extends StateAutoOpMode {
 
     public static double shootMove = 10;
     public static double shootAngle = 20;
-    public static double parkAngle = 45;
+    public static double parkAngle = 0;
     public static double parkMove = 18;
+
+    public static int startCommand = 0;
+    public static int endCommand = 100;
 
     @Override
     public void initialize() {
@@ -38,7 +41,7 @@ public class BlueBack extends StateAutoOpMode {
         CommandList commands = new CommandList(
                 new SetCarouselPositionCommand(CarouselPosition.INTAKE_SLOT_2, robot.getShooterSystem()),
                 new SetFlywheelVelocityCommand(robot.getShooterSystem(), Constants.autoShootFarVelocity),
-                new SetHoodAngleCommand(Constants.shootCloseAngle, robot.getShooterSystem()),
+                new SetHoodAngleCommand(Constants.shootFarAngle, robot.getShooterSystem()),
 
                 new MovePIDEncoderCommand(shootMove, Constants.linearSpeed, robot.getDrivetrain()),
                 new RotatePIDCommand(shootAngle, Constants.angularSpeed, robot.getDrivetrain(), robot.getIMU()),
@@ -50,6 +53,11 @@ public class BlueBack extends StateAutoOpMode {
                 new RotatePIDCommand(parkAngle, Constants.angularSpeed, robot.getDrivetrain(), robot.getIMU()),
                 new MovePIDEncoderCommand(parkMove, Constants.linearSpeed, robot.getDrivetrain())
         );
-        commandScheduler.addAll(commands);
+        for (int i = startCommand; i <= endCommand; i++) {
+            if (i > commands.size()) {
+                break;
+            }
+            commandScheduler.add(commands.get(i));
+        }
     }
 }

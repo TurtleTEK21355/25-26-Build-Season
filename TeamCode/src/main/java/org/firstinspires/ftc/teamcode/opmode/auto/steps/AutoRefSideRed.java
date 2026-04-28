@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.opmode.auto.steps;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+@Disabled
 @Autonomous(name="AutoRefSideRed", group = "auto")
 public class AutoRefSideRed extends AutoRefSide {
     public static double rr_START_H = 0.0;

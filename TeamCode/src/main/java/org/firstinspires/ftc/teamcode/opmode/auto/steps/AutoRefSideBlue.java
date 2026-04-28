@@ -2,8 +2,10 @@ package org.firstinspires.ftc.teamcode.opmode.auto.steps;
 
 import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Configurable
+@Disabled
 @Autonomous(name="AutoRefSideBlue", group = "auto")
 public class AutoRefSideBlue extends AutoRefSide {
     // Field positions for BLUE side
